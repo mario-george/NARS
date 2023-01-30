@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.button {
+  @apply border border-gray-500 duration-200 hover:bg-gray-200 hover:text-black  rounded-md text-3xl  py-2 bg-gray-50  text-black placeholder-black/20 px-8;
+}
+.button2 {
+  @apply border-2 border-black rounded-2xl shadow-md px-6 py-2  hover:bg-gray-50 duration-200;
+}
+
+.flex-for-reg {
+  @apply flex gap-10 items-center;
+}
+
+.home-btn1 {
+  @apply bg-[#0277BD] border border-black duration-200 hover:bg-white hover:text-black text-white rounded-md text-2xl font-bold  py-2;
+}
+.home-btn2 {
+  @apply bg-gray-500 border border-gray-500 duration-200 hover:bg-gray-200 hover:text-black text-white rounded-md text-xl  py-2;
+}
+.app-nav {
+  @apply bg-gray-500 border border-gray-500 duration-200 hover:bg-white hover:text-black text-white;
+}
+.search-btn {
+  @apply border border-gray-500 duration-200 hover:bg-gray-200 hover:text-black  rounded-md text-xl  py-2 bg-gray-50  text-black placeholder-black/20 px-8;
+}
+.activeLink {
+  @apply text-green-400 px-8 h-[5rem] duration-200;
+}
+.normalLink {
+  @apply px-8 h-[5rem] duration-200 hover:text-black;
+}
+.layout {
+  @apply overflow-hidden text-black shadow-xl text-xl font-bold;
+}
+.text {
+  @apply font-bold text-2xl;
+}
+.text2 {
+  font-weight: 900;
+}
