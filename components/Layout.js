@@ -4,15 +4,13 @@ export default function Layout(props) {
   const router = useRouter();
 
   return (
-    <>
-      <div className="layout">
-        <div className="flex justify-between items-center mx-[3rem] h-[5rem] ">
-          <div className='text'>N.A.R.S Quality Assurance</div>
-          <div className="flex items-center justify-center gap-10  ">
+    <div className="flex flex-col w-full font-bold font-Rubik">
+      <div className="shadow-2xl p-0 m-0  w-full  h-[5rem] flex-1">
+        <div className="flex justify-between items-center mx-[3rem]   ">
+          <div className="text">N.A.R.S Quality Assurance</div>
+          <div className="flex items-center  gap-10  ">
             <Link
-              className={
-                router.pathname == '/' ? 'activeLink' : 'normalLink'
-              }
+              className={router.pathname == '/' ? 'activeLink' : 'normalLink'}
               href="/">
               <div className="text translate-y-5">Home</div>
             </Link>
@@ -37,6 +35,6 @@ export default function Layout(props) {
       </div>
 
       <div>{props.children}</div>
-    </>
+    </div>
   );
 }

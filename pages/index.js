@@ -5,8 +5,7 @@ const Home = () => {
     <>
       <>
         <div class="flex flex-col mt-5 justify-center items-center">
-          <h1 className="text-3xl"></h1>
-          <h2 className="text-2xl"></h2>
+    
           <br />
           <div className="flex flex-col border-2 border-black rounded-xl shadow-xl text-center py-3 px-4 mx-auto w-[50rem] gap-10 p-[3rem] ">
             <p className="text-xl text ">Please Login or Register</p>
