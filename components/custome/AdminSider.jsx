@@ -7,8 +7,11 @@ import Logout from '../row/Logout';
 const Side = () => {
   return (
     <div className="fixed top-0 left-0 h-screen w-48 m-2 flex flex-col bg-gray-100 drop-shadow-xl ">
-      {arr.map((a) => (<Titile title = {a} asvg="./src/svgs/plus.svg" />))}
-      <ListLink asvg="./src/svgs/plus.svg" title={'F'} subtitiles = {['1', '2']} />
+    
+      <ListLink asvg="../svgs/profile.svg" title={'Profile'} subtitiles = {['profile details', '']} />
+      <ListLink asvg="../svgs/teacher.svg" title={'Courses'} subtitiles = {[['Course 1', ''], ['Course 2', '']]} />
+
+      <Logout />
     </div>
   )
 };
