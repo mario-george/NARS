@@ -11,8 +11,8 @@ const Side = () => {
       <ListLink asvg="../svgs/profile.svg" title={'Profile'} subtitiles = {['profile details', '']} />
       <ListLink asvg="../svgs/teacher.svg" title={'Courses'} subtitiles = {[['Course 1', ''], ['Course 2', '']]} />
       <ListLink asvg="../svgs/teacher.svg" title={'Program'} subtitiles = {[['PRogram 1', ''], ['Program 2', '']]} />
+      <Titile asvg="../svgs/plus.svg" title={'Add User'} subtitiles = {[['Add Staff', '/admin/addstaff'], ['Add Student', '/admin/addstudent']]}/>
       <Titile asvg="../svgs/plus.svg" title={'Add Program'} url="" />
-      <Titile asvg="../svgs/plus.svg" title={'Add User'} url="" />
 
       <Logout />
     </div>
