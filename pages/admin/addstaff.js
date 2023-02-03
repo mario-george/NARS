@@ -1,4 +1,4 @@
-import AdminSider from '../../components/custome/AdminSider'
+import AdminSider from '../../components/custome/AdminSider';
 import { useRouter } from 'next/router';
 
 const addStaff = () => {
