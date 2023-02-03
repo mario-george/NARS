@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import AdminSider from '../../components/custome/AdminSider'
 import { useRouter } from 'next/router';
 
 const addStaff = () => {
@@ -7,44 +8,7 @@ const addStaff = () => {
   return (
     <>
       <div className="flex flex-row w-screen h-screen">
-        <nav className="nav1">
-          <Link className="link" href="/admin/profile">
-            Profile
-          </Link>
-          <Link className="linkpt2 translate-x-3" href="/admin/profile">
-            Profile details
-          </Link>
-          <Link
-            className={
-              router.pathname === '/admin/addstudent'
-                ? 'activeLinkDashboard'
-                : 'normalLinkDashboard'
-            }
-            href="/admin/addstudent">
-            Add Student
-          </Link>
-          <Link
-            className={
-              router.pathname === '/admin/addstaff'
-                ? 'activeLinkDashboard'
-                : 'normalLinkDashboard'
-            }
-            href="/admin/addstaff">
-            Add Staff
-          </Link>
-          <Link className="link" href="/admin/profile">
-            Courses
-          </Link>{' '}
-          <Link className="link" href="/admin/profile">
-            Programs
-          </Link>{' '}
-          <Link className="link" href="/admin/profile">
-            Add Program
-          </Link>{' '}
-          <Link className="link" href="/admin/profile">
-            Logout
-          </Link>
-        </nav>
+        <AdminSider />
         <div className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   ">
           <div className="contentAddUser flex flex-col gap-10">
             <p>Add Staff</p>
