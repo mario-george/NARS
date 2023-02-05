@@ -56,7 +56,7 @@ export default function register() {
               required: true,
             })}
           />
-          {errors.email && <span className="text-red-500">Invalid email</span>}
+          {/* {errors.email && <span className="text-red-500">Invalid email</span>}*/}
           {notAdded && (
             <span className="text-red-500">
               There is no user with this email address

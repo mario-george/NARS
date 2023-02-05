@@ -76,7 +76,7 @@ export default function Login() {
               </Link>
             </p>
           </div>
-          {invalidData && <span className="text-red-500 flex justify-center">Invalid input </span>}
+          {invalidData && <span className="text-red-500 flex justify-center">Incorrect mail or password </span>}
         </form>
         <p className="text-1xl">
           -Forgot your password?
