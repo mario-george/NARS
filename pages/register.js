@@ -1,14 +1,38 @@
-import React from 'react';
-import { useRouter } from 'next/router'
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { userActions } from '@/components/store/userSlice';
 export default function register() {
+  const d = useDispatch()
+  const [notAdded, setNotAdded] = useState(false);
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm();
+
   const router = useRouter();
-  const onSubmit = () =>  router.push('/otp')
+  const onSubmit = async (data) => {
+    console.log(data.email);
+    const r = await fetch(
+      'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/signup',
+      {
+        method: 'POST',
+        body: JSON.stringify({ email: data.email }),
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+
+    const resp = await r.json();
+    console.log(resp);
+    if (resp.status == 'fail') {
+      setNotAdded(true);
+    } else {
+      d(userActions.registerCompletionPart1())
+      router.push('/otp');
+    }
+  };
   return (
     <div class="flex flex-col gap-5 justify-center items-center w-full">
       <div className="text-2xl font-bold mt-20 mb-5">Create your account </div>
@@ -28,15 +52,21 @@ export default function register() {
             className="button"
             placeholder=""
             required
-            {...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@(feng.bu.edu.eg)$/i })}
+            {...register('email', {
+              required: true,
+            })}
           />
-          {errors.email && <span className='text-red-500'>Invalid email</span>}
+          {errors.email && <span className="text-red-500">Invalid email</span>}
+          {notAdded && (
+            <span className="text-red-500">
+              There is no user with this email address
+            </span>
+          )}
         </div>
-        <button type='submit' class="home-btn1 px-10 w-full ">
+        <button type="submit" class="home-btn1 px-10 w-full ">
           Verify your mail
         </button>
       </form>
     </div>
   );
 }
-
