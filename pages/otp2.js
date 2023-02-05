@@ -2,18 +2,18 @@ import { useRouter } from 'next/router';
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../components/store/userSlice';
-export default function otp() {
+export default function otp2() {
     const completed = useSelector((s) => s.user.registerCompletionPart1);
     const d = useDispatch();
     const router = useRouter();
     const submitHandler = async (e) => {
         e.preventDefault();
-        d(userActions.updateVerifyCode(otp.current.value));
+        d(userActions.updateVerifyCode(otp2.current.value));
         const r = await fetch(
             'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/verifyCode',
             {
                 method: 'POST',
-                body: JSON.stringify({ resetCode: otp.current.value }),
+                body: JSON.stringify({ resetCode: otp2.current.value }),
                 headers: { 'Content-Type': 'application/json' },
             }
         );
@@ -28,7 +28,7 @@ export default function otp() {
             router.push('/reset_password');
         }
     };
-    const otp = useRef();
+    const otp2 = useRef();
     if (completed) {
         return (
             <div class="flex flex-col gap-5 justify-center items-center w-full">
@@ -47,7 +47,7 @@ export default function otp() {
                             className="button"
                             placeholder=""
                             required
-                            ref={otp}
+                            ref={otp2}
                         />
                     </div>
                     <button type="submit" class="home-btn1 px-10 w-full ">
