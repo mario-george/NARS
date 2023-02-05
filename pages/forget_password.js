@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { userActions } from '@/components/store/userSlice';
-export default function register() {
+export default function forget_password() {
     const d = useDispatch()
     const [notAdded, setNotAdded] = useState(false);
     const {

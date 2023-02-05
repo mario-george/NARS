@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-export default function password() {
+export default function reset_password() {
     const completed = useSelector((s) => s.user.registerCompletionPart2);
     const info = useSelector((s) => s.user.info);
     const verifycode = info.verifyCode;
