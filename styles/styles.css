@@ -39,3 +39,25 @@
 .text2 {
   font-weight: 900;
 }
+
+.nav2 {
+  @apply bg-white border-2 shadow-lg flex flex-col justify-start w-[20%] gap-10 h-screen overflow-hidden p-6;
+}
+.link2 {
+  @apply font-bold text-xl md:text-lg font-Rubik;
+}
+.link22 {
+  @apply font-normal text-xl md:text-lg font-Rubik;
+}
+.activeLinkDashboard2 {
+  @apply text-green-400 link22 translate-x-3 font-bold;
+}
+.normalLinkDashboard2 {
+  @apply duration-200  link22 translate-x-3;
+}
+.contentAddUser2 {
+  @apply w-[80%] h-[70%] rounded-3xl p-12 bg-white font-bold font-Rubik  text-2xl md:text-lg shadow-lg border-2;
+}
+.inputAddUser2 {
+  @apply border-b-2  border-black outline-none;
+}
