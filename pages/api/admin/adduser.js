@@ -1,4 +1,4 @@
 const addUser = () => {
-  ret
+  return;
 };
 export default addUser;

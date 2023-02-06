@@ -49,13 +49,16 @@ const addStaff = () => {
           <div className="contentAddUser2 flex flex-col gap-10">
             <p>Add Staff</p>
             <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5">
-                <div>Staff ID</div>
-                <input type="text" className="inputAddUser2 w-full" />
-              </div>
-              <div className="flex flex-col gap-5  w-1/2">
+              <div className="flex flex-col gap-5  w-1/4">
                 <div> Name</div>
                 <input type="text" className="inputAddUser2  w-full" />
+              </div>
+              <div className="flex flex-col gap-5  w-1/2 ">
+                <div> Email </div>
+                <input
+                  type="text"
+                  className="inputAddUser2   w-full "
+                />
               </div>
             </div>
             <div className="flex gap-20 flex-1 ">
@@ -78,7 +81,7 @@ const addStaff = () => {
                 </select>
               </div>
               <div className="flex flex-col gap-5  w-1/2 ">
-                <div> Email </div>
+                <div> Faculty </div>
                 <input
                   type="text"
                   className="inputAddUser2  w-full translate-y-[1rem]"
@@ -90,10 +93,7 @@ const addStaff = () => {
                 <div>Department </div>
                 <input type="text" className="inputAddUser2 w-full" />
               </div>
-              <div className="flex flex-col gap-5  w-1/2">
-                <div> Faculty</div>
-                <input type="text" className="inputAddUser2  w-full" />
-              </div>
+        
               <button
                 type="button"
                 class="w-[6rem] my-6  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">

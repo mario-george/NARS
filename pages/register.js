@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { userActions } from '@/components/store/userSlice';
 export default function register() {
-  const d = useDispatch()
+  const d = useDispatch();
   const [notAdded, setNotAdded] = useState(false);
   const {
     register,
@@ -18,6 +18,8 @@ export default function register() {
     const r = await fetch(
       'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/signup',
       {
+        mode: 'no-cors',
+
         method: 'POST',
         body: JSON.stringify({ email: data.email }),
         headers: { 'Content-Type': 'application/json' },
@@ -29,7 +31,7 @@ export default function register() {
     if (resp.status == 'fail') {
       setNotAdded(true);
     } else {
-      d(userActions.registerCompletionPart1())
+      d(userActions.registerCompletionPart1());
       router.push('/otp');
     }
   };
@@ -56,7 +58,7 @@ export default function register() {
               required: true,
             })}
           />
-          {/* {errors.email && <span className="text-red-500">Invalid email</span>}*/}
+          {errors.email && <span className="text-red-500">Invalid email</span>}
           {notAdded && (
             <span className="text-red-500">
               There is no user with this email address

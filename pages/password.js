@@ -10,8 +10,11 @@ export default function password() {
     const r = await fetch(
       'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/completeSignup',
       {
+        mode:'no-cors',
+
         method: 'POST',
         body: JSON.stringify({
+          
           verifyCode,
           password: input.password,
           passwordConfirm: input.confirmPassword,
@@ -25,6 +28,7 @@ export default function password() {
     if (resp.status != 'success') {
       alert('fail');
     } else {
+      Cookies.setItem('token',resp.token)
       alert('success');
     }
   };

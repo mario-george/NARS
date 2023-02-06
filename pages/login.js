@@ -1,10 +1,16 @@
+import { userActions } from '@/components/store/userSlice';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
 // api/v1/users/login
 export default function Login() {
   const email = useRef();
   const password = useRef();
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [invalidData, setInvalidData] = useState(false);
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -12,6 +18,7 @@ export default function Login() {
       'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/login',
       {
         method: 'POST',
+
         body: JSON.stringify({
           email: email.current.value,
           password: password.current.value,
@@ -25,7 +32,16 @@ export default function Login() {
     if (resp.status == 'fail') {
       setInvalidData(true);
     } else {
-      alert('success');
+      Cookies.set('token', resp.token);
+      Cookies.set('data', resp.data);
+
+      if (resp.data.user.role === 'system admin') {
+        dispatch(userActions.getUserData(resp.data.user));
+        dispatch(userActions.setLoggedIn());
+        router.push('/admin/addstudent');
+      } else {
+        alert('not known role');
+      }
     }
   };
   return (
@@ -76,7 +92,11 @@ export default function Login() {
               </Link>
             </p>
           </div>
-          {invalidData && <span className="text-red-500 flex justify-center">Incorrect mail or password </span>}
+          {invalidData && (
+            <span className="text-red-500 flex justify-center">
+              Invalid input{' '}
+            </span>
+          )}
         </form>
         <p className="text-1xl">
           -Forgot your password?

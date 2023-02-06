@@ -10,11 +10,11 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>React Meetup</title>
       </Head>
-      <Layout>
-       <Provider store={store}>
-        <Component {...pageProps} />
-        </Provider>
-      </Layout>
+      <Provider store={store}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Provider>
     </>
   );
 }
