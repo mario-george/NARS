@@ -1,24 +1,23 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
 const addStudent = () => {
   const router = useRouter();
 
   return (
     <>
       <div className="flex flex-row w-screen h-screen">
-        <nav className="nav1">
-          <Link className="link" href="/admin/profile">
+        <nav className="nav2">
+          <Link className="link2" href="/admin/profile">
             Profile
           </Link>
-          <Link className="linkpt2 translate-x-3" href="/admin/profile">
+          <Link className="link22 translate-x-3" href="/admin/profile">
             Profile details
           </Link>
           <Link
             className={
               router.pathname === '/admin/addstudent'
-                ? 'activeLinkDashboard'
-                : 'normalLinkDashboard'
+                ? 'activeLinkDashboard2'
+                : 'normalLinkDashboard2'
             }
             href="/admin/addstudent">
             Add Student
@@ -26,52 +25,52 @@ const addStudent = () => {
           <Link
             className={
               router.pathname === '/admin/addstaff'
-                ? 'activeLinkDashboard'
-                : 'normalLinkDashboard'
+                ? 'activeLinkDashboard2'
+                : 'normalLinkDashboard2'
             }
             href="/admin/addstaff">
             Add Staff
           </Link>
-          <Link className="link" href="/admin/profile">
+          <Link className="link2" href="/admin/profile">
             Courses
           </Link>{' '}
-          <Link className="link" href="/admin/profile">
+          <Link className="link2" href="/admin/profile">
             Programs
           </Link>{' '}
-          <Link className="link" href="/admin/profile">
+          <Link className="link2" href="/admin/profile">
             Add Program
           </Link>{' '}
-          <Link className="link" href="/admin/profile">
+          <Link className="link2" href="/admin/profile">
             Logout
           </Link>
         </nav>
         <div className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   ">
-          <div className="contentAddUser flex flex-col gap-10">
+          <div className="contentAddUser2 flex flex-col gap-10">
             <p>Add Student</p>
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5">
                 <div>Student Code</div>
-                <input type="text" className="inputAddUser w-full" />
+                <input type="text" className="inputAddUser2 w-full" />
               </div>
               <div className="flex flex-col gap-5  w-1/2">
                 <div> Name</div>
-                <input type="text" className="inputAddUser  w-full" />
+                <input type="text" className="inputAddUser2  w-full" />
               </div>
             </div>
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5">
                 <div>Academic year</div>
-                <input type="text" className="inputAddUser w-full" />
+                <input type="text" className="inputAddUser2 w-full" />
               </div>
               <div className="flex flex-col gap-5  w-1/2">
                 <div> Email </div>
-                <input type="text" className="inputAddUser  w-full" />
+                <input type="text" className="inputAddUser2  w-full" />
               </div>
             </div>
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5  ">
                 <div> Faculty</div>
-                <input type="text" className="inputAddUser  w-full" />
+                <input type="text" className="inputAddUser2  w-full" />
               </div>
             </div>
             <div className="flex justify-end">
