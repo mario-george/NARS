@@ -41,7 +41,7 @@
 }
 
 .nav2 {
-  @apply bg-white border-2 shadow-lg flex flex-col justify-start w-[20%] gap-10 h-screen overflow-hidden p-6;
+  @apply bg-white border-2 shadow-lg flex flex-col justify-start w-[20%] gap-10 h-screen overflow-hidden py-6 px-2;
 }
 .link2 {
   @apply font-bold text-xl md:text-lg font-Rubik;
@@ -60,4 +60,34 @@
 }
 .inputAddUser2 {
   @apply border-b-2  border-black outline-none;
+}
+.bg-gray-800 {
+  background-color: #2d3748;
+}
+
+.text-white {
+  color: #fff;
+}
+
+.hidden {
+  display: none;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.animation-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
