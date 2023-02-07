@@ -9,7 +9,7 @@ export default function Layout(props) {
   if (!loggedInStatus) {
     content = (
       <div className="flex items-center justify-center gap-10  ">
-   
+
         <Link
           href="/login"
           className={router.pathname == '/login' ? 'activeLink' : 'normalLink'}>
@@ -27,12 +27,12 @@ export default function Layout(props) {
       </div>
     );
   } else {
-    content = <div>{userName}</div>;
+    content = <div className="text-blue-500  ">Hello,{userName}</div>;
   }
   return (
     <>
       <div className="layout">
-        <div className="flex justify-between items-center mx-[3rem] h-[5rem] ">
+        <div className="flex justify-between items-center mx-[3rem] h-[5rem]">
           <div className="text">N.A.R.S Quality Assurance</div>
           {content}
         </div>
