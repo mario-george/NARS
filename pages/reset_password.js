@@ -8,7 +8,7 @@ export default function reset_password() {
         e.preventDefault();
 
         const r = await fetch(
-            'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/forgotPassword',
+            'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/resetPassword',
             {
                 method: 'PATCH',
                 body: JSON.stringify({
