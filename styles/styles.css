@@ -31,17 +31,17 @@
   @apply px-8 h-[5rem] duration-200 hover:text-black;
 }
 .layout {
-  @apply overflow-hidden text-black shadow-xl text-xl font-bold;
+  @apply text-black shadow-lg text-xl font-semibold;
 }
 .text {
-  @apply font-bold text-2xl;
+  @apply text-base md:text-2xl;
 }
 .text2 {
   font-weight: 900;
 }
 
 .nav2 {
-  @apply bg-white border-2 shadow-lg flex flex-col justify-start w-[20%] gap-10 h-screen overflow-hidden py-6 px-2;
+  @apply bg-white border-2 shadow-lg flex flex-col justify-start w-screen fixed md:relative  md:w-[20%] gap-10 h-screen overflow-hidden py-6 px-2;
 }
 .link2 {
   @apply font-bold text-xl md:text-lg font-Rubik;
@@ -90,4 +90,50 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+.hamburger {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  transition: all 0.25s;
+  position: relative;
+}
+
+.hamburger-top,
+.hamburger-middle,
+.hamburger-bottom {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 3px;
+  top: 0;
+  left: 0;
+  background: #9c9aa6;
+  transform: rotate(0);
+  transition: all 0.5s;
+}
+
+.hamburger-middle {
+  transform: translateY(7px);
+}
+
+.hamburger-bottom {
+  transform: translateY(14px);
+}
+
+.open {
+  transform: rotate(90deg);
+  transform: translateY(0px);
+}
+
+.open .hamburger-top {
+  transform: rotate(45deg) translateY(6px) translateX(6px);
+}
+
+.open .hamburger-middle {
+  display: none;
+}
+
+.open .hamburger-bottom {
+  transform: rotate(-45deg) translateY(6px) translateX(-6px);
 }

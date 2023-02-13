@@ -35,6 +35,7 @@ const Students = () => {
     });
     setFilteredStudents(a);
   };
+
   return (
     <>
       <div className="flex flex-row w-screen h-screen">
@@ -45,14 +46,14 @@ const Students = () => {
           <div className=" contentAddUser2 overflow-auto flex flex-col gap-10">
             <div className="flex w-full">
               <div className="">List of all Students</div>
-              <div className="flex justify-end w-full gap-6">
+              {/* <div className="flex justify-end w-full gap-6">
                 <div className="">Search By Code:</div>
                 <input
                   type="text"
                   className="inputAddUser2 -translate-y-4 translate-x-3"
                   onChange={filterStudents}
                 />
-              </div>
+              </div> */}
             </div>
             {
               // students.map((s) => {

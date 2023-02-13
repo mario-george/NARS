@@ -1,36 +1,41 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { userActions } from "./store/userSlice";
+import { useDispatch } from "react-redux";
 function createHeader(headerName, array) {
+  const dispatch = useDispatch();
   const [isOpen2, setIsOpen2] = useState(false);
-
+  const clickHandler = () => {
+    dispatch(userActions.toggleNav());
+  };
   return (
     <header className="relative bg-white shadow w-full">
       <button
         className="flex items-center justify-between w-full p-2 border hover:border-gray-300 focus:outline-none "
-        onClick={() => setIsOpen2(!isOpen2)}>
+        onClick={() => setIsOpen2(!isOpen2)}
+      >
         <div className="text-lg md:text-xl font-bold link2 ">{headerName}</div>
-  
-          {isOpen2 ? (
-            <i class="fa-solid fa-angle-up"></i>
-          ) : (
-            <i class="fa-solid fa-angle-down"></i>
-          )}
-        
+
+        <i
+          class={`transform transition-all duration-200 fa-solid fa-angle-down ${
+            isOpen2 ? `rotate-180` : ``
+          }`}
+        ></i>
       </button>
       <AnimatePresence>
         {isOpen2 && (
           <motion.div
             initial={{ height: 0 }}
-            animate={{ height: 'auto' }}
+            animate={{ height: "auto" }}
             exit={{ height: 0, opacity: 0 }}
             className="bg-white shadow-xl p-2"
-            style={{ height: isOpen2 ? 'auto' : 0 }}>
-              <div className="flex flex-col gap-3 px-4">
-
-            {array.map((e) => {
-              return <div>{e}</div>;
-            })}
-              </div>
+            style={{ height: isOpen2 ? "auto" : 0 }}
+          >
+            <div className="flex flex-col gap-3 px-4">
+              {array.map((e) => {
+                return <div>{e}</div>;
+              })}
+            </div>
             {/* <p className="p-2 border border-gray-300">Option 1</p> */}
           </motion.div>
         )}

@@ -1,15 +1,16 @@
-const { createSlice } = require('@reduxjs/toolkit');
+const { createSlice } = require("@reduxjs/toolkit");
 let initialState = {
-  role: 'notLogged',
-  info: { verifyCode: '' },
+  role: "notLogged",
+  info: { verifyCode: "" },
   registerCompletionPart1: false,
   registerCompletionPart2: false,
-  data: {user:{name: 'unnamed' } },
+  data: { user: { name: "unnamed" } },
   loggedInStatus: false,
+  navStatus: false,
 };
 const userSlice = createSlice({
   initialState,
-  name: 'user',
+  name: "user",
   reducers: {
     updateVerifyCode: (state, action) => {
       state.info.verifyCode = action.payload;
@@ -23,8 +24,14 @@ const userSlice = createSlice({
     getUserData: (state, action) => {
       state.data = action.payload;
     },
-    setLoggedIn: (s) => {
-      s.loggedInStatus = true;
+    toggleLoggedIn: (s,action) => {
+      s.loggedInStatus = action.payload;
+    },
+    logOut: (s,action) => {
+      s.loggedInStatus = false;
+    },
+    toggleNav: (s) => {
+      s.navStatus = !s.navStatus;
     },
   },
 });

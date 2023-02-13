@@ -1,89 +1,102 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { header } from './header';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { header } from "./header";
+import { userActions } from "./store/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
 export default function AdminDashBoard() {
   const router = useRouter();
+  const navStatus = useSelector((s) => s.user.navStatus);
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(userActions.logOut());
+    Cookies.set("loggedInStatus", false);
+    router.push("/login");
+  };
   return (
-    <nav className="nav2">
-      {header('Profile', [
-        <Link className="link22 translate-x-3" href="/admin/profile">
-          Profile details
-        </Link>,
+    <nav
+      className={`nav2 transition-all duration-300 transform ${
+        navStatus ? ` -translate-x-full` : `translate-x-0 `
+      }`}
+    >
+      {header("Profile", [
         <Link
           className={
-            router.pathname === '/admin/addstaff'
-              ? 'activeLinkDashboard2'
-              : 'normalLinkDashboard2'
+            router.pathname === "/admin/profile"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
           }
-          href="/admin/addstaff">
-          Add Staff
+          href="/admin/profile"
+        >
+          Profile details
         </Link>,
       ])}
 
-      {header('Students', [
+      {header("Students", [
         <Link
           className={
-            router.pathname === '/admin/student/add'
-              ? 'activeLinkDashboard2'
-              : 'normalLinkDashboard2'
+            router.pathname === "/admin/student/add"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
           }
-          href="/admin/student/add">
+          href="/admin/student/add"
+        >
           Add Student
         </Link>,
         <Link
           className={
-            router.pathname === '/admin/student/view-all'
-              ? 'activeLinkDashboard2'
-              : 'normalLinkDashboard2'
+            router.pathname === "/admin/student/view-all"
+              ? "activeLinkDashboard2 w-full"
+              : "normalLinkDashboard2 w-full"
           }
-          href="/admin/student/view-all">
+          href="/admin/student/view-all"
+        >
           Students
         </Link>,
         <Link
           className={
-            router.pathname === '/admin/searchStudent'
-              ? 'activeLinkDashboard2'
-              : 'normalLinkDashboard2'
+            router.pathname === "/admin/student/search-student"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
           }
-          href="/admin/searchStudent">
+          href="/admin/student/search-student"
+        >
           Search student
         </Link>,
       ])}
-      {header('Staff', [
+      {header("Staff", [
         <Link
           className={
-            router.pathname === '/admin/staff/add'
-              ? 'activeLinkDashboard2'
-              : 'normalLinkDashboard2'
+            router.pathname === "/admin/staff/add"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
           }
-          href="/admin/staff/add">
+          href="/admin/staff/add"
+        >
           Add Staff
         </Link>,
         <Link
           className={
-            router.pathname === '/admin/staff/view-all'
-              ? 'activeLinkDashboard2'
-              : 'normalLinkDashboard2'
+            router.pathname === "/admin/staff/view-all"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
           }
-          href="/admin/staff/view-all">
+          href="/admin/staff/view-all"
+        >
           Staff
         </Link>,
         <Link
           className={
-            router.pathname === '/admin/search-staff'
-              ? 'activeLinkDashboard2'
-              : 'normalLinkDashboard2'
+            router.pathname === "/admin/staff/search-staff"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
           }
-          href="/admin/search-staff">
+          href="/admin/staff/search-staff"
+        >
           Search staff
         </Link>,
       ])}
-      {header('Courses', [])}
-      {header('Programs', [
-        <Link className="link2" href="/admin/profile">
-          Add Program
-        </Link>,
-      ])}
+
       {/* <Link className="link2" href="/admin/profile">
         Courses
       </Link>{' '}
@@ -93,9 +106,12 @@ export default function AdminDashBoard() {
       <Link className="link2" href="/admin/profile">
         Add Program
       </Link>{' '} */}
-      <Link className="link2" href="/admin/profile">
+      <button
+        className="link2 focus:text-green-400 text-left mx-2"
+        onClick={logoutHandler}
+      >
         Logout
-      </Link>
+      </button>
     </nav>
   );
 }
