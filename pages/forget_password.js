@@ -1,20 +1,44 @@
-import React from 'react';
-import { useRouter } from 'next/router'
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-export default function register() {
+import { useDispatch } from 'react-redux';
+import { userActions } from '@/components/store/userSlice';
+export default function forget_password() {
+    const d = useDispatch();
+    const [notAdded, setNotAdded] = useState(false);
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
     } = useForm();
+
     const router = useRouter();
-    const onSubmit = () => router.push('/otp')
+    const onSubmit = async (data) => {
+        console.log(data.email);
+        const r = await fetch(
+            'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/forgotPassword',
+            {
+                method: 'POST',
+                body: JSON.stringify({ email: data.email }),
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
+
+        const resp = await r.json();
+        console.log(resp);
+        if (resp.status == 'fail') {
+            setNotAdded(true);
+        } else {
+            d(userActions.registerCompletionPart1());
+            router.push('/otp2');
+        }
+    };
     return (
         <div class="flex flex-col gap-5 justify-center items-center w-full">
-            <div className="text-2xl font-normal mt-20 mb-5 "> Follow the upcoming steps to reset your password </div>
+            <div className="text-2xl font-normal mt-20 mb-5">Follow the upcoming steps to reset your password</div>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                action="/otp"
+                action="/otp2"
                 className="flex flex-col gap-10 justify-center items-center text-1xl border-none border-black shadow-2xl rounded-2xl px-7 py-4"
                 method="post">
                 <div className="flex flex-col gap-5">
@@ -28,15 +52,21 @@ export default function register() {
                         className="button"
                         placeholder=""
                         required
-                        {...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@(feng.bu.edu.eg)$/i })}
+                        {...register('email', {
+                            required: true,
+                        })}
                     />
-                    {errors.email && <span className='text-red-500'>Invalid email</span>}
+                    {errors.email && <span className="text-red-500">Invalid email</span>}
+                    {notAdded && (
+                        <span className="text-red-500">
+                            There is no user with this email address
+                        </span>
+                    )}
                 </div>
-                <button type='submit' class="home-btn1 px-10 w-full ">
+                <button type="submit" class="home-btn1 px-10 w-full ">
                     Verify your mail
                 </button>
             </form>
         </div>
     );
 }
-

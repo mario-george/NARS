@@ -13,7 +13,7 @@ export default function otp2() {
             'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/verifyCode',
             {
                 method: 'POST',
-                body: JSON.stringify({ resetCode: otp2.current.value }),
+                body: JSON.stringify({ resetCode: otp2.current.value}),
                 headers: { 'Content-Type': 'application/json' },
             }
         );
