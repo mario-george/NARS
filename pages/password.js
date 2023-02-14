@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 export default function password() {
   const completed = useSelector((s) => s.user.registerCompletionPart2);
   const info = useSelector((s) => s.user.info);
@@ -8,39 +8,38 @@ export default function password() {
     e.preventDefault();
 
     const r = await fetch(
-      'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/completeSignup',
+      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/completeSignup",
       {
-        mode:'no-cors',
+        mode: "no-cors",
 
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({
-          
           verifyCode,
           password: input.password,
           passwordConfirm: input.confirmPassword,
         }),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       }
     );
 
     const resp = await r.json();
     console.log(resp);
-    if (resp.status != 'success') {
-      alert('fail');
+    if (resp.status != "success") {
+      alert("fail");
     } else {
-      Cookies.setItem('token',resp.token)
-      alert('success');
+      Cookies.setItem("token", resp.token);
+      alert("success");
     }
   };
 
   const [input, setInput] = useState({
-    password: '',
-    confirmPassword: '',
+    password: "",
+    confirmPassword: "",
   });
 
   const [error, setError] = useState({
-    password: '',
-    confirmPassword: '',
+    password: "",
+    confirmPassword: "",
   });
 
   const onInputChange = (e) => {
@@ -55,23 +54,23 @@ export default function password() {
   const validateInput = (e) => {
     let { name, value } = e.target;
     setError((prev) => {
-      const stateObj = { ...prev, [name]: '' };
+      const stateObj = { ...prev, [name]: "" };
 
       switch (name) {
-        case 'password':
+        case "password":
           if (input.confirmPassword && value !== input.confirmPassword) {
-            stateObj['confirmPassword'] =
-              'Password and Confirm Password does not match.';
+            stateObj["confirmPassword"] =
+              "Password and Confirm Password does not match.";
           } else {
-            stateObj['confirmPassword'] = input.confirmPassword
-              ? ''
+            stateObj["confirmPassword"] = input.confirmPassword
+              ? ""
               : error.confirmPassword;
           }
           break;
 
-        case 'confirmPassword':
+        case "confirmPassword":
           if (input.password && value !== input.password) {
-            stateObj[name] = 'Password and Confirm Password does not match.';
+            stateObj[name] = "Password and Confirm Password does not match.";
           }
           break;
 
@@ -88,7 +87,8 @@ export default function password() {
         <div className="text-2xl font-bold mt-20 mb-5"> </div>
         <form
           className="flex flex-col gap-10 justify-center items-center text-1xl border-none border-black shadow-2xl rounded-2xl px-7 py-4"
-          onSubmit={submitHandler}>
+          onSubmit={submitHandler}
+        >
           <div className="flex flex-col gap-5">
             <label for="password" className="font-bold mr-10">
               password
@@ -103,7 +103,8 @@ export default function password() {
               required
               value={input.password}
               onChange={onInputChange}
-              onBlur={validateInput}></input>
+              onBlur={validateInput}
+            ></input>
             {error.password && (
               <span className="text-red-500">{error.password}</span>
             )}
@@ -121,7 +122,8 @@ export default function password() {
               required
               value={input.confirmPassword}
               onChange={onInputChange}
-              onBlur={validateInput}></input>
+              onBlur={validateInput}
+            ></input>
             {error.confirmPassword && (
               <span className="text-red-500">{error.confirmPassword}</span>
             )}
@@ -129,7 +131,8 @@ export default function password() {
           <button
             type="submit"
             class="home-btn1 px-10 w-full "
-            disabled={input.password !== input.confirmPassword}>
+            disabled={input.password !== input.confirmPassword}
+          >
             Confirm
           </button>
         </form>

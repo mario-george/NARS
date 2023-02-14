@@ -5,7 +5,13 @@ import Cookies from "js-cookie";
 import AdminDashBoard from "@/components/AdminDashBoard";
 import XLSX from "xlsx";
 import { read, utils } from "xlsx";
-const addStudent = () => {
+const addStudent = ({cookies}) => {
+  
+if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
+
+  return <div className='error'>404 could not found</div>
+}
+
   const [exportModalIsOpen, setExportModalIsOpen] = useState(false);
   const [data, setData] = useState([]);
   const token = Cookies.get("token");
@@ -96,7 +102,7 @@ const addStudent = () => {
     e.preventDefault();
 
     const resp = await fetch(
-      "http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/students",
+      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/students",
       {
         method: "POST",
         headers: {
@@ -109,7 +115,7 @@ const addStudent = () => {
           email: email.current.value,
           // faculty:faculty.current.value,
           // department:department.current.value,
-          // academicYear:academicYear.current.value,
+          academicYear:academicYear.current.value,
         }),
       }
     );
@@ -134,7 +140,7 @@ const addStudent = () => {
       const obj = { name, email, code };
 
       const resp = fetch(
-        "http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/students",
+        "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/students",
         {
           method: "POST",
           headers: {

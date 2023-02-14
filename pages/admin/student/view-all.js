@@ -1,25 +1,29 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
-import Cookies from 'js-cookie';
-import AdminDashBoard from '@/components/AdminDashBoard';
-import UserCard from '@/components/user/UserCard';
-import UserList from '@/components/user/UserList';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
+import Cookies from "js-cookie";
+import AdminDashBoard from "@/components/AdminDashBoard";
+import UserCard from "@/components/user/UserCard";
+import UserList from "@/components/user/UserList";
 
-const Students = () => {
+const Students = ({ cookies }) => {
+  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+
   const router = useRouter();
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
-  const token = Cookies.get('token');
+  const token = Cookies.get("token");
   useEffect(() => {
     submitHandler();
   }, []);
   const submitHandler = async () => {
     const resp = await fetch(
-      'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/students',
+      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/students",
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -42,7 +46,8 @@ const Students = () => {
         <AdminDashBoard />
         <form
           onSubmit={submitHandler}
-          className=" bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   ">
+          className=" bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   "
+        >
           <div className=" contentAddUser2 overflow-auto flex flex-col gap-10">
             <div className="flex w-full">
               <div className="">List of all Students</div>
@@ -77,7 +82,11 @@ const Students = () => {
               // })
             }
 
-            <UserList users={filteredStudents} />
+            {filteredStudents ? (
+              <UserList users={filteredStudents} />
+            ) : (
+              <div>No Students found</div>
+            )}
           </div>
         </form>
       </div>

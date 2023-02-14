@@ -5,7 +5,11 @@ import Cookies from "js-cookie";
 import AdminDashBoard from "@/components/AdminDashBoard";
 import UserList from "@/components/user/UserList";
 import UserCard from "@/components/user/UserCard";
-const SearchStudent = () => {
+const SearchStudent = ({ cookies }) => {
+  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+
   const token = Cookies.get("token");
   const router = useRouter();
   const [staff, setStaff] = useState([]);
@@ -45,7 +49,7 @@ const SearchStudent = () => {
   const deleteHandler = async (staff) => {
     try {
       const resp = await fetch(
-        `http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/staff/${tobeDeleted._id}`,
+        `${process.env.url}api/v1/users/staff/${tobeDeleted._id}`,
         {
           method: "DELETE",
           headers: {
@@ -71,7 +75,7 @@ const SearchStudent = () => {
     }
     try {
       const resp = await fetch(
-        `http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/staff/${tobeEdited._id}`,
+        `${process.env.url}api/v1/users/staff/${tobeEdited._id}`,
         {
           method: "PATCH",
           headers: {
@@ -88,7 +92,7 @@ const SearchStudent = () => {
       const data = await resp.json();
       console.log(data);
     } catch (e) {
-      console.log(e);
+      console.log(e);`http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/staff/?role=${role.current.value}`
     }
     setEditModalIsOpen(false);
     document.body.classList.toggle("overflow-hidden");
@@ -101,7 +105,8 @@ const SearchStudent = () => {
     }
     try {
       const resp = await fetch(
-        `http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/staff/?role=${role.current.value}`,
+        `${process.env.url}api/v1/users/staff/?role=${role.current.value}`
+        ,
         {
           method: "GET",
           headers: {

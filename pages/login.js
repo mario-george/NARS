@@ -1,12 +1,23 @@
 import { userActions } from "@/components/store/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 // api/v1/users/login
-export default function Login() {
+export default function Login({ cookies }) {
+  console.log(cookies);
+
+  useEffect(() => {
+    if (cookies.role) {
+      if (cookies.role === "system admin") {
+        window.location.href = "/admin/profile";
+      } else {
+        alert("not known role");
+      }
+    }
+  });
   const email = useRef();
   const password = useRef();
   const router = useRouter();
@@ -16,7 +27,7 @@ export default function Login() {
   const submitHandler = async (e) => {
     e.preventDefault();
     const r = await fetch(
-      "http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/login",
+      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/login",
       {
         method: "POST",
 
@@ -43,7 +54,14 @@ export default function Login() {
 
       if (resp.data.user.role === "system admin") {
         await dispatch(userActions.getUserData(resp.data.user));
-        router.push("/admin/profile");
+        // router.push('', undefined, { shallow: true, onComplete: () => window.location.reload() });
+        // router.push('/', undefined, { shallow: true, onComplete: "window.location.reload()" });
+
+        window.location.href = "/admin/profile";
+        // router.push("/admin/profile", undefined, {
+        //   shallow: true,
+        //   onComplete: setTimeout(() => window.location.reload(), 100),
+        // });
       } else {
         alert("not known role");
       }

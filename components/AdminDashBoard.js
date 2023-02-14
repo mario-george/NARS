@@ -10,8 +10,7 @@ export default function AdminDashBoard() {
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());
-    Cookies.set("loggedInStatus", false);
-    router.push("/login");
+    window.location.href = "/logout";
   };
   return (
     <nav
@@ -20,7 +19,7 @@ export default function AdminDashBoard() {
       }`}
     >
       {header("Profile", [
-        <Link
+        <a
           className={
             router.pathname === "/admin/profile"
               ? "activeLinkDashboard2"
@@ -29,11 +28,11 @@ export default function AdminDashBoard() {
           href="/admin/profile"
         >
           Profile details
-        </Link>,
+        </a>,
       ])}
 
       {header("Students", [
-        <Link
+        <a
           className={
             router.pathname === "/admin/student/add"
               ? "activeLinkDashboard2"
@@ -42,8 +41,8 @@ export default function AdminDashBoard() {
           href="/admin/student/add"
         >
           Add Student
-        </Link>,
-        <Link
+        </a>,
+        <a
           className={
             router.pathname === "/admin/student/view-all"
               ? "activeLinkDashboard2 w-full"
@@ -52,8 +51,8 @@ export default function AdminDashBoard() {
           href="/admin/student/view-all"
         >
           Students
-        </Link>,
-        <Link
+        </a>,
+        <a
           className={
             router.pathname === "/admin/student/search-student"
               ? "activeLinkDashboard2"
@@ -62,10 +61,10 @@ export default function AdminDashBoard() {
           href="/admin/student/search-student"
         >
           Search student
-        </Link>,
+        </a>,
       ])}
       {header("Staff", [
-        <Link
+        <a
           className={
             router.pathname === "/admin/staff/add"
               ? "activeLinkDashboard2"
@@ -74,8 +73,8 @@ export default function AdminDashBoard() {
           href="/admin/staff/add"
         >
           Add Staff
-        </Link>,
-        <Link
+        </a>,
+        <a
           className={
             router.pathname === "/admin/staff/view-all"
               ? "activeLinkDashboard2"
@@ -84,8 +83,8 @@ export default function AdminDashBoard() {
           href="/admin/staff/view-all"
         >
           Staff
-        </Link>,
-        <Link
+        </a>,
+        <a
           className={
             router.pathname === "/admin/staff/search-staff"
               ? "activeLinkDashboard2"
@@ -94,7 +93,7 @@ export default function AdminDashBoard() {
           href="/admin/staff/search-staff"
         >
           Search staff
-        </Link>,
+        </a>,
       ])}
 
       {/* <Link className="link2" href="/admin/profile">

@@ -8,11 +8,13 @@ import { useState } from "react";
 import XLSX from "xlsx";
 import { read, utils } from "xlsx";
 import CircularJSON from "circular-json";
-const addStaff = () => {
+const addStaff = ({ cookies }) => {
+  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
 
   const [exportModalIsOpen, setExportModalIsOpen] = useState(false);
   const [data, setData] = useState([]);
-
 
   function handleFile(event) {
     const files = event.target.files;
@@ -36,21 +38,18 @@ const addStaff = () => {
     document.body.classList.toggle("overflow-hidden");
 
     data.forEach((row) => {
-      const { name, email,role } = row;
-      const obj={ name, email,role }
-    
-      const resp = fetch(
-        "http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/staff",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify(obj),
-        }
-      );
+      const { name, email, role } = row;
+      const obj = { name, email, role };
+
+      const resp = fetch(`${process.env.url}api/v1/users/staff`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(obj),
+      });
 
       console.log(resp);
     });
@@ -70,8 +69,8 @@ const addStaff = () => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    const resp = await fetch(
-      "http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/staff",
+    const resp = await fetch(`${process.env.url}api/v1/users/staff`
+      ,
       {
         method: "POST",
         headers: {

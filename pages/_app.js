@@ -3,41 +3,59 @@ import LayoutLoggedIn from "../components/LayoutLoggedIn";
 import "../styles/styles.css";
 import Head from "next/head";
 import store from "../components/store/store";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+import cookie from "cookie";
+import App from "next/app";
+import { userActions } from "@/components/store/userSlice";
+function MyApp({ Component, pageProps, cookies }) {
 
-function MyApp({ Component, pageProps }) {
-  let loggedInStatus= Cookies.get("loggedInStatus");
-  
-  if (loggedInStatus == "false") {
-    return (
-      <>
-        <Head>
-          <title>React Meetup</title>
-        </Head>
-        <Provider store={store}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </Provider>
-      </>
-    );
-  }
-  if (loggedInStatus == "true") {
-    return (
-      <>
-        <Head>
-          <title>React Meetup</title>
-        </Head>
-        <Provider store={store}>
-          <LayoutLoggedIn>
-            <Component {...pageProps} />
-          </LayoutLoggedIn>
-        </Provider>
-      </>
-    );
-  }
+  // if (cookies.loggedInStatus == "false") {
+  return (
+    <>
+      <Head>
+        <title>React Meetup</title>
+      </Head>
+      <Provider store={store}>
+        <Layout cookies={cookies}>
+          <Component {...pageProps} cookies={cookies} />
+        </Layout>
+      </Provider>
+    </>
+  );
+  // }
+  // if (cookies.loggedInStatus == "true") {
+  //   return (
+  //     <>
+  //       <Head>
+  //         <title>React Meetup</title>
+  //       </Head>
+  //       <Provider store={store}>
+  //         <LayoutLoggedIn cookies={cookies}>
+  //           <Component {...pageProps} cookies={cookies} />
+  //         </LayoutLoggedIn>
+  //       </Provider>
+  //     </>
+  //   );
+  // }
 }
+
+MyApp.getInitialProps = async (appContext) => {
+  const { ctx } = appContext;
+  const { req } = ctx;
+  let cookies = {};
+
+  // Parse the cookies using the cookie package
+  if (req && req.headers && req.headers.cookie) {
+    cookies = cookie.parse(req.headers.cookie);
+  }
+
+  // Call the page's `getInitialProps` function, if it exists
+  const pageProps = await App.getInitialProps(appContext);
+
+  // Return the cookies and page props as an object
+  return { cookies, pageProps };
+};
 
 export default MyApp;

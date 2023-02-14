@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "./store/userSlice";
 import Cookies from "js-cookie";
 
-export default function Layout(props) {
+export default function LayoutLoggedIn({ children, cookies }) {
   const [logged, setLogged] = useState(false);
-  
+
   const d = useDispatch();
+  console.log(cookies);
   const token = Cookies.get("token");
   const data = Cookies.get("data");
   const name = Cookies.get("name");
@@ -56,7 +57,7 @@ export default function Layout(props) {
         <div className="flex justify-between items-center md:mx-[3rem] h-[5rem]">
           <div className="flex space-x-8 items-center justify-center ">
             {/* ham */}
-            {loggedInStatus && (
+            {/* {loggedInStatus && (
               <>
                 <button
                   className={`block hamburger focus:outline-none md:hidden ${
@@ -70,16 +71,16 @@ export default function Layout(props) {
                   <div class="hamburger-bottom"></div>
                 </button>
               </>
-            )}
+            )} */}
             <div className="flex flex-col space-y-2">
               <div className="text ">N.A.R.S </div>
               <div className="text  ">Quality Assurance</div>
             </div>
           </div>
-          <div className="text-blue-500  ">{name}</div>
+          <div className="text-blue-500  ">{cookies.name}</div>
         </div>
       </div>
-      <div>{props.children}</div>
+      <div>{children}</div>
     </>
   );
 }

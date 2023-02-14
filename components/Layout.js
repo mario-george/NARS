@@ -1,60 +1,49 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "./store/userSlice";
 import Cookies from "js-cookie";
 
-export default function Layout(props) {
+export default function Layout({ children, cookies }) {
   const d = useDispatch();
-  const token = Cookies.get("token");
-  const data = Cookies.get("data");
-  const loggedInStatus = Cookies.get("loggedInStatus");
+
+  d(userActions.setCookies(cookies));
   const dispatch = useDispatch();
   const navStatus = useSelector((s) => s.user.navStatus);
-  const [open, setOpen] = useState(false);
   const router = useRouter();
-  const userName = useSelector((s) => s.user.data.name);
-  d(userActions.toggleLoggedIn(loggedInStatus));
-  let content;
-  console.log(loggedInStatus);
-  // if (loggedInStatus) {
-  //   // content = <div className="text-blue-500  ">{userName}</div>;
-  //   // setLogged(true)
-  // } else {
-  //   // content = (
-  //   //   <div className="flex items-center justify-center gap-10  ">
-  //   //     <Link
-  //   //       href="/login"
-  //   //       className={router.pathname == "/login" ? "activeLink" : "normalLink"}
-  //   //     >
-  //   //       <div className="text translate-y-5">Login</div>
-  //   //     </Link>
-  //   //     {/* NavLink is better than Link that it has activeClassName prop that activate when the route is active */}
+  console.log(process.env.url);
 
-  //   //     <Link
-  //   //       href="/register"
-  //   //       className={
-  //   //         router.pathname == "/register" ? "activeLink" : "normalLink"
-  //   //       }
-  //   //     >
-  //   //       <div className="text  translate-y-5">Register</div>
-  //   //     </Link>
-  //   //   </div>
-  //   // );
+  let logged = <div>{cookies.name}</div>;
+  let not = (
+    <div className="flex items-center justify-center gap-10  ">
+      <Link
+        href="/login"
+        className={router.pathname == "/login" ? "activeLink" : "normalLink"}
+      >
+        <div className="text translate-y-5">Login</div>
+      </Link>
 
-  // }
+      <Link
+        href="/register"
+        className={router.pathname == "/register" ? "activeLink" : "normalLink"}
+      >
+        <div className="text  translate-y-5">Register</div>
+      </Link>
+    </div>
+  );
 
   const hamHandler = () => {
     dispatch(userActions.toggleNav());
   };
+
   return (
     <>
       <div className="layout">
         <div className="flex justify-between items-center md:mx-[3rem] h-[5rem]">
           <div className="flex space-x-8 items-center justify-center ">
             {/* ham */}
-            {loggedInStatus && (
+            {/* {loggedInStatus && (
               <>
                 <button
                   className={`block hamburger focus:outline-none md:hidden ${
@@ -68,33 +57,16 @@ export default function Layout(props) {
                   <div class="hamburger-bottom"></div>
                 </button>
               </>
-            )}
+            )} */}
             <div className="flex flex-col space-y-2">
               <div className="text ">N.A.R.S </div>
               <div className="text  ">Quality Assurance</div>
             </div>
           </div>
-         <div className="flex items-center justify-center gap-10  ">
-        <Link
-          href="/login"
-          className={router.pathname == "/login" ? "activeLink" : "normalLink"}
-        >
-          <div className="text translate-y-5">Login</div>
-        </Link>
-        {/* NavLink is better than Link that it has activeClassName prop that activate when the route is active */}
-
-        <Link
-          href="/register"
-          className={
-            router.pathname == "/register" ? "activeLink" : "normalLink"
-          }
-        >
-          <div className="text  translate-y-5">Register</div>
-        </Link>
-      </div>
+          {cookies.loggedInStatus ? logged : not}
         </div>
       </div>
-      <div>{props.children}</div>
+      <div>{children}</div>
     </>
   );
 }

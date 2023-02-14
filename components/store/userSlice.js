@@ -7,6 +7,7 @@ let initialState = {
   data: { user: { name: "unnamed" } },
   loggedInStatus: false,
   navStatus: false,
+  cookies: {},
 };
 const userSlice = createSlice({
   initialState,
@@ -24,14 +25,17 @@ const userSlice = createSlice({
     getUserData: (state, action) => {
       state.data = action.payload;
     },
-    toggleLoggedIn: (s,action) => {
+    toggleLoggedIn: (s, action) => {
       s.loggedInStatus = action.payload;
     },
-    logOut: (s,action) => {
+    logOut: (s, action) => {
       s.loggedInStatus = false;
     },
     toggleNav: (s) => {
       s.navStatus = !s.navStatus;
+    },
+    setCookies: (s, a) => {
+      s.cookies = a.payload;
     },
   },
 });

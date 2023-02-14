@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
-import { useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { userActions } from '../components/store/userSlice';
+import { useRouter } from "next/router";
+import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../components/store/userSlice";
 export default function otp() {
   const completed = useSelector((s) => s.user.registerCompletionPart1);
   const d = useDispatch();
@@ -10,24 +10,22 @@ export default function otp() {
     e.preventDefault();
     d(userActions.updateVerifyCode(otp.current.value));
     const r = await fetch(
-      'http://ec2-54-158-207-145.compute-1.amazonaws.com/api/v1/users/verifyCode',
+      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/verifyCode",
       {
-        method: 'POST',
-        body: JSON.stringify({ resetCode: otp.current.value
-         , mode:'no-cors',
-        }),
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        body: JSON.stringify({ resetCode: otp.current.value, mode: "no-cors" }),
+        headers: { "Content-Type": "application/json" },
       }
     );
 
     const resp = await r.json();
     console.log(resp);
-    if (resp.status == 'fail') {
-      alert('fail');
+    if (resp.status == "fail") {
+      alert("fail");
     } else {
       d(userActions.registerCompletionPart2());
 
-      router.push('/password');
+      router.push("/password");
     }
   };
   const otp = useRef();
@@ -37,7 +35,8 @@ export default function otp() {
         <div className="text-2xl font-bold mt-20 mb-5"> </div>
         <form
           className="flex flex-col gap-10 justify-center items-center text-1xl border-none border-black shadow-2xl rounded-2xl px-7 py-4"
-          onSubmit={submitHandler}>
+          onSubmit={submitHandler}
+        >
           <div className="flex flex-col gap-5">
             <label for="text" className="font-bold mr-10">
               Enter one time password (OTP)
