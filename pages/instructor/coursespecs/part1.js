@@ -4,32 +4,20 @@ import { useSelector } from 'react-redux';
 import { useRef } from 'react';
 import Cookies from "js-cookie";
 import InstructorDashboard from '@/components/InstructorDashboard';
-const profile = ({ cookies }) => {
 
-    const globalStateCookies = useSelector((s) => s.user.cookies);
-    console.log(cookies);
-    if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
-        if (
-            globalStateCookies.role != "instructor" ||
-            globalStateCookies.loggedInStatus != "true"
-        ) {
+const part1 = ({ cookies }) => {
+    if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
 
-            return <div className="error">404 could not found</div>;
-
-        }
+        return <div className='error'>404 could not found</div>
     }
 
     const router = useRouter();
-    const userName = useSelector((s) => s.user.data.name);
-    const role = useSelector((s) => s.user.data.role);
-    const email = useSelector((s) => s.user.data.email);
-    const id = useSelector((s) => s.user.data._id);
-    const photo = useSelector((s) => s.user.data.photo);
-    const name = useRef();
 
     const submitHandler = async (e) => {
         e.preventDefault();
-    };
+        router.push('/instructor/coursespecs/part2');
+    }
+
     return (
         <>
             <div className="flex flex-row w-screen h-screen mt-2">
@@ -38,52 +26,66 @@ const profile = ({ cookies }) => {
                     onSubmit={submitHandler}
                     className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
                     <div className="contentAddUser2 flex flex-col gap-10">
-                        <p className="underline mb-1">Profile details:</p>
+                        <p className="underline mb-1">-Course Data:</p>
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-1/3">
-                                <div>Role</div>
+                                <div>Course Code & Title:</div>
                                 <input
                                     type="text"
-                                    className="inputAddUser2 w-full"
-                                    value={cookies.role}
-                                    disabled
+                                    className="input-form w-full"
                                 />
                             </div>
                             <div className="flex flex-col gap-5  w-2/5">
-                                <div> Name</div>
+                                <div> Semester/Year:</div>
                                 <input
                                     type="text"
-                                    className="inputAddUser2  w-full"
-                                    defaultValue={cookies.name}
-                                    ref={name}
+                                    className="input-form  w-full"
+
                                 />
                             </div>
                         </div>
+
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-1/3">
-                                <div>ID</div>
+                                <div>Specialization:</div>
                                 <input
                                     type="text"
-                                    className="inputAddUser2 w-full"
-                                    value={cookies._id}
-                                    disabled
+                                    className="input-form w-full"
+
+
                                 />
                             </div>
                             <div className="flex flex-col gap-5  w-2/5">
-                                <div> Email </div>
+                                <div> Contact Hours: </div>
                                 <input
                                     type="text"
-                                    className="inputAddUser2  w-full"
-                                    value={cookies.email}
-                                    disabled
+                                    className="input-form  w-full"
                                 />
                             </div>
                         </div>
+
+                        <div className="flex gap-20 ">
+                            <div className="flex flex-col gap-5 w-1/3">
+                                <div>Lecture:</div>
+                                <input
+                                    type="text"
+                                    className="input-form w-full"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-5  w-2/5">
+                                <div> Practical/Practice: </div>
+                                <input
+                                    type="text"
+                                    className="input-form  w-full"
+                                />
+                            </div>
+                        </div>
+
                         <div className="flex justify-end">
                             <button
                                 type="submit"
                                 class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                Edit
+                                Next
                             </button>
                         </div>
                     </div>
@@ -92,4 +94,4 @@ const profile = ({ cookies }) => {
         </>
     );
 };
-export default profile;
+export default part1;
