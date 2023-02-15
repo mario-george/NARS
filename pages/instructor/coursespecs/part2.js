@@ -14,7 +14,7 @@ const part2 = ({ cookies }) => {
     const router = useRouter();
     const submitHandler = async (e) => {
         e.preventDefault();
-        router.push('//instructor/coursespecs/part3');
+        router.push('/instructor/coursespecs/part3');
     }
 
     return (
