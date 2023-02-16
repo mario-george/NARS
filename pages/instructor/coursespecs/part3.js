@@ -12,42 +12,51 @@ const part3 = ({ cookies }) => {
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
   const [inputs3, setInputs3] = useState([]);
-  const handleAddInput = () => {
+  const handleAddInput = (e) => {
+    e.preventDefault()
+
     setInputs([
       ...inputs,
       {
         ref: createRef(),
         counter: inputs2.length + inputs3.length + inputs.length + 1,
+        name:'LO'+(inputs2.length + inputs3.length + inputs.length + 1).toString()
       },
     ]);
   };
-  const handleAddInput2 = () => {
+  const handleAddInput2 = (e) => {
+    e.preventDefault()
+
     setInputs2([
       ...inputs2,
       {
         ref: createRef(),
         counter: inputs2.length + inputs3.length + inputs.length + 1,
+        name:'LO'+(inputs2.length + inputs3.length + inputs.length + 1).toString()
       },
     ]);
   };
-  const handleAddInput3 = () => {
+  const handleAddInput3 = (e) => {
+    e.preventDefault()
+
     setInputs3([
       ...inputs3,
       {
         ref: createRef(),
         counter: inputs2.length + inputs3.length + inputs.length + 1,
+        name:'LO'+(inputs2.length + inputs3.length + inputs.length + 1).toString()
       },
     ]);
   };
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     const cognitive = inputs.map((input) => {
-      return { value: input.ref.current.value, counter: input.counter };
+      return { value: input.ref.current.value, counter: input.counter ,name:input.name};
     });
     const psychomotor = inputs2.map((input) => {
-      return { value: input.ref.current.value, counter: input.counter };
+      return { value: input.ref.current.value, counter: input.counter ,name:input.name};
     }); 
     const affective = inputs3.map((input) => {
-      return { value: input.ref.current.value, counter: input.counter };
+      return { value: input.ref.current.value, counter: input.counter ,name:input.name};
     });
     Cookies.set('cognitive',cognitive)
     Cookies.set('psychomotor',psychomotor)
@@ -55,7 +64,6 @@ const part3 = ({ cookies }) => {
     console.log(cognitive);
     console.log(psychomotor);
     console.log(affective);
-    // do something with the values
   };
 
   const router = useRouter();
@@ -63,7 +71,6 @@ const part3 = ({ cookies }) => {
     e.preventDefault();
     handleSubmit();
     window.location.href="/instructor/coursespecs/part4"
-    // router.push("//instructor/coursespecs/part4");
   };
 
   return (
