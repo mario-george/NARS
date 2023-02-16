@@ -13,6 +13,8 @@ export default function Login({ cookies }) {
     if (cookies.role) {
       if (cookies.role === "system admin") {
         window.location.href = "/admin/profile";
+      } else if (cookies.role === "instructor") {
+        window.location.href = "/instructor/profile";
       } else {
         alert("not known role");
       }
@@ -47,6 +49,7 @@ export default function Login({ cookies }) {
       Cookies.set("token", resp.token);
       Cookies.set("data", resp.data);
       Cookies.set("name", resp.data.user.name);
+      Cookies.set("email", resp.data.user.email);
       Cookies.set("role", resp.data.user.role);
       console.log(resp.data.user.name);
       Cookies.set("loggedInStatus", true);
@@ -62,6 +65,8 @@ export default function Login({ cookies }) {
         //   shallow: true,
         //   onComplete: setTimeout(() => window.location.reload(), 100),
         // });
+      } else if (resp.data.user.role === "instructor") {
+        window.location.href = "/instructor/profile";
       } else {
         alert("not known role");
       }

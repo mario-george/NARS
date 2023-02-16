@@ -28,10 +28,10 @@ const Students = ({ cookies }) => {
       }
     );
     const data = await resp.json();
-    setStudents(data.data.data);
-    setFilteredStudents(data.data.data);
+    setStudents(data.data);
+    setFilteredStudents(data.data);
 
-    console.log(data.data.data);
+    console.log(data.data);
   };
   const filterStudents = (event) => {
     let a = students.filter((e) => {

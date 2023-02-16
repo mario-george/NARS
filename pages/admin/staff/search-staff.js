@@ -121,7 +121,7 @@ const SearchStudent = ({ cookies }) => {
         }
       );
       const data = await resp.json();
-      setStaff(data.data.data);
+      setStaff(data.data);
       // console.log(data.data.data[0].name);
       console.log(data);
     } catch (e) {

@@ -56,7 +56,7 @@
   @apply duration-200  link22 translate-x-3;
 }
 .contentAddUser2 {
-  @apply w-[80%] h-[70%] rounded-3xl p-12 bg-white font-bold font-Rubik  text-2xl md:text-lg shadow-lg border-2;
+  @apply w-[90%] h-[90%] rounded-3xl p-12  bg-white font-bold font-Rubik  text-2xl md:text-lg shadow-lg border-2;
 }
 .inputAddUser2 {
   @apply border-b-2  border-black outline-none;
@@ -136,4 +136,25 @@
 
 .open .hamburger-bottom {
   transform: rotate(-45deg) translateY(6px) translateX(-6px);
+}
+@layer components {
+  .input-field {
+    @apply border w-full px-4 py-2;
+  }
+  .sub-btn {
+    @apply border text-white text-sm md:text-lg  bg-sky-500 rounded-xl shadow-md  px-8 py-3  text-center duration-300 hover:bg-sky-200 tracking-wide hover:text-black/100 w-[8rem];
+  }
+  .label-form {
+    @apply block tracking-wide text-gray-700 text-sm md:text-lg  mb-2;
+  }
+  .input-form {
+    @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300 focus:border-gray-500;
+    transition-property: background-color;
+  }
+  .main-form {
+    @apply mx-auto my-10 border-2 rounded-xl px-10 py-4 border-sky-500 pt-10  w-[95%] mx-auto  md:w-1/2 md:mx-auto;
+  }
+  .gen-btn {
+    @apply border text-white text-sm md:text-lg  bg-sky-500 rounded-xl shadow-md  px-8 py-3 my-10 text-center duration-300 hover:bg-sky-200 tracking-wide hover:text-black/100 w-[12rem];
+  }
 }

@@ -231,7 +231,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
           onSubmit={submitHandler}
           className=" bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   "
         >
-          <div className="contentAddUser2 flex flex-col gap-10">
+          <div className="contentAddUser2 flex flex-col gap-10 py-20">
             <div className=" ">Add Student</div>
 
             <div className="flex gap-20 ">

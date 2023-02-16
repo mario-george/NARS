@@ -43,7 +43,7 @@ const profile = ({ cookies }) => {
                 <input
                   type="text"
                   className="inputAddUser2  w-full"
-                  defaultValue={userName}
+                  defaultValue={cookies.name}
                   ref={name}
                 />
               </div>
@@ -52,6 +52,8 @@ const profile = ({ cookies }) => {
               <div className="flex flex-col gap-5  w-2/5">
                 <div> Edu mail </div>
                 <input
+                  defaultValue={cookies.email}
+
                   type="text"
                   className="inputAddUser2  w-full"
                   value={email}

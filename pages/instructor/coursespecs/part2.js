@@ -6,16 +6,15 @@ import Cookies from "js-cookie";
 import InstructorDashboard from '@/components/InstructorDashboard';
 
 const part2 = ({ cookies }) => {
-    //if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
+    if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
 
-       // return <div className='error'>404 could not found</div>
-    //}
+       return <div className='error'>404 could not found</div>
+    }
 
     const router = useRouter();
     const submitHandler = async (e) => {
         e.preventDefault();
-        router.push('/instructor/coursespecs/part3');
-    }
+window.location.href='/instructor/coursespecs/part3'    }
 
     return (
         <>

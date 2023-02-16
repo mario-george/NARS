@@ -6,17 +6,14 @@ import AdminDashBoard from "@/components/AdminDashBoard";
 import UserCard from "@/components/user/UserCard";
 import UserList from "@/components/user/UserList";
 
-const viewAll = ({cookies}) => {
-  
-  if(cookies.role!="system admin"||cookies.loggedInStatus!="true"){
-
-    return <div className='error'>404 could not found</div>
+const viewAll = ({ cookies }) => {
+  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
   }
-  
 
+  console.log(cookies.token);
   const router = useRouter();
   const [staff, setStaff] = useState([]);
-  const token = Cookies.get("token");
   useEffect(() => {
     submitHandler();
   }, []);
@@ -25,13 +22,13 @@ const viewAll = ({cookies}) => {
       "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/staff",
       {
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + cookies.token,
         },
       }
     );
     const data = await resp.json();
-    console.log(data.data.data);
-    let arr = data.data.data;
+    console.log(data.data);
+    let arr = data.data;
 
     arr = arr.map((e) => {
       return { email: e.email, name: e.name, code: e.role };

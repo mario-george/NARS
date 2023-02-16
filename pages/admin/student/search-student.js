@@ -50,11 +50,11 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
         }
       );
       const data = await resp.json();
-      setStudent(data.data.data);
-      if (data.data.data.length === 0) {
+      setStudent(data.data);
+      if (data.data.length === 0) {
         setEmptyArray(true);
       }
-      console.log(data.data.data[0].name);
+      console.log(data.data[0].name);
       console.log(data);
     } catch (e) {
       console.log(e);

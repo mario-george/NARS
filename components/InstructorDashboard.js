@@ -1,56 +1,22 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { header } from "./header";
-import { userActions } from "./store/userSlice.js";
-import { useDispatch, useSelector } from "react-redux";
-import Cookies from "js-cookie";
+import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { header } from './header';
 export default function InstructorDashboard() {
     const router = useRouter();
     const courseName = useSelector((s) => s.user.data.courses);
-    const dispatch = useDispatch();
-    const logoutHandler = () => {
-        dispatch(userActions.logOut());
-        window.location.href = "/logout";
-    };
     return (
         <nav className="nav2">
-            {header("Profile", [
-                <a
-                    className={
-                        router.pathname === "/instructor/profile"
-                            ? "activeLinkDashboard2"
-                            : "normalLinkDashboard2"
-                    }
-                    href="/instructor/profile"
-                >
-                    Profile details
-                </a>,
-            ])}
+            <Link className="link2 focus:text-green-400 " href="/instructor/profile">
+                Profile
+            </Link>
             {header('courses', [header(courseName,
                 [
-                    <a
-                        className={
-                            router.pathname === "/instructor/coursespecs/part1"
-                                ? "activeLinkDashboard2"
-                                : "normalLinkDashboard2"
-                        }
-                        href="/instructor/coursespecs/part1"
-                    >
-                        Course Specs
-                    </a>,
+                    'course specs',
                     'Materials',
                     'Assignments',
                     'Exams',
-                    <a
-                        className={
-                            router.pathname === "/instructor/grades"
-                                ? "activeLinkDashboard2"
-                                : "normalLinkDashboard2"
-                        }
-                        href="/instructor/grades"
-                    >
-                    Grades
-                    </a>,
+                    'Grades',
                     'Direct assesment',
                     'Indirect assesment'
                 ])
@@ -59,12 +25,9 @@ export default function InstructorDashboard() {
             <Link className="link2 focus:text-green-400 " href="/instructor/report">
                 Course report
             </Link>
-            <button
-                className="link2 focus:text-green-400 text-left mx-2"
-                onClick={logoutHandler}
-            >
+            <Link className="link2 focus:text-green-400 " href="/login">
                 Logout
-            </button>
+            </Link>
         </nav>
     );
 }
