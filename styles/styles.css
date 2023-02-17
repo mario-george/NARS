@@ -158,3 +158,37 @@
     @apply border text-white text-sm md:text-lg  bg-sky-500 rounded-xl shadow-md  px-8 py-3 my-10 text-center duration-300 hover:bg-sky-200 tracking-wide hover:text-black/100 w-[12rem];
   }
 }
+.vertical-header {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.horizontal-header {
+  white-space: nowrap;
+}
+
+.table {
+  width: 100%;
+}
+
+th,
+td {
+  border-collapse: collapse;
+}
+
+th {
+  font-size: 14px;
+}
+
+td {
+  font-size: 16px;
+}
+.vertical {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.horizontal {
+  text-align: center;
+  white-space: nowrap;
+}
