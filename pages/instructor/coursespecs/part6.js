@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import cn from "classnames";
 
-const part8 = ({ cookies }) => {
+const part7 = ({ cookies }) => {
   const competences = ["A1", "A2", "A3"];
   const LO = ["LO1", "LO2"];
   const LO2 = ["LO3", "LO4"];
@@ -37,7 +37,7 @@ const part8 = ({ cookies }) => {
   const tableHeader = [
     {
       colspan: 10,
-      label: "Teaching and Learning Methods",
+      label: "Assessment Methods*",
       className: "horizontal bg-sky-50",
     },
   ];
@@ -72,22 +72,21 @@ const part8 = ({ cookies }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     handleSubmit();
-    window.location.href="/instructor/coursespecs/part8"
+    window.location.href="/instructor/coursespecs/part7"
   };
   const tableData22 = [
     [
       " Learning Outcomes",
-      "Face-to-face Lecture",
-      "Online Lectures",
-
-      "Tutorial / Exercise",
-      "Group Discussions",
-      "Laboratory",
-      "Self-Reading",
-      "Presentation",
-      "Collaborate Learning (Team Project)",
-      "Research and Reporting",
-      "Brain Storming ",
+      "Written Exams",
+      "Online Exams",
+      "Lab Exam",
+      "Pop Quizzes",
+      "In-class Problem Solving",
+      "Take-Home Exam",
+      "Research Assignments",
+      "Reporting Assignments",
+      "Project Assignments",
+      "In-class Questions",
     ],
   ];
   return (
@@ -102,10 +101,7 @@ const part8 = ({ cookies }) => {
             <table className="table-fixed border-collapse">
               <thead>
                 <tr>
-                  <th
-                    className="border border-gray-500 border-b-gray-50 p-2"
-                    rowSpan={2}
-                  ></th>
+                  <th className="border border-gray-500 border-b-gray-50 p-2" rowSpan={2}></th>
                   {tableHeader.map((header, index) => (
                     <th
                       key={index}
@@ -114,7 +110,7 @@ const part8 = ({ cookies }) => {
                         "border-gray-500": true,
                         "p-2": true,
                         [header.className]: true,
-                        "text-center": true,
+                        'text-center':true
                       })}
                       rowSpan={header.rowspan}
                       colSpan={header.colspan}
@@ -134,9 +130,11 @@ const part8 = ({ cookies }) => {
                           "border-gray-500": true,
                           "p-2": true,
                           vertical: true,
-                          "text-right": cellIndex == 0,
-                          "text-red-500": cellIndex == 0,
-                          "text-xl": cellIndex == 0,
+                          'text-right':cellIndex==0,
+                          'text-red-500':cellIndex==0,
+                          'text-xl':cellIndex==0,
+
+                          
                         })}
                       >
                         {cell}
@@ -150,22 +148,13 @@ const part8 = ({ cookies }) => {
                   <th className="border-l px-4 py-2 text-left border-gray-500 ">
                     Cognitive domain
                   </th>
-                  <th
-                    className=" bg-sky-50 border-r border-gray-500"
-                    colSpan={10}
-                  ></th>
+                  <th className=" bg-sky-50 border-r border-gray-500" colSpan={10}></th>
                 </tr>
                 {Array.from({ length: numRows }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2 border-gray-500">
-                      {" "}
-                      {LO[rowIndex]}
-                    </td>
+                    <td className="border px-4 py-2 border-gray-500"> {LO[rowIndex]}</td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td
-                        className="border px-4 py-2 border-gray-500"
-                        key={colIndex}
-                      >
+                      <td className="border px-4 py-2 border-gray-500" key={colIndex}>
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -183,22 +172,14 @@ const part8 = ({ cookies }) => {
                   <th className="border-l px-4 py-2 text-left  border-gray-500">
                     Psychomotor domain
                   </th>
-                  <th
-                    className=" bg-sky-50 border-r border-gray-500"
-                    colSpan={10}
-                  ></th>
+                  <th className=" bg-sky-50 border-r border-gray-500" colSpan={10}></th>
+
                 </tr>
                 {Array.from({ length: numRows2 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2 border-gray-500">
-                      {" "}
-                      {LO2[rowIndex]}
-                    </td>
+                    <td className="border px-4 py-2 border-gray-500"> {LO2[rowIndex]}</td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td
-                        className="border px-4 py-2 border-gray-500"
-                        key={colIndex}
-                      >
+                      <td className="border px-4 py-2 border-gray-500" key={colIndex}>
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -216,22 +197,14 @@ const part8 = ({ cookies }) => {
                   <th className="border-l px-4 py-2 text-left border-gray-500 ">
                     Affective domain
                   </th>
-                  <th
-                    className=" bg-sky-50 border-r border-gray-500"
-                    colSpan={10}
-                  ></th>
+                  <th className=" bg-sky-50 border-r border-gray-500" colSpan={10}></th>
+
                 </tr>
                 {Array.from({ length: numRows3 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2 border-gray-500">
-                      {" "}
-                      {LO3[rowIndex]}
-                    </td>
+                    <td className="border px-4 py-2 border-gray-500"> {LO3[rowIndex]}</td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td
-                        className="border px-4 py-2 border-gray-500"
-                        key={colIndex}
-                      >
+                      <td className="border px-4 py-2 border-gray-500" key={colIndex}>
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -262,4 +235,4 @@ const part8 = ({ cookies }) => {
     </>
   );
 };
-export default part8;
+export default part7;

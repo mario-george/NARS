@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 
 const part69 = ({ cookies }) => {
-    /*const outcomes = ['LO1', 'LO2', 'LO3', 'LO4', 'LO5', 'LO6']
+    const outcomes = ['LO1', 'LO2', 'LO3', 'LO4', 'LO5', 'LO6']
 
     const numCols = outcomes.length
     const numRows = outcomes.length
@@ -19,12 +19,12 @@ const part69 = ({ cookies }) => {
 
     const handleCheckboxChange = (rowIndex, colIndex) => {
         checkboxRefs.current[rowIndex][colIndex] = !checkboxRefs.current[rowIndex][colIndex];
-    };*/
+    };
 
 
     const handleSubmit = () => {
-        //setTableData([...checkboxRefs.current]);
-        //console.log(tableData)
+        setTableData([...checkboxRefs.current]);
+        console.log(tableData)
     };
     if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
@@ -34,7 +34,7 @@ const part69 = ({ cookies }) => {
     const submitHandler = async (e) => {
         e.preventDefault();
         handleSubmit();
-        window.location.href = "/instructor/coursespecs/part9"
+        window.location.href="/instructor/coursespecs/part6"
     };
     return (
         <>
@@ -48,45 +48,43 @@ const part69 = ({ cookies }) => {
                         <table className="table-auto">
                             <thead>
                                 <tr>
-
-                                    <th className="border px-4 py-2">Assesments</th>
-                                    <th className="border px-4 py-2">week</th>
-                                    <th className="border px-4 py-2">Weight</th>
-
+                                    <th className="border px-4 py-2">Week</th>
+                                    <th className="border px-4 py-2">Topics</th>
+                                    <th className="border px-4 py-2">Planned <br /> Hours</th>
+                                    {outcomes.map((e, i) => (
+                                        <th key={i} className="border px-4 py-2">
+                                            {e}
+                                        </th>
+                                    ))}
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.from({ length: 6 }).map((_, rowIndex) => (
+                                {Array.from({ length: numRows }).map((_, rowIndex) => (
                                     <tr key={rowIndex}>
-
-                                        <td className="border px-4 py-2">
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="text"
-                                                    name=""
-                                                    className="w-96"
-                                                />
-                                            </label>
+                                        <td className="border px-4 py-2"> {[rowIndex + 1]}</td>
+                                        <td className="border px-4 py-2 ">
+                                            <input
+                                                type="text"
+                                                name="topic"
+                                            />
                                         </td>
-
-                                        <td className="border px-2 py-2 w-0.5">
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="text"
-                                                    name=""
-                                                />
-                                            </label>
+                                        <td className="border px-4 py-2 max-w-0">
+                                            <input
+                                                type="text"
+                                                name="hours"
+                                            />
                                         </td>
-
-                                        <td className="border px-2 py-2 w-0.5">
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="text"
-                                                    name=""
-                                                />
-                                            </label>
-                                        </td>
-
+                                        {Array.from({ length: numCols }).map((_, colIndex) => (
+                                            <td className="border px-4 py-2" key={colIndex}>
+                                                <label className="inline-flex items-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
+                                                        onChange={() => handleCheckboxChange(rowIndex, colIndex)}
+                                                    />
+                                                </label>
+                                            </td>
+                                        ))}
                                     </tr>
                                 ))}
                             </tbody>

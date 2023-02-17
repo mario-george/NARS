@@ -20,10 +20,10 @@ const part2 = ({ cookies }) => {
                 method: "",
 
                 body: JSON.stringify({
-                     : aims.current.value,
-                     : contents.current.value,
-                     : lvla.current.value,
-                     : lvlb.current.value,
+                     : notes.current.value,
+                     : books.current.value,
+                     : Rbooks.current.value,
+                     : websites.current.value,
                  }),
 headers: { "Content-Type": "application/json" },
              }
@@ -36,7 +36,7 @@ Cookies.set("", resp.data.);
 Cookies.set("", resp.data.);
 Cookies.set("", resp.data.);
 Cookies.set("", resp.data.);*/
-        window.location.href = '/instructor/coursespecs/part3';
+window.location.href='/instructor/coursespecs/part1';
     }
 
     return (
@@ -50,40 +50,40 @@ Cookies.set("", resp.data.);*/
 
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-full">
-                                <div>-Course Aims:</div>
+                                <div>-Course Notes:</div>
                                 <textarea
                                     rows="6"
-                                    name='aims'
+                                    name='notes'
                                     className="w-full input-form"
-                                    placeholder="Type here the Course Aims"></textarea>
+                                    placeholder="Type here the Course Notes"></textarea>
                             </div>
                             <div className="flex flex-col gap-5  w-full">
-                                <div> -Course Contents(As indicated in the program Bylaw):</div>
+                                <div> -Books:</div>
                                 <textarea
                                     rows="6"
-                                    name='contents'
+                                    name='books'
                                     className="w-full input-form"
-                                    placeholder="Type here the Course Contents"></textarea>
+                                    placeholder="Type here the books"></textarea>
                             </div>
                         </div>
 
 
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-full">
-                                <div>-Level (A) Engineering Competencies:</div>
+                                <div>-Recommended Books:</div>
                                 <textarea
                                     rows="6"
-                                    name='lvla'
+                                    name='Rbooks'
                                     className="w-full input-form pl-1"
-                                    placeholder="Level (A) Engineering Competencies"></textarea>
+                                    placeholder="Type here the Recommended Books"></textarea>
                             </div>
                             <div className="flex flex-col gap-5  w-full">
-                                <div> -Level (B) Electrical Engineering Competencies: </div>
+                                <div> -Course websites: </div>
                                 <textarea
                                     rows="6"
-                                    name='lvlb'
+                                    name='websites'
                                     className="w-full input-form pl-1"
-                                    placeholder="Level (B) Electrical Engineering Competencies"></textarea>
+                                    placeholder="Type here the Course websites"></textarea>
                             </div>
                         </div>
 
