@@ -12,9 +12,17 @@ const part1 = ({ cookies }) => {
         return <div className='error'>404 could not found</div>
     }
 
+
+    const contactHours=useRef()
+
+    const specialization=useRef()
+
     const router = useRouter();
     // const [invalidData, setInvalidData] = useState(false);
     const submitHandler = async (e) => {
+        Cookies.set('contactHours',contactHours.current.ref)
+        Cookies.set('specialization',specialization.current.ref)
+
         e.preventDefault();
         /*const r = await fetch(
             "url",
@@ -81,6 +89,7 @@ return (
                                 type="text"
                                 name='special'
                                 className="input-form w-full"
+                                ref={specialization}
                                 required
                             />
                         </div>
@@ -90,6 +99,8 @@ return (
                                 type="number"
                                 name='hours'
                                 className="input-form  w-full"
+                                ref={contactHours}
+
                                 required
                             />
                         </div>

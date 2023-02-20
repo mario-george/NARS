@@ -13,54 +13,105 @@ const part3 = ({ cookies }) => {
   const [inputs2, setInputs2] = useState([]);
   const [inputs3, setInputs3] = useState([]);
   const handleAddInput = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     setInputs([
       ...inputs,
       {
         ref: createRef(),
         counter: inputs2.length + inputs3.length + inputs.length + 1,
-        name:'LO'+(inputs2.length + inputs3.length + inputs.length + 1).toString()
+        name:
+          "LO" +
+          (inputs2.length + inputs3.length + inputs.length + 1).toString(),
       },
     ]);
   };
   const handleAddInput2 = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     setInputs2([
       ...inputs2,
       {
         ref: createRef(),
         counter: inputs2.length + inputs3.length + inputs.length + 1,
-        name:'LO'+(inputs2.length + inputs3.length + inputs.length + 1).toString()
+        name:
+          "LO" +
+          (inputs2.length + inputs3.length + inputs.length + 1).toString(),
       },
     ]);
   };
   const handleAddInput3 = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     setInputs3([
       ...inputs3,
       {
         ref: createRef(),
         counter: inputs2.length + inputs3.length + inputs.length + 1,
-        name:'LO'+(inputs2.length + inputs3.length + inputs.length + 1).toString()
+        name:
+          "LO" +
+          (inputs2.length + inputs3.length + inputs.length + 1).toString(),
       },
     ]);
   };
   const handleSubmit = (e) => {
     const cognitive = inputs.map((input) => {
-      return { value: input.ref.current.value, counter: input.counter ,name:input.name};
+      return {
+        value: input.ref.current.value,
+        counter: input.counter,
+        name: input.name,
+      };
     });
     const psychomotor = inputs2.map((input) => {
-      return { value: input.ref.current.value, counter: input.counter ,name:input.name};
-    }); 
-    const affective = inputs3.map((input) => {
-      return { value: input.ref.current.value, counter: input.counter ,name:input.name};
+      return {
+        value: input.ref.current.value,
+        counter: input.counter,
+        name: input.name,
+      };
     });
-    Cookies.set('cognitive',cognitive)
-    Cookies.set('psychomotor',psychomotor)
-    Cookies.set('affective',affective)
+    const affective = inputs3.map((input) => {
+      return {
+        value: input.ref.current.value,
+        counter: input.counter,
+        name: input.name,
+      };
+    });
+    const courseLearningOutcomes = [
+      {
+        title: "cognitive",
+        learningOutcomes: [
+          cognitive.map((e) => {
+            return {
+              code: e.name,
+              description: e.value,
+            };
+          }),
+        ],
+      },
+      { title: "psychomotor",
+      learningOutcomes: [
+        psychomotor.map((e) => {
+          return {
+            code: e.name,
+            description: e.value,
+          };
+        }),
+      ] },
+      { title: "affective" ,
+      learningOutcomes: [
+        affective.map((e) => {
+          return {
+            code: e.name,
+            description: e.value,
+          };
+        }),
+      ]},
+    ];
+
+    Cookies.set("courseLearningOutcomes", courseLearningOutcomes);
+    Cookies.set("cognitive", cognitive);
+    Cookies.set("psychomotor", psychomotor);
+    Cookies.set("affective", affective);
     console.log(cognitive);
     console.log(psychomotor);
     console.log(affective);
@@ -70,7 +121,9 @@ const part3 = ({ cookies }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     handleSubmit();
-    window.location.href="/instructor/coursespecs/part4"
+   
+
+    // window.location.href="/instructor/coursespecs/part4"
   };
 
   return (
@@ -145,11 +198,11 @@ const part3 = ({ cookies }) => {
                 {inputs3.map((input, index) => {
                   return (
                     <div className="flex items-center  space-x-8 ">
-                      <div>LO{input.counter }</div>
+                      <div>LO{input.counter}</div>
                       <input
                         key={index}
                         type="text"
-                        placeholder={`LO ${input.counter }`}
+                        placeholder={`LO ${input.counter}`}
                         ref={input.ref}
                         className="input-form w-1/2"
                       />

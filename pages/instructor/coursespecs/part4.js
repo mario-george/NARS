@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 
 const part4 = ({ cookies }) => {
+  console.log(cookies.courseLearningOutcomes)
   const competences = ['A1', 'A2', 'A3']
   const LO = ['LO1', 'LO2']
   const LO2 = ['LO3', 'LO4']
@@ -55,9 +56,10 @@ const part4 = ({ cookies }) => {
 
 
   const submitHandler = async (e) => {
+    
     e.preventDefault();
     handleSubmit();
-    window.location.href="/instructor/coursespecs/part5"
+    // window.location.href="/instructor/coursespecs/part5"
   };
   return (
     <>

@@ -6,6 +6,10 @@ import Cookies from "js-cookie";
 import InstructorDashboard from '@/components/InstructorDashboard';
 
 const part2 = ({ cookies }) => {
+    const courseAims=useRef()
+    const courseContent=useRef()
+    const lvla=useRef()
+    const lvlb=useRef()
     if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
 
         return <div className='error'>404 could not found</div>
@@ -14,6 +18,10 @@ const part2 = ({ cookies }) => {
     const router = useRouter();
     const submitHandler = async (e) => {
         e.preventDefault();
+        Cookies.set('courseContent',courseContent.current.ref)
+        Cookies.set('courseAims',courseAims.current.ref)
+        Cookies.set('lvlb',lvlb.current.ref)
+        Cookies.set('lvla',lvla.current.ref)
         /*const r = await fetch(
             "url",
             {
@@ -55,11 +63,14 @@ Cookies.set("", resp.data.);*/
                                     rows="6"
                                     name='aims'
                                     className="w-full input-form"
+                                    ref={courseAims}
                                     placeholder="Type here the Course Aims"></textarea>
                             </div>
                             <div className="flex flex-col gap-5  w-full">
                                 <div> -Course Contents(As indicated in the program Bylaw):</div>
                                 <textarea
+                                    ref={courseContent}
+
                                     rows="6"
                                     name='contents'
                                     className="w-full input-form"
@@ -72,6 +83,8 @@ Cookies.set("", resp.data.);*/
                             <div className="flex flex-col gap-5 w-full">
                                 <div>-Level (A) Engineering Competencies:</div>
                                 <textarea
+                                    ref={lvla}
+
                                     rows="6"
                                     name='lvla'
                                     className="w-full input-form pl-1"
@@ -80,6 +93,8 @@ Cookies.set("", resp.data.);*/
                             <div className="flex flex-col gap-5  w-full">
                                 <div> -Level (B) Electrical Engineering Competencies: </div>
                                 <textarea
+                                    ref={lvlb}
+
                                     rows="6"
                                     name='lvlb'
                                     className="w-full input-form pl-1"

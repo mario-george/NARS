@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useRef } from "react";
 import StudentDashboard from "@/components/StudentDashboard";
-import InstructorDashBoard from "@/components/InstructorDashBoard";
+import InstructorDashBoard from "@/components/InstructorDashBoard2";
 const profile = () => {
   const router = useRouter();
   const userName = useSelector((s) => s.user.data.name);
