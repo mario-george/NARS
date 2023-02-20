@@ -72,7 +72,7 @@ const part7 = ({ cookies }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     handleSubmit();
-    window.location.href="/instructor/coursespecs/part7"
+    // window.location.href="/instructor/coursespecs/part7"
   };
   const tableData22 = [
     [
