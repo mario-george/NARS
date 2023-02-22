@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { useRef } from "react";
 import React from 'react';
 import ProgramAdminDashboard from '@/components/ProgramAdminDashboard';
-const addcourse = ({ cookies }) => {
+const assigninstrctor = ({ cookies }) => {
     if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
@@ -15,28 +15,21 @@ const addcourse = ({ cookies }) => {
         setMsg("");
     };
     const token = Cookies.get("token");
-    const name = useRef();
-    const code = useRef();
-    const faculty = useRef();
-    const year = useRef();
-    const mark = useRef();
+    const id1 = useRef();
+    const id2 = useRef();
 
-    //const [invalidData, setInvalidData] = useState(false);
 
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
             const r = await fetch(
-                "http://localhost:80/api/v1/courses/original-courses",
+                "http://localhost:80/api/v1/courses/assign-course-instructor",
                 {
-                    method: "POST",
+                    method: "PATCH",
 
                     body: JSON.stringify({
-                        name: name.current.value,
-                        code: code.current.value,
-                        academicYear: year.current.value,
-                        fullMark: mark.current.value,
-                        faculty: faculty.current.value,
+                        instructorId: id1.current.value,
+                        courseId: id2.current.value,
                     }),
                     headers: {
                         "Content-Type": "application/json",
@@ -104,7 +97,7 @@ const addcourse = ({ cookies }) => {
         >
             <i class="fa-solid fa-circle-check"></i>
             <div class="ml-3 text-sm font-medium">
-                Course has been Created successfully
+                Instructor has been Assigned to the course successfully
                 <a href="#" class="font-semibold underline hover:no-underline"></a>
             </div>
             <button
@@ -141,72 +134,40 @@ const addcourse = ({ cookies }) => {
                     onSubmit={submitHandler}
                     className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
                     <div className="contentAddUser2 flex flex-col gap-10">
-                        <p className="font-normal">Courses {'>'} Create course</p>
-                        <div className="flex gap-20 ">
-                            <div className="flex flex-col gap-5 w-1/3">
-                                <div>Course Name:</div>
-                                <input
-                                    type="text"
-                                    name='name'
-                                    className="input-form w-full"
-                                    ref={name}
-
-                                />
-                            </div>
+                        <p className="font-normal">Courses {'>'} Assign Instrctor</p>
+                        <div className="flex flex-col gap-10 ">
                             <div className="flex flex-col gap-5  w-2/5">
-                                <div> Course Code:</div>
+                                <div> Instrctor ID: </div>
                                 <input
                                     type="text"
-                                    name='year'
+                                    name='id1'
                                     className="input-form  w-full"
-                                    ref={code}
+                                    ref={id1}
 
                                 />
                             </div>
-                        </div>
 
-                        <div className="flex gap-20 ">
-                            <div className="flex flex-col gap-5 w-1/3">
-                                <div>Academic Year:</div>
+                            <div className="flex flex-col gap-5 w-2/5">
+                                <div>Course ID:</div>
                                 <input
                                     type="text"
-                                    name='year'
+                                    name='id2'
                                     className="input-form w-full"
-                                    ref={year}
-
+                                    ref={id2}
                                 />
-                            </div>
-                            <div className="flex flex-col gap-5  w-2/5">
-                                <div> Faculty: </div>
-                                <input
-                                    type="text"
-                                    name='faculty'
-                                    className="input-form  w-full"
-                                    ref={faculty}
 
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex gap-20 ">
-                            <div className="flex flex-col gap-5 w-1/3">
-                                <div>Fullmark:</div>
-                                <input
-                                    type="number"
-                                    name='mark'
-                                    className="input-form w-full"
-                                    ref={mark}
-                                />
-                                
                             </div>
                             {<div className="w-1/2 mt-10">{msg}</div>}
+
                         </div>
+
+
 
                         <div className="flex justify-end">
                             <button
                                 type="submit"
                                 class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                Create
+                                Assign
                             </button>
                         </div>
                     </div>
@@ -215,4 +176,4 @@ const addcourse = ({ cookies }) => {
         </>
     );
 };
-export default addcourse;
+export default assigninstrctor;
