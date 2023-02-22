@@ -35,7 +35,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
     }
     try {
       const resp = await fetch(
-        `http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/students/?code=${code.current.value}`,
+        `${process.env.url}api/v1/users/students/?code=${code.current.value}`,
         {
           method: "GET",
           headers: {
@@ -76,7 +76,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
     console.log(tobeDeleted);
     try {
       const resp = await fetch(
-        `http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/students/${tobeDeleted._id}`,
+        `${process.env.url}api/v1/users/students/${tobeDeleted._id}`,
         {
           method: "DELETE",
           headers: {
@@ -100,7 +100,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
     }
     try {
       const resp = await fetch(
-        `http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/students/${tobeEdited._id}`,
+        `${process.env.url}api/v1/users/students/${tobeEdited._id}`,
         {
           method: "PATCH",
           headers: {

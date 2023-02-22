@@ -69,9 +69,8 @@ const addStaff = ({ cookies }) => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    const resp = await fetch(`${process.env.url}api/v1/users/staff`
-      ,
-      {
+    try {
+      const resp = await fetch(`${process.env.url}api/v1/users/staff`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,14 +84,16 @@ const addStaff = ({ cookies }) => {
           // department:department.current.value,
           // academicYear:academicYear.current.value,
         }),
+      });
+      const data = await resp.json();
+      console.log(data);
+      if (data.status == "success") {
+        setMsg(success);
+      } else {
+        setMsg(fail);
       }
-    );
-    const data = await resp.json();
-    console.log(data);
-    if (data.status == "success") {
-      setMsg(success);
-    } else {
-      setMsg(fail);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -177,7 +178,7 @@ const addStaff = ({ cookies }) => {
     <>
       {exportModalIsOpen ? (
         <div className="fixed inset-0 flex justify-center items-center z-20 h-screen">
-          <div className=" container relative  rounded-xl p-6 w-[40rem]  bg-sky-400 ">
+          <div className=" container relative  rounded-lg p-6 w-[40rem]  bg-gray-700 text-white ">
             <button
               onClick={exportCancel}
               className=" bg-red-500 text-white duration-200 transition-all hover:bg-red-600 px-2 rounded absolute top-4 right-4"
@@ -304,7 +305,7 @@ const addStaff = ({ cookies }) => {
                   for="selectFile"
                   class=" my-6  px-10 py-3 duration-200 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm md:text-lg  mx-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
                 >
-                  Export
+                  Import
                 </label>
                 <button
                   type="submit"

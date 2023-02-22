@@ -1,17 +1,31 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import AdminDashBoard from "@/components/AdminDashBoard";
 import XLSX from "xlsx";
 import { read, utils } from "xlsx";
-const addStudent = ({cookies}) => {
-  
-if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
-
-  return <div className='error'>404 could not found</div>
-}
-
+const addStudent = ({ cookies }) => {
+  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  useEffect(() => {
+    async function doThis() {
+      const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const data = await resp.json();
+      console.log(data);
+      const newData = data.data.map((e) => {
+        return { name: e.name, id: e._id };
+      });
+      setFaculty(newData);
+    }
+    doThis();
+  }, []);
   const [exportModalIsOpen, setExportModalIsOpen] = useState(false);
   const [data, setData] = useState([]);
   const token = Cookies.get("token");
@@ -23,6 +37,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
   const department = useRef();
   const faculty = useRef();
   const [msg, setMsg] = useState("");
+  const [facultyArr, setFaculty] = useState([]);
   const closeMsg = () => {
     setMsg("");
   };
@@ -100,25 +115,22 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    const resp = await fetch(
-      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/students",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify({
-          code: code.current.value,
-          name: name.current.value,
-          email: email.current.value,
-          // faculty:faculty.current.value,
-          // department:department.current.value,
-          academicYear:academicYear.current.value,
-        }),
-      }
-    );
+    console.log(faculty.current.value);
+    const resp = await fetch(`${process.env.url}api/v1/users/students`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        code: code.current.value,
+        name: name.current.value,
+        email: email.current.value,
+        faculty: faculty.current.value,
+        // department: department.current.value,
+        academicYear: academicYear.current.value,
+      }),
+    });
     const data = await resp.json();
     console.log(data);
     if (data.status == "success") {
@@ -136,21 +148,18 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
     document.body.classList.toggle("overflow-hidden");
 
     data.forEach((row) => {
-      const { name, email, code } = row;
-      const obj = { name, email, code };
+      const { name, email, code, faculty, academicYear } = row;
+      const obj = { name, email, code, academicYear, faculty };
 
-      const resp = fetch(
-        "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/students",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify(obj),
-        }
-      );
+      const resp = fetch(`${process.env.url}api/v1/users/students`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(obj),
+      });
 
       console.log(resp);
     });
@@ -180,7 +189,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
     <>
       {exportModalIsOpen ? (
         <div className="fixed inset-0 flex justify-center items-center z-20 h-screen">
-          <div className=" container relative  rounded-xl p-6 w-[40rem]  bg-sky-400 ">
+          <div className=" container relative  rounded-lg p-6 w-[40rem]  bg-gray-700 text-white ">
             <button
               onClick={exportCancel}
               className=" bg-red-500 text-white duration-200 transition-all hover:bg-red-600 px-2 rounded absolute top-4 right-4"
@@ -273,11 +282,30 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5  ">
                 <div> Faculty</div>
-                <input
-                  type="text"
-                  className="inputAddUser2  w-full"
+                <select
                   ref={faculty}
-                />
+                  id="small"
+                  class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                >
+                  <option selected>Choose a Faculty</option>
+                  {facultyArr.map((e) => {
+                    return <option value={e.id}>{e.name}</option>;
+                  })}{" "}
+                  <option value="instructor">Instructor</option>
+                  <option value="quality coordinator">
+                    Quality Coordinator
+                  </option>
+                  <option value="program  coordinator">
+                    Program Coordinator
+                  </option>
+                  <option value="dean">Dean</option>
+                  <option value="teaching assistant">
+                    Teaching Assistant{" "}
+                  </option>
+                  <option value="faculty admin">Faculty Admin </option>
+                  <option value="program admin">Program Admin</option>
+                  <option value="department admin">Department Admin</option>
+                </select>
               </div>
               <div className="flex flex-col gap-5  w-1/2">
                 <div> Department </div>
@@ -302,7 +330,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
                   for="selectFile"
                   class="  px-10 py-3 duration-200 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm md:text-lg  mx-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
                 >
-                  Export
+                  Import
                 </label>
                 <button
                   type="submit"

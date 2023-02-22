@@ -5,20 +5,13 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
+import Checkrole from "@/components/checkrole/checkrole";
 // api/v1/users/login
 export default function Login({ cookies }) {
   console.log(cookies);
 
   useEffect(() => {
-    if (cookies.role) {
-      if (cookies.role === "system admin") {
-        window.location.href = "/admin/profile";
-      } else if (cookies.role === "instructor") {
-        window.location.href = "/instructor/profile";
-      } else {
-        alert("not known role");
-      }
-    }
+   Checkrole(cookies)
   });
   const email = useRef();
   const password = useRef();
@@ -28,18 +21,15 @@ export default function Login({ cookies }) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const r = await fetch(
-      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/login",
-      {
-        method: "POST",
+    const r = await fetch(`${process.env.url}api/v1/users/login`, {
+      method: "POST",
 
-        body: JSON.stringify({
-          email: email.current.value,
-          password: password.current.value,
-        }),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+      body: JSON.stringify({
+        email: email.current.value,
+        password: password.current.value,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
 
     const resp = await r.json();
     console.log(resp);
