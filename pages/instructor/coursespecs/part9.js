@@ -6,37 +6,43 @@ import Cookies from "js-cookie";
 import InstructorDashboard from '@/components/InstructorDashboard';
 
 const part2 = ({ cookies }) => {
-    if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
+    /* if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
+ 
+         return <div className='error'>404 could not found</div>
+     }*/
 
-        return <div className='error'>404 could not found</div>
-    }
+    const token = Cookies.get("token");
+    const notes = useRef();
+    const books = useRef();
+    const Rbooks = useRef();
+    const websites = useRef();
 
-    const router = useRouter();
     const submitHandler = async (e) => {
         e.preventDefault();
-        /*const r = await fetch(
-            "url",
+        const r = await fetch(
+            "http://localhost:80/api/v1/courses/created-courses/63f773d83a9367d385403c1c",
             {
-                method: "",
-
+                method: "PATCH",
                 body: JSON.stringify({
-                     : notes.current.value,
-                     : books.current.value,
-                     : Rbooks.current.value,
-                     : websites.current.value,
-                 }),
-headers: { "Content-Type": "application/json" },
-             }
-         );
-
-const resp = await r.json();
-console.log(resp);
-Cookies.set("data", resp.data);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);*/
-window.location.href='/instructor/coursespecs/part1';
+                    "courseSpecs": {
+                        "references": {
+                            "courseNotes": notes.current.value,
+                            "bookes": books.current.value,
+                            "recommendedBooks": Rbooks.current.value,
+                            "courseWebsites": websites.current.value,
+                        }
+                    }
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            }
+        );
+        const resp = await r.json();
+        console.log(resp);
+        window.location.href = '/instructor/coursespecs/part10';
     }
 
     return (
@@ -55,6 +61,7 @@ window.location.href='/instructor/coursespecs/part1';
                                     rows="6"
                                     name='notes'
                                     className="w-full input-form"
+                                    ref={notes}
                                     placeholder="Type here the Course Notes"></textarea>
                             </div>
                             <div className="flex flex-col gap-5  w-full">
@@ -63,6 +70,7 @@ window.location.href='/instructor/coursespecs/part1';
                                     rows="6"
                                     name='books'
                                     className="w-full input-form"
+                                    ref={books}
                                     placeholder="Type here the books"></textarea>
                             </div>
                         </div>
@@ -75,6 +83,7 @@ window.location.href='/instructor/coursespecs/part1';
                                     rows="6"
                                     name='Rbooks'
                                     className="w-full input-form pl-1"
+                                    ref={Rbooks}
                                     placeholder="Type here the Recommended Books"></textarea>
                             </div>
                             <div className="flex flex-col gap-5  w-full">
@@ -83,6 +92,7 @@ window.location.href='/instructor/coursespecs/part1';
                                     rows="6"
                                     name='websites'
                                     className="w-full input-form pl-1"
+                                    ref={websites}
                                     placeholder="Type here the Course websites"></textarea>
                             </div>
                         </div>

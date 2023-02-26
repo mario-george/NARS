@@ -6,9 +6,10 @@ import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 
 const part3 = ({ cookies }) => {
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
-    return <div className="error">404 could not found</div>;
-  }
+  /* if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
+     return <div className="error">404 could not found</div>;
+   }*/
+  const token = Cookies.get("token");
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
   const [inputs3, setInputs3] = useState([]);
@@ -54,7 +55,7 @@ const part3 = ({ cookies }) => {
       },
     ]);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     const cognitive = inputs.map((input) => {
       return {
         value: input.ref.current.value,
@@ -78,60 +79,73 @@ const part3 = ({ cookies }) => {
     });
     const courseLearningOutcomes = [
       {
-        title: "cognitive",
-        learningOutcomes: [
-          cognitive.map((e) => {
+        "title": "cognitive",
+        "learningOutcomes": [
+          cognitive.map((a) => {
             return {
-              code: e.name,
-              description: e.value,
+              code: a.name,
+              description: a.value,
             };
           }),
-        ],
+      ],
       },
-      { title: "psychomotor",
-      learningOutcomes: [
-        psychomotor.map((e) => {
-          return {
-            code: e.name,
-            description: e.value,
-          };
-        }),
-      ] },
-      { title: "affective" ,
-      learningOutcomes: [
-        affective.map((e) => {
-          return {
-            code: e.name,
-            description: e.value,
-          };
-        }),
-      ]},
+      {
+        "title": "psychomotor",
+        "learningOutcomes": [
+          psychomotor.map((a) => {
+            return {
+              "code": a.name,
+              "description": a.value,
+            };
+          }),
+        ]
+      },
+      {
+        "title": "affective",
+        "learningOutcomes": [
+          affective.map((a) => {
+            return {
+              "code": a.name,
+              "description": a.value,
+            };
+          }),
+        ]
+      },
     ];
-
-    Cookies.set("courseLearningOutcomes", courseLearningOutcomes);
-    Cookies.set("cognitive", cognitive);
-    Cookies.set("psychomotor", psychomotor);
-    Cookies.set("affective", affective);
-    console.log(cognitive);
-    console.log(psychomotor);
-    console.log(affective);
-  };
-
-  const router = useRouter();
-  const submitHandler = async (e) => {
     e.preventDefault();
-    handleSubmit();
-   
-
-    // window.location.href="/instructor/coursespecs/part4"
+    const r = await fetch(
+      "http://localhost:80/api/v1/courses/created-courses/63f773d83a9367d385403c1c",
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          "courseSpecs": {  
+            "courseLearningOutcomes":courseLearningOutcomes,
+          }
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    const resp = await r.json();
+    console.log(resp);
   };
+  /* const submitHandler = async (e) => {
+     e.preventDefault();
+     handleSubmit();
+ 
+ 
+     //window.location.href="/instructor/coursespecs/part4"
+   };*/
 
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
         <InstructorDashboard />
         <form
-          onSubmit={submitHandler}
+          onSubmit={handleSubmit}
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
         >
           <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
