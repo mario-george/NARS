@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 function UserList({ users }) {
-    console.log(users);
+  console.log(users);
 
   return (
     <div className="container mx-auto my-4">
