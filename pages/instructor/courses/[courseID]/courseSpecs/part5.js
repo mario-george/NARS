@@ -15,7 +15,8 @@ const part69 = ({ cookies }) => {
   let psychomotor = Cookies.get("psychomotor");
   let numCols = outcomes.length;
   let numRows = outcomes.length;
-
+const router=useRouter()
+const {courseID}=router.query
   const checkboxRefs = useRef(
     Array.from({ length: outcomes.length }, () =>
       Array.from({ length: outcomes.length }, () => false)
@@ -90,7 +91,7 @@ const part69 = ({ cookies }) => {
     }
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     setTableData([...checkboxRefs.current]);
     setHoursData([...HoursRefs.current]);
     setTopicsData([...topicsRefs.current]);
@@ -121,11 +122,29 @@ const part69 = ({ cookies }) => {
         learningOutcomes: elem
       };
       lecturePlan.topics.push(topic);
+
     }
 
 const lecturePlanStringified=JSON.stringify(lecturePlan)
 Cookies.set('lecturePlan',lecturePlanStringified)
-
+     const r = await fetch(
+          `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({
+              "courseSpecs": {  
+                "lecturePlan":lecturePlan,
+              }
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: "Bearer " + cookies.token,
+            },
+          }
+        );
+        const resp = await r.json();
+        console.log(resp);
   };
   if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;

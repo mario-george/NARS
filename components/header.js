@@ -3,18 +3,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { userActions } from "./store/userSlice";
 import { useDispatch } from "react-redux";
 function createHeader(headerName, array) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [isOpen2, setIsOpen2] = useState(false);
-  const clickHandler = () => {
-    dispatch(userActions.toggleNav());
-  };
+  // const clickHandler = () => {
+  //   dispatch(userActions.toggleNav());
+  // };
   return (
     <header className="relative bg-white shadow w-full">
       <button
         className="flex items-center justify-between w-full p-2 border hover:border-gray-300 focus:outline-none "
         onClick={() => setIsOpen2(!isOpen2)}
       >
-        <div className="text-lg md:text-xl font-bold link2 ">{headerName}</div>
+        <div className="text-lg md:text-xl link2 font-semibold">{headerName}</div>
 
         <i
           class={`transform transition-all duration-200 fa-solid fa-angle-down ${

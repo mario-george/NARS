@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 
 const part4 = ({ cookies }) => {
+  const router = useRouter();
+  const { courseID } = router.query;
   console.log(cookies.courseLearningOutcomes);
   const competences = ["A1", "A2", "A3"];
   let cognitive = Cookies.get("cognitive");
@@ -130,11 +132,12 @@ const part4 = ({ cookies }) => {
       !checkboxRefs3.current[rowIndex][colIndex];
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setTableData([...checkboxRefs.current]);
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
     let courseLearningOutcomes = Cookies.get("courseLearningOutcomes");
+    let cp2;
     if (courseLearningOutcomes) {
       try {
         let courseLearningOutcomesParsed = JSON.parse(
@@ -158,52 +161,48 @@ const part4 = ({ cookies }) => {
           console.log("dfhgsdfhswftreyhewarhgeg");
         });
         // courseLearningOutcomes[0].learningOutcomes =[]
-        let cp2 = JSON.parse(courseLearningOutcomes);
-//         console.log(Array.isArray(cp2));
-//         console.log(Array.isArray(l1P));
-//         console.log(l1P.length);
-// console.log(l1P)
-console.log(checkboxRefs.current[0][1])
-console.log(checkboxRefs.current[1][1])
+        cp2 = JSON.parse(courseLearningOutcomes);
+        //         console.log(Array.isArray(cp2));
+        //         console.log(Array.isArray(l1P));
+        //         console.log(l1P.length);
+        // console.log(l1P)
+        console.log(checkboxRefs.current[0][1]);
+        console.log(checkboxRefs.current[1][1]);
         if (courseLearningOutcomesParsed[0].title == "cognitive") {
-            cp2[0].learningOutcomes = l1P.map((e,i) => {
-              console.log(e);
-                return {
-                  ...e,
-                  mappedCompetence: [...competences].filter((e, k) => {
-                    return checkboxRefs.current[i][k];
-                    // if (checkboxRefs.current[i][k]) {
-                    //   return;
-                    // } else {
-                    //   return competences[k];
-                    // }
-                  }),
-                };
-              
-            });
-          
+          cp2[0].learningOutcomes = l1P.map((e, i) => {
+            console.log(e);
+            return {
+              ...e,
+              mappedCompetence: [...competences].filter((e, k) => {
+                return checkboxRefs.current[i][k];
+                // if (checkboxRefs.current[i][k]) {
+                //   return;
+                // } else {
+                //   return competences[k];
+                // }
+              }),
+            };
+          });
         }
         if (courseLearningOutcomesParsed[1].title == "psychomotor") {
-          cp2[1].learningOutcomes = l2P.map((e,i) => {
+          cp2[1].learningOutcomes = l2P.map((e, i) => {
             // console.log(e);
-              return {
-                ...e,
-                mappedCompetence: [...competences].filter((e, k) => {
-                  return checkboxRefs2.current[i][k];
-                  // if (checkboxRefs.current[i][k]) {
-                  //   return;
-                  // } else {
-                  //   return competences[k];
-                  // }
-                }),
-              };
-            
+            return {
+              ...e,
+              mappedCompetence: [...competences].filter((e, k) => {
+                return checkboxRefs2.current[i][k];
+                // if (checkboxRefs.current[i][k]) {
+                //   return;
+                // } else {
+                //   return competences[k];
+                // }
+              }),
+            };
           });
-        
-      }
-      if (courseLearningOutcomesParsed[2].title == "affective") {
-        cp2[2].learningOutcomes = l3P.map((e,i) => {
-          // console.log(e);
+        }
+        if (courseLearningOutcomesParsed[2].title == "affective") {
+          cp2[2].learningOutcomes = l3P.map((e, i) => {
+            // console.log(e);
             return {
               ...e,
               mappedCompetence: [...competences].filter((e, k) => {
@@ -215,24 +214,39 @@ console.log(checkboxRefs.current[1][1])
                 // }
               }),
             };
-          
-        });
-      
-    }
+          });
+        }
         console.log(cp2[0]);
         console.log(cp2[1]);
         console.log(cp2[2]);
         console.log(cp2);
-        const cp2Stringified = JSON.stringify(cp2)
-        Cookies.set('courseLearningOutcomes',cp2Stringified)
-      
+        const cp2Stringified = JSON.stringify(cp2);
+
+        Cookies.set("courseLearningOutcomes", cp2Stringified);
       } catch (error) {
         console.error(`Error parsing cookie: ${error}`);
       }
     } else {
       console.error("Cookie not found");
     }
-
+    const r = await fetch(
+      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          courseSpecs: {
+            courseLearningOutcomes: cp2,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + cookies.token,
+        },
+      }
+    );
+    const resp = await r.json();
+    console.log(resp);
     console.log("cognitive");
     console.log(tableData);
     console.log("psychomotor");
@@ -247,7 +261,7 @@ console.log(checkboxRefs.current[1][1])
   const submitHandler = async (e) => {
     e.preventDefault();
     handleSubmit();
-    window.location.href="/instructor/coursespecs/part5"
+    // window.location.href="/instructor/coursespecs/part5"
   };
   // affective ? (a = Object.entries(JSON.parse(affective))) : null;
   // affective ? (console.log(Object.entries(JSON.parse(affective)))) : null;

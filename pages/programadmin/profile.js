@@ -3,22 +3,7 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { useRef } from 'react';
 import ProgramAdminDashboard from '@/components/ProgramAdminDashboard';
-import Cookies from 'js-cookie';
-const profile = ({ cookies }) => {
-
-    const globalStateCookies = useSelector((s) => s.user.cookies);
-    console.log(cookies);
-    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
-        if (
-            globalStateCookies.role != "system admin" ||
-            globalStateCookies.loggedInStatus != "true"
-        ) {
-            setTimeout(() => {
-                return <div className="error">404 could not found</div>;
-            }, 1500);
-        }
-    }
-
+const profile = () => {
     const router = useRouter();
     const userName = useSelector((s) => s.user.data.name);
     const role = useSelector((s) => s.user.data.role);
@@ -45,7 +30,7 @@ const profile = ({ cookies }) => {
                                 <input
                                     type="text"
                                     className="inputAddUser2 w-full"
-                                    value={cookies.role}
+                                    value={role}
                                     disabled
                                 />
                             </div>
@@ -54,7 +39,7 @@ const profile = ({ cookies }) => {
                                 <input
                                     type="text"
                                     className="inputAddUser2  w-full"
-                                    defaultValue={cookies.name}
+                                    defaultValue={userName}
                                     ref={name}
                                 />
                             </div>
@@ -65,7 +50,7 @@ const profile = ({ cookies }) => {
                                 <input
                                     type="text"
                                     className="inputAddUser2 w-full"
-                                    value={cookies._id}
+                                    value={id}
                                     disabled
                                 />
                             </div>
@@ -74,7 +59,7 @@ const profile = ({ cookies }) => {
                                 <input
                                     type="text"
                                     className="inputAddUser2  w-full"
-                                    value={cookies.email}
+                                    value={email}
                                     disabled
                                 />
                             </div>

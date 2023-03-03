@@ -4,10 +4,12 @@ import { useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
+import cn from "classnames";
 
-const part4 = ({ cookies }) => {
-  console.log(cookies.courseLearningOutcomes);
+const part7 = ({ cookies }) => {
   const competences = ["A1", "A2", "A3"];
+  const router=useRouter()
+const {courseID}=router.query
   let cognitive = Cookies.get("cognitive");
   let affective = Cookies.get("affective");
   let psychomotor = Cookies.get("psychomotor");
@@ -16,13 +18,6 @@ const part4 = ({ cookies }) => {
     LO2: [],
     LO3: [],
   });
-  // let congitiveParsed=JSON.parse(cognitive)
-  // let psychomotorParsed=JSON.parse(psychomotor)
-  // let affectiveParsed=JSON.parse(affective)
-  let congitiveParsed;
-  let psychomotorParsed;
-  let affectiveParsed;
-  let courseLearningOutcomes;
   useEffect(() => {
     if (cognitive && affective && psychomotor) {
       try {
@@ -39,21 +34,22 @@ const part4 = ({ cookies }) => {
           LO2: psychomotorParsed,
           LO3: affectiveParsed,
         }));
-        numCols = competences.length;
         numRows = congitiveParsed.length;
         numRows2 = psychomotorParsed.length;
         numRows3 = affectiveParsed.length;
         checkboxRefs.current = Array.from({ length: numRows }, () =>
-          Array.from({ length: numCols }, () => false)
-        );
+        Array.from({ length: numCols }, () => false)
+      );
 
-        checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
-          Array.from({ length: numCols }, () => false)
-        );
+      checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
+        Array.from({ length: numCols }, () => false)
+      );
 
-        checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
-          Array.from({ length: numCols }, () => false)
-        );
+      checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
+        Array.from({ length: numCols }, () => false)
+      );
+        
+ 
       } catch (error) {
         console.error(`Error parsing cookie: ${error}`);
       }
@@ -61,62 +57,46 @@ const part4 = ({ cookies }) => {
       console.error("Cookie not found");
     }
   }, []);
-
-  // console.log(affectiveParsed)
-  // console.log(psychomotorParsed)
-  // console.log(congitiveParsed)
-  // let cognitiveMap = cognitive.map(e=>{
-  //   return{name:e.name}
-  // })
-
-  // let psychomotorMap = psychomotor?.map(e=>{
-  //   return `${e.name}`
-  // })
-  let affectiveMap;
-  let a;
-  let b = [];
-
+  // let congitiveParsed=JSON.parse(cognitive)
+  // let psychomotorParsed=JSON.parse(psychomotor)
+  // let affectiveParsed=JSON.parse(affective)
+  let congitiveParsed;
+  let psychomotorParsed;
+  let affectiveParsed;
+  let courseLearningOutcomes;
   // const LO = ["LO1", "LO2"];
   // const LO2 = ["LO3", "LO4"];
-  // const LO3 = [];
-  let numCols = competences.length;
+  // const LO3 = ["LO5", "LO6"];
+  const numCols = 10;
   let numRows = arrays.LO.length;
   let numRows2 = arrays.LO2.length;
   let numRows3 = arrays.LO3.length;
   let checkboxRefs = useRef(
-    Array.from({ length: arrays.LO.length }, () =>
+    Array.from({ length: numRows }, () =>
       Array.from({ length: numCols }, () => false)
     )
   );
   let checkboxRefs2 = useRef(
-    Array.from({ length: arrays.LO2.length }, () =>
+    Array.from({ length: numRows2 }, () =>
       Array.from({ length: numCols }, () => false)
     )
   );
   let checkboxRefs3 = useRef(
-    Array.from({ length: arrays.LO3.length }, () =>
+    Array.from({ length: numRows3 }, () =>
       Array.from({ length: numCols }, () => false)
     )
   );
 
-  // let [done,setDone]=useState(false)
-  // if (typeof affective !== 'undefined') {
-  //   a = JSON.parse(affective);
-  //   console.log(a)
-  //   console.log(typeof a)
-
-  //    affectiveMap = a.map((e)=>{
-  //     LO3.push(e.name)
-  //   })
-
-  //   console.log(affectiveMap )
-  //   setDone(true)
-  // }
-
   const [tableData, setTableData] = useState(checkboxRefs.current);
   const [tableData2, setTableData2] = useState(checkboxRefs2.current);
   const [tableData3, setTableData3] = useState(checkboxRefs3.current);
-
+  const tableHeader = [
+    {
+      colspan: 10,
+      label: "Assessment Methods*",
+      className: "horizontal bg-sky-50",
+    },
+  ];
   const handleCheckboxChange = (rowIndex, colIndex) => {
     checkboxRefs.current[rowIndex][colIndex] =
       !checkboxRefs.current[rowIndex][colIndex];
@@ -130,7 +110,8 @@ const part4 = ({ cookies }) => {
       !checkboxRefs3.current[rowIndex][colIndex];
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
+           let cp2
     setTableData([...checkboxRefs.current]);
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
@@ -154,23 +135,19 @@ const part4 = ({ cookies }) => {
         let l3P = JSON.parse(l3);
         // console.log(l1P);
         // console.log(typeof l1P);
-        l1P.map((e, k) => {
-          console.log("dfhgsdfhswftreyhewarhgeg");
-        });
+   
         // courseLearningOutcomes[0].learningOutcomes =[]
-        let cp2 = JSON.parse(courseLearningOutcomes);
+         cp2 = JSON.parse(courseLearningOutcomes);
 //         console.log(Array.isArray(cp2));
 //         console.log(Array.isArray(l1P));
 //         console.log(l1P.length);
 // console.log(l1P)
-console.log(checkboxRefs.current[0][1])
-console.log(checkboxRefs.current[1][1])
+
         if (courseLearningOutcomesParsed[0].title == "cognitive") {
             cp2[0].learningOutcomes = l1P.map((e,i) => {
-              console.log(e);
                 return {
                   ...e,
-                  mappedCompetence: [...competences].filter((e, k) => {
+                  studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
                     return checkboxRefs.current[i][k];
                     // if (checkboxRefs.current[i][k]) {
                     //   return;
@@ -188,7 +165,7 @@ console.log(checkboxRefs.current[1][1])
             // console.log(e);
               return {
                 ...e,
-                mappedCompetence: [...competences].filter((e, k) => {
+                studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
                   return checkboxRefs2.current[i][k];
                   // if (checkboxRefs.current[i][k]) {
                   //   return;
@@ -206,7 +183,7 @@ console.log(checkboxRefs.current[1][1])
           // console.log(e);
             return {
               ...e,
-              mappedCompetence: [...competences].filter((e, k) => {
+              studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
                 return checkboxRefs3.current[i][k];
                 // if (checkboxRefs.current[i][k]) {
                 //   return;
@@ -225,20 +202,30 @@ console.log(checkboxRefs.current[1][1])
         console.log(cp2);
         const cp2Stringified = JSON.stringify(cp2)
         Cookies.set('courseLearningOutcomes',cp2Stringified)
-      
       } catch (error) {
         console.error(`Error parsing cookie: ${error}`);
       }
     } else {
       console.error("Cookie not found");
     }
-
-    console.log("cognitive");
-    console.log(tableData);
-    console.log("psychomotor");
-    console.log(tableData2);
-    console.log("affective");
-    console.log(tableData3);
+    const r = await fetch(
+      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          "courseSpecs": {  
+            "courseLearningOutcomes":cp2,
+          }
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + cookies.token,
+        },
+      }
+    );
+    const resp = await r.json();
+    console.log(resp);
   };
   if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
@@ -247,21 +234,38 @@ console.log(checkboxRefs.current[1][1])
   const submitHandler = async (e) => {
     e.preventDefault();
     handleSubmit();
-    window.location.href="/instructor/coursespecs/part5"
+    // window.location.href="/instructor/coursespecs/part7"
   };
-  // affective ? (a = Object.entries(JSON.parse(affective))) : null;
-  // affective ? (console.log(Object.entries(JSON.parse(affective)))) : null;
-  // affective
-  //   ? a.map((e) => {
-  //       e.map((el2, key) => {
-  //         if (key == 0) {
-  //           return;
-  //         } else {
-  //           return b.push(el2.name);
-  //         }
-  //       });
-  //     })
-  //   : null;
+  const tableData22 = [
+    [
+      " Learning Outcomes",
+      "Written Exams",
+      "Online Exams",
+      "Lab Exam",
+      "Pop Quizzes",
+      "In-class Problem Solving",
+      "Take-Home Exam",
+      "Research Assignments",
+      "Reporting Assignments",
+      "Project Assignments",
+      "In-class Questions",
+    ],
+  ];
+  const tableData33 = [
+    [
+      "written-exams",
+      "online-exams",
+      "lab-exams",
+      "pop-quizzes",
+      "in-class-problem-solving",
+      "take-home-exam",
+      "research-assignments",
+      "reporting-assignments",
+      "project-assignments",
+      "in-class-questions"
+
+    ],
+  ];
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
@@ -271,34 +275,63 @@ console.log(checkboxRefs.current[1][1])
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
         >
           <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
-            <table className="table-auto">
+            <table className="table-fixed border-collapse">
               <thead>
                 <tr>
-                  <th className="border px-4 py-2">LO/Competences</th>
-                  {competences.map((e, i) => (
-                    <th key={i} className="border px-4 py-2">
-                      {e}
+                  <th className="border border-gray-500 border-b-gray-50 p-2" rowSpan={2}></th>
+                  {tableHeader.map((header, index) => (
+                    <th
+                      key={index}
+                      className={cn({
+                        border: true,
+                        "border-gray-500": true,
+                        "p-2": true,
+                        [header.className]: true,
+                        'text-center':true
+                      })}
+                      rowSpan={header.rowspan}
+                      colSpan={header.colspan}
+                    >
+                      {header.label}
                     </th>
                   ))}
                 </tr>
+                <tr className="border px-4 py-2"></tr>
+                {tableData22.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {row.map((cell, cellIndex) => (
+                      <td
+                        key={cellIndex}
+                        className={cn({
+                          border: true,
+                          "border-gray-500": true,
+                          "p-2": true,
+                          vertical: true,
+                          'text-right':cellIndex==0,
+                          'text-red-500':cellIndex==0,
+                          'text-xl':cellIndex==0,
+
+                          
+                        })}
+                      >
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
               </thead>
               <tbody>
                 <tr className="w-full bg-sky-50">
-                  <th className="border-l px-4 py-2 text-left ">
+                  <th className="border-l px-4 py-2 text-left border-gray-500 ">
                     Cognitive domain
                   </th>
-                  <th className=" bg-sky-50"></th>
-                  <th className=" "></th>
-                  <th className=" border-r"></th>
+                  <th className=" bg-sky-50 border-r border-gray-500" colSpan={10}></th>
                 </tr>
                 {Array.from({ length: numRows }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2">
-                      {" "}
-                      {arrays.LO[rowIndex].name}
-                    </td>
+                    <td className="border px-4 py-2 border-gray-500"> {arrays.LO[rowIndex].name}</td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border px-4 py-2" key={colIndex}>
+                      <td className="border px-4 py-2 border-gray-500" key={colIndex}>
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -313,21 +346,17 @@ console.log(checkboxRefs.current[1][1])
                   </tr>
                 ))}
                 <tr className="w-full bg-sky-50">
-                  <th className="border-l px-4 py-2 text-left ">
+                  <th className="border-l px-4 py-2 text-left  border-gray-500">
                     Psychomotor domain
                   </th>
-                  <th className=" bg-sky-50"></th>
-                  <th className=" "></th>
-                  <th className=" border-r"></th>
+                  <th className=" bg-sky-50 border-r border-gray-500" colSpan={10}></th>
+
                 </tr>
                 {Array.from({ length: numRows2 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2">
-                      {" "}
-                      {arrays.LO2[rowIndex].name}
-                    </td>
+                    <td className="border px-4 py-2 border-gray-500"> {arrays.LO2[rowIndex].name}</td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border px-4 py-2" key={colIndex}>
+                      <td className="border px-4 py-2 border-gray-500" key={colIndex}>
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -342,21 +371,17 @@ console.log(checkboxRefs.current[1][1])
                   </tr>
                 ))}
                 <tr className="w-full bg-sky-50">
-                  <th className="border-l px-4 py-2 text-left ">
+                  <th className="border-l px-4 py-2 text-left border-gray-500 ">
                     Affective domain
                   </th>
-                  <th className=" bg-sky-50"></th>
-                  <th className=" "></th>
-                  <th className=" border-r"></th>
+                  <th className=" bg-sky-50 border-r border-gray-500" colSpan={10}></th>
+
                 </tr>
                 {Array.from({ length: numRows3 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2">
-                      {" "}
-                      {arrays.LO3[rowIndex].name}
-                    </td>
+                    <td className="border px-4 py-2 border-gray-500"> {arrays.LO3[rowIndex].name}</td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border px-4 py-2" key={colIndex}>
+                      <td className="border px-4 py-2 border-gray-500" key={colIndex}>
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -387,37 +412,4 @@ console.log(checkboxRefs.current[1][1])
     </>
   );
 };
-
-// export async function getServerSideProps(context) {
-//   let cookies = context.req.cookies;
-//   let LO33 = [];
-//   let cognitive = Cookies.get("cognitive");
-//   let affective = Cookies.get("affective");
-//   let psychomotor = Cookies.get("psychomotor");
-
-// let congitiveParsed=JSON.parse(cognitive)
-// let psychomotorParsed=JSON.parse(psychomotor)
-// let affectiveParsed=JSON.parse(affective)
-
-//   let a;
-//   let b=[]
-//   affective ? (a = Object.entries(JSON.parse(affective))) : null;
-//   affective ? (console.log(Object.entries(JSON.parse(affective)))) : null;
-//   affective
-//     ? a.map((e) => {
-//         e.map((el2, key) => {
-//           if (key == 0) {
-//             return;
-//           } else {
-//             return b.push(el2.name);
-//           }
-//         });
-//       })
-//     : null;
-//   return {
-//     props: {
-//       LO33:b,
-//     },
-//   };
-// }
-export default part4;
+export default part7;

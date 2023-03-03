@@ -43,6 +43,10 @@
 .nav2 {
   @apply bg-white border-2 shadow-lg flex flex-col justify-start w-screen fixed md:relative  md:w-[20%] gap-10 h-screen overflow-hidden py-6 px-2;
 }
+
+.nav44 {
+  @apply bg-white border-2 shadow-lg flex flex-col justify-start w-screen fixed md:relative  md:w-[20%] gap-10 h-screen overflow-auto py-6 px-2;
+}
 .link2 {
   @apply font-bold text-xl md:text-lg font-Rubik;
 }

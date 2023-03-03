@@ -6,45 +6,43 @@ import Cookies from "js-cookie";
 import InstructorDashboard from '@/components/InstructorDashboard';
 
 const part2 = ({ cookies }) => {
-    const courseAims=useRef()
-    const courseContent=useRef()
-    const lvla=useRef()
-    const lvlb=useRef()
-    if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
+    /* if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
+ 
+         return <div className='error'>404 could not found</div>
+     }*/
+     const router=useRouter()
+     const {courseID}=router.query
+    const token = Cookies.get("token");
+    const notes = useRef();
+    const books = useRef();
+    const Rbooks = useRef();
+    const websites = useRef();
 
-        return <div className='error'>404 could not found</div>
-    }
-
-    const router = useRouter();
     const submitHandler = async (e) => {
         e.preventDefault();
-        Cookies.set('courseContent',courseContent.current.ref)
-        Cookies.set('courseAims',courseAims.current.ref)
-        Cookies.set('lvlb',lvlb.current.ref)
-        Cookies.set('lvla',lvla.current.ref)
-        /*const r = await fetch(
-            "url",
-            {
-                method: "",
-
+        const r = await fetch(
+            `${process.env.url}api/v1/courses/created-courses/${courseID}`,            {
+                method: "PATCH",
                 body: JSON.stringify({
-                     : aims.current.value,
-                     : contents.current.value,
-                     : lvla.current.value,
-                     : lvlb.current.value,
-                 }),
-headers: { "Content-Type": "application/json" },
-             }
-         );
-
-const resp = await r.json();
-console.log(resp);
-Cookies.set("data", resp.data);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);*/
-        window.location.href = '/instructor/coursespecs/part3';
+                    "courseSpecs": {
+                        "references": {
+                            "courseNotes": notes.current.value,
+                            "bookes": books.current.value,
+                            "recommendedBooks": Rbooks.current.value,
+                            "courseWebsites": websites.current.value,
+                        }
+                    }
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            }
+        );
+        const resp = await r.json();
+        console.log(resp);
+        // window.location.href = '/instructor/coursespecs/part10';
     }
 
     return (
@@ -58,47 +56,44 @@ Cookies.set("", resp.data.);*/
 
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-full">
-                                <div>-Course Aims:</div>
+                                <div>-Course Notes:</div>
                                 <textarea
                                     rows="6"
-                                    name='aims'
+                                    name='notes'
                                     className="w-full input-form"
-                                    ref={courseAims}
-                                    placeholder="Type here the Course Aims"></textarea>
+                                    ref={notes}
+                                    placeholder="Type here the Course Notes"></textarea>
                             </div>
                             <div className="flex flex-col gap-5  w-full">
-                                <div> -Course Contents(As indicated in the program Bylaw):</div>
+                                <div> -Books:</div>
                                 <textarea
-                                    ref={courseContent}
-
                                     rows="6"
-                                    name='contents'
+                                    name='books'
                                     className="w-full input-form"
-                                    placeholder="Type here the Course Contents"></textarea>
+                                    ref={books}
+                                    placeholder="Type here the books"></textarea>
                             </div>
                         </div>
 
 
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-full">
-                                <div>-Level (A) Engineering Competencies:</div>
+                                <div>-Recommended Books:</div>
                                 <textarea
-                                    ref={lvla}
-
                                     rows="6"
-                                    name='lvla'
+                                    name='Rbooks'
                                     className="w-full input-form pl-1"
-                                    placeholder="Level (A) Engineering Competencies"></textarea>
+                                    ref={Rbooks}
+                                    placeholder="Type here the Recommended Books"></textarea>
                             </div>
                             <div className="flex flex-col gap-5  w-full">
-                                <div> -Level (B) Electrical Engineering Competencies: </div>
+                                <div> -Course websites: </div>
                                 <textarea
-                                    ref={lvlb}
-
                                     rows="6"
-                                    name='lvlb'
+                                    name='websites'
                                     className="w-full input-form pl-1"
-                                    placeholder="Level (B) Electrical Engineering Competencies"></textarea>
+                                    ref={websites}
+                                    placeholder="Type here the Course websites"></textarea>
                             </div>
                         </div>
 

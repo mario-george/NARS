@@ -11,7 +11,7 @@ export default function Login({ cookies }) {
   console.log(cookies);
 
   useEffect(() => {
-   Checkrole(cookies)
+    Checkrole(cookies);
   });
   const email = useRef();
   const password = useRef();
@@ -37,16 +37,24 @@ export default function Login({ cookies }) {
       setInvalidData(true);
     } else {
       Cookies.set("token", resp.token);
-      Cookies.set("data", resp.data);
+      Cookies.set("jwt", resp.token);
+      // resp.data.user.courses.forEach((c,i)=>{
+
+      //
+      // })
+      const courses = JSON.stringify(resp.data.user.courses);
+
+      Cookies.set("courses", courses);
       Cookies.set("name", resp.data.user.name);
       Cookies.set("email", resp.data.user.email);
+      Cookies.set("_id", resp.data.user._id);
       Cookies.set("role", resp.data.user.role);
       console.log(resp.data.user.name);
       Cookies.set("loggedInStatus", true);
       dispatch(userActions.toggleLoggedIn(true));
 
       if (resp.data.user.role === "system admin") {
-        await dispatch(userActions.getUserData(resp.data.user));
+
         // router.push('', undefined, { shallow: true, onComplete: () => window.location.reload() });
         // router.push('/', undefined, { shallow: true, onComplete: "window.location.reload()" });
 

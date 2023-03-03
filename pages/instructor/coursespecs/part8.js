@@ -6,92 +6,35 @@ import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 
 const part69 = ({ cookies }) => {
+    /*const outcomes = ['LO1', 'LO2', 'LO3', 'LO4', 'LO5', 'LO6']
+
+    const numCols = outcomes.length
+    const numRows = outcomes.length
+
+    const checkboxRefs = useRef(
+        Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => false))
+    );
+
+    const [tableData, setTableData] = useState(checkboxRefs.current);
+
+    const handleCheckboxChange = (rowIndex, colIndex) => {
+        checkboxRefs.current[rowIndex][colIndex] = !checkboxRefs.current[rowIndex][colIndex];
+    };*/
 
 
-    /*if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
+    const handleSubmit = () => {
+        //setTableData([...checkboxRefs.current]);
+        //console.log(tableData)
+    };
+    if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
-    }*/
+    }
 
-    const token = Cookies.get("token");
-    const assesment0 = useRef();
-    const assesment1 = useRef();
-    const assesment2 = useRef();
-    const assesment3 = useRef();
-    const assesment4 = useRef();
-    const assesment5 = useRef();
-
-    const week0 = useRef();
-    const week1 = useRef();
-    const week2 = useRef();
-    const week3 = useRef();
-    const week4 = useRef();
-    const week5 = useRef();
-
-    const weight0 = useRef();
-    const weight1 = useRef();
-    const weight2 = useRef();
-    const weight3 = useRef();
-    const weight4 = useRef();
-    const weight5 = useRef();
-
-    const arr = [];
 
     const submitHandler = async (e) => {
         e.preventDefault();
-
-        const r = await fetch(
-            "http://localhost:80/api/v1/courses/created-courses/63f773d83a9367d385403c1c",
-            {
-                method: "PATCH",
-                body: JSON.stringify({
-                    "courseSpecs": {
-                        "studentAssessment": {
-                            "assessmentSchedulesWeight":
-                                [
-                                    {
-                                        assessment: assesment0.current.value,
-                                        week: week0.current.value,
-                                        weight: weight0.current.value
-                                    },
-                                    {
-                                        assessment: assesment1.current.value,
-                                        week: week1.current.value,
-                                        weight: weight1.current.value
-                                    },
-                                    {
-                                        assessment: assesment2.current.value,
-                                        week: week2.current.value,
-                                        weight: weight2.current.value
-                                    },
-                                    {
-                                        assessment: assesment3.current.value,
-                                        week: week3.current.value,
-                                        weight: weight3.current.value
-                                    },
-                                    {
-                                        assessment: assesment4.current.value,
-                                        week: week4.current.value,
-                                        weight: weight4.current.value
-                                    },
-                                    {
-                                        assessment: assesment5.current.value,
-                                        week: week5.current.value,
-                                        weight: weight5.current.value
-                                    }
-                                ]
-                        }
-                    }
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    Authorization: "Bearer " + token,
-                },
-            }
-        );
-        const resp = await r.json();
-        console.log(resp);
-        //window.location.href = "/instructor/coursespecs/part9"
+        handleSubmit();
+        window.location.href = "/instructor/coursespecs/part9"
     };
     return (
         <>
@@ -113,213 +56,45 @@ const part69 = ({ cookies }) => {
                                 </tr>
                             </thead>
                             <tbody>
+                                {Array.from({ length: 6 }).map((_, rowIndex) => (
+                                    <tr key={rowIndex}>
 
-                                <tr>
-                                    <td className="border px-4 py-2">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="assesment"
-                                                className="w-96 font-normal"
-                                                value={"Midterm Examination"}
-                                                ref={assesment0}
-                                            />
-                                        </label>
-                                    </td>
+                                        <td className="border px-4 py-2">
+                                            <label className="inline-flex items-center">
+                                                <input
+                                                    type="text"
+                                                    name=""
+                                                    className="w-96"
+                                                />
+                                            </label>
+                                        </td>
 
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="week"
-                                                ref={week0}
-                                            />
-                                        </label>
-                                    </td>
+                                        <td className="border px-2 py-2 w-0.5">
+                                            <label className="inline-flex items-center">
+                                                <input
+                                                    type="text"
+                                                    name=""
+                                                />
+                                            </label>
+                                        </td>
 
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="weight"
-                                                ref={weight0}
-                                            />
-                                        </label>
-                                    </td>
-                                </tr>
+                                        <td className="border px-2 py-2 w-0.5">
+                                            <label className="inline-flex items-center">
+                                                <input
+                                                    type="text"
+                                                    name=""
+                                                />
+                                            </label>
+                                        </td>
 
-                                <tr>
-                                    <td className="border px-4 py-2">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="assesment"
-                                                className="w-96 font-normal"
-                                                ref={assesment1}
-                                                value="Final Examination"
-                                            />
-                                        </label>
-                                    </td>
-
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="week"
-                                                ref={week1}
-                                            />
-                                        </label>
-                                    </td>
-
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="weight"
-                                                ref={weight1}
-                                            />
-                                        </label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="border px-4 py-2">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="assesment"
-                                                className="w-96 font-normal"
-                                                value={"Quizzes"}
-                                                ref={assesment2}
-                                            />
-                                        </label>
-                                    </td>
-
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="week"
-                                                ref={week2}
-                                            />
-                                        </label>
-                                    </td>
-
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="weight"
-                                                ref={weight2}
-                                            />
-                                        </label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="border px-4 py-2">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="assesment"
-                                                className="w-96 font-normal"
-                                                value={"Home assignments, and Reports"}
-                                                ref={assesment3}
-                                            />
-                                        </label>
-                                    </td>
-
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="week"
-                                                ref={week3}
-                                            />
-                                        </label>
-                                    </td>
-
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="weight"
-                                                ref={weight3}
-                                            />
-                                        </label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="border px-4 py-2">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="assesment"
-                                                className="w-96 font-normal"
-                                                value={"Mini Project"}
-                                                ref={assesment4}
-                                            />
-                                        </label>
-                                    </td>
-
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="week"
-                                                ref={week4}
-                                            />
-                                        </label>
-                                    </td>
-
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="weight"
-                                                ref={weight4}
-                                            />
-                                        </label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="border px-4 py-2">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="assesment"
-                                                className="w-96 font-bold"
-                                                value={"Total"}
-                                                ref={assesment5}
-                                            />
-                                        </label>
-                                    </td>
-
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="week"
-                                                ref={week5}
-                                            />
-                                        </label>
-                                    </td>
-
-                                    <td className="border px-2 py-2 w-0.5">
-                                        <label className="inline-flex items-center">
-                                            <input
-                                                type="text"
-                                                name="weight"
-                                                ref={weight5}
-                                            />
-                                        </label>
-                                    </td>
-                                </tr>
-
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
 
                         <div className="flex justify-end">
                             <button
-                                onClick={submitHandler}
+                                onClick={handleSubmit}
                                 class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                             >
                                 Next

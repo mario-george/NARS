@@ -7,7 +7,10 @@ import Cookies from "js-cookie";
 import Checkbox from "@/components/checkbox/checkbox";
 import InstructorDashboard from "@/components/InstructorDashboard";
 
-const part1 = ({ cookies }) => {
+const part10 = ({ cookies }) => {
+  const router=useRouter()
+const {courseID}=router.query
+  const token = Cookies.get("token");
   const [selectedItems, setSelectedItems] = useState([]);
   const [handler, setHandler] = useState(false);
   const addOtherHander = () => {
@@ -21,9 +24,9 @@ const part1 = ({ cookies }) => {
       setSelectedItems(selectedItems.filter((item) => item !== value));
     }
   };
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
+  /*if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
-  }
+  }*/
   const items = [
     "Classroom",
     "Smart Board",
@@ -36,47 +39,31 @@ const part1 = ({ cookies }) => {
     "Internet Access",
   ];
 
-  const contactHours = useRef();
-
-  const specialization = useRef();
-
-  const router = useRouter();
-  // const [invalidData, setInvalidData] = useState(false);
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    /*const r = await fetch(
-            "url",
-            {
-                method: "",
-
-                body: JSON.stringify({
-                     : code.current.value,
-                     : year.current.value,
-                     : special.current.value,
-                     : hours.current.value,
-                     : lecture.current.value,
-                     : practical.current.value,
-                 }),
-headers: { "Content-Type": "application/json" },
-             }
-         );
-
-const resp = await r.json();
-console.log(resp);
-Cookies.set("data", resp.data);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);*/
-    // window.location.href = "/instructor/coursespecs/part2";
+    const r = await fetch(
+      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          courseSpecs: {
+            facilities: selectedItems.concat([other.current.value]),
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    const resp = await r.json();
+    console.log(resp);
+    // window.location.href = "/instructor/coursespecs/part1";
   };
   const printDataHandler = () => {
     console.log(selectedItems);
     if (handler) {
-      // selectedItems.push()
       console.log(other.current.value);
     }
   };
@@ -89,7 +76,10 @@ Cookies.set("", resp.data.);*/
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
         >
           <div className="contentAddUser2 flex flex-col gap-10">
-            <p className=" mb-1">Facilities:</p>
+            <p className=" mb-0 ">Facilities:</p>
+            <p className=" mb-0 font-normal">
+              *The following facilities are needed for this course:
+            </p>
             <div className="">
               <div className="grid grid-cols-3 gap-4">
                 {items.map((item) => (
@@ -131,4 +121,4 @@ Cookies.set("", resp.data.);*/
     </>
   );
 };
-export default part1;
+export default part10;

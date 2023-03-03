@@ -6,45 +6,43 @@ import Cookies from "js-cookie";
 import InstructorDashboard from '@/components/InstructorDashboard';
 
 const part2 = ({ cookies }) => {
-    const courseAims=useRef()
-    const courseContent=useRef()
-    const lvla=useRef()
-    const lvlb=useRef()
-    if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
+    /* if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
+ 
+         return <div className='error'>404 could not found</div>
+     }*/
 
-        return <div className='error'>404 could not found</div>
-    }
-
+    const token = Cookies.get("token");
+    const courseAims = useRef()
+    const courseContent = useRef()
+    const lvla = useRef()
+    const lvlb = useRef()
     const router = useRouter();
+    const { courseID } = router.query;
     const submitHandler = async (e) => {
         e.preventDefault();
-        Cookies.set('courseContent',courseContent.current.ref)
-        Cookies.set('courseAims',courseAims.current.ref)
-        Cookies.set('lvlb',lvlb.current.ref)
-        Cookies.set('lvla',lvla.current.ref)
-        /*const r = await fetch(
-            "url",
+        const r = await fetch(
+            `${process.env.url}api/v1/courses/created-courses/${courseID}`,
             {
-                method: "",
-
+                method: "PATCH",
                 body: JSON.stringify({
-                     : aims.current.value,
-                     : contents.current.value,
-                     : lvla.current.value,
-                     : lvlb.current.value,
-                 }),
-headers: { "Content-Type": "application/json" },
-             }
-         );
-
-const resp = await r.json();
-console.log(resp);
-Cookies.set("data", resp.data);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);
-Cookies.set("", resp.data.);*/
-        window.location.href = '/instructor/coursespecs/part3';
+                    "courseSpecs": {
+                        "courseAims": courseAims.current.value,
+                        "courseContent": courseContent.current.value,
+                        "levelA": lvla.current.value,
+                        "levelB": lvlb.current.value,
+                    }
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            }
+        );
+        //Cookies.set('courseAims',courseAims.current.value)
+        const resp = await r.json();
+        console.log(resp);
+        // window.location.href = '/instructor/coursespecs/part3';
     }
 
     return (
@@ -63,11 +61,12 @@ Cookies.set("", resp.data.);*/
                                     rows="6"
                                     name='aims'
                                     className="w-full input-form"
+                                    //defaultValue={cookies.courseAims}
                                     ref={courseAims}
                                     placeholder="Type here the Course Aims"></textarea>
                             </div>
                             <div className="flex flex-col gap-5  w-full">
-                                <div> -Course Contents(As indicated in the program Bylaw):</div>
+                                <div> -Course Contents(As indicated in the program):</div>
                                 <textarea
                                     ref={courseContent}
 
@@ -81,24 +80,24 @@ Cookies.set("", resp.data.);*/
 
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-full">
-                                <div>-Level (A) Engineering Competencies:</div>
+                                <div>-Level (A) Competencies:</div>
                                 <textarea
                                     ref={lvla}
 
                                     rows="6"
                                     name='lvla'
                                     className="w-full input-form pl-1"
-                                    placeholder="Level (A) Engineering Competencies"></textarea>
+                                    placeholder="Level (A) Competencies"></textarea>
                             </div>
                             <div className="flex flex-col gap-5  w-full">
-                                <div> -Level (B) Electrical Engineering Competencies: </div>
+                                <div> -Level (B) Competencies: </div>
                                 <textarea
                                     ref={lvlb}
 
                                     rows="6"
                                     name='lvlb'
                                     className="w-full input-form pl-1"
-                                    placeholder="Level (B) Electrical Engineering Competencies"></textarea>
+                                    placeholder="Level (B) Competencies"></textarea>
                             </div>
                         </div>
 

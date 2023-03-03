@@ -1,31 +1,85 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { createRef, useRef, useState } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import cn from "classnames";
 
 const part7 = ({ cookies }) => {
   const competences = ["A1", "A2", "A3"];
-  const LO = ["LO1", "LO2"];
-  const LO2 = ["LO3", "LO4"];
-  const LO3 = ["LO5", "LO6"];
+  let cognitive = Cookies.get("cognitive");
+  let affective = Cookies.get("affective");
+  let psychomotor = Cookies.get("psychomotor");
+  const [arrays, setArrays] = useState({
+    LO: [],
+    LO2: [],
+    LO3: [],
+  });
+  useEffect(() => {
+    if (cognitive && affective && psychomotor) {
+      try {
+        congitiveParsed = JSON.parse(cognitive);
+        psychomotorParsed = JSON.parse(psychomotor);
+        affectiveParsed = JSON.parse(affective);
+        courseLearningOutcomes = JSON.parse(cookies.courseLearningOutcomes);
+        console.log(congitiveParsed);
+        console.log(psychomotorParsed);
+        console.log(affectiveParsed);
+
+        setArrays((prevState) => ({
+          LO: congitiveParsed,
+          LO2: psychomotorParsed,
+          LO3: affectiveParsed,
+        }));
+        numRows = congitiveParsed.length;
+        numRows2 = psychomotorParsed.length;
+        numRows3 = affectiveParsed.length;
+        checkboxRefs.current = Array.from({ length: numRows }, () =>
+        Array.from({ length: numCols }, () => false)
+      );
+
+      checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
+        Array.from({ length: numCols }, () => false)
+      );
+
+      checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
+        Array.from({ length: numCols }, () => false)
+      );
+        
+ 
+      } catch (error) {
+        console.error(`Error parsing cookie: ${error}`);
+      }
+    } else {
+      console.error("Cookie not found");
+    }
+  }, []);
+  // let congitiveParsed=JSON.parse(cognitive)
+  // let psychomotorParsed=JSON.parse(psychomotor)
+  // let affectiveParsed=JSON.parse(affective)
+  let congitiveParsed;
+  let psychomotorParsed;
+  let affectiveParsed;
+  let courseLearningOutcomes;
+  // const LO = ["LO1", "LO2"];
+  // const LO2 = ["LO3", "LO4"];
+  // const LO3 = ["LO5", "LO6"];
   const numCols = 10;
-  const numRows = LO.length;
-  const numRows2 = LO2.length;
-  const numRows3 = LO3.length;
-  const checkboxRefs = useRef(
+  let numRows = arrays.LO.length;
+  let numRows2 = arrays.LO2.length;
+  let numRows3 = arrays.LO3.length;
+  let checkboxRefs = useRef(
     Array.from({ length: numRows }, () =>
       Array.from({ length: numCols }, () => false)
     )
   );
-  const checkboxRefs2 = useRef(
+  let checkboxRefs2 = useRef(
     Array.from({ length: numRows2 }, () =>
       Array.from({ length: numCols }, () => false)
     )
   );
-  const checkboxRefs3 = useRef(
+  let checkboxRefs3 = useRef(
     Array.from({ length: numRows3 }, () =>
       Array.from({ length: numCols }, () => false)
     )
@@ -58,12 +112,100 @@ const part7 = ({ cookies }) => {
     setTableData([...checkboxRefs.current]);
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
-    console.log("cognitive");
-    console.log(tableData);
-    console.log("psychomotor");
-    console.log(tableData2);
-    console.log("affective");
-    console.log(tableData3);
+    let courseLearningOutcomes = Cookies.get("courseLearningOutcomes");
+    if (courseLearningOutcomes) {
+      try {
+        let courseLearningOutcomesParsed = JSON.parse(
+          cookies.courseLearningOutcomes
+        );
+        console.log(courseLearningOutcomesParsed);
+        console.log(typeof courseLearningOutcomesParsed);
+
+        console.log(courseLearningOutcomesParsed[0].title);
+
+        let l1 = JSON.stringify(arrays.LO);
+        let l2 = JSON.stringify(arrays.LO2);
+        let l3 = JSON.stringify(arrays.LO3);
+
+        let l1P = JSON.parse(l1);
+        let l2P = JSON.parse(l2);
+        let l3P = JSON.parse(l3);
+        // console.log(l1P);
+        // console.log(typeof l1P);
+   
+        // courseLearningOutcomes[0].learningOutcomes =[]
+        let cp2 = JSON.parse(courseLearningOutcomes);
+//         console.log(Array.isArray(cp2));
+//         console.log(Array.isArray(l1P));
+//         console.log(l1P.length);
+// console.log(l1P)
+
+        if (courseLearningOutcomesParsed[0].title == "cognitive") {
+            cp2[0].learningOutcomes = l1P.map((e,i) => {
+                return {
+                  ...e,
+                  studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
+                    return checkboxRefs.current[i][k];
+                    // if (checkboxRefs.current[i][k]) {
+                    //   return;
+                    // } else {
+                    //   return competences[k];
+                    // }
+                  }),
+                };
+              
+            });
+          
+        }
+        if (courseLearningOutcomesParsed[1].title == "psychomotor") {
+          cp2[1].learningOutcomes = l2P.map((e,i) => {
+            // console.log(e);
+              return {
+                ...e,
+                studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
+                  return checkboxRefs2.current[i][k];
+                  // if (checkboxRefs.current[i][k]) {
+                  //   return;
+                  // } else {
+                  //   return competences[k];
+                  // }
+                }),
+              };
+            
+          });
+        
+      }
+      if (courseLearningOutcomesParsed[2].title == "affective") {
+        cp2[2].learningOutcomes = l3P.map((e,i) => {
+          // console.log(e);
+            return {
+              ...e,
+              studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
+                return checkboxRefs3.current[i][k];
+                // if (checkboxRefs.current[i][k]) {
+                //   return;
+                // } else {
+                //   return competences[k];
+                // }
+              }),
+            };
+          
+        });
+      
+    }
+        console.log(cp2[0]);
+        console.log(cp2[1]);
+        console.log(cp2[2]);
+        console.log(cp2);
+        const cp2Stringified = JSON.stringify(cp2)
+        Cookies.set('courseLearningOutcomes',cp2Stringified)
+      } catch (error) {
+        console.error(`Error parsing cookie: ${error}`);
+      }
+    } else {
+      console.error("Cookie not found");
+    }
+  
   };
   if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
@@ -72,11 +214,26 @@ const part7 = ({ cookies }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     handleSubmit();
-    // window.location.href="/instructor/coursespecs/part7"
+    window.location.href="/instructor/coursespecs/part7"
   };
   const tableData22 = [
     [
       " Learning Outcomes",
+      "Written Exams",
+      "Online Exams",
+      "Lab Exam",
+      "Pop Quizzes",
+      "In-class Problem Solving",
+      "Take-Home Exam",
+      "Research Assignments",
+      "Reporting Assignments",
+      "Project Assignments",
+      "In-class Questions",
+    ],
+  ];
+  const tableData33 = [
+    [
+
       "Written Exams",
       "Online Exams",
       "Lab Exam",
@@ -152,7 +309,7 @@ const part7 = ({ cookies }) => {
                 </tr>
                 {Array.from({ length: numRows }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2 border-gray-500"> {LO[rowIndex]}</td>
+                    <td className="border px-4 py-2 border-gray-500"> {arrays.LO[rowIndex].name}</td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
                       <td className="border px-4 py-2 border-gray-500" key={colIndex}>
                         <label className="inline-flex items-center">
@@ -177,7 +334,7 @@ const part7 = ({ cookies }) => {
                 </tr>
                 {Array.from({ length: numRows2 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2 border-gray-500"> {LO2[rowIndex]}</td>
+                    <td className="border px-4 py-2 border-gray-500"> {arrays.LO2[rowIndex].name}</td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
                       <td className="border px-4 py-2 border-gray-500" key={colIndex}>
                         <label className="inline-flex items-center">
@@ -202,7 +359,7 @@ const part7 = ({ cookies }) => {
                 </tr>
                 {Array.from({ length: numRows3 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2 border-gray-500"> {LO3[rowIndex]}</td>
+                    <td className="border px-4 py-2 border-gray-500"> {arrays.LO3[rowIndex].name}</td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
                       <td className="border px-4 py-2 border-gray-500" key={colIndex}>
                         <label className="inline-flex items-center">

@@ -54,7 +54,7 @@ const part3 = ({ cookies }) => {
       },
     ]);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     const cognitive = inputs.map((input) => {
       return {
         value: input.ref.current.value,
@@ -114,6 +114,24 @@ const part3 = ({ cookies }) => {
     const stringifiedCourseLearningOutcomes = JSON.stringify(
       courseLearningOutcomes
     );
+    const r = await fetch(
+      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          courseSpecs: {
+            courseLearningOutcomes: courseLearningOutcomes,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + cookies.token,
+        },
+      }
+    );
+    const resp = await r.json();
+    console.log(resp);
 
     Cookies.set("courseLearningOutcomes", stringifiedCourseLearningOutcomes);
 
@@ -131,6 +149,8 @@ const part3 = ({ cookies }) => {
   };
 
   const router = useRouter();
+  const { courseID } = router.query;
+
   const submitHandler = async (e) => {
     e.preventDefault();
     handleSubmit();

@@ -59,7 +59,7 @@ export default function Layout({ children, cookies }) {
               </>
             )} */}
             <div className="flex flex-col space-y-2">
-              <div className="text ">N.A.R.S </div>
+              <div className="text ">NARQA </div>
               <div className="text  ">Quality Assurance</div>
             </div>
           </div>
