@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { userActions } from "./store/userSlice";
 import { useDispatch } from "react-redux";
-function createHeader(headerName, array) {
+function createHeader(headerName, array,optionalCreatedAt) {
   // const dispatch = useDispatch();
   const [isOpen2, setIsOpen2] = useState(false);
   // const clickHandler = () => {
@@ -14,8 +14,13 @@ function createHeader(headerName, array) {
         className="flex items-center justify-between w-full p-2 border hover:border-gray-300 focus:outline-none "
         onClick={() => setIsOpen2(!isOpen2)}
       >
-        <div className="text-lg md:text-xl link2 font-semibold">{headerName}</div>
+        <div className="flex flex-col text-center ">
 
+      
+        <div className="link2">{headerName}</div>
+        {optionalCreatedAt?<div className="link2 ">{optionalCreatedAt}</div>:null} 
+        
+         </div>
         <i
           class={`transform transition-all duration-200 fa-solid fa-angle-down ${
             isOpen2 ? `rotate-180` : ``

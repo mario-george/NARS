@@ -57,58 +57,46 @@ const part3 = ({ cookies }) => {
   const handleSubmit = async (e) => {
     const cognitive = inputs.map((input) => {
       return {
+        description: input.ref.current.value,
         value: input.ref.current.value,
         counter: input.counter,
-        name: input.name,
+        code: input.name,
+                name: input.name,
+
       };
     });
     const psychomotor = inputs2.map((input) => {
       return {
+        description: input.ref.current.value,
         value: input.ref.current.value,
         counter: input.counter,
+        code: input.name,
         name: input.name,
+
       };
     });
     const affective = inputs3.map((input) => {
       return {
-        value: input.ref.current.value,
+        description: input.ref.current.value,
+                value: input.ref.current.value,
+
         counter: input.counter,
+        code: input.name,
         name: input.name,
       };
     });
     const courseLearningOutcomes = [
       {
         title: "cognitive",
-        learningOutcomes: [
-          cognitive.map((e) => {
-            return {
-              code: e.name,
-              description: e.value,
-            };
-          }),
-        ],
+        learningOutcomes: cognitive,
       },
       {
         title: "psychomotor",
-        learningOutcomes: [
-          psychomotor.map((e) => {
-            return {
-              code: e.name,
-              description: e.value,
-            };
-          }),
-        ],
+        learningOutcomes: psychomotor,
       },
       {
         title: "affective",
-        learningOutcomes: [
-          affective.map((e) => {
-            return {
-              code: e.name,
-              description: e.value,
-            };
-          }),
-        ],
+        learningOutcomes: affective,
       },
     ];
     const stringifiedCourseLearningOutcomes = JSON.stringify(

@@ -8,6 +8,8 @@ export default function InstructorDashboard() {
   const [c, sC] = useState([]);
   const cookies = useSelector((s) => s.user.cookies);
   useEffect(() => {
+    let newData33 = [];
+
     async function getCreatedCoursesForInstructor() {
       const data = await fetch(
         `${process.env.url}api/v1/courses/created-courses?instructor=${cookies._id}`,
@@ -21,43 +23,32 @@ export default function InstructorDashboard() {
         }
       );
       const resp = await data.json();
-      const newData = resp.data.map((e) => {
-        return {
+      const newData = await resp.data.map(async (e) => {
+        let data2 = await fetch(
+          `${process.env.url}api/v1/courses/original-courses?_id=${e.course}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: "Bearer " + cookies.token,
+            },
+          }
+        );
+        let resp2 = await data2.json();
+
+        const dateString = e.createdAt;
+
+        const dateOnly = dateString.split("T")[0];
+
+        newData33.push({
+          name: resp2.data[0].name,
+          createdAt: dateOnly,
           _id: e._id,
-        };
+        });
       });
-      // console.log(newData)
-      // const final=newData.map(e=>{
-      //   return header(e._id.toString(), [
-      //     "course specs",
-      //     "Materials",
-      //     "Assignments",
-      //     "Exams",
-      //     "Grades",
-      //     "Direct assesment",
-      //     "Indirect assesment",
-      //   ])
 
-      // }
-
-      // )
-
-      // let last = newData.map((e) => {
-      //   return header(e._id.toString(), [
-      //     "course specs",
-      //     "Materials",
-      //     "Assignments",
-      //     "Exams",
-      //     "Grades",
-      //     "Direct assesment",
-      //     "Indirect assesment",
-      //   ]);
-      // });
-      let last = newData.map((e) => (
-        <HeaderElement key={e._id} id={e._id.toString()} />
-      ));
-
-      sC(last);
+      sC(newData33);
     }
     getCreatedCoursesForInstructor();
   }, []);
@@ -69,7 +60,23 @@ export default function InstructorDashboard() {
         Profile
       </Link>
 
-      {header("courses", [Array(c)])}
+      {header("courses", [
+        Array(
+          c.map((e) => {
+            return (
+              <div key={e._id} className=" mb-5 -mx-4  px-0 ">
+                <HeaderElement
+                  className={``}
+                  key={e._id}
+                  id={e._id.toString()}
+                  name={e.name}
+                  createdAt={e.createdAt}
+                />
+              </div>
+            );
+          })
+        ),
+      ])}
 
       {/* {c.length!=0?c.map((e) => {
          

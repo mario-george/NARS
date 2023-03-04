@@ -7,16 +7,20 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 
 const part69 = ({ cookies }) => {
   const [hoursValue, setHoursValue] = useState("");
-
   const [outcomes, setoutcomes] = useState([]);
+
+  const [addWeek, setAddWeek] = useState(1);
+const addRowWeek=()=>{
+  setAddWeek(addWeek+1)
+}
   // const outcomes = ['LO1', 'LO2', 'LO3', 'LO4', 'LO5', 'LO6']
   let cognitive = Cookies.get("cognitive");
   let affective = Cookies.get("affective");
   let psychomotor = Cookies.get("psychomotor");
   let numCols = outcomes.length;
-  let numRows = outcomes.length;
-const router=useRouter()
-const {courseID}=router.query
+  let numRows = addWeek;
+  const router = useRouter();
+  const { courseID } = router.query;
   const checkboxRefs = useRef(
     Array.from({ length: outcomes.length }, () =>
       Array.from({ length: outcomes.length }, () => false)
@@ -26,9 +30,7 @@ const {courseID}=router.query
   const topicsRefs = useRef(
     Array.from({ length: outcomes.length }, () => false)
   );
-  const HoursRefs = useRef(
-    Array.from({ length: outcomes.length }, () => false)
-  );
+  const HoursRefs = useRef(Array.from({ length: outcomes.length }, () => 0));
 
   const [tableData, setTableData] = useState(checkboxRefs.current);
   const [hoursData, setHoursData] = useState(HoursRefs.current);
@@ -41,7 +43,7 @@ const {courseID}=router.query
   const handleHoursChange = (rowIndex, e) => {
     const { value } = e.target;
     // setHoursValue(value);
-    
+
     HoursRefs.current[rowIndex] = value;
   };
   const handleTopicChange = (rowIndex, e) => {
@@ -79,7 +81,7 @@ const {courseID}=router.query
           Array.from({ length: a.length }, () => false)
         );
         if (!HoursRefs.current) {
-          HoursRefs.current = Array.from({ length: outcomes.length }, () => null);
+          HoursRefs.current = Array.from({ length: outcomes.length }, () => 0);
         }
         topicsRefs.current = Array.from({ length: a.length }, () => null);
         setoutcomes((prevState) => a);
@@ -91,12 +93,12 @@ const {courseID}=router.query
     }
   }, []);
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     setTableData([...checkboxRefs.current]);
     setHoursData([...HoursRefs.current]);
     setTopicsData([...topicsRefs.current]);
-    console.log(checkboxRefs.current[0][0])
-    console.log(outcomes)
+    console.log(checkboxRefs.current[0][0]);
+    console.log(outcomes);
     let lecturePlan = {
       expectedStudyingHoursePerWeek: 5,
       topics: [],
@@ -108,43 +110,45 @@ const {courseID}=router.query
     console.log(topicsData);
     console.log(hoursData);
     for (let i = 0; i < numRows; i++) {
-      let elem=[...outcomes].map((e, k) => {
+      let elem = [...outcomes].map((e, k) => {
         if (checkboxRefs.current[i][k]) {
           return { code: outcomes[k] };
         } else {
           return;
         }
-      })
+      });
       let topic = {
         week: i + 1,
         topics: [`${topicsRefs.current[i]}`],
-        plannedHours: [`${HoursRefs.current[i]}`],
-        learningOutcomes: elem
+        plannedHours: HoursRefs.current[i]
+          ? `${Number(HoursRefs.current[i])}`
+          : 0,
+        learningOutcomes: elem,
       };
       lecturePlan.topics.push(topic);
-
     }
+    console.log(lecturePlan);
 
-const lecturePlanStringified=JSON.stringify(lecturePlan)
-Cookies.set('lecturePlan',lecturePlanStringified)
-     const r = await fetch(
-          `${process.env.url}api/v1/courses/created-courses/${courseID}`,
-          {
-            method: "PATCH",
-            body: JSON.stringify({
-              "courseSpecs": {  
-                "lecturePlan":lecturePlan,
-              }
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "Bearer " + cookies.token,
-            },
-          }
-        );
-        const resp = await r.json();
-        console.log(resp);
+    const lecturePlanStringified = JSON.stringify(lecturePlan);
+    Cookies.set("lecturePlan", lecturePlanStringified);
+    const r = await fetch(
+      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          courseSpecs: {
+            leacturePlan: lecturePlan,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + cookies.token,
+        },
+      }
+    );
+    const resp = await r.json();
+    console.log(resp);
   };
   if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
@@ -194,6 +198,7 @@ Cookies.set('lecturePlan',lecturePlanStringified)
                     <td className="border px-4 py-2 ">
                       <input
                         name="hours"
+                        type="number"
                         className="w-full"
                         onChange={(e) => handleHoursChange(rowIndex, e)}
                       />
@@ -217,9 +222,15 @@ Cookies.set('lecturePlan',lecturePlanStringified)
             </table>
 
             <div className="flex justify-end">
+            <button
+                onClick={addRowWeek}
+                class="w-[7rem]  font-Roboto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base  px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              >
+                Add Row
+              </button>
               <button
                 onClick={handleSubmit}
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                class="w-[7rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-base px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
                 Next
               </button>
