@@ -9,8 +9,17 @@ const part69 = ({ cookies }) => {
   /*if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }*/
-    const router=useRouter()
-    const {courseID}=router.query
+
+  const updateTotal = () => {
+    weight5.current.value =
+      Number(weight0.current.value) +
+      Number(weight1.current.value) +
+      Number(weight2.current.value) +
+      Number(weight3.current.value) +
+      Number(weight4.current.value);
+  };
+  const router = useRouter();
+  const { courseID } = router.query;
   const token = Cookies.get("token");
   const assesment0 = useRef();
   const assesment1 = useRef();
@@ -124,13 +133,18 @@ const part69 = ({ cookies }) => {
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="week" ref={week0} />
+                      <input type="number" name="week" ref={week0} />
                     </label>
                   </td>
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="weight" ref={weight0} />
+                      <input
+                        type="number"
+                        name="weight"
+                        ref={weight0}
+                        onChange={updateTotal}
+                      />
                     </label>
                   </td>
                 </tr>
@@ -150,13 +164,18 @@ const part69 = ({ cookies }) => {
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="week" ref={week1} />
+                      <input type="number" name="week" ref={week1} />
                     </label>
                   </td>
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="weight" ref={weight1} />
+                      <input
+                        type="number"
+                        name="weight"
+                        ref={weight1}
+                        onChange={updateTotal}
+                      />
                     </label>
                   </td>
                 </tr>
@@ -175,13 +194,18 @@ const part69 = ({ cookies }) => {
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="week" ref={week2} />
+                      <input type="number" name="week" ref={week2} />
                     </label>
                   </td>
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="weight" ref={weight2} />
+                      <input
+                        type="number"
+                        name="weight"
+                        ref={weight2}
+                        onChange={updateTotal}
+                      />
                     </label>
                   </td>
                 </tr>
@@ -200,13 +224,18 @@ const part69 = ({ cookies }) => {
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="week" ref={week3} />
+                      <input type="number" name="week" ref={week3} />
                     </label>
                   </td>
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="weight" ref={weight3} />
+                      <input
+                        type="number"
+                        name="weight"
+                        ref={weight3}
+                        onChange={updateTotal}
+                      />
                     </label>
                   </td>
                 </tr>
@@ -225,13 +254,18 @@ const part69 = ({ cookies }) => {
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="week" ref={week4} />
+                      <input type="number" name="week" ref={week4} />
                     </label>
                   </td>
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="weight" ref={weight4} />
+                      <input
+                        type="number"
+                        name="weight"
+                        ref={weight4}
+                        onChange={updateTotal}
+                      />
                     </label>
                   </td>
                 </tr>
@@ -250,13 +284,13 @@ const part69 = ({ cookies }) => {
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="week" ref={week5} />
+                      <input type="number" name="week" ref={week5} disabled/>
                     </label>
                   </td>
 
                   <td className="border px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="text" name="weight" ref={weight5} />
+                      <input type="number" name="weight" ref={weight5} />
                     </label>
                   </td>
                 </tr>

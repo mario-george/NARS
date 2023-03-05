@@ -28,12 +28,12 @@ const part1 = ({ cookies }) => {
         method: "PATCH",
         body: JSON.stringify({
           courseSpecs: {
-            courseDate: {
+            courseData: {
               courseCode: code.current.value,
               year: year.current.value,
               practical: practical.current.value,
               lectures: lecture.current.value,
-              contactHours: hours.current.value,
+              contactHourse: hours.current.value,
               specialization: special.current.value,
             },
           },

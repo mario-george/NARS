@@ -2,11 +2,11 @@ import { header } from "../header";
 
 const { useState } = require("react");
 
-function HeaderElement({ id }) {
+function HeaderElement({ id,name ,createdAt}) {
     // Call your Hook here
     const [state, setState] = useState(null);
   
-    return header(id, [
+    return header(name, [
       <a href={`/instructor/courses/${id}/courseSpecs/part1`}>Course Specs</a>,
       "Materials",
       "Assignments",
@@ -14,6 +14,6 @@ function HeaderElement({ id }) {
       "Grades",
       "Direct assesment",
       "Indirect assesment",
-    ]);
+    ],createdAt);
   }
 export default HeaderElement

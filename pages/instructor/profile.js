@@ -38,7 +38,7 @@ const profile = ({ cookies }) => {
                     onSubmit={submitHandler}
                     className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
                     <div className="contentAddUser2 flex flex-col gap-10">
-                        <p className="underline mb-1">Profile details:</p>
+                        <p className=" mb-1">Profile details:</p>
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-1/3">
                                 <div>Role</div>
