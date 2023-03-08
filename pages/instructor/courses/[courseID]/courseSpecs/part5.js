@@ -8,10 +8,23 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 const part69 = ({ cookies }) => {
   const [hoursValue, setHoursValue] = useState("");
   const [outcomes, setoutcomes] = useState([]);
-
+let a =[]
   const [addWeek, setAddWeek] = useState(1);
-const addRowWeek=()=>{
-  setAddWeek(addWeek+1)
+  useEffect(()=>{
+  console.log(checkboxRefs)
+  
+    checkboxRefs.current = Array.from({ length: addWeek }, () =>
+    Array.from({ length: a.length }, () => false)
+    );
+  },[addWeek])
+const addRowWeek=(e)=>{
+e.preventDefault()
+// checkboxRefs.current = Array.from({ length: addWeek }, () =>
+// Array.from({ length: a.length }, () => false)
+// );
+setAddWeek(addWeek+1)
+
+
 }
   // const outcomes = ['LO1', 'LO2', 'LO3', 'LO4', 'LO5', 'LO6']
   let cognitive = Cookies.get("cognitive");
@@ -63,7 +76,7 @@ const addRowWeek=()=>{
         console.log(congitiveParsed);
         console.log(psychomotorParsed);
         console.log(affectiveParsed);
-        let a = [];
+         a = [];
         congitiveParsed.map((e) => {
           a.push(e.name);
         });
@@ -77,7 +90,7 @@ const addRowWeek=()=>{
         console.log(a);
         console.log(Array.isArray(congitiveParsed));
 
-        checkboxRefs.current = Array.from({ length: a.length }, () =>
+        checkboxRefs.current = Array.from({ length: addWeek }, () =>
           Array.from({ length: a.length }, () => false)
         );
         if (!HoursRefs.current) {
@@ -158,6 +171,8 @@ const addRowWeek=()=>{
     e.preventDefault();
     handleSubmit();
     // window.location.href="/instructor/coursespecs/part6"
+    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part6`;
+
   };
   return (
     <>

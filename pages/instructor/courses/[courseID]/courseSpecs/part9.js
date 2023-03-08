@@ -43,6 +43,8 @@ const part2 = ({ cookies }) => {
         const resp = await r.json();
         console.log(resp);
         // window.location.href = '/instructor/coursespecs/part10';
+    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part10`;
+
     }
 
     return (

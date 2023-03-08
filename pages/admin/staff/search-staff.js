@@ -92,7 +92,7 @@ const SearchStudent = ({ cookies }) => {
       const data = await resp.json();
       console.log(data);
     } catch (e) {
-      console.log(e);`http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/staff/?role=${role.current.value}`
+      console.log(e);`${process.env.url}api/v1/users/staff/?role=${role.current.value}`
     }
     setEditModalIsOpen(false);
     document.body.classList.toggle("overflow-hidden");

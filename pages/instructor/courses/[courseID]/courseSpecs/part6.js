@@ -235,6 +235,8 @@ const {courseID}=router.query
     e.preventDefault();
     handleSubmit();
     // window.location.href="/instructor/coursespecs/part7"
+    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part7`;
+
   };
   const tableData22 = [
     [

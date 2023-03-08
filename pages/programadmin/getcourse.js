@@ -2,18 +2,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-import AdminDashBoard from "@/components/ProgramAdminDashboard";
 import UserList from "@/components/user/CourseList";
 import ProgramAdminDashboard from "@/components/ProgramAdminDashboard";
 
 const getcourse = ({ cookies }) => {
-    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "program admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
-    const handleClick = () => {
-        const header = ["name", "code", "academicYear", "faculty", "fullMark"];
-        const rows = course.map((item) => [item.name, item.code, item.academicYear, item.faculty, item.fullMark]);
-    };
+    
 
     console.log(cookies.token);
     const router = useRouter();
@@ -26,7 +22,7 @@ const getcourse = ({ cookies }) => {
             e.preventDefault();
         }
         try {
-            const resp = await fetch("http://localhost:80/api/v1/courses/original-courses", {
+            const resp = await fetch(`${process.env.url}api/v1/courses/original-courses`, {
                 headers: {
                     Authorization: "Bearer " + cookies.token,
                 },
@@ -54,7 +50,7 @@ const getcourse = ({ cookies }) => {
                 >
                     <div className="contentAddUser2 overflow-auto flex flex-col gap-10">
                         <div className="flex items-center justify-between">
-                            <p className="font-normal">Courses {'>'} Assign Instrctor</p>
+                            <p className="font-normal">Courses {'>'} View Courses</p>
                         </div>
 
                         <UserList courses={course} />

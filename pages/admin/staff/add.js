@@ -268,7 +268,7 @@ const addStaff = ({ cookies }) => {
                   <option value="quality coordinator">
                     Quality Coordinator
                   </option>
-                  <option value="program  coordinator">
+                  <option value="program coordinator">
                     Program Coordinator
                   </option>
                   <option value="dean">Dean</option>

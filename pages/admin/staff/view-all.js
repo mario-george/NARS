@@ -29,7 +29,7 @@ const viewAll = ({ cookies }) => {
     saveAs(file, "staff.xlsx");
   };
 
-  console.log(cookies.token);
+  //console.log(cookies.token);
   const router = useRouter();
   const [staff, setStaff] = useState([]);
   useEffect(() => {
@@ -46,13 +46,14 @@ const viewAll = ({ cookies }) => {
         },
       });
       const data = await resp.json();
-      console.log(data.data);
+      //console.log(data.data);
       let arr = data.data;
 
       arr = arr.map((e) => {
         return { email: e.email, name: e.name, role: e.role };
       });
       setStaff(arr);
+      //console.log(staff)
     } catch (e) {
       console.log(e);
     }
@@ -76,28 +77,7 @@ const viewAll = ({ cookies }) => {
                 Download Excel
               </button>
             </div>
-            {
-              // students.map((s) => {
-              //   return (
-              //     <div className=" w-full flex justify-between bg-sky-500 items-center shadow-md rounded-xl px-[2rem] text-white">
-              //       {/* <img
-              //         className="h-48 w-48 object-cover rounded-full mx-auto bg-gray-300"
-              //         src="https://via.placeholder.com/400x400"
-              //         alt="Default Image"
-              //       /> */}
-              //       <div className="">
-              //         <i class="fa-solid fa-user fa-lg "></i>{' '}
-              //       </div>
-              //       <div className="flex flex-col">
-              //         <div>Name : {s.name}</div>
-              //         <div>Code : {s.code}</div>
-              //         <div>Email : {s.email}</div>
-              //       </div>
-              //     </div>
-              //   );
-              // })
-            }
-
+            
             <UserList users={staff} />
           </div>
         </form>

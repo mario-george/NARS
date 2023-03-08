@@ -7,7 +7,7 @@ import { useRef } from "react";
 import React from 'react';
 import FacultyadminDashboard from '@/components/FacultyadminDashboard';
 const assigninstrctor = ({ cookies }) => {
-    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     const [msg, setMsg] = useState("");
@@ -55,7 +55,7 @@ const assigninstrctor = ({ cookies }) => {
         >
             <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
             <div class="ml-3 text-sm font-medium">
-                Something went wrong please try again
+                No faculty found with this ID
                 <a href="#" class="font-semibold underline hover:no-underline"></a>.
             </div>
             <button

@@ -1,10 +1,17 @@
-import Link from 'next/link';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { header } from './header';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { header } from "./header";
+import { userActions } from "./store/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
 export default function studentDashboard() {
     const router = useRouter();
     const courseName = useSelector((s) => s.user.data.courses);
+    const dispatch = useDispatch();
+    const logoutHandler = () => {
+        dispatch(userActions.logOut());
+        window.location.href = "/logout";
+    };
     return (
         <nav className="nav2">
             <Link className="link2 focus:text-green-400 " href="/student/profile">
@@ -12,15 +19,18 @@ export default function studentDashboard() {
             </Link>
             {header('courses', [header(courseName,
                 [
-                    'course details',
-                    'View course materials',
+                    'course specs',
+                    'Materials',
                     'Assignments'
                 ])
 
             ])}
-            <Link className="link2 focus:text-green-400 " href="/login">
+            <button
+                className="link2 focus:text-green-400 text-left mx-2"
+                onClick={logoutHandler}
+            >
                 Logout
-            </Link>
+            </button>
         </nav>
     );
 }

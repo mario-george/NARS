@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { userActions } from "@/components/store/userSlice";
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { userActions } from '@/components/store/userSlice';
 export default function register() {
   const d = useDispatch();
   const [notAdded, setNotAdded] = useState(false);
@@ -16,23 +16,23 @@ export default function register() {
   const onSubmit = async (data) => {
     console.log(data.email);
     const r = await fetch(
-      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/signup",
+      `${process.env.url}api/v1/users/signup`,
       {
-        mode: "no-cors",
+        //mode: 'no-cors',
 
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify({ email: data.email }),
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       }
     );
 
     const resp = await r.json();
     console.log(resp);
-    if (resp.status == "fail") {
+    if (resp.status == 'fail') {
       setNotAdded(true);
     } else {
       d(userActions.registerCompletionPart1());
-      router.push("/otp");
+      router.push('/otp');
     }
   };
   return (
@@ -42,8 +42,7 @@ export default function register() {
         onSubmit={handleSubmit(onSubmit)}
         action="/otp"
         className="flex flex-col gap-10 justify-center items-center text-1xl border-none border-black shadow-2xl rounded-2xl px-7 py-4"
-        method="post"
-      >
+        method="post">
         <div className="flex flex-col gap-5">
           <label for="email" className="font-bold mr-10">
             Edu mail
@@ -55,7 +54,7 @@ export default function register() {
             className="button"
             placeholder=""
             required
-            {...register("email", {
+            {...register('email', {
               required: true,
             })}
           />

@@ -9,6 +9,30 @@ const part3 = ({ cookies }) => {
   if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+  const removeLO2 = (e, input) => {
+    e.preventDefault();
+    setInputs2(
+      inputs2.filter((e) => {
+        return e != input;
+      })
+    );
+  };
+  const removeLO3 = (e, input) => {
+    e.preventDefault();
+    setInputs3(
+      inputs3.filter((e) => {
+        return e != input;
+      })
+    );
+  };
+  const removeLO1 = (e, input) => {
+    e.preventDefault();
+    setInputs(
+      inputs.filter((e) => {
+        return e != input;
+      })
+    );
+  };
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
   const [inputs3, setInputs3] = useState([]);
@@ -28,7 +52,7 @@ const part3 = ({ cookies }) => {
   };
   const handleAddInput2 = (e) => {
     e.preventDefault();
-
+    console.log(inputs2);
     setInputs2([
       ...inputs2,
       {
@@ -61,8 +85,7 @@ const part3 = ({ cookies }) => {
         value: input.ref.current.value,
         counter: input.counter,
         code: input.name,
-                name: input.name,
-
+        name: input.name,
       };
     });
     const psychomotor = inputs2.map((input) => {
@@ -72,13 +95,12 @@ const part3 = ({ cookies }) => {
         counter: input.counter,
         code: input.name,
         name: input.name,
-
       };
     });
     const affective = inputs3.map((input) => {
       return {
         description: input.ref.current.value,
-                value: input.ref.current.value,
+        value: input.ref.current.value,
 
         counter: input.counter,
         code: input.name,
@@ -144,6 +166,7 @@ const part3 = ({ cookies }) => {
     handleSubmit();
 
     // window.location.href="/instructor/coursespecs/part4"
+    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part4`;
   };
 
   return (
@@ -180,6 +203,28 @@ const part3 = ({ cookies }) => {
                         ref={input.ref}
                         className="input-form w-1/2"
                       />
+                        <button
+                        type="button"
+                        onClick={(e) => removeLO1(e, input)}
+                        className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                        data-dismiss-target="#alert-border-2"
+                        aria-label="Close"
+                      >
+                        <span className="sr-only">Dismiss</span>
+                        <svg
+                          aria-hidden="true"
+                          className="w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
                     </div>
                   );
                 })}
@@ -203,6 +248,28 @@ const part3 = ({ cookies }) => {
                         ref={input.ref}
                         className="input-form w-1/2"
                       />
+                      <button
+                        type="button"
+                        onClick={(e) => removeLO2(e, input)}
+                        className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                        data-dismiss-target="#alert-border-2"
+                        aria-label="Close"
+                      >
+                        <span className="sr-only">Dismiss</span>
+                        <svg
+                          aria-hidden="true"
+                          className="w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
                     </div>
                   );
                 })}
@@ -226,6 +293,28 @@ const part3 = ({ cookies }) => {
                         ref={input.ref}
                         className="input-form w-1/2"
                       />
+                        <button
+                        type="button"
+                        onClick={(e) => removeLO3(e, input)}
+                        className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                        data-dismiss-target="#alert-border-2"
+                        aria-label="Close"
+                      >
+                        <span className="sr-only">Dismiss</span>
+                        <svg
+                          aria-hidden="true"
+                          className="w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
                     </div>
                   );
                 })}

@@ -27,7 +27,6 @@ const create = ({ cookies }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Accept: "application/json",
             Authorization: "Bearer " + cookies.token,
           },
         }
@@ -58,7 +57,7 @@ const create = ({ cookies }) => {
 
       const obj = {
         course: courseId.current.value,
-        instructor:cookies._id
+        instructor: cookies._id,
       };
 
       let resp = await fetch(
@@ -68,7 +67,6 @@ const create = ({ cookies }) => {
           body: JSON.stringify(obj),
 
           headers: {
-            // Cookie: "sessionid=12345; jwt=" + cookies.token,
             "Content-Type": "application/json",
             Accept: "application/json",
             Authorization: "Bearer " + cookies.token,
@@ -77,7 +75,7 @@ const create = ({ cookies }) => {
       );
       let data = await resp.json();
       console.log(data);
-
+      //window.location.reload();
       // courses.map(async (c) => {
       // });
     }
@@ -105,7 +103,7 @@ const create = ({ cookies }) => {
                 <select
                   ref={courseId}
                   id="small"
-                  class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 active:bg-white bg-gray-100 "
+                  class=" choose-form"
                 >
                   <option selected>Choose a course</option>
                   {coursesTitles.map((e) => {

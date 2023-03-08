@@ -7,7 +7,7 @@ import { useRef } from "react";
 import React from 'react';
 import ProgramAdminDashboard from '@/components/ProgramAdminDashboard';
 const assigninstrctor = ({ cookies }) => {
-    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "program admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     const [msg, setMsg] = useState("");
@@ -23,7 +23,7 @@ const assigninstrctor = ({ cookies }) => {
         e.preventDefault();
         try {
             const r = await fetch(
-                "http://localhost:80/api/v1/courses/assign-course-instructor",
+                `${process.env.url}api/v1/courses/assign-course-instructor`,
                 {
                     method: "PATCH",
 
@@ -134,7 +134,7 @@ const assigninstrctor = ({ cookies }) => {
                     onSubmit={submitHandler}
                     className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
                     <div className="contentAddUser2 flex flex-col gap-10">
-                        <p className="font-normal">Courses {'>'} Assign Instrctor</p>
+                        <p className="font-normal">Courses {'>'} Assign Instructor</p>
                         <div className="flex flex-col gap-10 ">
                             <div className="flex flex-col gap-5  w-2/5">
                                 <div> Instrctor ID: </div>

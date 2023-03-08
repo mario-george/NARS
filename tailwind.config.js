@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       fontFamily: {
         Rubik: ['Rubik', 'sans'],
+        Roboto: ['Roboto', 'sans'],
       },
     },
   },

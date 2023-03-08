@@ -18,9 +18,9 @@ const updatefaculty = ({ cookies }) => {
             setSelectedItems(selectedItems.filter((item) => item !== value));
         }
     };
-    /*if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
       return <div className="error">404 could not found</div>;
-    }*/
+    }
     const id = useRef();
     const [msg, setMsg] = useState("");
     const closeMsg = () => {
@@ -107,7 +107,7 @@ const updatefaculty = ({ cookies }) => {
         >
             <i class="fa-solid fa-circle-check"></i>
             <div class="ml-3 text-sm font-medium">
-                Faculty has been removed successfully
+                Faculty has been Updated successfully
                 <a href="#" class="font-semibold underline hover:no-underline"></a>
             </div>
             <button

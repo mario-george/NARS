@@ -229,7 +229,8 @@ const part8 = ({ cookies }) => {
     e.preventDefault();
     handleSubmit();
     // window.location.href="/instructor/coursespecs/part8"
-  };
+    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part8`;
+      };
   const tableData22 = [
     [
       " Learning Outcomes",

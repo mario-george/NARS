@@ -8,7 +8,7 @@ const profile = ({ cookies }) => {
 
     const globalStateCookies = useSelector((s) => s.user.cookies);
     console.log(cookies);
-    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
 

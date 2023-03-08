@@ -22,7 +22,7 @@ const part1 = ({ cookies }) => {
     const [fileSize, setFileSize] = useState();
 
     const props = {
-        action: "https://httpbin.org/post",
+        action: `${process.env.url}api/v1/courses/exams`,
         accept: ".png, .pdf, .txt , .xlsx",
         beforeUpload(file) {
             // Start upload
