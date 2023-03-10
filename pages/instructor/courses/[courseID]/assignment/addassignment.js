@@ -56,7 +56,7 @@ const addassignment = ({ cookies }) => {
         const data = new FormData();
         data.append("assignmentPath", selectedFile);
         data.append("name", name.current.value);
-        data.append("course", cookies.original_id);
+        data.append("course", courseID);
         data.append("deuTO", date.current.value);
 
         try {
@@ -169,7 +169,7 @@ const addassignment = ({ cookies }) => {
                     className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
                     <div className="contentAddUser2 flex flex-col gap-10 overflow-auto" >
                         <p className="font-normal">Assignments {'>'} Upload assignment</p>
-                        <div className="flex gap-20 ">
+                        <div className="flex gap-20">
                             <div className="flex flex-col gap-5 w-1/3">
                                 {/*final quiz midterm*/}
                                 <div>Assignment name:</div>
@@ -180,7 +180,7 @@ const addassignment = ({ cookies }) => {
                                     ref={name}
                                 />
                             </div>
-                            <div className="flex flex-col gap-5  w-2/5">
+                            <div className="flex flex-col gap-5  w-2/5 ">
                                 <div> Due to:</div>
                                 <input
                                     type="datetime-local"
@@ -196,18 +196,17 @@ const addassignment = ({ cookies }) => {
 
                                 <div> Select file:</div>
                                 <input type="file" class="text-sm text-grey-500
-                                            file:mr-5 file:py-3 file:px-10
-                                            file:rounded-full file:border-0
-                                            file:text-md file:font-semibold  file:text-white
-                                            file:bg-gradient-to-r file:from-blue-600 file:to-amber-600
-                                            hover:file:cursor-pointer hover:file:opacity-80
-                                        " onChange={(e) => setSelectedFile(e.target.files[0])} />
+                                file:mr-5 file:py-3 file:px-10
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-medium
+                                file:bg-gray-200 file:text-gray-700
+                                hover:file:cursor-pointer hover:file:bg-amber-50
+                                hover:file:text-amber-700
+                              "  onChange={(e) => setSelectedFile(e.target.files[0])} />
 
                             </div>
 
                         </div>
-
-
                         <div className="flex gap-20 ">
                             {<div className="w-1/2 mt-10">{msg}</div>}
                         </div>

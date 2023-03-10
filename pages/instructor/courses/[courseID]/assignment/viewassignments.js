@@ -10,18 +10,39 @@ const viewassignments = ({ cookies }) => {
     if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
+    const router = useRouter();
+    const { courseID } = router.query;
     const [exam, setExam] = useState([]);
     // const cookies = useSelector((s) => s.user.cookies);
     console.log(cookies.token);
     useEffect(() => {
+        //get_id();
         submitHandler();
     }, []);
+    /*const get_id = async (e) => {
+        if (e) {
+            e.preventDefault();
+        }
+        try {
+            const resp = await fetch(`${process.env.url}api/v1/courses/created-courses/${courseID}`, {
+                headers: {
+                    Authorization: "Bearer " + cookies.token,
+                },
+            });
+            const data = await resp.json();
+            setId(data.data.course);
+            Cookies.set('original_id', data.data.course);
+            //console.log(id);
+        } catch (e) {
+            console.log(e);
+        }
+    };*/
     const submitHandler = async (e) => {
         if (e) {
             e.preventDefault();
         }
         try {
-            const resp = await fetch(`${process.env.url}api/v1/courses/assignment?assignment=${cookies.original_id}`, {
+            const resp = await fetch(`${process.env.url}api/v1/courses/assignment?course=${courseID}`, {
                 headers: {
                     Authorization: "Bearer " + cookies.token,
                 },
@@ -50,7 +71,7 @@ const viewassignments = ({ cookies }) => {
                 >
                     <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
                         <div className="flex items-center justify-between">
-                            <p className="font-normal">Exams {'>'} View Exams</p>
+                            <p className="font-normal">Assignments {'>'} View assignments</p>
                         </div>
                         <div className='fileView'>
                             <div className="fileView__row">

@@ -1,21 +1,43 @@
 import Link from "next/link";
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import { title } from "process";
 import ExamFileItem from '@/components/filesView/ExamFileItem'
 import ExamFileCard from '@/components/filesView/ExamFileCard'
+import { get } from "http";
 
 const viewexams = ({ cookies }) => {
     if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     const [exam, setExam] = useState([]);
-    // const cookies = useSelector((s) => s.user.cookies);
-    console.log(cookies.token);
+    const router = useRouter();
+    const { courseID } = router.query;
+    
     useEffect(() => {
+        get_id();
         submitHandler();
-    }, []);
+    },[]);
+    const get_id = async (e) => {
+        if (e) {
+            e.preventDefault();
+        }
+        try {
+            const resp = await fetch(`${process.env.url}api/v1/courses/created-courses/${courseID}`, {
+                headers: {
+                    Authorization: "Bearer " + cookies.token,
+                },
+            });
+            
+            const data = await resp.json();
+            Cookies.set('original_id', data.data.course);
+            console.log(data.data.course);
+        } catch (e) {
+            console.log(e);
+        }
+    };
     const submitHandler = async (e) => {
         if (e) {
             e.preventDefault();
@@ -27,7 +49,7 @@ const viewexams = ({ cookies }) => {
                 },
             });
             const data = await resp.json();
-            console.log(data.data);
+            //console.log(data.data);
             let arr = data.data;
 
             arr = arr.map((e) => {

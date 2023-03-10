@@ -37,6 +37,7 @@ function HeaderElement({ id,name ,createdAt}) {
       "Grades",
       "Direct assesment",
       "Indirect assesment",
+      "Course report"
     ],createdAt);
   }
 export default HeaderElement

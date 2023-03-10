@@ -22,9 +22,6 @@ const addexam = ({ cookies }) => {
     const token = Cookies.get("token");
     const name = useRef();
     const desc = useRef();
-    const router = useRouter();
-    const { courseID } = router.query;
-    const [id, setId] = useState("");
     const date = useRef();
 
     useEffect(() => {
@@ -43,7 +40,7 @@ const addexam = ({ cookies }) => {
             const data = await resp.json();
             setId(data.data.course);
             Cookies.set('original_id', data.data.course);
-            //console.log(id);
+            //console.log(data.data.course);
         } catch (e) {
             console.log(e);
         }
@@ -217,10 +214,11 @@ const addexam = ({ cookies }) => {
                                 <input type="file" class="text-sm text-grey-500
                                 file:mr-5 file:py-3 file:px-10
                                 file:rounded-full file:border-0
-                                file:text-md file:font-semibold  file:text-white
-                                file:bg-gradient-to-r file:from-blue-600 file:to-amber-600
-                                hover:file:cursor-pointer hover:file:opacity-80
-                            " onChange={(e) => setSelectedFile(e.target.files[0])} />
+                                file:text-sm file:font-medium
+                                file:bg-gray-200 file:text-gray-700
+                                hover:file:cursor-pointer hover:file:bg-amber-50
+                                hover:file:text-amber-700
+                              "  onChange={(e) => setSelectedFile(e.target.files[0])} />
 
                             </div>
                         </div>

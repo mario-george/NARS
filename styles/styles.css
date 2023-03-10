@@ -255,7 +255,7 @@ td {
 
 .fileCard--bottom>p {
   width: 90%;
-  overflow: hidden;
+  overflow:hidden;
   white-space: nowrap;
 }
 .fileItem{

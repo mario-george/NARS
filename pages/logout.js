@@ -9,6 +9,9 @@ export default function Logout() {
     Cookies.remove("email");
     Cookies.remove("_id");
     Cookies.remove("photo");
+    Cookies.remove("original_id");
+    Cookies.remove("courses");
+    Cookies.remove("jwt");
   }, 300);
   setTimeout(() => {
     window.location.href = "/login";

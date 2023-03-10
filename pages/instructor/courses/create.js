@@ -75,7 +75,7 @@ const create = ({ cookies }) => {
       );
       let data = await resp.json();
       console.log(data);
-      //window.location.reload();
+      window.location.reload();
       // courses.map(async (c) => {
       // });
     }

@@ -40,7 +40,7 @@ const ExamFileCard = ({ name, id ,cookies}) => {
     return (
         <div className=' fileCard relative bottom-10'>
             <div className="fileCard--top  relative left-2" onClick={handleView}>
-                <InsertDriveFileRounded style={{ fontSize: 140 }} />
+                <InsertDriveFileRounded className='text-zinc-600' style={{ fontSize: 140}} />
 
             </div>
 
