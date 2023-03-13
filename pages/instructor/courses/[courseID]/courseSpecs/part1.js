@@ -116,12 +116,15 @@ const part1 = ({ cookies }) => {
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 scrollbar-none "
+          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
           
         >
-          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none" ref={refToImgBlob}>
-            <Navbar cookies={cookies} id={courseID} />
-            <p className="underline mb-1">-Course Data:</p>
+{/* <div className="absolute top-12 "> */}
+
+{/* </div> */}
+          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none py-[4rem]" ref={refToImgBlob}>
+            <Navbar cookies={cookies} id={courseID} />  
+            <p className="underline mb-1 ">-Course Data:</p>
             <div className="flex gap-20 justify-center ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Course Code & Title:</div>
