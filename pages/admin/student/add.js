@@ -285,26 +285,13 @@ const addStudent = ({ cookies }) => {
                 <select
                   ref={faculty}
                   id="small"
-                  class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                  class="choose-form w-full px-10"
                 >
                   <option selected>Choose a Faculty</option>
                   {facultyArr.map((e) => {
                     return <option value={e.id}>{e.name}</option>;
                   })}{" "}
-                  <option value="instructor">Instructor</option>
-                  <option value="quality coordinator">
-                    Quality Coordinator
-                  </option>
-                  <option value="program  coordinator">
-                    Program Coordinator
-                  </option>
-                  <option value="dean">Dean</option>
-                  <option value="teaching assistant">
-                    Teaching Assistant{" "}
-                  </option>
-                  <option value="faculty admin">Faculty Admin </option>
-                  <option value="program admin">Program Admin</option>
-                  <option value="department admin">Department Admin</option>
+        
                 </select>
               </div>
               <div className="flex flex-col gap-5  w-1/2">

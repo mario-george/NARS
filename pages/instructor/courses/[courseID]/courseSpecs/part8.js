@@ -4,8 +4,42 @@ import { useSelector } from "react-redux";
 import { createRef, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
+import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part69 = ({ cookies }) => {
+  const [isRunning, setIsRunning] = useState(true);
+
+  const refToImgBlob = useRef();
+  const buttonRef = useRef(null);
+  function ChildComponent({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf8", pdfBase64);
+        };
+        // do something with pdfBlob
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+        setIsRunning(false);
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+        
+      </>
+    );
+  }
   /*if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }*/
@@ -45,6 +79,9 @@ const part69 = ({ cookies }) => {
   const arr = [];
 
   const submitHandler = async (e) => {
+
+buttonRef.current.click()
+    
     e.preventDefault();
 
     const r = await fetch(
@@ -99,6 +136,7 @@ const part69 = ({ cookies }) => {
     const resp = await r.json();
     console.log(resp);
     //window.location.href = "/instructor/coursespecs/part9"
+
     window.location.href = `/instructor/courses/${courseID}/courseSpecs/part9`;
 
   };
@@ -106,11 +144,15 @@ const part69 = ({ cookies }) => {
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
         <InstructorDashboard />
+        <CustomReactToPdf targetRef={refToImgBlob} filename="part8.pdf">
+          {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
+        </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
+          
+          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 relative"
         >
-          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
+          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto" ref={refToImgBlob}>
             <table className="table-auto">
               <thead>
                 <tr>
@@ -298,16 +340,16 @@ const part69 = ({ cookies }) => {
                 </tr>
               </tbody>
             </table>
-
-            <div className="flex justify-end">
-              <button
-                onClick={submitHandler}
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Next
-              </button>
-            </div>
           </div>
+
+              <div className="flex justify-end absolute bottom-[20rem] right-[7rem]">
+                <button
+                  type="submit"
+                  class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >
+                  Next
+                </button>
+              </div>
         </form>
       </div>
     </>

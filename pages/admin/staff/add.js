@@ -235,7 +235,7 @@ const addStaff = ({ cookies }) => {
         >
           <div className="contentAddUser2 flex flex-col gap-10">
             <p>Add Staff</p>
-            <div className="flex gap-20 ">
+            <div className="flex gap-10 ">
               <div className="flex flex-col gap-5  w-1/4">
                 <div> Name</div>
                 <input
@@ -253,14 +253,14 @@ const addStaff = ({ cookies }) => {
                 />
               </div>
             </div>
-            <div className="flex gap-20 flex-1 ">
+            <div className="flex gap-10 flex-1 ">
               <div className="flex flex-col gap-5 w-1/4 ">
                 <div>Role</div>
 
                 <select
                   ref={role}
                   id="small"
-                  class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                  class="choose-form"
                 >
                   <option selected>Choose a role</option>
 
@@ -268,7 +268,7 @@ const addStaff = ({ cookies }) => {
                   <option value="quality coordinator">
                     Quality Coordinator
                   </option>
-                  <option value="program coordinator">
+                  <option value="program  coordinator">
                     Program Coordinator
                   </option>
                   <option value="dean">Dean</option>
@@ -284,17 +284,17 @@ const addStaff = ({ cookies }) => {
                 <div> Faculty </div>
                 <input
                   type="text"
-                  className="inputAddUser2  w-full translate-y-[1rem]"
+                  className="inputAddUser2  w-full "
                 />
               </div>
             </div>
-            <div className="flex gap-20 items-center ">
-              <div className="flex flex-col gap-5">
-                <div>Department </div>
+            <div className="flex gap-10 flex-1 -mt-24 ">
+              <div className="flex flex-col gap-5 w-1/4 ">
+              <div>Department </div>
                 <input type="text" className="inputAddUser2 w-full" />
               </div>
-              <div className="flex justify-end w-full space-x-8 items-center">
-                {<div className="w-1/2 mt-10">{msg}</div>}
+              <div className="flex justify-end w-3/4 space-x-8 items-center -mt-24 ">
+                {<div className="w-1/2 ">{msg}</div>}
                 <input
                   type="file"
                   id="selectFile"
@@ -315,6 +315,33 @@ const addStaff = ({ cookies }) => {
                 </button>
               </div>
             </div>
+            {/* <div className="flex ">
+              <div className="flex flex-col">
+                <div>Department </div>
+                <input type="text" className="inputAddUser2 w-full" />
+              </div>
+              <div className="flex justify-end w-full space-x-8 items-center">
+                {<div className="w-1/2 ">{msg}</div>}
+                <input
+                  type="file"
+                  id="selectFile"
+                  class="hidden"
+                  onChange={handleFile}
+                />
+                <label
+                  for="selectFile"
+                  class=" my-6  px-10 py-3 duration-200 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm md:text-lg  mx-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+                >
+                  Import
+                </label>
+                <button
+                  type="submit"
+                  class=" my-6  px-10 py-3 duration-200 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg  mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >
+                  Submit
+                </button>
+              </div>
+            </div> */}
           </div>
         </form>
       </div>

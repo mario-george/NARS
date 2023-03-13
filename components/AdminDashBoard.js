@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 export default function AdminDashBoard() {
   const router = useRouter();
-  const navStatus = useSelector((s) => s.user.navStatus);
+  // const navStatus = useSelector((s) => s.user.navStatus);
+  const navStatus = false;
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());
