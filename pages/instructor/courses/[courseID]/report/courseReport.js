@@ -64,7 +64,6 @@ const Graph = ({ competence, avgValues }) => {
     labels: competence,
     datasets: [
       {
-        label: "369",
         data: avgValues,
         backgroundColor: "aqua",
         borderColor: "black",
