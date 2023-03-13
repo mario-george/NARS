@@ -9,7 +9,7 @@ import { useRef } from "react";
 import React from 'react';
 import FacultyadminDashboard from '@/components/FacultyadminDashboard';
 const addfaculty = ({ cookies }) => {
-    if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     const [msg, setMsg] = useState("");
@@ -130,7 +130,7 @@ const addfaculty = ({ cookies }) => {
         >
             <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
             <div class="ml-3 text-sm font-medium">
-                Failed to creat faculty
+                Something went wrong please try again
                 <a href="#" class="font-semibold underline hover:no-underline"></a>.
             </div>
             <button

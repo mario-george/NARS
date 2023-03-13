@@ -22,11 +22,22 @@ const assignprogramqualitycoordinator= () => {
                         <p className="font-normal mb-10">Programs {'>'} Assign program quality coordinator </p>
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-1/3">
-                            <div>Program quality coordinator ID</div>
-                            <input
-                                type="text"
-                                className="inputAddUser2  w-full"
-                            />
+                                <div>Program</div>
+                                <select
+                                    id="small"
+                                    class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ">
+                                    <option selected>Choose a program</option>
+                                    {/*pro.map((i) => {
+                                        <option value={i}>{i}</option>
+                                    })*/}
+                                </select>
+                            </div>
+                            <div className="flex flex-col gap-5  w-2/5">
+                                <div>Program quality coordinator ID</div>
+                                <input
+                                    type="text"
+                                    className="inputAddUser2  w-full"
+                                />
                             </div>
                         </div>
                         <div className="flex justify-end">

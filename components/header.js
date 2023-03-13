@@ -22,7 +22,7 @@ function createHeader(headerName, array,optionalCreatedAt) {
         
          </div>
         <i
-          class={`transform transition-all duration-200 fa-solid fa-angle-down ${
+          className={`transform transition-all duration-200 fa-solid fa-angle-down ${
             isOpen2 ? `rotate-180` : ``
           }`}
         ></i>
@@ -97,9 +97,9 @@ const Header = () => {
   //   //       onClick={() => setIsOpen2(!isOpen2)}>
   //   //       <span className="font-medium text-lg">Header</span>
   //   //       {isOpen2 ? (
-  //   //         <i class="fa-solid fa-angle-up"></i>
+  //   //         <i className="fa-solid fa-angle-up"></i>
   //   //       ) : (
-  //   //         <i class="fa-solid fa-angle-down"></i>
+  //   //         <i className="fa-solid fa-angle-down"></i>
   //   //       )}
   //   //     </button>
   //   //     <AnimatePresence>

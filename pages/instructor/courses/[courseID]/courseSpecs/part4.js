@@ -4,8 +4,42 @@ import { useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
+import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part4 = ({ cookies }) => {
+  const [isRunning, setIsRunning] = useState(true);
+  const refToImgBlob = useRef();
+  const buttonRef = useRef(null);
+  function ChildComponent({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf4", pdfBase64);
+        };
+        // do something with pdfBlob
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+      setTimeout(() => {
+        setIsRunning(false);
+      }, 300);
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+      </>
+    );
+  }
   const router = useRouter();
   const closeMsg = () => {
     setMsg("");
@@ -252,7 +286,7 @@ const part4 = ({ cookies }) => {
   };
 
   const handleSubmit = async () => {
-    let combined
+    let combined;
     setTableData([...checkboxRefs.current]);
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
@@ -287,7 +321,6 @@ const part4 = ({ cookies }) => {
         //         console.log(l1P.length);
         // console.log(l1P)
 
-      
         if (courseLearningOutcomesParsed[0].title == "cognitive") {
           cp2[0].learningOutcomes = l1P.map((e, i) => {
             console.log(e);
@@ -344,25 +377,24 @@ const part4 = ({ cookies }) => {
 
         Cookies.set("courseLearningOutcomes", cp2Stringified);
 
-         combined = []
-         console.log(cp2[2].learningOutcomes)
-        cp2[2].learningOutcomes[0].mappedCompetence.map(e=>{
-          combined.push(e)
-        })
-        cp2[0].learningOutcomes[0].mappedCompetence.map(e=>{
-          combined.push(e)
-        })
-        cp2[1].learningOutcomes[0].mappedCompetence.map(e=>{
-          combined.push(e)
-        })
-
+        combined = [];
+        console.log(cp2[2].learningOutcomes);
+        cp2[2].learningOutcomes[0].mappedCompetence.map((e) => {
+          combined.push(e);
+        });
+        cp2[0].learningOutcomes[0].mappedCompetence.map((e) => {
+          combined.push(e);
+        });
+        cp2[1].learningOutcomes[0].mappedCompetence.map((e) => {
+          combined.push(e);
+        });
 
         function removeDuplicates(array) {
           return array.filter((item, index) => array.indexOf(item) === index);
         }
-combined = removeDuplicates(combined)        
+        combined = removeDuplicates(combined);
 
-        console.log(combined)
+        console.log(combined);
         const cm = competences.map((e) => {
           return { code: e };
         });
@@ -380,13 +412,12 @@ combined = removeDuplicates(combined)
           }
         );
         const data = await resp.json();
-        console.log(combined)
+        console.log(combined);
 
         console.log(data);
         if (data.status === "success") {
           setMsg(success);
-    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part5`;
-
+          window.location.href = `/instructor/courses/${courseID}/courseSpecs/part5`;
         } else {
           setMsg(fail);
         }
@@ -426,9 +457,9 @@ combined = removeDuplicates(combined)
   }
 
   const submitHandler = async (e) => {
+    buttonRef.current.click();
     e.preventDefault();
     handleSubmit();
-
     // window.location.href="/instructor/coursespecs/part5"
   };
   // affective ? (a = Object.entries(JSON.parse(affective))) : null;
@@ -446,14 +477,20 @@ combined = removeDuplicates(combined)
   //   : null;
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2">
+      <div className="flex flex-row w-screen h-auto mt-2">
         <InstructorDashboard />
+        <CustomReactToPdf targetRef={refToImgBlob} filename="part4.pdf">
+          {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
+        </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
+          className="bg-sky-50 h-auto w-screen flex flex-col justify-center items-center text-black ml-1 relative "
         >
-          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
-            <table className="table-auto">
+          <div
+            className="contentAddUser2 flex flex-col gap-10 mb-[8rem] pb-[24rem]"
+            ref={refToImgBlob}
+          >
+            <table className="table-auto my-24">
               <thead>
                 <tr>
                   <th className="border px-4 py-2">LO/Competences</th>
@@ -555,16 +592,18 @@ combined = removeDuplicates(combined)
               </tbody>
             </table>
 
-            <div className="flex justify-between">
-              <div>{msg}</div>
-              <button
-                onClick={handleSubmit}
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Next
-              </button>
-            </div>
           </div>
+            <div className="flex justify-between absolute bottom-44 right-24">
+              <div>{msg}</div>
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  >
+                    Next
+                  </button>
+                </div>
+            </div>
         </form>
       </div>
     </>
