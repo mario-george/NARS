@@ -6,13 +6,14 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { header } from "./header";
 import { useEffect, useState } from "react";
-import { CgProfile } from 'react-icons/cg'
-import { CgLogOut } from 'react-icons/cg'
-import { BsBook } from 'react-icons/bs'
-import { GrAddCircle } from 'react-icons/gr'
+import { CgProfile } from "react-icons/cg";
+import { CgLogOut } from "react-icons/cg";
+import { BsBook } from "react-icons/bs";
+import { GrAddCircle } from "react-icons/gr";
 
 export default function InstructorDashboard() {
   const [c, sC] = useState([]);
+  const coursesRef = useRef([]);
   const cookies = useSelector((s) => s.user.cookies);
   const dispatch = useDispatch();
   const logoutHandler = () => {
@@ -22,11 +23,11 @@ export default function InstructorDashboard() {
   const handel_set_cookies = (e) => {
     Cookies.set("instance_id", e);
     //window.location.href=`/instructor/courses/${e}/courseSpecs/part1`
-  }
+  };
   useEffect(() => {
     let newData33 = [];
-    async function getCreatedCoursesForInstructor() {
 
+    async function getCreatedCoursesForInstructor() {
       const data = await fetch(
         `${process.env.url}api/v1/courses/created-courses?instructor=${cookies._id}`,
         {
@@ -62,25 +63,28 @@ export default function InstructorDashboard() {
           _id: e._id,
         });
       });
+
       sC(newData33);
     }
 
     try {
       getCreatedCoursesForInstructor();
-
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-
-
   }, []);
   return (
     <nav className="nav44 scrollbar-none">
-    
       <a className="link2 focus:text-green-400 " href="/instructor/profile">
-      <span><CgProfile style={{ fontSize: 30 ,display:"inline",marginBottom:5}}/></span><span className="ml-2">Profile</span>
+        <span>
+          <CgProfile
+            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
+          />
+        </span>
+        <span className="ml-2">Profile</span>
       </a>
-      {header(<span><BsBook style={{ fontSize: 30 ,display:"inline",marginBottom:0,marginRight:9}}/>courses</span>, [
+
+      {header("courses", [
         Array(
           c.map((e) => {
             return (
@@ -91,27 +95,46 @@ export default function InstructorDashboard() {
                   id={e._id.toString()}
                   name={e.name}
                   createdAt={e.createdAt}
-                  cookies={cookies}
                 />
-                {/*<button  className="link2 focus:text-green-400 " 
-            onClick={handel_set_cookies(e._id)}>{e.name} <br></br> {e.createdAt}</button>*/}
               </div>
             );
           })
         ),
       ])}
 
+      {/* {c.length!=0?c.map((e) => {
+         
+        
+         return header(e._id.toString(), [ "course specs", "Materials",
+          "Assignments", "Exams", "Grades", "Direct assesment",
+           "Indirect assesment", ]);
+
+          
+   
+        
+      }):null} */}
+
       <a
         className="link2 focus:text-green-400 "
         href="/instructor/courses/create"
       >
-      <span><GrAddCircle style={{ fontSize: 30 ,display:"inline",marginBottom:5}}/></span><span className="ml-2">Create course </span>
+        <span>
+          <GrAddCircle
+            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
+          />
+        </span>
+        <span className="ml-2">Create course </span>
       </a>
       <button
         className="link2 focus:text-green-400 text-left"
         onClick={logoutHandler}
       >
-      <span><CgLogOut style={{ fontSize: 30 ,display:"inline",marginBottom:0}}/></span><span className="ml-2">Logout</span>
+        <span>
+          <CgLogOut
+            style={{ fontSize: 30, display: "inline", marginBottom: 0 }}
+          />
+        </span>
+        <span className="ml-2">Logout</span>
       </button>
     </nav>
   );
