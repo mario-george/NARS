@@ -16,7 +16,7 @@ const assigninstrctor = ({ cookies }) => {
     const closeMsg = () => {
         setMsg("");
     };
-    const token = Cookies.get("token");
+    //const token = Cookies.get("token");
     const course = useRef();
     const instructor = useRef();
     useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
@@ -25,29 +25,30 @@ const assigninstrctor = ({ cookies }) => {
             const resp = await fetch(`${process.env.url}api/v1/courses/original-courses/`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + token,
+                    Authorization: "Bearer " + cookies.token,
                 },
             });
             const data = await resp.json();
-            console.log(data);
+            //console.log(data);
             const newData = data.data.map((e) => {
                 return { name: e.name, id: e._id };
             });
             setCourse(newData);
+            console.log(newData); 
             
         }
         async function getInstructor() {
             const resp = await fetch(`${process.env.url}api/v1/users/staff`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + token,
+                    Authorization: "Bearer " + cookies.token,
                 },
             });
             const data = await resp.json();
             const filtered = data.data.filter((e)=>{ 
                 return e.role === 'instructor';
             });
-            console.log(filtered);
+            //console.log(filtered);
             const newData = filtered.map((e) => {
                 
                     return { name: e.name, id: e._id };
@@ -69,13 +70,13 @@ const assigninstrctor = ({ cookies }) => {
                     method: "PATCH",
 
                     body: JSON.stringify({
-                        instructorId: course.current.value,
-                        courseId: instructor.current.value,
+                        courseId: course.current.value,
+                        instructorId: instructor.current.value
                     }),
                     headers: {
                         "Content-Type": "application/json",
-                        Accept: "application/json",
-                        Authorization: "Bearer " + token,
+                        //Accept: "application/json",
+                        Authorization: "Bearer " + cookies.token,
                     },
 
                 }
@@ -83,6 +84,8 @@ const assigninstrctor = ({ cookies }) => {
 
             const resp = await r.json();
             console.log(resp);
+            //console.log(course.current.value);
+            //console.log(instructor.current.value);
             if (resp.status == "success") {
                 setMsg(success);
             } else {

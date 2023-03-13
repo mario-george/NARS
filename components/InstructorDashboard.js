@@ -95,6 +95,7 @@ export default function InstructorDashboard() {
                   id={e._id.toString()}
                   name={e.name}
                   createdAt={e.createdAt}
+                  cookies={cookies}
                 />
               </div>
             );

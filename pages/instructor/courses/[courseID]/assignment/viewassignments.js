@@ -71,7 +71,6 @@ const viewassignments = ({ cookies }) => {
                 <div className="flex flex-row w-screen h-screen mt-2">
                     <InstructorDashboard />
                     <form
-                        onSubmit={submitHandler}
                         className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  ml-1 "
                     >
                         <div className="contentAddUser2 flex flex-col gap-10 overflow-auto ">
@@ -97,7 +96,6 @@ const viewassignments = ({ cookies }) => {
                 <div className="flex flex-row w-screen h-screen mt-2">
                     <InstructorDashboard />
                     <form
-                        onSubmit={submitHandler}
                         className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  ml-1 "
                     >
                         <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
