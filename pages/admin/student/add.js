@@ -9,6 +9,7 @@ const addStudent = ({ cookies }) => {
   if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   useEffect(() => {
     async function doThis() {
       const resp = await fetch(`${process.env.url}api/v1/faculty/`, {

@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { userActions } from "./store/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import HeaderElement from "./HeaderElement.js";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 import { header } from "./header";
-import { useEffect, useRef, useState } from "react";
-import HeaderElement from "./headerElement/headerElement";
+import { useEffect, useState } from "react";
+import { CgProfile } from "react-icons/cg";
+import { CgLogOut } from "react-icons/cg";
+import { BsBook } from "react-icons/bs";
+import { GrAddCircle } from "react-icons/gr";
 
 export default function InstructorDashboard() {
   const [c, sC] = useState([]);
@@ -14,6 +19,10 @@ export default function InstructorDashboard() {
   const logoutHandler = () => {
     dispatch(userActions.logOut());
     window.location.href = "/logout";
+  };
+  const handel_set_cookies = (e) => {
+    Cookies.set("instance_id", e);
+    //window.location.href=`/instructor/courses/${e}/courseSpecs/part1`
   };
   useEffect(() => {
     let newData33 = [];
@@ -45,9 +54,7 @@ export default function InstructorDashboard() {
           }
         );
         let resp2 = await data2.json();
-
         const dateString = e.createdAt;
-
         const dateOnly = dateString.split("T")[0];
 
         newData33.push({
@@ -66,12 +73,15 @@ export default function InstructorDashboard() {
       console.log(e);
     }
   }, []);
-  const router = useRouter();
-  const courseName = useSelector((s) => s.user.data.courses);
   return (
-    <nav className="nav44">
+    <nav className="nav44 scrollbar-none">
       <a className="link2 focus:text-green-400 " href="/instructor/profile">
-        Profile
+        <span>
+          <CgProfile
+            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
+          />
+        </span>
+        <span className="ml-2">Profile</span>
       </a>
 
       {header("courses", [
@@ -108,13 +118,23 @@ export default function InstructorDashboard() {
         className="link2 focus:text-green-400 "
         href="/instructor/courses/create"
       >
-        Create Course
+        <span>
+          <GrAddCircle
+            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
+          />
+        </span>
+        <span className="ml-2">Create course </span>
       </a>
       <button
-        className="link2 focus:text-green-400 text-left mx-2"
+        className="link2 focus:text-green-400 text-left"
         onClick={logoutHandler}
       >
-        Logout
+        <span>
+          <CgLogOut
+            style={{ fontSize: 30, display: "inline", marginBottom: 0 }}
+          />
+        </span>
+        <span className="ml-2">Logout</span>
       </button>
     </nav>
   );

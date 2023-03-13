@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps, cookies }) {
       <Head>
         <title>React Meetup</title>
       </Head>
-      <Provider store={store}>
+      <Provider store={store} className="scrollbar-none">
         <Layout cookies={cookies}>
           <Component {...pageProps} cookies={cookies} />
         </Layout>

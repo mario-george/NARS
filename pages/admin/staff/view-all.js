@@ -10,6 +10,7 @@ const viewAll = ({ cookies }) => {
   if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const handleClick = () => {
     const header = ["name", "role", "email"];
     const rows = staff.map((item) => [item.name, item.role, item.email]);

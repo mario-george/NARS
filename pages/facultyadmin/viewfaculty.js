@@ -10,7 +10,7 @@ const viewfaculty = ({ cookies }) => {
         return <div className="error">404 could not found</div>;
     }
 
-
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
     console.log(cookies.token);
     const router = useRouter();
     const [faculty, setFaculty] = useState([]);

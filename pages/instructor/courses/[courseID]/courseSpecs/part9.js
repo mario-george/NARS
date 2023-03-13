@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { useRef } from 'react';
+import { useRef,useEffect } from 'react';
 import Cookies from "js-cookie";
 import InstructorDashboard from '@/components/InstructorDashboard';
 
@@ -10,6 +10,7 @@ const part2 = ({ cookies }) => {
  
          return <div className='error'>404 could not found</div>
      }*/
+     useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
      const router=useRouter()
      const {courseID}=router.query
     const token = Cookies.get("token");

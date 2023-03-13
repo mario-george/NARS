@@ -2,8 +2,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import StudentDashboard from "@/components/StudentDashboard";
-import InstructorDashBoard from "@/components/InstructorDashBoard2";
 import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 const create = ({ cookies }) => {

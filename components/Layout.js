@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "./store/userSlice";
 import Cookies from "js-cookie";
-
+import { MdOutlineLogin } from 'react-icons/md'
+import { AiOutlineUsergroupAdd } from 'react-icons/ai'
 export default function Layout({ children, cookies }) {
   const d = useDispatch();
 
@@ -17,18 +18,19 @@ export default function Layout({ children, cookies }) {
   let logged = <div>{cookies.name}</div>;
   let not = (
     <div className="flex items-center justify-center gap-10  ">
+      <div className="translate-x-24"><MdOutlineLogin style={{ fontSize: 30 }} /></div>
       <Link
         href="/login"
         className={router.pathname == "/login" ? "activeLink" : "normalLink"}
       >
-        <div className="text translate-y-5">Login</div>
+        <div className="text translate-y-7 translate-x-10"> Login</div>
       </Link>
-
+      <div className="translate-x-14"><AiOutlineUsergroupAdd style={{ fontSize: 30 }}/></div>
       <Link
         href="/register"
         className={router.pathname == "/register" ? "activeLink" : "normalLink"}
       >
-        <div className="text  translate-y-5">Register</div>
+        <div className="text  translate-y-7">Register</div>
       </Link>
     </div>
   );
@@ -39,7 +41,7 @@ export default function Layout({ children, cookies }) {
 
   return (
     <>
-      <div className="layout">
+      <div className="layout ">
         <div className="flex justify-between items-center md:mx-[3rem] h-[5rem]">
           <div className="flex space-x-8 items-center justify-center ">
             {/* ham */}

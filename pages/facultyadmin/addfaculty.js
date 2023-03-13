@@ -5,7 +5,7 @@ import { createRef } from "react";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useSelector } from 'react-redux';
-import { useRef } from "react";
+import { useRef,useEffect } from "react";
 import React from 'react';
 import FacultyadminDashboard from '@/components/FacultyadminDashboard';
 const addfaculty = ({ cookies }) => {
@@ -16,7 +16,7 @@ const addfaculty = ({ cookies }) => {
     const closeMsg = () => {
         setMsg("");
     };
-
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
     const [selectedItems, setSelectedItems] = useState([]);
     const [inputs, setInputs] = useState([]);
     const [inputs2, setInputs2] = useState([]);
@@ -215,7 +215,7 @@ const addfaculty = ({ cookies }) => {
                                 />
                             </div>
                             <div className="flex flex-col gap-5  w-2/5">
-                                <div> Dean ID:</div>
+                                <div> Dean:</div>
                                 <input
                                     type="text"
                                     name='year'

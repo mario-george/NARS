@@ -7,6 +7,7 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 
 const part4 = ({ cookies }) => {
   const router = useRouter();
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const closeMsg = () => {
     setMsg("");
   };

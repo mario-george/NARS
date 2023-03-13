@@ -5,6 +5,9 @@ import { useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import InstructorDashboard from "../../components/InstructorDashboard";
 const addexam = ({ cookies }) => {
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const globalStateCookies = useSelector((s) => s.user.cookies);
   /*const router = useRouter();
     const { courseID } = router.query;
@@ -45,11 +48,11 @@ const addexam = ({ cookies }) => {
   };
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2">
+      <div className="flex flex-row w-screen h-screen mt-2 ">
         <InstructorDashboard />
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
+          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
         >
           <div className="contentAddUser2 flex flex-col gap-10">
             <p className="underline mb-1">Profile details:</p>

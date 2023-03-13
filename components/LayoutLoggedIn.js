@@ -53,7 +53,7 @@ export default function LayoutLoggedIn({ children, cookies }) {
   };
   return (
     <>
-      <div className="layout">
+      <div className="layout ">
         <div className="flex justify-between items-center md:mx-[3rem] h-[5rem]">
           <div className="flex space-x-8 items-center justify-center ">
             {/* ham */}
