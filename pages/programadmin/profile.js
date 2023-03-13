@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { useRef } from 'react';
+import { useRef ,useEffect} from 'react';
 import ProgramAdminDashboard from '@/components/ProgramAdminDashboard';
 import Cookies from 'js-cookie';
 const profile = ({ cookies }) => {
@@ -11,7 +11,7 @@ const profile = ({ cookies }) => {
     if (cookies.role != "program admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
-
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
     const router = useRouter();
     const userName = useSelector((s) => s.user.data.name);
     const role = useSelector((s) => s.user.data.role);

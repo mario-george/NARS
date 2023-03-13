@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRef } from "react";
 import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
+import Navbar from "@/components/Navbar/Navbar"
 
 const part1 = ({ cookies }) => {
   if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
@@ -20,10 +21,19 @@ const part1 = ({ cookies }) => {
   const practical = useRef();
   const router = useRouter();
   const { courseID } = router.query;
+  //Cookies.set("instance_id", courseID);
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+
+    //Cookies.set("instance_id", courseID);
+    console.log(cookies.instance_id);
+    console.log(cookies.original_id)
+  }, []);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const r = await fetch(
-      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+      `${process.env.url}api/v1/courses/created-courses/${cookies.instance_id}`,
       {
         method: "PATCH",
         body: JSON.stringify({
@@ -48,17 +58,18 @@ const part1 = ({ cookies }) => {
 
     const resp = await r.json();
     console.log(resp);
-    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part2`;
+    window.location.href = `/instructor/courses/${cookies.instance_id}/courseSpecs/part2`;
   };
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2">
+      <div className="flex flex-row w-screen h-screen mt-2 scrollbar-none">
         <InstructorDashboard />
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
+          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 scrollbar-none"
         >
-          <div className="contentAddUser2 flex flex-col gap-10">
+          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
+            <Navbar cookies={cookies} id={courseID} />
             <p className="underline mb-1">-Course Data:</p>
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
@@ -126,7 +137,7 @@ const part1 = ({ cookies }) => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
                 Next
               </button>

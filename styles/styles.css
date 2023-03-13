@@ -31,7 +31,7 @@
   @apply px-8 h-[5rem] duration-200 hover:text-black;
 }
 .layout {
-  @apply text-black shadow-lg text-lg font-Roboto;
+  @apply text-black shadow-lg text-lg font-Roboto rounded-2xl;
 }
 .text {
   @apply text-base md:text-xl;
@@ -41,14 +41,14 @@
 }
 
 .nav2 {
-  @apply bg-white border-2 shadow-lg flex flex-col justify-start w-screen fixed md:relative  md:w-[20%] gap-10 h-screen overflow-hidden py-6 px-2;
+  @apply bg-white border-2 shadow-lg rounded-2xl flex flex-col justify-start w-screen fixed md:relative  md:w-[20%] gap-10 h-screen overflow-hidden py-6 px-2;
 }
 
 .nav44 {
-  @apply bg-white border-2 shadow-lg flex flex-col justify-start w-screen fixed md:relative  md:w-[20%] gap-10 h-screen overflow-auto py-6 px-2;
+  @apply bg-white border-2 shadow-lg rounded-2xl flex flex-col justify-start w-screen fixed md:relative  md:w-[20%] gap-10 h-screen overflow-auto py-6 px-2;
 }
 .link2 {
-  @apply font-normal text-lg md:text-lg font-Roboto;
+  @apply font-normal text-lg md:text-lg font-Roboto hover:text-green-400;
 }
 .link22 {
   @apply font-normal text-lg md:text-lg font-Roboto;

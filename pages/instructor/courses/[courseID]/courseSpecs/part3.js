@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { createRef, useRef, useState } from "react";
+import { createRef, useRef, useState ,useEffect} from "react";
 import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 
@@ -9,6 +9,7 @@ const part3 = ({ cookies }) => {
   if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const removeLO2 = (e, input) => {
     e.preventDefault();
     setInputs2(

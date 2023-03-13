@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { useRef } from "react";
+import { useRef,useEffect } from "react";
 import AdminDashBoard from "@/components/AdminDashBoard";
 const profile = ({ cookies }) => {
   const globalStateCookies = useSelector((s) => s.user.cookies);
@@ -16,7 +16,7 @@ const profile = ({ cookies }) => {
       }, 1500);
     }
   }
-
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const router = useRouter();
   const userName = useSelector((s) => s.user.data.name);
   const code = useSelector((s) => s.user.data.code);
@@ -37,7 +37,7 @@ const profile = ({ cookies }) => {
         >
           <div className="contentAddUser2 flex flex-col gap-10">
             <p className=" mb-1">Profile details:</p>
-            <div className="flex w-full justify-center gap-20 ">
+            <div className="flex w-full  gap-20 ">
               <div className="flex flex-col gap-5  w-2/5">
                 <div> Name</div>
                 <input
@@ -48,7 +48,7 @@ const profile = ({ cookies }) => {
                 />
               </div>
             </div>
-            <div className="flex w-full justify-center gap-20 ">
+            <div className="flex w-full  gap-20 ">
               <div className="flex flex-col gap-5  w-2/5">
                 <div> Edu mail </div>
                 <input

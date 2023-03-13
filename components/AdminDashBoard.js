@@ -4,6 +4,11 @@ import { header } from "./header";
 import { userActions } from "./store/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
+import { CgProfile } from 'react-icons/cg'
+import { CgLogOut } from 'react-icons/cg'
+import { GiTeacher } from 'react-icons/gi'
+import { FaUniversity } from 'react-icons/fa'
+
 export default function AdminDashBoard() {
   const router = useRouter();
   const navStatus = useSelector((s) => s.user.navStatus);
@@ -18,20 +23,11 @@ export default function AdminDashBoard() {
         navStatus ? ` -translate-x-full` : `translate-x-0 `
       }`}
     >
-      {header("Profile", [
-        <a
-          className={
-            router.pathname === "/admin/profile"
-              ? "activeLinkDashboard2"
-              : "normalLinkDashboard2"
-          }
-          href="/admin/profile"
-        >
-          Profile details
-        </a>,
-      ])}
+    <a className="link2 focus:text-green-400 " href="/admin/profile">
+    <span><CgProfile style={{ fontSize: 30 ,display:"inline",marginBottom:5}}/></span><span className="ml-2">Profile</span>
+    </a>
 
-      {header("Students", [
+      {header(<span><GiTeacher style={{ fontSize: 30 ,display:"inline",marginBottom:4,marginRight:9}}/>Students</span>, [
         <a
           className={
             router.pathname === "/admin/student/add"
@@ -63,7 +59,7 @@ export default function AdminDashBoard() {
           Search student
         </a>,
       ])}
-      {header("Staff", [
+      {header(<span><FaUniversity style={{ fontSize: 30 ,display:"inline",marginBottom:4,marginRight:9}}/>Staff</span>, [
         <a
           className={
             router.pathname === "/admin/staff/add"
@@ -106,10 +102,10 @@ export default function AdminDashBoard() {
         Add Program
       </Link>{' '} */}
       <button
-        className="link2 focus:text-green-400 text-left mx-2"
+        className="link2 focus:text-green-400 text-left"
         onClick={logoutHandler}
       >
-        Logout
+      <span><CgLogOut style={{ fontSize: 30 ,display:"inline",marginBottom:0}}/></span><span className="ml-2">Logout</span>
       </button>
     </nav>
   );

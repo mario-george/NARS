@@ -7,6 +7,7 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 import cn from "classnames";
 
 const part8 = ({ cookies }) => {
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const competences = ["A1", "A2", "A3"];
   const router=useRouter()
   const {courseID}=router.query
@@ -269,7 +270,7 @@ const part8 = ({ cookies }) => {
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
         >
-          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
+          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
             <table className="table-fixed border-collapse">
               <thead>
                 <tr>
