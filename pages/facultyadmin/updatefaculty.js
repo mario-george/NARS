@@ -126,7 +126,7 @@ const updatefaculty = ({ cookies }) => {
         >
             <i class="fa-solid fa-circle-check"></i>
             <div class="ml-3 text-sm font-medium">
-                Faculty has been Updated successfully
+                Faculty has been removed successfully
                 <a href="#" class="font-semibold underline hover:no-underline"></a>
             </div>
             <button

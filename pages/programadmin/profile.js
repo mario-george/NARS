@@ -38,7 +38,7 @@ const profile = ({ cookies }) => {
                                 <input
                                     type="text"
                                     className="inputAddUser2 w-full"
-                                    value={cookies.role}
+                                    value={role}
                                     disabled
                                 />
                             </div>
@@ -47,7 +47,7 @@ const profile = ({ cookies }) => {
                                 <input
                                     type="text"
                                     className="inputAddUser2  w-full"
-                                    defaultValue={cookies.name}
+                                    defaultValue={userName}
                                     ref={name}
                                 />
                             </div>
@@ -58,7 +58,7 @@ const profile = ({ cookies }) => {
                                 <input
                                     type="text"
                                     className="inputAddUser2 w-full"
-                                    value={cookies._id}
+                                    value={id}
                                     disabled
                                 />
                             </div>
@@ -67,7 +67,7 @@ const profile = ({ cookies }) => {
                                 <input
                                     type="text"
                                     className="inputAddUser2  w-full"
-                                    value={cookies.email}
+                                    value={email}
                                     disabled
                                 />
                             </div>

@@ -16,8 +16,9 @@ function createHeader(headerName, array, optionalCreatedAt) {
 
         </div>
         <i
-          class={`transform transition-all duration-200 fa-solid fa-angle-down ${isOpen2 ? `rotate-180` : ``
-            }`}
+          className={`transform transition-all duration-200 fa-solid fa-angle-down ${
+            isOpen2 ? `rotate-180` : ``
+          }`}
         ></i>
       </button>
       <AnimatePresence>

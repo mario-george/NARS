@@ -11,7 +11,8 @@ import { FaUniversity } from 'react-icons/fa'
 
 export default function AdminDashBoard() {
   const router = useRouter();
-  const navStatus = useSelector((s) => s.user.navStatus);
+  // const navStatus = useSelector((s) => s.user.navStatus);
+  const navStatus = false;
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());

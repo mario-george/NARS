@@ -5,21 +5,60 @@ import { useSelector } from "react-redux";
 import { useRef } from "react";
 import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
+import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import ReactDOMServer from "react-dom/server";
+import { useCookies } from "react-cookie";
+import * as Loader from "react-loader-spinner";
 import Navbar from "@/components/Navbar/Navbar"
 
 const part1 = ({ cookies }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [isRunning, setIsRunning] = useState(true);
+  const refToImgBlob = useRef();
+  const buttonRef = useRef(null);
+
   if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-
   const token = Cookies.get("token");
-  const code = useRef();
-  const year = useRef();
-  const special = useRef();
-  const hours = useRef();
-  const lecture = useRef();
-  const practical = useRef();
+  const code = useRef("");
+  const year = useRef("");
+  const special = useRef("");
+  const hours = useRef("");
+  const lecture = useRef("");
+  const practical = useRef("");
   const router = useRouter();
+  function ChildComponent({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf1", pdfBase64);
+        };
+        // do something with pdfBlob
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+      setTimeout(() => {
+        setIsRunning(false);
+      }, 300);
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+      </>
+    );
+  }
   const { courseID } = router.query;
   //Cookies.set("instance_id", courseID);
   useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
@@ -31,7 +70,12 @@ const part1 = ({ cookies }) => {
   }, []);
 
   const submitHandler = async (e) => {
+    setIsSubmitting(true);
+
+    buttonRef.current.click();
+
     e.preventDefault();
+
     const r = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${cookies.instance_id}`,
       {
@@ -58,20 +102,27 @@ const part1 = ({ cookies }) => {
 
     const resp = await r.json();
     console.log(resp);
+
+    // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part2`;
+    // router.push(`/instructor/courses/${courseID}/courseSpecs/part2`);
     window.location.href = `/instructor/courses/${cookies.instance_id}/courseSpecs/part2`;
   };
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2 scrollbar-none">
         <InstructorDashboard />
+        <CustomReactToPdf targetRef={refToImgBlob} filename="part1.pdf">
+          {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
+        </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 scrollbar-none"
+          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 scrollbar-none "
+          
         >
-          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
+          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none" ref={refToImgBlob}>
             <Navbar cookies={cookies} id={courseID} />
             <p className="underline mb-1">-Course Data:</p>
-            <div className="flex gap-20 ">
+            <div className="flex gap-20 justify-center ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Course Code & Title:</div>
                 <input
@@ -92,7 +143,7 @@ const part1 = ({ cookies }) => {
               </div>
             </div>
 
-            <div className="flex gap-20 ">
+            <div className="flex gap-20 justify-center ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Specialization:</div>
                 <input
@@ -113,7 +164,7 @@ const part1 = ({ cookies }) => {
               </div>
             </div>
 
-            <div className="flex gap-20 ">
+            <div className="flex gap-20 justify-center ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Lecture:</div>
                 <input
@@ -133,16 +184,16 @@ const part1 = ({ cookies }) => {
                 />
               </div>
             </div>
-
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Next
-              </button>
-            </div>
+            
           </div>
+              <div className="flex justify-end absolute bottom-12 right-24">
+                <button
+                  type="submit"
+                  class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >
+                  Next
+                </button>
+              </div>
         </form>
       </div>
     </>

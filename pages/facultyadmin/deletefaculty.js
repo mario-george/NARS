@@ -7,7 +7,7 @@ import { useRef } from "react";
 import React from 'react';
 import FacultyadminDashboard from '@/components/FacultyadminDashboard';
 const assigninstrctor = ({ cookies }) => {
-    if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
@@ -74,7 +74,7 @@ const assigninstrctor = ({ cookies }) => {
         >
             <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
             <div class="ml-3 text-sm font-medium">
-                No faculty found with this ID
+                Something went wrong please try again
                 <a href="#" class="font-semibold underline hover:no-underline"></a>.
             </div>
             <button

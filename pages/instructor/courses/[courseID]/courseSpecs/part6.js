@@ -5,12 +5,46 @@ import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import cn from "classnames";
+import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import { Transition } from "@headlessui/react";
 
 const part7 = ({ cookies }) => {
   useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  const [running, setIsRunning] = useState(true);
+
+  const refToImgBlob = useRef();
+  const buttonRef = useRef(null);
+  function ChildComponent({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = async () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf6", pdfBase64);
+        };
+        // do something with pdfBlob
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+      setIsRunning(false);
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+      </>
+    );
+  }
   const competences = ["A1", "A2", "A3"];
-  const router=useRouter()
-const {courseID}=router.query
+  const router = useRouter();
+  const { courseID } = router.query;
   let cognitive = Cookies.get("cognitive");
   let affective = Cookies.get("affective");
   let psychomotor = Cookies.get("psychomotor");
@@ -39,18 +73,16 @@ const {courseID}=router.query
         numRows2 = psychomotorParsed.length;
         numRows3 = affectiveParsed.length;
         checkboxRefs.current = Array.from({ length: numRows }, () =>
-        Array.from({ length: numCols }, () => false)
-      );
+          Array.from({ length: numCols }, () => false)
+        );
 
-      checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
-        Array.from({ length: numCols }, () => false)
-      );
+        checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
+          Array.from({ length: numCols }, () => false)
+        );
 
-      checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
-        Array.from({ length: numCols }, () => false)
-      );
-        
- 
+        checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
+          Array.from({ length: numCols }, () => false)
+        );
       } catch (error) {
         console.error(`Error parsing cookie: ${error}`);
       }
@@ -111,8 +143,8 @@ const {courseID}=router.query
       !checkboxRefs3.current[rowIndex][colIndex];
   };
 
-  const handleSubmit = async() => {
-           let cp2
+  const handleSubmit = async () => {
+    let cp2;
     setTableData([...checkboxRefs.current]);
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
@@ -136,52 +168,48 @@ const {courseID}=router.query
         let l3P = JSON.parse(l3);
         // console.log(l1P);
         // console.log(typeof l1P);
-   
+
         // courseLearningOutcomes[0].learningOutcomes =[]
-         cp2 = JSON.parse(courseLearningOutcomes);
-//         console.log(Array.isArray(cp2));
-//         console.log(Array.isArray(l1P));
-//         console.log(l1P.length);
-// console.log(l1P)
+        cp2 = JSON.parse(courseLearningOutcomes);
+        //         console.log(Array.isArray(cp2));
+        //         console.log(Array.isArray(l1P));
+        //         console.log(l1P.length);
+        // console.log(l1P)
 
         if (courseLearningOutcomesParsed[0].title == "cognitive") {
-            cp2[0].learningOutcomes = l1P.map((e,i) => {
-                return {
-                  ...e,
-                  studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
-                    return checkboxRefs.current[i][k];
-                    // if (checkboxRefs.current[i][k]) {
-                    //   return;
-                    // } else {
-                    //   return competences[k];
-                    // }
-                  }),
-                };
-              
-            });
-          
+          cp2[0].learningOutcomes = l1P.map((e, i) => {
+            return {
+              ...e,
+              studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
+                return checkboxRefs.current[i][k];
+                // if (checkboxRefs.current[i][k]) {
+                //   return;
+                // } else {
+                //   return competences[k];
+                // }
+              }),
+            };
+          });
         }
         if (courseLearningOutcomesParsed[1].title == "psychomotor") {
-          cp2[1].learningOutcomes = l2P.map((e,i) => {
+          cp2[1].learningOutcomes = l2P.map((e, i) => {
             // console.log(e);
-              return {
-                ...e,
-                studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
-                  return checkboxRefs2.current[i][k];
-                  // if (checkboxRefs.current[i][k]) {
-                  //   return;
-                  // } else {
-                  //   return competences[k];
-                  // }
-                }),
-              };
-            
+            return {
+              ...e,
+              studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
+                return checkboxRefs2.current[i][k];
+                // if (checkboxRefs.current[i][k]) {
+                //   return;
+                // } else {
+                //   return competences[k];
+                // }
+              }),
+            };
           });
-        
-      }
-      if (courseLearningOutcomesParsed[2].title == "affective") {
-        cp2[2].learningOutcomes = l3P.map((e,i) => {
-          // console.log(e);
+        }
+        if (courseLearningOutcomesParsed[2].title == "affective") {
+          cp2[2].learningOutcomes = l3P.map((e, i) => {
+            // console.log(e);
             return {
               ...e,
               studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
@@ -193,16 +221,14 @@ const {courseID}=router.query
                 // }
               }),
             };
-          
-        });
-      
-    }
+          });
+        }
         console.log(cp2[0]);
         console.log(cp2[1]);
         console.log(cp2[2]);
         console.log(cp2);
-        const cp2Stringified = JSON.stringify(cp2)
-        Cookies.set('courseLearningOutcomes',cp2Stringified)
+        const cp2Stringified = JSON.stringify(cp2);
+        Cookies.set("courseLearningOutcomes", cp2Stringified);
       } catch (error) {
         console.error(`Error parsing cookie: ${error}`);
       }
@@ -214,9 +240,9 @@ const {courseID}=router.query
       {
         method: "PATCH",
         body: JSON.stringify({
-          "courseSpecs": {  
-            "courseLearningOutcomes":cp2,
-          }
+          courseSpecs: {
+            courseLearningOutcomes: cp2,
+          },
         }),
         headers: {
           "Content-Type": "application/json",
@@ -233,11 +259,14 @@ const {courseID}=router.query
   }
 
   const submitHandler = async (e) => {
+    buttonRef.current.click();
     e.preventDefault();
     handleSubmit();
-    // window.location.href="/instructor/coursespecs/part7"
-    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part7`;
+    setIsRunning(false);
+    setTimeout(()=>{
 
+    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part7`;
+  },1000)
   };
   const tableData22 = [
     [
@@ -265,23 +294,31 @@ const {courseID}=router.query
       "research-assignments",
       "reporting-assignments",
       "project-assignments",
-      "in-class-questions"
-
+      "in-class-questions",
     ],
   ];
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2">
+      <div className="flex flex-row w-screen h-auto mt-2">
         <InstructorDashboard />
+        <CustomReactToPdf targetRef={refToImgBlob} filename="part6.pdf">
+          {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
+        </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
+          className={`bg-sky-50 h-auto w-screen flex flex-col justify-center items-center text-black ml-1 overflow-auto relative  `}
         >
-          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
-            <table className="table-fixed border-collapse">
+          <div
+            className={`contentAddUser2 flex flex-col  `}
+            ref={refToImgBlob}
+          >
+            <table className="table-fixed border-collapse mb-[15rem]">
               <thead>
                 <tr>
-                  <th className="border border-gray-500 border-b-gray-50 p-2" rowSpan={2}></th>
+                  <th
+                    className="border border-gray-500 border-b-gray-50 p-2"
+                    rowSpan={2}
+                  ></th>
                   {tableHeader.map((header, index) => (
                     <th
                       key={index}
@@ -290,7 +327,7 @@ const {courseID}=router.query
                         "border-gray-500": true,
                         "p-2": true,
                         [header.className]: true,
-                        'text-center':true
+                        "text-center": true,
                       })}
                       rowSpan={header.rowspan}
                       colSpan={header.colspan}
@@ -305,19 +342,22 @@ const {courseID}=router.query
                     {row.map((cell, cellIndex) => (
                       <td
                         key={cellIndex}
-                        className={cn({
-                          border: true,
-                          "border-gray-500": true,
-                          "p-2": true,
-                          vertical: true,
-                          'text-right':cellIndex==0,
-                          'text-red-500':cellIndex==0,
-                          'text-xl':cellIndex==0,
-
-                          
-                        })}
+                        className={`border border-gray-500 p-2 transistion-all  py-8 px-3${
+                          cellIndex === 0
+                            ? `text-right text-red-500 text-xl`
+                            : ``
+                        }`}
+                        // className={cn({
+                        //   border: true,
+                        //   "border-gray-500": true,
+                        //   "p-2": true,
+                        //   vertical: true,
+                        //   "text-right": cellIndex == 0,
+                        //   "text-red-500": cellIndex == 0,
+                        //   "text-xl": cellIndex == 0,
+                        // })}
                       >
-                        {cell}
+                        <div className="transform -rotate-90">{cell}</div>
                       </td>
                     ))}
                   </tr>
@@ -328,13 +368,22 @@ const {courseID}=router.query
                   <th className="border-l px-4 py-2 text-left border-gray-500 ">
                     Cognitive domain
                   </th>
-                  <th className=" bg-sky-50 border-r border-gray-500" colSpan={10}></th>
+                  <th
+                    className=" bg-sky-50 border-r border-gray-500"
+                    colSpan={10}
+                  ></th>
                 </tr>
                 {Array.from({ length: numRows }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2 border-gray-500"> {arrays.LO[rowIndex].name}</td>
+                    <td className="border px-4 py-2 border-gray-500">
+                      {" "}
+                      {arrays.LO[rowIndex].name}
+                    </td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border px-4 py-2 border-gray-500" key={colIndex}>
+                      <td
+                        className="border px-4 py-2 border-gray-500"
+                        key={colIndex}
+                      >
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -352,14 +401,22 @@ const {courseID}=router.query
                   <th className="border-l px-4 py-2 text-left  border-gray-500">
                     Psychomotor domain
                   </th>
-                  <th className=" bg-sky-50 border-r border-gray-500" colSpan={10}></th>
-
+                  <th
+                    className=" bg-sky-50 border-r border-gray-500"
+                    colSpan={10}
+                  ></th>
                 </tr>
                 {Array.from({ length: numRows2 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2 border-gray-500"> {arrays.LO2[rowIndex].name}</td>
+                    <td className="border px-4 py-2 border-gray-500">
+                      {" "}
+                      {arrays.LO2[rowIndex].name}
+                    </td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border px-4 py-2 border-gray-500" key={colIndex}>
+                      <td
+                        className="border px-4 py-2 border-gray-500"
+                        key={colIndex}
+                      >
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -377,14 +434,22 @@ const {courseID}=router.query
                   <th className="border-l px-4 py-2 text-left border-gray-500 ">
                     Affective domain
                   </th>
-                  <th className=" bg-sky-50 border-r border-gray-500" colSpan={10}></th>
-
+                  <th
+                    className=" bg-sky-50 border-r border-gray-500"
+                    colSpan={10}
+                  ></th>
                 </tr>
                 {Array.from({ length: numRows3 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2 border-gray-500"> {arrays.LO3[rowIndex].name}</td>
+                    <td className="border px-4 py-2 border-gray-500">
+                      {" "}
+                      {arrays.LO3[rowIndex].name}
+                    </td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border px-4 py-2 border-gray-500" key={colIndex}>
+                      <td
+                        className="border px-4 py-2 border-gray-500"
+                        key={colIndex}
+                      >
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -401,15 +466,15 @@ const {courseID}=router.query
               </tbody>
             </table>
 
-            <div className="flex justify-end">
-              <button
-                onClick={handleSubmit}
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Next
-              </button>
-            </div>
           </div>
+              <div className="flex justify-end absolute right-[6rem] bottom-[6rem]">
+                <button
+                  type="submit"
+                  class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >
+                  Next
+                </button>
+              </div>
         </form>
       </div>
     </>

@@ -19,7 +19,7 @@ const assignta = () => {
                         <p className="font-normal mb-10">Courses {'>'} Assign TA </p>
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-1/3">
-                                <div>Course Code</div>
+                                <div>Course Name</div>
                                 <input
                                     type="text"
                                     className="inputAddUser2 w-full"

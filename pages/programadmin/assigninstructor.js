@@ -7,7 +7,7 @@ import { useRef } from "react";
 import React from 'react';
 import ProgramAdminDashboard from '@/components/ProgramAdminDashboard';
 const assigninstrctor = ({ cookies }) => {
-    if (cookies.role != "program admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     const [msg, setMsg] = useState("");
@@ -65,7 +65,7 @@ const assigninstrctor = ({ cookies }) => {
         e.preventDefault();
         try {
             const r = await fetch(
-                `${process.env.url}api/v1/courses/assign-course-instructor`,
+                "http://localhost:80/api/v1/courses/assign-course-instructor",
                 {
                     method: "PATCH",
 

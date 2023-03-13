@@ -64,8 +64,8 @@ export default function InstructorDashboard() {
         });
       });
 
-      sC(newData33);
-    }
+    sC(newData33);
+  }
 
     try {
       getCreatedCoursesForInstructor();

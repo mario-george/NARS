@@ -8,12 +8,13 @@ import Cookies from "js-cookie";
 import { useEffect } from "react";
 import cookie from "cookie";
 import App from "next/app";
+import { userActions } from "@/components/store/userSlice";
 function MyApp({ Component, pageProps, cookies }) {
   // if (cookies.loggedInStatus == "false") {
   return (
     <>
       <Head>
-        <title>React Meetup</title>
+        <title>NARQA Quality Assurance</title>
       </Head>
       <Provider store={store} className="scrollbar-none">
         <Layout cookies={cookies}>
@@ -55,5 +56,14 @@ MyApp.getInitialProps = async (appContext) => {
   // Return the cookies and page props as an object
   return { cookies, pageProps };
 };
+// export async function getServerSideProps(context) {
+//   const { req } = context;
+//   const cookies = cookie.parse(req.headers.cookie || "");
 
+//   return {
+//     props: {
+//       cookies,
+//     },
+//   };
+// }
 export default MyApp;

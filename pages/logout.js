@@ -13,7 +13,8 @@ export default function Logout() {
     Cookies.remove("courses");
     Cookies.remove("jwt");
     Cookies.remove("instance_id");
-  }, 10);
+  }, 300);
+  
   setTimeout(() => {
     window.location.href = "/login";
   }, 300);
