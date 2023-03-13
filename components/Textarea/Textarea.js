@@ -1,6 +1,7 @@
-import { useState } from "react";
-
-function Textarea({placeholder,rows}) {
+import { useState, forwardRef } from "react";
+// {placeholder,rows}
+const Textarea = forwardRef((props, ref) => {
+  const { placeholder, rows } = props;
   const [value, setValue] = useState("");
 
   const handleChange = (event) => {
@@ -16,11 +17,11 @@ function Textarea({placeholder,rows}) {
         value={value}
         rows={rows}
         placeholder={placeholder}
-
+        ref={ref}
         onChange={handleChange}
       />
     </div>
   );
-}
+});
 
 export default Textarea;

@@ -110,4 +110,4 @@ const addexam = ({ cookies }) => {
     </>
   );
 };
-export default profile;
+export default addexam;

@@ -119,7 +119,7 @@ const part1 = ({ cookies }) => {
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 scrollbar-none "
           
         >
-          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
+          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none" ref={refToImgBlob}>
             <Navbar cookies={cookies} id={courseID} />
             <p className="underline mb-1">-Course Data:</p>
             <div className="flex gap-20 justify-center ">
