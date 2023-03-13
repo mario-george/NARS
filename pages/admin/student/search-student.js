@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react";
 import Cookies from "js-cookie";
 import AdminDashBoard from "@/components/AdminDashBoard";
 import UserList from "@/components/user/UserList";
@@ -28,7 +28,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
   const faculty = useRef();
   const [tobeDeleted, setTobeDeleted] = useState();
   const [emptyArray, setEmptyArray] = useState(false);
-
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const submitHandler = async (e) => {
     if (e) {
       e.preventDefault();

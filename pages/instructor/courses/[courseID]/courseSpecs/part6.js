@@ -7,6 +7,7 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 import cn from "classnames";
 
 const part7 = ({ cookies }) => {
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const competences = ["A1", "A2", "A3"];
   const router=useRouter()
 const {courseID}=router.query

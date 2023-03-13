@@ -65,7 +65,14 @@ export default function Login({ cookies }) {
         // });
       } else if (resp.data.user.role === "instructor") {
         window.location.href = "/instructor/profile";
-      } else {
+      } 
+      else if (resp.data.user.role === "program admin") {
+        window.location.href = "/programadmin/profile";
+      } 
+      else if (resp.data.user.role === "faculty admin") {
+        window.location.href = "/facultyadmin/profile";
+      } 
+      else {
         alert("not known role");
       }
     }

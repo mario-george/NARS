@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { useRef } from 'react';
+import { useRef,useEffect } from 'react';
 import Cookies from "js-cookie";
 import InstructorDashboard from '@/components/InstructorDashboard';
 
@@ -18,6 +18,7 @@ const part2 = ({ cookies }) => {
     const lvlb = useRef()
     const router = useRouter();
     const { courseID } = router.query;
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
     const submitHandler = async (e) => {
         e.preventDefault();
         const r = await fetch(

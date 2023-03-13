@@ -12,7 +12,8 @@ export default function Logout() {
     Cookies.remove("original_id");
     Cookies.remove("courses");
     Cookies.remove("jwt");
-  }, 300);
+    Cookies.remove("instance_id");
+  }, 10);
   setTimeout(() => {
     window.location.href = "/login";
   }, 300);

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Cookies from "js-cookie";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { useRef } from "react";
 import React from 'react';
@@ -10,7 +10,9 @@ const addcourse = ({ cookies }) => {
     if (cookies.role != "program admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
     const [msg, setMsg] = useState("");
+    const [facultyArr, setFaculty] = useState([]);
     const closeMsg = () => {
         setMsg("");
     };
@@ -21,7 +23,23 @@ const addcourse = ({ cookies }) => {
     const year = useRef();
     const mark = useRef();
 
-    //const [invalidData, setInvalidData] = useState(false);
+    useEffect(() => {
+        async function doThis() {
+            const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            });
+            const data = await resp.json();
+            console.log(data);
+            const newData = data.data.map((e) => {
+                return { name: e.name, id: e._id };
+            });
+            setFaculty(newData);
+        }
+        doThis();
+    }, []);
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -190,14 +208,17 @@ const addcourse = ({ cookies }) => {
                                 </select>
                             </div>
                             <div className="flex flex-col gap-5  w-2/5">
-                                <div> Faculty ID: </div>
-                                <input
-                                    type="text"
-                                    name='faculty'
-                                    className="input-form  w-full"
+                                <div> Faculty: </div>
+                                <select
                                     ref={faculty}
-
-                                />
+                                    id="small"
+                                    class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                                >
+                                    <option selected>Choose a Faculty</option>
+                                    {facultyArr.map((e) => {
+                                        return <option value={e.id}>{e.name}</option>;
+                                    })}{" "}
+                                </select>
                             </div>
                         </div>
 
