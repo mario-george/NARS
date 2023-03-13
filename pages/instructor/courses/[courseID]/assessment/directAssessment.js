@@ -65,9 +65,11 @@ function directAssessment({ cookies }) {
               message: "",
             });
           }, 3000);
-          return;
+          shouldReturn = true;
         }
       });
+      if (shouldReturn) return;
+      console.log("DATA IS " + JSON.stringify(allQuestions));
       try {
         const resp = await fetch(
           `${process.env.url}api/v1/courses/created-courses/directAssesments/${courseID}`,
