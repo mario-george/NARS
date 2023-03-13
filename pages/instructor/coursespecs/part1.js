@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRef } from "react";
 import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
+import InstructorDashboard from "../../../components/InstructorDashboard";
 
 const part1 = ({ cookies }) => {
   if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
@@ -73,7 +73,6 @@ const part1 = ({ cookies }) => {
         });
       });
       setCoursesTitles(newArr);
-
     }
     createCourses();
     getCoursesNames();
@@ -130,7 +129,7 @@ Cookies.set("", resp.data.);*/
     let data = await resp.json();
     console.log(data);
   };
- console.log(coursesTitles)
+  console.log(coursesTitles);
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
@@ -139,7 +138,6 @@ Cookies.set("", resp.data.);*/
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
         >
-          
           <div className="contentAddUser2 flex flex-col gap-10">
             <p className="underline mb-1">-Course Data:</p>
             <div className="flex gap-20 ">
@@ -151,10 +149,8 @@ Cookies.set("", resp.data.);*/
                 >
                   <option selected>Choose a course</option>
                   {coursesTitles.map((e) => {
-                    return<option value={e._id}>{e.name}</option>;
-                    
+                    return <option value={e._id}>{e.name}</option>;
                   })}
-                 
                 </select>
               </div>
               <div className="flex flex-col gap-5  w-2/5">

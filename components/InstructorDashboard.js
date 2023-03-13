@@ -3,22 +3,22 @@ import { userActions } from "./store/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { header } from "./header";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HeaderElement from "./headerElement/headerElement";
+
 export default function InstructorDashboard() {
   const [c, sC] = useState([]);
+  const coursesRef = useRef([]);
   const cookies = useSelector((s) => s.user.cookies);
   const dispatch = useDispatch();
-    const logoutHandler = () => {
-        dispatch(userActions.logOut());
-        window.location.href = "/logout";
-    };
+  const logoutHandler = () => {
+    dispatch(userActions.logOut());
+    window.location.href = "/logout";
+  };
   useEffect(() => {
     let newData33 = [];
 
-
     async function getCreatedCoursesForInstructor() {
-
       const data = await fetch(
         `${process.env.url}api/v1/courses/created-courses?instructor=${cookies._id}`,
         {
@@ -57,20 +57,14 @@ export default function InstructorDashboard() {
         });
       });
 
-
-
-
       sC(newData33);
     }
 
     try {
       getCreatedCoursesForInstructor();
-
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-
-
   }, []);
   const router = useRouter();
   const courseName = useSelector((s) => s.user.data.courses);
@@ -110,13 +104,12 @@ export default function InstructorDashboard() {
         
       }):null} */}
 
-      
       <a
-          className="link2 focus:text-green-400 "
-          href="/instructor/courses/create"
-        >
-          Create Course
-        </a>
+        className="link2 focus:text-green-400 "
+        href="/instructor/courses/create"
+      >
+        Create Course
+      </a>
       <button
         className="link2 focus:text-green-400 text-left mx-2"
         onClick={logoutHandler}

@@ -100,11 +100,7 @@ const create = ({ cookies }) => {
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Course </div>
-                <select
-                  ref={courseId}
-                  id="small"
-                  class=" choose-form"
-                >
+                <select ref={courseId} id="small" class=" choose-form">
                   <option selected>Choose a course</option>
                   {coursesTitles.map((e) => {
                     return <option value={e._id}>{e.name}</option>;

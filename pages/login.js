@@ -1,11 +1,11 @@
-import { userActions } from "@/components/store/userSlice";
+import { userActions } from "../components/store/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
-import Checkrole from "@/components/checkrole/checkrole";
+import Checkrole from "../components/checkrole/checkrole";
 // api/v1/users/login
 export default function Login({ cookies }) {
   console.log(cookies);
@@ -54,7 +54,6 @@ export default function Login({ cookies }) {
       dispatch(userActions.toggleLoggedIn(true));
 
       if (resp.data.user.role === "system admin") {
-
         // router.push('', undefined, { shallow: true, onComplete: () => window.location.reload() });
         // router.push('/', undefined, { shallow: true, onComplete: "window.location.reload()" });
 

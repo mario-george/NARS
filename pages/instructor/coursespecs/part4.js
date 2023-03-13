@@ -159,51 +159,47 @@ const part4 = ({ cookies }) => {
         });
         // courseLearningOutcomes[0].learningOutcomes =[]
         let cp2 = JSON.parse(courseLearningOutcomes);
-//         console.log(Array.isArray(cp2));
-//         console.log(Array.isArray(l1P));
-//         console.log(l1P.length);
-// console.log(l1P)
-console.log(checkboxRefs.current[0][1])
-console.log(checkboxRefs.current[1][1])
+        //         console.log(Array.isArray(cp2));
+        //         console.log(Array.isArray(l1P));
+        //         console.log(l1P.length);
+        // console.log(l1P)
+        console.log(checkboxRefs.current[0][1]);
+        console.log(checkboxRefs.current[1][1]);
         if (courseLearningOutcomesParsed[0].title == "cognitive") {
-            cp2[0].learningOutcomes = l1P.map((e,i) => {
-              console.log(e);
-                return {
-                  ...e,
-                  mappedCompetence: [...competences].filter((e, k) => {
-                    return checkboxRefs.current[i][k];
-                    // if (checkboxRefs.current[i][k]) {
-                    //   return;
-                    // } else {
-                    //   return competences[k];
-                    // }
-                  }),
-                };
-              
-            });
-          
+          cp2[0].learningOutcomes = l1P.map((e, i) => {
+            console.log(e);
+            return {
+              ...e,
+              mappedCompetence: [...competences].filter((e, k) => {
+                return checkboxRefs.current[i][k];
+                // if (checkboxRefs.current[i][k]) {
+                //   return;
+                // } else {
+                //   return competences[k];
+                // }
+              }),
+            };
+          });
         }
         if (courseLearningOutcomesParsed[1].title == "psychomotor") {
-          cp2[1].learningOutcomes = l2P.map((e,i) => {
+          cp2[1].learningOutcomes = l2P.map((e, i) => {
             // console.log(e);
-              return {
-                ...e,
-                mappedCompetence: [...competences].filter((e, k) => {
-                  return checkboxRefs2.current[i][k];
-                  // if (checkboxRefs.current[i][k]) {
-                  //   return;
-                  // } else {
-                  //   return competences[k];
-                  // }
-                }),
-              };
-            
+            return {
+              ...e,
+              mappedCompetence: [...competences].filter((e, k) => {
+                return checkboxRefs2.current[i][k];
+                // if (checkboxRefs.current[i][k]) {
+                //   return;
+                // } else {
+                //   return competences[k];
+                // }
+              }),
+            };
           });
-        
-      }
-      if (courseLearningOutcomesParsed[2].title == "affective") {
-        cp2[2].learningOutcomes = l3P.map((e,i) => {
-          // console.log(e);
+        }
+        if (courseLearningOutcomesParsed[2].title == "affective") {
+          cp2[2].learningOutcomes = l3P.map((e, i) => {
+            // console.log(e);
             return {
               ...e,
               mappedCompetence: [...competences].filter((e, k) => {
@@ -215,17 +211,14 @@ console.log(checkboxRefs.current[1][1])
                 // }
               }),
             };
-          
-        });
-      
-    }
+          });
+        }
         console.log(cp2[0]);
         console.log(cp2[1]);
         console.log(cp2[2]);
         console.log(cp2);
-        const cp2Stringified = JSON.stringify(cp2)
-        Cookies.set('courseLearningOutcomes',cp2Stringified)
-      
+        const cp2Stringified = JSON.stringify(cp2);
+        Cookies.set("courseLearningOutcomes", cp2Stringified);
       } catch (error) {
         console.error(`Error parsing cookie: ${error}`);
       }
@@ -247,7 +240,7 @@ console.log(checkboxRefs.current[1][1])
   const submitHandler = async (e) => {
     e.preventDefault();
     handleSubmit();
-    window.location.href="/instructor/coursespecs/part5"
+    window.location.href = "/instructor/coursespecs/part5";
   };
   // affective ? (a = Object.entries(JSON.parse(affective))) : null;
   // affective ? (console.log(Object.entries(JSON.parse(affective)))) : null;
