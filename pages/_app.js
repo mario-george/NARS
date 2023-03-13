@@ -8,9 +8,7 @@ import Cookies from "js-cookie";
 import { useEffect } from "react";
 import cookie from "cookie";
 import App from "next/app";
-import { userActions } from "@/components/store/userSlice";
 function MyApp({ Component, pageProps, cookies }) {
-
   // if (cookies.loggedInStatus == "false") {
   return (
     <>
