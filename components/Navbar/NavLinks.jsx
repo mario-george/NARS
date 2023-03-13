@@ -63,8 +63,8 @@ const NavLinks = ({cookies,id}) => {
       sublinks: [
         {
           sublink: [
-            { name: "Direct assesment", link: "/" },
-            { name: "Indirect assesment ", link: "/" },
+            { name: "Direct assesment", link: `/instructor/courses/${cookies.instance_id}/assessment/directAssessment` },
+            { name: "Indirect assesment ", link: `/instructor/courses/${cookies.instance_id}/exams/viewexams` },
           ],
         },
         

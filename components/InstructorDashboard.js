@@ -5,7 +5,7 @@ import HeaderElement from "./HeaderElement.js";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { header } from "./header";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
 import { BsBook } from "react-icons/bs";
