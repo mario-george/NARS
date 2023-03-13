@@ -13,7 +13,7 @@ function HeaderElement({ id, name, createdAt,cookies }) {
             });
 
             const dt = await resp.json();
-            Cookies.set('original_id', dt.data.course);
+            Cookies.set('original_id', dt.data.course._id);
             //console.log(dt.data.course);
         } catch (e) {
             console.log(e);
