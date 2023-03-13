@@ -38,6 +38,7 @@ const part69 = ({ cookies }) => {
       </>
     );
   }
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const [hoursValue, setHoursValue] = useState("");
   const [outcomes, setoutcomes] = useState([]);
   let a = [];

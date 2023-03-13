@@ -9,6 +9,7 @@ import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { Transition } from "@headlessui/react";
 
 const part7 = ({ cookies }) => {
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const [running, setIsRunning] = useState(true);
 
   const refToImgBlob = useRef();

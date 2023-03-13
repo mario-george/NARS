@@ -1,7 +1,7 @@
 import AdminDashBoard from "@/components/AdminDashBoard";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef,useEffect } from "react";
 import { successFailMsg } from "@/components/successFail/success-fail";
 import Cookies from "js-cookie";
 import { useState } from "react";
@@ -12,7 +12,7 @@ const addStaff = ({ cookies }) => {
   if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const [exportModalIsOpen, setExportModalIsOpen] = useState(false);
   const [data, setData] = useState([]);
 

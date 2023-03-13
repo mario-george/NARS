@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react";
 import Cookies from "js-cookie";
 import AdminDashBoard from "@/components/AdminDashBoard";
 import UserList from "@/components/user/UserList";
@@ -9,7 +9,7 @@ const SearchStudent = ({ cookies }) => {
   if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const token = Cookies.get("token");
   const router = useRouter();
   const [staff, setStaff] = useState([]);

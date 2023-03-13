@@ -1,34 +1,35 @@
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { userActions } from "./store/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import HeaderElement from "./HeaderElement.js";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 import { header } from "./header";
-import { useEffect, useState } from "react";
-import HeaderElement from "./headerElement/headerElement";
+import { useEffect, useState,useRef } from "react";
+import { CgProfile } from "react-icons/cg";
+import { CgLogOut } from "react-icons/cg";
+import { BsBook } from "react-icons/bs";
+import { GrAddCircle } from "react-icons/gr";
+
 export default function InstructorDashboard() {
   const [c, sC] = useState([]);
+  const coursesRef = useRef([]);
   const cookies = useSelector((s) => s.user.cookies);
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(userActions.logOut());
+    window.location.href = "/logout";
+  };
+  const handel_set_cookies = (e) => {
+    Cookies.set("instance_id", e);
+    //window.location.href=`/instructor/courses/${e}/courseSpecs/part1`
+  };
   useEffect(() => {
     let newData33 = [];
 
-
-  async function getCreatedCoursesForInstructor() {
-
-  const data = await fetch(
-      `${process.env.url}api/v1/courses/created-courses?instructor=${cookies._id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + cookies.token,
-        },
-      }
-    );
-    
-    const resp = await data.json();
-    const newData = await resp.data.map(async (e) => {
-      let data2 = await fetch(
-        `${process.env.url}api/v1/courses/original-courses?_id=${e.course}`,
+    async function getCreatedCoursesForInstructor() {
+      const data = await fetch(
+        `${process.env.url}api/v1/courses/created-courses?instructor=${cookies._id}`,
         {
           method: "GET",
           headers: {
@@ -38,40 +39,49 @@ export default function InstructorDashboard() {
           },
         }
       );
-      let resp2 = await data2.json();
 
-      const dateString = e.createdAt;
+      const resp = await data.json();
+      const newData = await resp.data.map(async (e) => {
+        let data2 = await fetch(
+          `${process.env.url}api/v1/courses/original-courses?_id=${e.course}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: "Bearer " + cookies.token,
+            },
+          }
+        );
+        let resp2 = await data2.json();
+        const dateString = e.createdAt;
+        const dateOnly = dateString.split("T")[0];
 
-      const dateOnly = dateString.split("T")[0];
-
-      newData33.push({
-        name: resp2.data[0].name,
-        createdAt: dateOnly,
-        _id: e._id,
+        newData33.push({
+          name: resp2.data[0].name,
+          createdAt: dateOnly,
+          _id: e._id,
+        });
       });
-    });
- 
-  
-    
 
     sC(newData33);
   }
 
-  try{
-    getCreatedCoursesForInstructor();
-  
-    }catch(e){
-        console.log(e)
-      }
-
-  
+    try {
+      getCreatedCoursesForInstructor();
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
-  const router = useRouter();
-  const courseName = useSelector((s) => s.user.data.courses);
   return (
-    <nav className="nav44">
+    <nav className="nav44 scrollbar-none">
       <a className="link2 focus:text-green-400 " href="/instructor/profile">
-        Profile
+        <span>
+          <CgProfile
+            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
+          />
+        </span>
+        <span className="ml-2">Profile</span>
       </a>
 
       {header("courses", [
@@ -104,20 +114,28 @@ export default function InstructorDashboard() {
         
       }):null} */}
 
-      {header("Create Course", [
-        <a
-          className="link2 focus:text-green-400 "
-          href="/instructor/courses/create"
-        >
-          Create Course
-        </a>,
-      ])}
-      <a className="link2 focus:text-green-400 " href="/instructor/report">
-        Course report
+      <a
+        className="link2 focus:text-green-400 "
+        href="/instructor/courses/create"
+      >
+        <span>
+          <GrAddCircle
+            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
+          />
+        </span>
+        <span className="ml-2">Create course </span>
       </a>
-      <Link className="link2 focus:text-green-400 " href="/login">
-        Logout
-      </Link>
+      <button
+        className="link2 focus:text-green-400 text-left"
+        onClick={logoutHandler}
+      >
+        <span>
+          <CgLogOut
+            style={{ fontSize: 30, display: "inline", marginBottom: 0 }}
+          />
+        </span>
+        <span className="ml-2">Logout</span>
+      </button>
     </nav>
   );
 }

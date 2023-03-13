@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRef } from "react";
 import Cookies from "js-cookie";
@@ -9,6 +9,7 @@ import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import ReactDOMServer from "react-dom/server";
 import { useCookies } from "react-cookie";
 import * as Loader from "react-loader-spinner";
+import Navbar from "@/components/Navbar/Navbar"
 
 const part1 = ({ cookies }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,6 +60,15 @@ const part1 = ({ cookies }) => {
     );
   }
   const { courseID } = router.query;
+  //Cookies.set("instance_id", courseID);
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+
+    //Cookies.set("instance_id", courseID);
+    console.log(cookies.instance_id);
+    console.log(cookies.original_id)
+  }, []);
+
   const submitHandler = async (e) => {
     setIsSubmitting(true);
 
@@ -67,7 +77,7 @@ const part1 = ({ cookies }) => {
     e.preventDefault();
 
     const r = await fetch(
-      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+      `${process.env.url}api/v1/courses/created-courses/${cookies.instance_id}`,
       {
         method: "PATCH",
         body: JSON.stringify({
@@ -93,32 +103,24 @@ const part1 = ({ cookies }) => {
     const resp = await r.json();
     console.log(resp);
 
-    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part2`;
+    // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part2`;
     // router.push(`/instructor/courses/${courseID}/courseSpecs/part2`);
+    window.location.href = `/instructor/courses/${cookies.instance_id}/courseSpecs/part2`;
   };
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2 ">
+      <div className="flex flex-row w-screen h-screen mt-2 scrollbar-none">
         <InstructorDashboard />
         <CustomReactToPdf targetRef={refToImgBlob} filename="part1.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 relative "
+          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 scrollbar-none "
           
         >
-          <div className="contentAddUser2 flex flex-col gap-10  " ref={refToImgBlob}>
-            {/* {isSubmitting && (
-              <div className="absolute inset-0 bg-gray-700 bg-opacity-60 flex items-center justify-center z-30 border rounded-2xl">
-                <Loader.Triangle
-                  type="ThreeDots"
-                  color="#00BFFF"
-                  height={80}
-                  width={80}
-                />
-              </div>
-            )} */}
+          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
+            <Navbar cookies={cookies} id={courseID} />
             <p className="underline mb-1">-Course Data:</p>
             <div className="flex gap-20 justify-center ">
               <div className="flex flex-col gap-5 w-1/3">

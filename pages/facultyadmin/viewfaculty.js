@@ -6,11 +6,11 @@ import FacultyList from "@/components/user/FacultyList";
 import FacultyadminDashboard from "@/components/FacultyadminDashboard";
 
 const viewfaculty = ({ cookies }) => {
-   /* if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
-    }*/
-    
+    }
 
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
     console.log(cookies.token);
     const router = useRouter();
     const [faculty, setFaculty] = useState([]);
@@ -32,7 +32,7 @@ const viewfaculty = ({ cookies }) => {
             let arr = data.data;
 
             arr = arr.map((e) => {
-                return { name: e.name, id: e._id, academicYears: e.academicYears, dean: e.dean, about: e.about,competences:e.competences };
+                return { name: e.name, id: e._id, academicYears: e.academicYears, dean: e.dean, about: e.about, competences: e.competences };
             });
             setFaculty(arr);
         } catch (e) {

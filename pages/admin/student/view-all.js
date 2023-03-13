@@ -11,7 +11,7 @@ const Students = ({ cookies }) => {
   if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const router = useRouter();
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);

@@ -8,6 +8,7 @@ import cn from "classnames";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part8 = ({ cookies }) => {
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const [isRunning, setIsRunning] = useState(true);
 
   const refToImgBlob = useRef();
@@ -305,7 +306,7 @@ const part8 = ({ cookies }) => {
           className="bg-sky-50 h-auto w-screen flex flex-col justify-center items-center text-black ml-1 relative overflow-auto "
         >
           <div
-            className="contentAddUser2 flex flex-col gap-1 mb-24 py-20  "
+            className="contentAddUser2 flex flex-col gap-1 mb-24 py-20 scrollbar-none "
             ref={refToImgBlob}
           >
             <table className="table-fixed border-collapse mb-[10rem]">

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Cookies from "js-cookie";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { useRef } from "react";
 import React from 'react';
@@ -11,13 +11,54 @@ const assigninstrctor = ({ cookies }) => {
         return <div className="error">404 could not found</div>;
     }
     const [msg, setMsg] = useState("");
+    const [courseArr, setCourse] = useState([]);
+    const [instructorArr, setInstructor] = useState([]);
     const closeMsg = () => {
         setMsg("");
     };
     const token = Cookies.get("token");
-    const id1 = useRef();
-    const id2 = useRef();
-
+    const course = useRef();
+    const instructor = useRef();
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+    useEffect(() => {
+        async function getCourse() {
+            const resp = await fetch(`${process.env.url}api/v1/courses/original-courses/`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            });
+            const data = await resp.json();
+            console.log(data);
+            const newData = data.data.map((e) => {
+                return { name: e.name, id: e._id };
+            });
+            setCourse(newData);
+            
+        }
+        async function getInstructor() {
+            const resp = await fetch(`${process.env.url}api/v1/users/staff`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            });
+            const data = await resp.json();
+            const filtered = data.data.filter((e)=>{ 
+                return e.role === 'instructor';
+            });
+            console.log(filtered);
+            const newData = filtered.map((e) => {
+                
+                    return { name: e.name, id: e._id };
+                
+            });
+            setInstructor(newData);
+            console.log(newData);   
+        }
+        getCourse();
+        getInstructor();
+    }, []);
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -28,8 +69,8 @@ const assigninstrctor = ({ cookies }) => {
                     method: "PATCH",
 
                     body: JSON.stringify({
-                        instructorId: id1.current.value,
-                        courseId: id2.current.value,
+                        instructorId: course.current.value,
+                        courseId: instructor.current.value,
                     }),
                     headers: {
                         "Content-Type": "application/json",
@@ -61,7 +102,7 @@ const assigninstrctor = ({ cookies }) => {
         >
             <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
             <div class="ml-3 text-sm font-medium">
-                Something went wrong please try again
+                Failed to assign the instructor
                 <a href="#" class="font-semibold underline hover:no-underline"></a>.
             </div>
             <button
@@ -134,34 +175,38 @@ const assigninstrctor = ({ cookies }) => {
                     onSubmit={submitHandler}
                     className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
                     <div className="contentAddUser2 flex flex-col gap-10">
-                        <p className="font-normal">Courses {'>'} Assign Instrctor</p>
-                        <div className="flex flex-col gap-10 ">
+                        <p className="font-normal">Courses {'>'} Assign Instructor</p>
+                        <div className="flex gap-20 ">
+                            <div className="flex flex-col gap-5 w-1/3">
+                                <div>Course:</div>
+                                <select
+                                    ref={course}
+                                    id="small"
+                                    class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                                >
+                                    <option selected>Choose a Course</option>
+                                    {courseArr.map((e) => {
+                                        return <option value={e.id}>{e.name}</option>;
+                                    })}{" "}
+                                </select>
+                            </div>
                             <div className="flex flex-col gap-5  w-2/5">
-                                <div> Instrctor ID: </div>
-                                <input
-                                    type="text"
-                                    name='id1'
-                                    className="input-form  w-full"
-                                    ref={id1}
-
-                                />
+                                <div> Instructor:</div>
+                                <select
+                                    ref={instructor}
+                                    id="small"
+                                    class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                                >
+                                    <option selected>Choose an Instructor</option>
+                                    {instructorArr.map((e) => {
+                                        return <option value={e.id}>{e.name}</option>;
+                                    })}{" "}
+                                </select>
                             </div>
-
-                            <div className="flex flex-col gap-5 w-2/5">
-                                <div>Course ID:</div>
-                                <input
-                                    type="text"
-                                    name='id2'
-                                    className="input-form w-full"
-                                    ref={id2}
-                                />
-
-                            </div>
-                            {<div className="w-1/2 mt-10">{msg}</div>}
-
+                            
                         </div>
 
-
+                        {<div className="w-1/2 mt-10">{msg}</div>}
 
                         <div className="flex justify-end">
                             <button

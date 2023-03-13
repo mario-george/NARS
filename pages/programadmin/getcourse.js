@@ -10,11 +10,8 @@ const getcourse = ({ cookies }) => {
     if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
-    const handleClick = () => {
-        const header = ["name", "code", "academicYear", "faculty", "fullMark"];
-        const rows = course.map((item) => [item.name, item.code, item.academicYear, item.faculty, item.fullMark]);
-    };
-
+    
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
     console.log(cookies.token);
     const router = useRouter();
     const [course, setCourse] = useState([]);

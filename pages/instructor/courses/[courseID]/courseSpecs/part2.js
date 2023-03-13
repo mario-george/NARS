@@ -53,6 +53,7 @@ const part2 = ({ cookies }) => {
   const lvlb = useRef();
   const router = useRouter();
   const { courseID } = router.query;
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const submitHandler = async (e) => {
     buttonRef.current.click();
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRef } from "react";
 import Cookies from "js-cookie";
@@ -10,6 +10,25 @@ import FacultyadminDashboard from "@/components/FacultyadminDashboard";
 const updatefaculty = ({ cookies }) => {
     const token = Cookies.get("token");
     const [selectedItems, setSelectedItems] = useState([]);
+    const [facultyArr, setFaculty] = useState([]);
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+    useEffect(() => {
+        async function doThis() {
+            const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            });
+            const data = await resp.json();
+            console.log(data);
+            const newData = data.data.map((e) => {
+                return { name: e.name, id: e._id };
+            });
+            setFaculty(newData);
+        }
+        doThis();
+    }, []);
 
     const handleCheckboxChange = (value, isChecked) => {
         if (isChecked) {
@@ -18,10 +37,10 @@ const updatefaculty = ({ cookies }) => {
             setSelectedItems(selectedItems.filter((item) => item !== value));
         }
     };
-    /*if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
-      return <div className="error">404 could not found</div>;
-    }*/
-    const id = useRef();
+    if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
+        return <div className="error">404 could not found</div>;
+    }
+    const faculty = useRef();
     const [msg, setMsg] = useState("");
     const closeMsg = () => {
         setMsg("");
@@ -36,31 +55,31 @@ const updatefaculty = ({ cookies }) => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        try{
-        const r = await fetch(
-            `${process.env.url}api/v1/faculty/${id.current.value}`,
-            {
-                method: "PATCH",
-                body: JSON.stringify({
-                    academicYears:selectedItems
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    Authorization: "Bearer " + token,
-                },
+        try {
+            const r = await fetch(
+                `${process.env.url}api/v1/faculty/${faculty.current.value}`,
+                {
+                    method: "PATCH",
+                    body: JSON.stringify({
+                        academicYears: selectedItems
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            );
+            const resp = await r.json();
+            console.log(resp);
+            if (resp.status == "success") {
+                setMsg(success);
+            } else {
+                setMsg(fail);
             }
-        );
-        const resp = await r.json();
-        console.log(resp);
-        if (resp.status == "success") {
-            setMsg(success);
-        } else {
-            setMsg(fail);
+        } catch (e) {
+            console.log(e);
         }
-    } catch (e) {
-        console.log(e);
-    }
     };
 
     let fail = (
@@ -148,13 +167,17 @@ const updatefaculty = ({ cookies }) => {
                         <p className="font-normal">Faculty {'>'} Update Faculty</p>
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-1/3">
-                                <div>Faculty ID:</div>
-                                <input
-                                    type="text"
-                                    name='name'
-                                    className="input-form w-full"
-                                    ref={id}
-                                />
+                                <div>Faculty:</div>
+                                <select
+                                    ref={faculty}
+                                    id="small"
+                                    class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                                >
+                                    <option selected>Choose a Faculty</option>
+                                    {facultyArr.map((e) => {
+                                        return <option value={e.id}>{e.name}</option>;
+                                    })}{" "}
+                                </select>
                             </div>
                         </div>
                         <p className=" mb-0 ">Academic Years:</p>
@@ -167,7 +190,7 @@ const updatefaculty = ({ cookies }) => {
                                     onChange={handleCheckboxChange}
                                 />
                             ))}
-                            
+
                         </div>
                         <div className="flex gap-20 ">{<div className="w-1/2 mt-10">{msg}</div>}</div>
 

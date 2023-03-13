@@ -6,12 +6,12 @@ import { useSelector } from 'react-redux';
 import { useRef } from "react";
 import React from 'react';
 import InstructorDashboard from '@/components/InstructorDashboard';
-import { string } from "yup";
+import Navbar from "@/components/Navbar/Navbar"
 const addexam = ({ cookies }) => {
     if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
-
+    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
     const [msg, setMsg] = useState("");
     const closeMsg = () => {
         setMsg("");
@@ -22,9 +22,11 @@ const addexam = ({ cookies }) => {
     const token = Cookies.get("token");
     const name = useRef();
     const desc = useRef();
+    const router = useRouter();
+    const { courseID } = router.query;
     const date = useRef();
 
-    useEffect(() => {
+   /* useEffect(() => {
         get_id();
     }, []);
     const get_id = async (e) => {
@@ -32,19 +34,19 @@ const addexam = ({ cookies }) => {
             e.preventDefault();
         }
         try {
-            const resp = await fetch(`${process.env.url}api/v1/courses/created-courses/${courseID}`, {
+            const resp = await fetch(`${process.env.url}api/v1/courses/created-courses/${cookies.instance_id}`, {
                 headers: {
                     Authorization: "Bearer " + cookies.token,
                 },
             });
             const data = await resp.json();
-            setId(data.data.course);
+            //setId(data.data.course);
             Cookies.set('original_id', data.data.course);
             //console.log(data.data.course);
         } catch (e) {
             console.log(e);
         }
-    };
+    };*/
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -166,7 +168,8 @@ const addexam = ({ cookies }) => {
                     onSubmit={submitHandler}
                     className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
                     <div className="contentAddUser2 flex flex-col gap-10 overflow-auto" >
-                        <p className="font-normal">Exams {'>'} Upload exam</p>
+                    <Navbar cookies={cookies} />
+                        {/*<p className="font-normal">Exams {'>'} Upload exam</p>*/}
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-1/3">
                                 {/*final quiz midterm*/}
@@ -218,7 +221,7 @@ const addexam = ({ cookies }) => {
                                 file:bg-gray-200 file:text-gray-700
                                 hover:file:cursor-pointer hover:file:bg-amber-50
                                 hover:file:text-amber-700
-                              "  onChange={(e) => setSelectedFile(e.target.files[0])} />
+                                "  onChange={(e) => setSelectedFile(e.target.files[0])} />
 
                             </div>
                         </div>

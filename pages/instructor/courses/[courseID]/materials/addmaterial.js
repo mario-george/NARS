@@ -1,13 +1,14 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import { useState,useEffect } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { useRef } from "react";
 import React from 'react';
-import FacultyadminDashboard from '@/components/FacultyadminDashboard';
-const assigninstrctor = ({ cookies }) => {
-    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+import InstructorDashboard from '@/components/InstructorDashboard';
+import Navbar from "@/components/Navbar/Navbar"
+const addmaterial = ({ cookies }) => {
+    if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
@@ -15,39 +16,56 @@ const assigninstrctor = ({ cookies }) => {
     const closeMsg = () => {
         setMsg("");
     };
-    const token = Cookies.get("token");
-    const faculty = useRef();
-    const [facultyArr, setFaculty] = useState([]);
 
-    useEffect(() => {
-        async function doThis() {
-            const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
+    const [selectedFile, setSelectedFile] = useState(null);
+    const router = useRouter();
+    const { courseID } = router.query;
+
+    const token = Cookies.get("token");
+    const name = useRef();
+    const desc = useRef();
+    const date = useRef();
+
+   /* useEffect(() => {
+        get_id();
+    }, []);
+    const get_id = async (e) => {
+        if (e) {
+            e.preventDefault();
+        }
+        try {
+            const resp = await fetch(`${process.env.url}api/v1/courses/created-courses/${courseID}`, {
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + token,
+                    Authorization: "Bearer " + cookies.token,
                 },
             });
             const data = await resp.json();
-            console.log(data);
-            const newData = data.data.map((e) => {
-                return { name: e.name, id: e._id };
-            });
-            setFaculty(newData);
+           // setId(data.data.course);
+            Cookies.set('original_id', data.data.course);
+            //console.log(data.data.course);
+        } catch (e) {
+            console.log(e);
         }
-        doThis();
-    }, []);
+    };*/
 
     const submitHandler = async (e) => {
         e.preventDefault();
+
+        // console.log(origninal_id);
+        const data = new FormData();
+        data.append("materialsPaths", selectedFile);
+        data.append("name", name.current.value);
+        data.append("description", desc.current.value);
+        data.append("course", cookies.original_id);
+
         try {
             const r = await fetch(
-                `${process.env.url}api/v1/faculty/${faculty.current.value}`,
+                `${process.env.url}api/v1/courses/original-courses/uploadMaterials`,
                 {
-                    method: "DELETE",
-
+                    method: "PATCH",
+                    body: data,
                     headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
+                        Accept: "application/form-data",
                         Authorization: "Bearer " + token,
                     },
                 }
@@ -55,16 +73,18 @@ const assigninstrctor = ({ cookies }) => {
 
             const resp = await r.json();
             console.log(resp);
-            if (resp.status == "fail") {
-                setMsg(fail);
-            } else {
+            //console.log(origninal_id);
+            if (resp.status == "success") {
                 setMsg(success);
+            } else {
+                setMsg(fail);
             }
         } catch (e) {
             console.log(e);
         }
 
     };
+
 
     let fail = (
         <div
@@ -74,7 +94,7 @@ const assigninstrctor = ({ cookies }) => {
         >
             <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
             <div class="ml-3 text-sm font-medium">
-                Something went wrong please try again
+                Failed to upload the material
                 <a href="#" class="font-semibold underline hover:no-underline"></a>.
             </div>
             <button
@@ -110,7 +130,7 @@ const assigninstrctor = ({ cookies }) => {
         >
             <i class="fa-solid fa-circle-check"></i>
             <div class="ml-3 text-sm font-medium">
-                Faculty has been removed successfully
+                Material has been uploaded successfully
                 <a href="#" class="font-semibold underline hover:no-underline"></a>
             </div>
             <button
@@ -142,38 +162,60 @@ const assigninstrctor = ({ cookies }) => {
     return (
         <>
             <div className="flex flex-row w-screen h-screen mt-2">
-                <FacultyadminDashboard />
+                <InstructorDashboard />
                 <form
                     onSubmit={submitHandler}
                     className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
-                    <div className="contentAddUser2 flex flex-col gap-10">
-                        <p className="font-normal">Faculty {'>'} Delete Faculty</p>
-                        <div className="flex flex-col gap-10 ">
-                            <div className="flex flex-col gap-5  w-2/5">
-                                <div> Faculty: </div>
-                                <select
-                                    ref={faculty}
-                                    id="small"
-                                    class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
-                                >
-                                    <option selected>Choose a Faculty</option>
-                                    {facultyArr.map((e) => {
-                                        return <option value={e.id}>{e.name}</option>;
-                                    })}{" "}
-                                </select>
+                    <div className="contentAddUser2 flex flex-col gap-10 overflow-auto" >
+                    <Navbar cookies={cookies} />
+                        {/*<p className="font-normal">Materials {'>'} Upload materials</p>*/}
+                        <div className="flex gap-20 ">
+                            <div className="flex flex-col gap-5 w-1/3">
+                                {/*final quiz midterm*/}
+                                <div>Name:</div>
+                                <input
+                                    type="text"
+                                    name='name'
+                                    className="input-form w-full"
+                                    ref={name}
+                                />
                             </div>
+                            <div className="flex flex-col gap-5  w-2/5">
+                                <div> Description:</div>
+                                <input
+                                    type="text"
+                                    name='desc'
+                                    className="input-form w-full"
+                                    ref={desc}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex gap-20 ">
+                            <div className="flex flex-col gap-5w-1/3">
 
-                            {<div className="w-1/2 mt-10">{msg}</div>}
+                                <div> Select file:</div>
+                                <input type="file" class="text-sm text-grey-500
+                                file:mr-5 file:py-3 file:px-10
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-medium
+                                file:bg-gray-200 file:text-gray-700
+                                hover:file:cursor-pointer hover:file:bg-amber-50
+                                hover:file:text-amber-700
+                                "  onChange={(e) => setSelectedFile(e.target.files[0])} />
 
+                            </div>
                         </div>
 
 
+                        <div className="flex gap-20 ">
+                            {<div className="w-1/2 mt-10">{msg}</div>}
+                        </div>
 
                         <div className="flex justify-end">
                             <button
                                 type="submit"
                                 class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                Delete
+                                Upload
                             </button>
                         </div>
                     </div>
@@ -182,4 +224,4 @@ const assigninstrctor = ({ cookies }) => {
         </>
     );
 };
-export default assigninstrctor;
+export default addmaterial;

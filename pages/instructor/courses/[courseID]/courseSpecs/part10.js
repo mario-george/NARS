@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useRef } from "react";
+import { useRef,useEffect } from "react";
 import Cookies from "js-cookie";
 import Checkbox from "@/components/checkbox/checkbox";
 import InstructorDashboard from "@/components/InstructorDashboard";
@@ -43,6 +43,7 @@ const part10 = ({ cookies }) => {
       </>
     );
   }
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const closeMsg = () => {
     setMsg("");
   };

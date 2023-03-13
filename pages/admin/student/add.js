@@ -3,12 +3,13 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import AdminDashBoard from "@/components/AdminDashBoard";
-import XLSX from "xlsx";
-import { read, utils } from "xlsx";
+import { handleFile } from "../../../common/uploadFile";
+
 const addStudent = ({ cookies }) => {
   if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   useEffect(() => {
     async function doThis() {
       const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
@@ -167,24 +168,7 @@ const addStudent = ({ cookies }) => {
     setExportModalIsOpen(false);
     setMsg(success);
   }
-  function handleFile(event) {
-    const files = event.target.files;
-    const f = files[0];
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const data = new Uint8Array(event.target.result);
-      const workbook = read(data, { type: "array" });
-      const firstSheet = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[firstSheet];
-      const sheetData = utils.sheet_to_json(worksheet);
-      console.log(sheetData);
-      setData(sheetData);
-      setExportModalIsOpen(true);
-      document.body.classList.toggle("overflow-hidden");
-    };
-    reader.readAsArrayBuffer(f);
-  }
   return (
     <>
       {exportModalIsOpen ? (
@@ -311,7 +295,13 @@ const addStudent = ({ cookies }) => {
                   type="file"
                   id="selectFile"
                   class="hidden"
-                  onChange={handleFile}
+                  onChange={(e) =>
+                    handleFile(e, (data) => {
+                      setData(data);
+                      setExportModalIsOpen(true);
+                      document.body.classList.toggle("overflow-hidden");
+                    })
+                  }
                 />
                 <label
                   for="selectFile"
