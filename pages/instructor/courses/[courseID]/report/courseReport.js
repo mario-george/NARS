@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import Link from "next/link";
+import Navbar from "@/components/Navbar/Navbar";
 import {
   Chart as ChartJS,
   BarElement,
@@ -50,10 +51,13 @@ const courseReport = ({ cookies }) => {
   return (
     <div className="flex flex-row w-screen h-screen mt-2">
       <InstructorDashboard />
-      <div className="bg-sky-50 h-screen w-screen flex flex-col mt-2 items-center justify-center">
-        {/* {codes && codes.competences && codes.competences.length > 0 && ( */}
-        {/* )} */}
-        <Graph competence={competence} avgValues={avgValues} />
+      <div className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
+        <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
+          <Navbar cookies={cookies} />
+          <div className="w-full h-full flex justify-center items-center">
+            <Graph competence={competence} avgValues={avgValues} />
+          </div>
+        </div>
       </div>
     </div>
   );
