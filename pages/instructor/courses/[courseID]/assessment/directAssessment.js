@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import InstructorDashboard from "../../../../../components/InstructorDashboard";
 import { handleFile } from "../../../../../common/uploadFile";
+import Navbar from "@/components/Navbar/Navbar";
 
 function directAssessment({ cookies }) {
   const finalQuestions = useRef([]);
@@ -40,6 +41,7 @@ function directAssessment({ cookies }) {
   };
 
   const submitQuestions = async () => {
+    let shouldReturn = false;
     if (isReady.current[0] && isReady.current[1] && isReady.current[2]) {
       const allQuestions = finalQuestions.current.concat(
         midtermQuestions.current,
@@ -114,61 +116,66 @@ function directAssessment({ cookies }) {
     <>
       {courseInstance && courseInstance.course && (
         <div className=" flex flex-row w-screen h-screen mt-2">
-          <InstructorDashboard
-            onOriginalCourseReceived={(course) => (course.current = course)}
-          />
-          <div className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center py-24 text-black ml-1 overflow-y-scroll">
-            <label className=" text-black text-2xl mb-5">
-              Upload Grades to Submit Direct Assessment
-            </label>
-            <UploadFileComponent
-              title="Final Exam"
-              competences={courseInstance.course.competences}
-              onQuestionsUpdated={(questions) =>
-                (finalQuestions.current = questions)
-              }
-              onQuestionsReady={() => (isReady.current[0] = true)}
-              isRequired={isRequired[0]}
-            />
-            <UploadFileComponent
-              title="Midterm Exam"
-              competences={courseInstance.course.competences}
-              onQuestionsUpdated={(questions) =>
-                (midtermQuestions.current = questions)
-              }
-              onQuestionsReady={() => (isReady.current[1] = true)}
-              isRequired={isRequired[1]}
-            />
-            <UploadFileComponent
-              title="Supports"
-              competences={courseInstance.course.competences}
-              onQuestionsUpdated={(questions) => (supports.current = questions)}
-              onQuestionsReady={() => (isReady.current[2] = true)}
-              isRequired={isRequired[2]}
-            />
-            <div>
-              <button
-                onClick={submitQuestions}
-                className=" text-blue-500 rounded border-2 border-blue-400 px-4 py-2 hover:bg-blue-500 hover:text-white mt-6"
-              >
-                Submit
-              </button>
-            </div>
-            {message.message != "" && (
-              <div className="w-full flex ml-40 mt-6">
-                {
-                  <div
-                    className={
-                      message.isSuccess
-                        ? "bg-green-600 py-2 px-6 text-white rounded"
-                        : "bg-red-600 py-2 px-6 text-white rounded"
-                    }
+          <InstructorDashboard />
+          <div className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
+            <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
+              <Navbar cookies={cookies} />
+              <div className=" flex flex-col items-center justify-center">
+                <label className=" text-black text-2xl mb-5">
+                  Upload Grades to Submit Direct Assessment
+                </label>
+                <UploadFileComponent
+                  title="Final Exam"
+                  competences={courseInstance.course.competences}
+                  onQuestionsUpdated={(questions) =>
+                    (finalQuestions.current = questions)
+                  }
+                  onQuestionsReady={() => (isReady.current[0] = true)}
+                  isRequired={isRequired[0]}
+                />
+                <UploadFileComponent
+                  title="Midterm Exam"
+                  competences={courseInstance.course.competences}
+                  onQuestionsUpdated={(questions) =>
+                    (midtermQuestions.current = questions)
+                  }
+                  onQuestionsReady={() => (isReady.current[1] = true)}
+                  isRequired={isRequired[1]}
+                />
+                <UploadFileComponent
+                  title="Supports"
+                  competences={courseInstance.course.competences}
+                  onQuestionsUpdated={(questions) =>
+                    (supports.current = questions)
+                  }
+                  onQuestionsReady={() => (isReady.current[2] = true)}
+                  isRequired={isRequired[2]}
+                />
+                <div>
+                  <button
+                    onClick={submitQuestions}
+                    className=" text-blue-500 rounded border-2 border-blue-400 px-4 py-2 hover:bg-blue-500 hover:text-white mt-6"
                   >
-                    {message.message}
+                    Submit
+                  </button>
+                </div>
+                {message.message != "" && (
+                  <div className="w-full flex ml-40 mt-6">
+                    {
+                      <div
+                        className={
+                          message.isSuccess
+                            ? "bg-green-600 py-2 px-6 text-white rounded"
+                            : "bg-red-600 py-2 px-6 text-white rounded"
+                        }
+                      >
+                        {message.message}
+                      </div>
+                    }
                   </div>
-                }
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
       )}
