@@ -7,8 +7,6 @@ import Cookies from "js-cookie";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import ReactDOMServer from "react-dom/server";
-import { useCookies } from "react-cookie";
-import * as Loader from "react-loader-spinner";
 import Navbar from "@/components/Navbar/Navbar"
 
 const part1 = ({ cookies }) => {

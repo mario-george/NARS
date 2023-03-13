@@ -41,7 +41,7 @@ const part4 = ({ cookies }) => {
     );
   }
   const router = useRouter();
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => { document.querySelector("body").classList.add("scrollbar-none") });
   const closeMsg = () => {
     setMsg("");
   };
@@ -136,7 +136,7 @@ const part4 = ({ cookies }) => {
     console.log(data);
     const { course } = data;
     const resp2 = await fetch(
-      `${process.env.url}api/v1/courses/original-courses/?_id=${data.data.course}`,
+      `${process.env.url}api/v1/courses/original-courses/?_id=${data.data.course._id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -594,17 +594,17 @@ const part4 = ({ cookies }) => {
             </table>
 
           </div>
-            <div className="flex justify-between absolute bottom-44 right-24">
-              <div>{msg}</div>
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  >
-                    Next
-                  </button>
-                </div>
+          <div className="flex justify-between absolute bottom-44 right-24">
+            <div>{msg}</div>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              >
+                Next
+              </button>
             </div>
+          </div>
         </form>
       </div>
     </>

@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "npm run download-webviewer",
-    "download-webviewer": "npx @pdftron/webviewer-downloader"
+    "lint": "next lint"
   },
   "dependencies": {
     "@cyntler/react-doc-viewer": "^1.11.0",
@@ -19,7 +17,6 @@
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.11",
     "@next/font": "13.1.4",
-    "@pdftron/webviewer": "^8.12.0",
     "@react-pdf-viewer/core": "^3.11.0",
     "@react-pdf-viewer/default-layout": "^3.11.0",
     "@react-pdf/renderer": "^3.1.6",
@@ -48,6 +45,7 @@
     "rc-upload": "^4.3.4",
     "react": "^18.2.0",
     "react-alert-with-buttons": "^0.0.18",
+    "react-autocomplete": "^1.8.1",
     "react-chartjs-2": "^5.2.0",
     "react-custom-alert": "^1.0.4",
     "react-doc-viewer": "^0.1.5",
@@ -59,6 +57,7 @@
     "react-pdf-tailwind": "^2.1.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.0",
+    "react-to-pdf": "^0.0.14",
     "tailwind": "^4.0.0",
     "typescript": "^4.9.5",
     "xlsx": "^0.18.5",

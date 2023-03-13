@@ -156,14 +156,14 @@ buttonRef.current.click()
             <table className="table-auto">
               <thead>
                 <tr>
-                  <th className="border px-4 py-2">Assesments</th>
-                  <th className="border px-4 py-2">week</th>
-                  <th className="border px-4 py-2">Weight</th>
+                  <th className="border-2 px-4 py-2">Assesments</th>
+                  <th className="border-2 px-4 py-2">week</th>
+                  <th className="border-2 px-4 py-2">Weight</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="border px-4 py-2">
+                  <td className="border-2 px-4 py-2">
                     <label className="inline-flex items-center">
                       <input
                         type="text"
@@ -175,13 +175,13 @@ buttonRef.current.click()
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input type="number" name="week" ref={week0} />
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input
                         type="number"
@@ -194,7 +194,7 @@ buttonRef.current.click()
                 </tr>
 
                 <tr>
-                  <td className="border px-4 py-2">
+                  <td className="border-2 px-4 py-2">
                     <label className="inline-flex items-center">
                       <input
                         type="text"
@@ -206,13 +206,13 @@ buttonRef.current.click()
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input type="number" name="week" ref={week1} />
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input
                         type="number"
@@ -224,7 +224,7 @@ buttonRef.current.click()
                   </td>
                 </tr>
                 <tr>
-                  <td className="border px-4 py-2">
+                  <td className="border-2 px-4 py-2">
                     <label className="inline-flex items-center">
                       <input
                         type="text"
@@ -236,13 +236,13 @@ buttonRef.current.click()
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input type="number" name="week" ref={week2} />
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input
                         type="number"
@@ -254,7 +254,7 @@ buttonRef.current.click()
                   </td>
                 </tr>
                 <tr>
-                  <td className="border px-4 py-2">
+                  <td className="border-2 px-4 py-2">
                     <label className="inline-flex items-center">
                       <input
                         type="text"
@@ -266,13 +266,13 @@ buttonRef.current.click()
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input type="number" name="week" ref={week3} />
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input
                         type="number"
@@ -284,7 +284,7 @@ buttonRef.current.click()
                   </td>
                 </tr>
                 <tr>
-                  <td className="border px-4 py-2">
+                  <td className="border-2 px-4 py-2">
                     <label className="inline-flex items-center">
                       <input
                         type="text"
@@ -296,13 +296,13 @@ buttonRef.current.click()
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input type="number" name="week" ref={week4} />
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input
                         type="number"
@@ -314,7 +314,7 @@ buttonRef.current.click()
                   </td>
                 </tr>
                 <tr>
-                  <td className="border px-4 py-2">
+                  <td className="border-2 px-4 py-2">
                     <label className="inline-flex items-center">
                       <input
                         type="text"
@@ -326,13 +326,13 @@ buttonRef.current.click()
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input type="number" name="week" ref={week5} disabled/>
                     </label>
                   </td>
 
-                  <td className="border px-2 py-2 w-0.5">
+                  <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
                       <input type="number" name="weight" ref={weight5} />
                     </label>
