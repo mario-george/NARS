@@ -5,6 +5,9 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 import Navbar from "@/components/Navbar/Navbar"
 import ExamFileItem from '@/components/filesView/AssignFileItem'
 import ExamFileCard from '@/components/filesView/AssignFileCard'
+import Lottie from "lottie-react";
+import notFound from "./notFound.json"
+import { TbFileAlert } from 'react-icons/tb'
 
 const viewassignments = ({ cookies }) => {
     if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
@@ -71,9 +74,16 @@ const viewassignments = ({ cookies }) => {
                         onSubmit={submitHandler}
                         className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  ml-1 "
                     >
-                        <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
+                        <div className="contentAddUser2 flex flex-col gap-10 overflow-auto ">
                             <Navbar cookies={cookies} />
-                            <div>notthing</div>
+                            <div className="flex justify-center flex-col items-center">
+                                <Lottie animationData={notFound}
+                                    style={{ height: '400px', width: '400px' }} />
+                                <div className="font-semibold text-xl text-red-400 ">
+                                    <span><TbFileAlert style={{ fontSize: 30, display: "inline", marginBottom: 8 }} /></span>
+                                    There is not files yet
+                                </div>
+                            </div>
 
                         </div>
                     </form>

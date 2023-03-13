@@ -84,7 +84,7 @@ export default function InstructorDashboard() {
         <span className="ml-2">Profile</span>
       </a>
 
-      {header("courses", [
+      {header(<span><BsBook style={{ fontSize: 30, display: "inline", marginBottom: 0, marginRight: 9 }} />courses</span>, [
         Array(
           c.map((e) => {
             return (

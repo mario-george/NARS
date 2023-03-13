@@ -24,6 +24,6 @@ function HeaderElement({ id, name, createdAt,cookies }) {
         Cookies.set("instance_id", e);
         
     }
-    return header2(<a href={`/instructor/courses/${id}/courseSpecs/part1`} onClick={handel_set_cookies(id,cookies)}>{name}</a>, [], createdAt);
+    return header2(<a href={`/instructor/courses/${id}/courseSpecs/part1`} onClick={handel_set_cookies(id,cookies)}>{name}<br></br>{createdAt}</a>, []);
 }
 export default HeaderElement
