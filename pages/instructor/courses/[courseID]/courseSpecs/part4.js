@@ -494,9 +494,9 @@ const part4 = ({ cookies }) => {
             <table className="table-auto my-24">
               <thead>
                 <tr>
-                  <th className="border px-4 py-2">LO/Competences</th>
+                  <th className="border-2 px-4 py-2">LO/Competences</th>
                   {competences.map((e, i) => (
-                    <th key={i} className="border px-4 py-2">
+                    <th key={i} className="border-2 px-4 py-2">
                       {e}
                     </th>
                   ))}
@@ -513,12 +513,12 @@ const part4 = ({ cookies }) => {
                 </tr>
                 {Array.from({ length: numRows }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2">
+                    <td className="border-2 px-4 py-2">
                       {" "}
                       {arrays.LO[rowIndex].name}
                     </td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border px-4 py-2" key={colIndex}>
+                      <td className="border-2 px-4 py-2" key={colIndex}>
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -542,12 +542,12 @@ const part4 = ({ cookies }) => {
                 </tr>
                 {Array.from({ length: numRows2 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2">
+                    <td className="border-2 px-4 py-2">
                       {" "}
                       {arrays.LO2[rowIndex].name}
                     </td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border px-4 py-2" key={colIndex}>
+                      <td className="border-2 px-4 py-2" key={colIndex}>
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -571,12 +571,12 @@ const part4 = ({ cookies }) => {
                 </tr>
                 {Array.from({ length: numRows3 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2">
+                    <td className="border-2 px-4 py-2">
                       {" "}
                       {arrays.LO3[rowIndex].name}
                     </td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border px-4 py-2" key={colIndex}>
+                      <td className="border-2 px-4 py-2" key={colIndex}>
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"

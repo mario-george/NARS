@@ -10,10 +10,10 @@ export default function otp() {
     e.preventDefault();
     d(userActions.updateVerifyCode(otp.current.value));
     const r = await fetch(
-      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/verifyCode",
+      `${process.env.url}/api/v1/users/verifyCode`,
       {
         method: "POST",
-        body: JSON.stringify({ resetCode: otp.current.value, mode: "no-cors" }),
+        body: JSON.stringify({ verifyCode: otp.current.value }),
         headers: { "Content-Type": "application/json" },
       }
     );

@@ -39,11 +39,11 @@ const profile = ({ cookies }) => {
             <p className=" mb-1">Profile details:</p>
             <div className="flex w-full  gap-20 ">
               <div className="flex flex-col gap-5  w-2/5">
-                <div> Name</div>
+                <div> Role</div>
                 <input
                   type="text"
                   className="inputAddUser2  w-full"
-                  defaultValue={cookies.name}
+                  defaultValue={cookies.role}
                   ref={name}
                 />
               </div>

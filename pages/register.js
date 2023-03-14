@@ -16,9 +16,9 @@ export default function register() {
   const onSubmit = async (data) => {
     console.log(data.email);
     const r = await fetch(
-      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/signup",
+      `${process.env.url}/api/v1/users/signup`,
       {
-        mode: "no-cors",
+        
 
         method: "POST",
         body: JSON.stringify({ email: data.email }),

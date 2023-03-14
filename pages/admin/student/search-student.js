@@ -40,7 +40,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + cookies.token,
             // 'Custom-Header':code.current.value,
           },
           // body: JSON.stringify({

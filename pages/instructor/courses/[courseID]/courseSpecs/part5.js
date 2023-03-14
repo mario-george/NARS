@@ -227,13 +227,13 @@ const part69 = ({ cookies }) => {
             <table className="table-auto mb-[35rem] ">
               <thead>
                 <tr>
-                  <th className="border px-4 py-2">Week</th>
-                  <th className="border px-4 py-2">Topics</th>
-                  <th className="border px-4 py-2">
+                  <th className="border-2 px-4 py-2">Week</th>
+                  <th className="border-2 px-4 py-2">Topics</th>
+                  <th className="border-2 px-4 py-2">
                     Planned <br /> Hours
                   </th>
                   {outcomes.map((e, i) => (
-                    <th key={i} className="border px-4 py-2">
+                    <th key={i} className="border-2 px-4 py-2">
                       {e}
                     </th>
                   ))}
@@ -242,8 +242,8 @@ const part69 = ({ cookies }) => {
               <tbody>
                 {Array.from({ length: numRows }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td className="border px-4 py-2"> {[rowIndex + 1]}</td>
-                    <td className="border px-4 py-2 ">
+                    <td className="border-2 px-4 py-2"> {[rowIndex + 1]}</td>
+                    <td className="border-2 px-4 py-2 ">
                       <input
                         type="text"
                         name="topic"
@@ -251,7 +251,7 @@ const part69 = ({ cookies }) => {
                         onChange={(e) => handleTopicChange(rowIndex, e)}
                       />
                     </td>
-                    <td className="border px-4 py-2 ">
+                    <td className="border-2 px-4 py-2 ">
                       <input
                         name="hours"
                         type="number"
@@ -260,7 +260,7 @@ const part69 = ({ cookies }) => {
                       />
                     </td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border px-4 py-2" key={colIndex}>
+                      <td className="border-2 px-4 py-2" key={colIndex}>
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
@@ -277,7 +277,7 @@ const part69 = ({ cookies }) => {
               </tbody>
             </table>
           </div>
-              <div className="flex justify-end absolute bottom-44 right-24">
+              <div className="flex justify-end absolute  right-24">
                 <button
                   onClick={addRowWeek}
                   class="w-[7rem]  font-Roboto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base  px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"

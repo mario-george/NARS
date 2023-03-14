@@ -38,7 +38,7 @@ const profile = ({ cookies }) => {
                                 <input
                                     type="text"
                                     className="inputAddUser2 w-full"
-                                    value={role}
+                                    value={cookies.role}
                                     disabled
                                 />
                             </div>
@@ -47,27 +47,19 @@ const profile = ({ cookies }) => {
                                 <input
                                     type="text"
                                     className="inputAddUser2  w-full"
-                                    defaultValue={userName}
+                                    defaultValue={cookies.name}
                                     ref={name}
                                 />
                             </div>
                         </div>
                         <div className="flex gap-20 ">
-                            <div className="flex flex-col gap-5 w-1/3">
-                                <div>ID</div>
-                                <input
-                                    type="text"
-                                    className="inputAddUser2 w-full"
-                                    value={id}
-                                    disabled
-                                />
-                            </div>
-                            <div className="flex flex-col gap-5  w-2/5">
+                            
+                            <div className="flex flex-col gap-5  w-1/3">
                                 <div> Email </div>
                                 <input
                                     type="text"
                                     className="inputAddUser2  w-full"
-                                    value={email}
+                                    value={cookies.email}
                                     disabled
                                 />
                             </div>

@@ -123,7 +123,7 @@ const part1 = ({ cookies }) => {
           <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none py-[4rem]" ref={refToImgBlob}>
             <Navbar cookies={cookies} id={courseID} />  
             <p className="underline mb-1 ">-Course Data:</p>
-            <div className="flex gap-20 justify-center ">
+            <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Course Code & Title:</div>
                 <input
@@ -144,7 +144,7 @@ const part1 = ({ cookies }) => {
               </div>
             </div>
 
-            <div className="flex gap-20 justify-center ">
+            <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Specialization:</div>
                 <input
@@ -165,7 +165,7 @@ const part1 = ({ cookies }) => {
               </div>
             </div>
 
-            <div className="flex gap-20 justify-center ">
+            <div className="flex gap-20 j ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Lecture:</div>
                 <input

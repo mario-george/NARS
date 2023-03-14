@@ -21,9 +21,9 @@ const Navbar = ({cookies,id}) => {
           </li>
           <NavLinks cookies={cookies} id={id}/>
           <li>
-            <Link href={ `/instructor/courses/${cookies.instance_id}/report/courseReport`} className="py-7 px-3 inline-block  hover:opacity-25">
+            <a href={ `/instructor/courses/${cookies.instance_id}/report/courseReport`} className="py-7 px-3 inline-block  hover:opacity-25">
               Report
-            </Link>
+            </a>
           </li>
         </ul>
         <div className="md:block hidden">

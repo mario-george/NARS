@@ -77,16 +77,7 @@ const addexam = ({ cookies }) => {
               </div>
             </div>
             <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5 w-1/3">
-                <div>ID</div>
-                <input
-                  type="text"
-                  className="inputAddUser2 w-full"
-                  value={cookies._id}
-                  disabled
-                />
-              </div>
-              <div className="flex flex-col gap-5  w-2/5">
+              <div className="flex flex-col gap-5  w-1/3">
                 <div> Email </div>
                 <input
                   type="text"

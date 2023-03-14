@@ -66,29 +66,31 @@ const viewassignments = ({ cookies }) => {
     };
 
     if (exam.length === 0) {
-        return (
-            <>
-                <div className="flex flex-row w-screen h-screen mt-2">
-                    <InstructorDashboard />
-                    <form
-                        className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  ml-1 "
-                    >
-                        <div className="contentAddUser2 flex flex-col gap-10 overflow-auto ">
-                            <Navbar cookies={cookies} />
-                            <div className="flex justify-center flex-col items-center">
-                                <Lottie animationData={notFound}
-                                    style={{ height: '400px', width: '400px' }} />
-                                <div className="font-semibold text-xl text-red-400 ">
-                                    <span><TbFileAlert style={{ fontSize: 30, display: "inline", marginBottom: 8 }} /></span>
-                                    There is not files yet
+        
+            return (
+                <>
+                    <div className="flex flex-row w-screen h-screen mt-2">
+                        <InstructorDashboard />
+                        <form
+                            className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  ml-1 "
+                        >
+                            <div className="contentAddUser2 flex flex-col gap-10 overflow-auto ">
+                                <Navbar cookies={cookies} />
+                                <div className="flex justify-center flex-col items-center">
+                                    <Lottie animationData={notFound}
+                                        style={{ height: '400px', width: '400px' }} />
+                                    <div className="font-semibold text-xl text-red-400 ">
+                                        <span><TbFileAlert style={{ fontSize: 30, display: "inline", marginBottom: 8 }} /></span>
+                                        There is not files yet
+                                    </div>
                                 </div>
-                            </div>
 
-                        </div>
-                    </form>
-                </div>
-            </>
-        )
+                            </div>
+                        </form>
+                    </div>
+                </>
+            )
+        
     }
     else {
         return (

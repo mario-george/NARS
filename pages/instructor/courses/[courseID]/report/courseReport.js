@@ -17,10 +17,10 @@ import { Bar } from "react-chartjs-2";
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const courseReport = ({ cookies }) => {
-  const router = useRouter();
+  //const router = useRouter();
   const [competence, setCompetences] = useState([]);
   const [avgValues, setAvgValues] = useState([]);
-  const { courseID } = router.query;
+  //const { courseID } = router.query;
 
   useEffect(() => {
     getCourse();
@@ -29,7 +29,7 @@ const courseReport = ({ cookies }) => {
   const getCourse = async () => {
     try {
       const resp = await fetch(
-        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        `${process.env.url}api/v1/courses/created-courses/${cookies.instance_id}`,
         {
           headers: {
             Authorization: "Bearer " + cookies.token,

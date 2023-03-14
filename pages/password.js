@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 export default function password() {
   const completed = useSelector((s) => s.user.registerCompletionPart2);
   const info = useSelector((s) => s.user.info);
@@ -8,9 +9,9 @@ export default function password() {
     e.preventDefault();
 
     const r = await fetch(
-      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/completeSignup",
+      `${process.env.url}/api/v1/users/completeSignup`,
       {
-        mode: "no-cors",
+       
 
         method: "POST",
         body: JSON.stringify({
@@ -27,7 +28,7 @@ export default function password() {
     if (resp.status != "success") {
       alert("fail");
     } else {
-      Cookies.setItem("token", resp.token);
+      Cookies.set("token", resp.token);
       alert("success");
     }
   };

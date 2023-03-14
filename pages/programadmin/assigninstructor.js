@@ -7,7 +7,7 @@ import { useRef } from "react";
 import React from 'react';
 import ProgramAdminDashboard from '@/components/ProgramAdminDashboard';
 const assigninstrctor = ({ cookies }) => {
-    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "program admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     const [msg, setMsg] = useState("");

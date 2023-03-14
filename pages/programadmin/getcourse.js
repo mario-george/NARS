@@ -7,7 +7,7 @@ import UserList from "@/components/user/CourseList";
 import ProgramAdminDashboard from "@/components/ProgramAdminDashboard";
 
 const getcourse = ({ cookies }) => {
-    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "program admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     
