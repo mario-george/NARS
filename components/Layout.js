@@ -17,7 +17,7 @@ export default function Layout({ children, cookies }) {
 
   let logged = <div>{cookies.name}</div>;
   let not = (
-    <div className="flex items-center justify-center gap-10  ">
+    <><div className="flex items-center justify-center gap-10  ">
       <div className="translate-x-24"><MdOutlineLogin style={{ fontSize: 30 }} /></div>
       <Link
         href="/login"
@@ -25,14 +25,15 @@ export default function Layout({ children, cookies }) {
       >
         <div className="text translate-y-7 translate-x-10"> Login</div>
       </Link>
-      <div className="translate-x-14"><AiOutlineUsergroupAdd style={{ fontSize: 30 }}/></div>
+      <div className="translate-x-14"><AiOutlineUsergroupAdd style={{ fontSize: 30 }} /></div>
       <Link
         href="/register"
         className={router.pathname == "/register" ? "activeLink" : "normalLink"}
       >
         <div className="text  translate-y-7">Register</div>
       </Link>
-    </div>
+      
+    </div></>
   );
 
   const hamHandler = () => {
@@ -44,31 +45,19 @@ export default function Layout({ children, cookies }) {
       <div className="layout ">
         <div className="flex justify-between items-center md:mx-[3rem] h-[5rem]">
           <div className="flex space-x-8 items-center justify-center ">
-            {/* ham */}
-            {/* {loggedInStatus && (
-              <>
-                <button
-                  className={`block hamburger focus:outline-none md:hidden ${
-                    navStatus ? `` : `open`
-                  }`}
-                  type="button"
-                  onClick={hamHandler}
-                >
-                  <div class=" hamburger-top"></div>
-                  <div class="hamburger-middle"></div>
-                  <div class="hamburger-bottom"></div>
-                </button>
-              </>
-            )} */}
             <div className="flex flex-col space-y-2">
               <div className="text ">NARQA </div>
               <div className="text  ">Quality Assurance</div>
             </div>
           </div>
           {cookies.loggedInStatus ? logged : not}
+          
         </div>
+        
       </div>
+      
       <div>{children}</div>
+      
     </>
   );
 }

@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import Checkrole from "../components/checkrole/checkrole";
-// api/v1/users/login
+
 export default function Login({ cookies }) {
   console.log(cookies);
 
@@ -15,7 +15,6 @@ export default function Login({ cookies }) {
   });
   const email = useRef();
   const password = useRef();
-  const router = useRouter();
   const dispatch = useDispatch();
   const [invalidData, setInvalidData] = useState(false);
 
@@ -36,44 +35,18 @@ export default function Login({ cookies }) {
     if (resp.status == "fail") {
       setInvalidData(true);
     } else {
-      Cookies.set("token", resp.token);
-      Cookies.set("jwt", resp.token);
-      // resp.data.user.courses.forEach((c,i)=>{
-
-      //
-      // })
+      Cookies.set("token", resp.token,{ expires: 365 });
+      Cookies.set("jwt", resp.token,{ expires: 365 });
       const courses = JSON.stringify(resp.data.user.courses);
-
-      Cookies.set("courses", courses);
-      Cookies.set("name", resp.data.user.name);
-      Cookies.set("email", resp.data.user.email);
-      Cookies.set("_id", resp.data.user._id);
-      Cookies.set("role", resp.data.user.role);
-      console.log(resp.data.user.name);
-      Cookies.set("loggedInStatus", true);
+      Cookies.set("courses", courses,{ expires: 365 });
+      Cookies.set("name", resp.data.user.name,{ expires: 365 });
+      Cookies.set("email", resp.data.user.email,{ expires: 365 });
+      Cookies.set("_id", resp.data.user._id,{ expires: 365 });
+      Cookies.set("role", resp.data.user.role,{ expires: 365 });
+      console.log(resp.data.user.name,{ expires: 365 });
+      Cookies.set("loggedInStatus", true,{ expires: 365 });
       dispatch(userActions.toggleLoggedIn(true));
-
-      if (resp.data.user.role === "system admin") {
-        // router.push('', undefined, { shallow: true, onComplete: () => window.location.reload() });
-        // router.push('/', undefined, { shallow: true, onComplete: "window.location.reload()" });
-
-        window.location.href = "/admin/profile";
-        // router.push("/admin/profile", undefined, {
-        //   shallow: true,
-        //   onComplete: setTimeout(() => window.location.reload(), 100),
-        // });
-      } else if (resp.data.user.role === "instructor") {
-        window.location.href = "/instructor/profile";
-      } 
-      else if (resp.data.user.role === "program admin") {
-        window.location.href = "/programadmin/profile";
-      } 
-      else if (resp.data.user.role === "faculty admin") {
-        window.location.href = "/facultyadmin/profile";
-      } 
-      else {
-        alert("not known role");
-      }
+      window.location.href = "/profile";
     }
   };
   return (
@@ -128,7 +101,7 @@ export default function Login({ cookies }) {
           </div>
           {invalidData && (
             <span className="text-red-500 flex justify-center">
-              Invalid input{" "}
+              Wong email or passoword{" "}
             </span>
           )}
         </form>
