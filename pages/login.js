@@ -5,14 +5,11 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
-import Checkrole from "../components/checkrole/checkrole";
+
 
 export default function Login({ cookies }) {
   console.log(cookies);
 
-  useEffect(() => {
-    Checkrole(cookies);
-  });
   const email = useRef();
   const password = useRef();
   const dispatch = useDispatch();
