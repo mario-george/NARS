@@ -10,9 +10,10 @@ const addcourse = ({ cookies }) => {
     if (cookies.role != "program admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
-    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+    useEffect(() => { document.querySelector("body").classList.add("scrollbar-none") });
     const [msg, setMsg] = useState("");
     const [facultyArr, setFaculty] = useState([]);
+    const [levels, setLevels] = useState([]);
     const closeMsg = () => {
         setMsg("");
     };
@@ -23,21 +24,39 @@ const addcourse = ({ cookies }) => {
     const year = useRef();
     const mark = useRef();
 
-    useEffect(() => {
-        async function doThis() {
-            const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
+    async function getLevels(faculty) {
+        try {
+            const resp = await fetch(`${process.env.url}api/v1/faculty/${faculty.current.value}`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + token,
                 },
             });
-            const data = await resp.json();
-            console.log(data);
-            const newData = data.data.map((e) => {
-                return { name: e.name, id: e._id };
-            });
-            setFaculty(newData);
+            const arr = await resp.json();
+            console.log(arr);
+            const newArr = arr.data.academicYears;
+            setLevels(newArr);
+        } catch (e) { console.log(e) }
+    }
+
+    useEffect(() => {
+        async function doThis() {
+            try {
+                const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + token,
+                    },
+                });
+                const data = await resp.json();
+                console.log(data);
+                const newData = data.data.map((e) => {
+                    return { name: e.name, id: e._id };
+                });
+                setFaculty(newData);
+            } catch (e) { console.log(e) }
         }
+
         doThis();
     }, []);
 
@@ -185,26 +204,19 @@ const addcourse = ({ cookies }) => {
 
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-1/3 ">
-                                <div>Levels:</div>
+                                <div>Academic Level:</div>
 
                                 <select
                                     ref={year}
                                     id="small"
+                                    required
                                     class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
                                 >
                                     <option selected>Choose a year</option>
-
-                                    <option value="prep">Prep</option>
-                                    <option value="first">
-                                        First
-                                    </option>
-                                    <option value="second">
-                                        Second
-                                    </option>
-                                    <option value="third">Third</option>
-                                    <option value="fourth">
-                                        Fourth
-                                    </option>
+                                    
+                                    {levels.map((e) => {
+                                        return <option value={e}>{e}</option>;
+                                    })}{" "}
                                 </select>
                             </div>
                             <div className="flex flex-col gap-5  w-2/5">
@@ -213,6 +225,8 @@ const addcourse = ({ cookies }) => {
                                     ref={faculty}
                                     id="small"
                                     class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                                    onChange={() => getLevels(faculty)}
+                                    required
                                 >
                                     <option selected>Choose a Faculty</option>
                                     {facultyArr.map((e) => {

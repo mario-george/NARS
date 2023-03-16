@@ -7,7 +7,7 @@ import { useRef } from "react";
 import React from 'react';
 import FacultyadminDashboard from '@/components/FacultyadminDashboard';
 const assigninstrctor = ({ cookies }) => {
-    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );

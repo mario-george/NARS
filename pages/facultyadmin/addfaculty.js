@@ -5,19 +5,18 @@ import { createRef } from "react";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useSelector } from 'react-redux';
-import { useRef,useEffect } from "react";
+import { useRef, useEffect } from "react";
 import React from 'react';
 import FacultyadminDashboard from '@/components/FacultyadminDashboard';
 const addfaculty = ({ cookies }) => {
-    if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+    if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }
     const [msg, setMsg] = useState("");
     const closeMsg = () => {
         setMsg("");
     };
-    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
-    const [selectedItems, setSelectedItems] = useState([]);
+    useEffect(() => { document.querySelector("body").classList.add("scrollbar-none") });
     const [inputs, setInputs] = useState([]);
     const [inputs2, setInputs2] = useState([]);
     const handleAddInput = (e) => {
@@ -38,26 +37,48 @@ const addfaculty = ({ cookies }) => {
             },
         ]);
     };
-
-    const handleCheckboxChange = (value, isChecked) => {
-        if (isChecked) {
-            setSelectedItems([...selectedItems, value]);
-        } else {
-            setSelectedItems(selectedItems.filter((item) => item !== value));
-        }
+    const removeLO1 = (e, input2,input) => {
+        e.preventDefault();
+        setInputs2(
+            inputs2.filter((e) => {
+                return e != input2;
+            })  
+        );
+        setInputs(
+            inputs.filter((e) => {
+                return e != input;
+            })  
+        );
     };
+    const selectedItems = [];
+    const handleCheckboxChange = (year) => {
+        selectedItems.push(year.current.value);
+        choosen.current.value = selectedItems.map((e) => { return e })
+        console.log(selectedItems);
+    };
+    const handleReset = (e) => {
+        e.preventDefault();
+        selectedItems.length = 0;
+        choosen.current.value = selectedItems.map((e) => { return e });
+        console.log(selectedItems);
+    }
 
     const token = Cookies.get("token");
     const name = useRef();
     const id = useRef();
     const about = useRef();
+    const choosen = useRef();
+    const year = useRef();
+
 
     const items = [
-        "Prep",
-        "First",
-        "Second",
-        "Third",
-        "Fourth",
+        "prep",
+        "first",
+        "second",
+        "third",
+        "fourth",
+        "fifth",
+        "sixth"
     ];
 
 
@@ -74,15 +95,15 @@ const addfaculty = ({ cookies }) => {
             };
         });
         const competences =
-            arr1.map((a,index)=>{
-                const b=arr2[index];
-                return{
-                    "code":a.code,
-                    description:b.value,
+            arr1.map((a, index) => {
+                const b = arr2[index];
+                return {
+                    "code": a.code,
+                    description: b.value,
                 }
             }
             )
-        
+
         try {
             const r = await fetch(
                 `${process.env.url}api/v1/faculty/`,
@@ -107,7 +128,7 @@ const addfaculty = ({ cookies }) => {
 
             const resp = await r.json();
             console.log(resp);
-            console.log(competences);
+            console.log(selectedItems);
             //console.log(arr1);
             //console.log(arr2);
             if (resp.status == "success") {
@@ -197,12 +218,12 @@ const addfaculty = ({ cookies }) => {
 
     return (
         <>
-            <div className="flex flex-row w-screen h-screen mt-2">
+            <div className="flex flex-row w-screen h-screen mt-2 scrollbar-none">
                 <FacultyadminDashboard />
                 <form
                     onSubmit={submitHandler}
                     className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
-                    <div className="contentAddUser2 flex flex-col gap-10 overflow-auto" >
+                    <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none" >
                         <p className="font-normal">Faculty {'>'} Add Faculty</p>
                         <div className="flex gap-20 ">
                             <div className="flex flex-col gap-5 w-1/3">
@@ -226,29 +247,59 @@ const addfaculty = ({ cookies }) => {
                         </div>
 
                         <div className="flex gap-20 ">
-                            <div className="flex flex-col gap-5 w-full">
+                            <div className="flex flex-col gap-5 w-1/3">
                                 <div>About:</div>
-                                <textarea
-                                    rows="6"
+                                <input
+                                    type='text'
                                     name='about'
                                     className="w-full input-form"
-                                    placeholder="Type about the faculty"
                                     ref={about}
-                                >
-                                </textarea>
-                            </div>
-                        </div>
-
-                        <p className=" mb-0 ">Academic Years:</p>
-                        <div className="grid grid-cols-3 gap-4 ">
-                            {items.map((item) => (
-                                <Checkbox
-                                    key={item}
-                                    label={item}
-                                    value={item}
-                                    onChange={handleCheckboxChange}
                                 />
-                            ))}
+
+                            </div>
+                            <div className="flex flex-col gap-5 w-2/5 ">
+                                <div>Academic Levels:</div>
+
+                                <select
+                                    ref={year}
+                                    id="small"
+                                    required
+                                    class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                                    onChange={() => handleCheckboxChange(year)}
+                                >
+                                    <option selected>Choose a year</option>
+
+                                    {items.map((e) => {
+                                        return <option value={e}>{e}</option>;
+                                    })}{" "}
+                                </select>
+                            </div>
+
+                        </div>
+                        <div className="flex gap-20 ">
+
+                            <div className="flex flex-col gap-5  w-1/3">
+                                <div> Choosen levels: </div>
+                                <input
+                                    type='text'
+                                    name='choosen'
+                                    className="w-full input-form"
+                                    disabled
+                                    ref={choosen}
+                                />
+
+                            </div>
+                            <div className="flex flex-col gap-5 w-2/5 ">
+                                <div class="flex items-center justify-start mr-6 text-lg text-gray-700 capitalize mt-12 ">
+                                    <button
+                                        onClick={handleReset}
+                                        className="bg-blue-500 text-white py-2 px-4 rounded-md"
+                                    >
+                                        Reset levels
+                                    </button>
+                                </div>
+
+                            </div>
                         </div>
 
                         <div className="flex gap-20 ">
@@ -265,7 +316,7 @@ const addfaculty = ({ cookies }) => {
 
                                 <div className="grid grid-cols-2 ">
                                     <div className=''>
-                                        <div className='mb-5'>Code:</div>
+                                        <div className='mb-5'>Code: &emsp; &emsp; &emsp; &emsp; &emsp;Description:</div>
                                         {inputs.map((input, index) => {
                                             return (
 
@@ -276,23 +327,52 @@ const addfaculty = ({ cookies }) => {
                                                     className="input-form w-1/6"
                                                 />
 
+
                                             );
                                         })}
                                     </div>
-                                    <div className=''>
-                                        <div className='mb-5'>Description:</div>
+                                    <div className='-space-x-96 '>
+                                        <div className='mb-10  inline-block'></div>
                                         {inputs2.map((input2, index) => {
+                                            const input=inputs[index]
                                             return (
+                                                <div className='relative'>
+                                                    <input
+                                                        key={index}
+                                                        type="text"
+                                                        ref={input2.ref}
+                                                        className="input-form w-3/6"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => removeLO1(e, input2,input)}
+                                                        className="ml-100 absolute bottom-2 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                                                        data-dismiss-target="#alert-border-2 "
+                                                        aria-label="Close"
+                                                    >
+                                                        <span className="sr-only ">Dismiss</span>
+                                                        <svg
+                                                            aria-hidden="true"
+                                                            className="w-5 h-5"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 20 20"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path
+                                                                fillRule="evenodd"
+                                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                                clipRule="evenodd"
+                                                            ></path>
+                                                        </svg>
+                                                    </button>
 
-                                                <input
-                                                    key={index}
-                                                    type="text"
-                                                    ref={input2.ref}
-                                                    className="input-form w-full"
-                                                />
-
+                                                </div>
                                             );
-                                        })}
+
+
+                                        })
+                                        }
+
                                     </div>
                                 </div>
 

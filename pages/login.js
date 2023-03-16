@@ -98,7 +98,7 @@ export default function Login({ cookies }) {
           </div>
           {invalidData && (
             <span className="text-red-500 flex justify-center">
-              Wong email or passoword{" "}
+              Wrong email or passoword{" "}
             </span>
           )}
         </form>

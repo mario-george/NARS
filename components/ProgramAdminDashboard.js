@@ -66,7 +66,7 @@ export default function ProgramAdminDashboard() {
                     }
                     href="/programadmin/getcourse"
                 >
-                    Get courses
+                    View courses
                 </a>,
                 <a
                     className={

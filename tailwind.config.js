@@ -10,6 +10,10 @@ module.exports = {
         Rubik: ['Rubik', 'sans'],
         Roboto: ['Roboto', 'sans'],
       },
+      spacing: {
+        '100': '600px',
+        '9xl': '128rem',
+      },
     },
   },
   plugins: [
