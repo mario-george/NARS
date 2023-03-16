@@ -2,26 +2,21 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 export default function password() {
-  const completed = useSelector((s) => s.user.registerCompletionPart2);
-  const info = useSelector((s) => s.user.info);
+  const completed = useSelector((s) => s.registerCompletionPart2);
+  const info = useSelector((s) => s.info);
   const verifyCode = info.verifyCode;
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const r = await fetch(
-      `${process.env.url}/api/v1/users/completeSignup`,
-      {
-       
-
-        method: "POST",
-        body: JSON.stringify({
-          verifyCode,
-          password: input.password,
-          passwordConfirm: input.confirmPassword,
-        }),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const r = await fetch(`${process.env.url}/api/v1/users/completeSignup`, {
+      method: "POST",
+      body: JSON.stringify({
+        verifyCode,
+        password: input.password,
+        passwordConfirm: input.confirmPassword,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
 
     const resp = await r.json();
     console.log(resp);

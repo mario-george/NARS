@@ -1,19 +1,21 @@
 import { userActions } from "../components/store/userSlice";
+import { updateField } from "../components/store/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
-
+import { Router } from "react-router-dom";
 
 export default function Login({ cookies }) {
-  console.log(cookies);
-
+  const s = useSelector(s=>s.user)
+console.log(s)
   const email = useRef();
   const password = useRef();
   const dispatch = useDispatch();
   const [invalidData, setInvalidData] = useState(false);
+const router = useRouter()
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -32,18 +34,29 @@ export default function Login({ cookies }) {
     if (resp.status == "fail") {
       setInvalidData(true);
     } else {
-      Cookies.set("token", resp.token,{ expires: 365 });
-      Cookies.set("jwt", resp.token,{ expires: 365 });
+      Cookies.set("token", resp.token, { expires: 365 });
+      Cookies.set("jwt", resp.token, { expires: 365 });
       const courses = JSON.stringify(resp.data.user.courses);
-      Cookies.set("courses", courses,{ expires: 365 });
-      Cookies.set("name", resp.data.user.name,{ expires: 365 });
-      Cookies.set("email", resp.data.user.email,{ expires: 365 });
-      Cookies.set("_id", resp.data.user._id,{ expires: 365 });
-      Cookies.set("role", resp.data.user.role,{ expires: 365 });
-      console.log(resp.data.user.name,{ expires: 365 });
-      Cookies.set("loggedInStatus", true,{ expires: 365 });
+      Cookies.set("courses", courses, { expires: 365 });
+      
+      Cookies.set("name", resp.data.user.name, { expires: 365 });
+      Cookies.set("email", resp.data.user.email, { expires: 365 });
+      Cookies.set("_id", resp.data.user._id, { expires: 365 });
+      Cookies.set("role", resp.data.user.role, { expires: 365 });
+      console.log(resp.data.user.name, { expires: 365 });
+      Cookies.set("loggedInStatus", true, { expires: 365 });
       dispatch(userActions.toggleLoggedIn(true));
-      window.location.href = "/profile";
+      dispatch(updateField({ field: 'courses', value: courses}));
+      dispatch(updateField({ field: 'loggedInStatus', value: 'true' }));
+      dispatch(updateField({ field: 'role', value: resp.data.user.role }));
+      dispatch(updateField({ field: '_id', value: resp.data.user._id }));
+      dispatch(updateField({ field: 'email', value: resp.data.user.email }));
+      dispatch(updateField({ field: 'jwt', value: resp.token }));
+      dispatch(updateField({ field: 'token', value: resp.token }));
+      dispatch(updateField({ field: 'name', value: resp.data.user.name }));
+
+      // window.location.href = "/profile";
+      router.push('/profile')
     }
   };
   return (

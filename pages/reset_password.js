@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 export default function reset_password() {
-  const completed = useSelector((s) => s.user.registerCompletionPart2);
-  const info = useSelector((s) => s.user.info);
+  const completed = useSelector((s) => s.registerCompletionPart2);
+  const info = useSelector((s) => s.info);
   const verifycode = info.verifyCode;
   const submitHandler = async (e) => {
     e.preventDefault();

@@ -15,10 +15,10 @@ export default function LayoutLoggedIn({ children, cookies }) {
   const name = Cookies.get("name");
   const loggedInStatus = Cookies.get("loggedInStatus");
   const dispatch = useDispatch();
-  const navStatus = useSelector((s) => s.user.navStatus);
+  const navStatus = useSelector((s) => s.navStatus);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const userName = useSelector((s) => s.user.data.name);
+  const userName = useSelector((s) => s.data.name);
   d(userActions.toggleLoggedIn(loggedInStatus));
   let content;
   console.log(loggedInStatus);

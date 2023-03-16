@@ -1,5 +1,10 @@
 import Cookies from "js-cookie";
+import { updateField } from "@/components/store/userSlice";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 export default function Logout() {
+  const r = useRouter();
+  const dispatch = useDispatch();
   setTimeout(() => {
     Cookies.remove("token");
     Cookies.remove("data");
@@ -14,9 +19,19 @@ export default function Logout() {
     Cookies.remove("jwt");
     Cookies.remove("instance_id");
   }, 300);
-  
+
   setTimeout(() => {
-    window.location.href = "/login";
+    dispatch(updateField({ field: "courses", value: "null" }));
+    dispatch(updateField({ field: "loggedInStatus", value: "false" }));
+    dispatch(updateField({ field: "role", value: "null" }));
+    dispatch(updateField({ field: "_id", value: "null" }));
+    dispatch(updateField({ field: "email", value: "null" }));
+    dispatch(updateField({ field: "jwt", value: "null" }));
+    dispatch(updateField({ field: "token", value: "null" }));
+    dispatch(updateField({ field: "name", value: "null" }));
+
+    // window.location.href = "/login";
+    r.push("/login");
   }, 300);
   return <></>;
 }
