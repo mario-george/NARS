@@ -10,13 +10,15 @@ import { GiTeacher } from "react-icons/gi";
 import { FaUniversity } from "react-icons/fa";
 
 export default function AdminDashBoard() {
-  const router = useRouter();
+  const r = useRouter();
   // const navStatus = useSelector((s) => s.user.navStatus);
   const navStatus = false;
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());
-    window.location.href = "/logout";
+    r.push('/logout')
+
+    // window.location.href = "/logout";
   };
   return (
     <nav
@@ -24,14 +26,14 @@ export default function AdminDashBoard() {
         navStatus ? ` -translate-x-full` : `translate-x-0 `
       }`}
     >
-      <a className="link2 focus:text-green-400 " href="/admin/profile">
+      <Link className="link2 focus:text-green-400 " href="/admin/profile">
         <span>
           <CgProfile
             style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
           />
         </span>
         <span className="ml-2">Profile</span>
-      </a>
+      </Link>
 
       {header(
         <span>
@@ -46,7 +48,7 @@ export default function AdminDashBoard() {
           Students
         </span>,
         [
-          <a
+          <Link
             className={
               router.pathname === "/admin/student/add"
                 ? "activeLinkDashboard2"
@@ -55,8 +57,8 @@ export default function AdminDashBoard() {
             href="/admin/student/add"
           >
             Add Student
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname === "/admin/student/view-all"
                 ? "activeLinkDashboard2 w-full"
@@ -65,8 +67,8 @@ export default function AdminDashBoard() {
             href="/admin/student/view-all"
           >
             Students
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname === "/admin/student/search-student"
                 ? "activeLinkDashboard2"
@@ -75,7 +77,7 @@ export default function AdminDashBoard() {
             href="/admin/student/search-student"
           >
             Search student
-          </a>,
+          </Link>,
         ]
       )}
       {header(
@@ -91,7 +93,7 @@ export default function AdminDashBoard() {
           Staff
         </span>,
         [
-          <a
+          <Link
             className={
               router.pathname === "/admin/staff/add"
                 ? "activeLinkDashboard2"
@@ -100,8 +102,8 @@ export default function AdminDashBoard() {
             href="/admin/staff/add"
           >
             Add Staff
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname === "/admin/staff/view-all"
                 ? "activeLinkDashboard2"
@@ -110,8 +112,8 @@ export default function AdminDashBoard() {
             href="/admin/staff/view-all"
           >
             Staff
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname === "/admin/staff/search-staff"
                 ? "activeLinkDashboard2"
@@ -120,7 +122,7 @@ export default function AdminDashBoard() {
             href="/admin/staff/search-staff"
           >
             Search staff
-          </a>,
+          </Link>,
         ]
       )}
 

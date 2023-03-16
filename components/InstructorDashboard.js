@@ -14,11 +14,14 @@ import { GrAddCircle } from "react-icons/gr";
 export default function InstructorDashboard() {
   const [c, sC] = useState([]);
   const coursesRef = useRef([]);
+  const r = useRouter()
   const cookies = useSelector((s) => s.cookies);
+  const userState = useSelector((s) => s.user);
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());
-    window.location.href = "/logout";
+    // window.location.href = "/logout";
+    r.push('/logout')
   };
   const handel_set_cookies = (e) => {
     Cookies.set("instance_id", e);
@@ -29,13 +32,13 @@ export default function InstructorDashboard() {
 
     async function getCreatedCoursesForInstructor() {
       const data = await fetch(
-        `${process.env.url}api/v1/courses/created-courses?instructor=${cookies._id}`,
+        `${process.env.url}api/v1/courses/created-courses?instructor=${userState._id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + cookies.token,
+            Authorization: "Bearer " + userState.token,
           },
         }
       );
@@ -49,7 +52,7 @@ export default function InstructorDashboard() {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
-              Authorization: "Bearer " + cookies.token,
+              Authorization: "Bearer " + userState.token,
             },
           }
         );
