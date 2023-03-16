@@ -18,29 +18,63 @@ const create = ({ cookies }) => {
         console.log(e);
       }
     }
-    async function getCoursesNames() {
-      const d = await fetch(
-        `${process.env.url}api/v1/courses/original-courses`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + cookies.token,
-          },
-        }
-      );
-      const data = await d.json();
+    const getCoursesNames = async () => {
+      // const d = await fetch(
+      //   `${process.env.url}api/v1/courses/original-courses`,
+      //   {
 
-      console.log(data);
-      const newArr = data.data.filter((e) => {
-        return coursesParsed.map((id) => {
-          id === e._id;
-        });
-      });
-      setCoursesTitles(newArr);
+      //     method: "GET",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: "Bearer " + cookies.token,
+      //     },
+      //   }
+      // );
+      // const data = await d.json();
+
+      // console.log(data);
+      // const newArr = data.data.filter((e) => {
+      //   return coursesParsed.map((id) => {
+      //     id === e._id;
+      //   });
+      // });
+      let courses = Cookies.get('courses');
+
+    let ctemp = JSON.parse(courses);
+    if(!Array.isArray(ctemp)){
+      ctemp = [ctemp]
     }
+
+    const token = Cookies.get("token");
+
+    const userCourses = []
+
+    for (let i = 0; i < ctemp.length; i++) {
+      const c = ctemp[i];
+      const ocr = await fetch(`${process.env.url}api/v1/courses/original-courses/${c}`,{
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const o_course = await ocr.json();
+      // const cr = await fetch(`${process.env.url}api/v1/courses/created-courses/?course=${c}`,{
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Accept: "application/json",
+      //     Authorization: "Bearer " + token,
+      //   },
+      // });
+      // const course = await cr.json();
+      // if(course.results === 0){
+        userCourses.push({_id: o_course.data._id, name: o_course.data.name})
+      // }
+      // return userCourses;
+    }
+    setCoursesTitles(userCourses);
+  }
     getCoursesNames();
-    console.log(coursesParsed);
   }, []);
 
   const submitHandler = async (e) => {

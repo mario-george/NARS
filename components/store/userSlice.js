@@ -4,7 +4,7 @@ let initialState = {
   info: { verifyCode: "" },
   registerCompletionPart1: false,
   registerCompletionPart2: false,
-  data: { user: { name: "unnamed" } },
+  data: { user: { name: "unnamed", courses: [] } },
   loggedInStatus: false,
   navStatus: false,
   cookies: {},
@@ -36,6 +36,9 @@ const userSlice = createSlice({
     },
     setCookies: (s, a) => {
       s.cookies = a.payload;
+    },
+    setCourses: (s, a) => {
+      s.data.courses = a.payload;
     },
   },
 });
