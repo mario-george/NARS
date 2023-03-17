@@ -24,7 +24,7 @@ export default function AdminDashBoard() {
         navStatus ? ` -translate-x-full` : `translate-x-0 `
       }`}
     >
-    <a className="link2 focus:text-green-400 " href="/admin/profile">
+    <a className="link2 focus:text-green-400 " href="/profile">
     <span><CgProfile style={{ fontSize: 30 ,display:"inline",marginBottom:5}}/></span><span className="ml-2">Profile</span>
     </a>
 

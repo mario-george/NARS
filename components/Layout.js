@@ -6,16 +6,55 @@ import { userActions } from "./store/userSlice";
 import Cookies from "js-cookie";
 import { MdOutlineLogin } from 'react-icons/md'
 import { AiOutlineUsergroupAdd } from 'react-icons/ai'
+import Image from 'next/image'
+import { relative } from "path";
 export default function Layout({ children, cookies }) {
   const d = useDispatch();
 
   d(userActions.setCookies(cookies));
   const dispatch = useDispatch();
-  const navStatus = useSelector((s) => s.user.navStatus);
   const router = useRouter();
-  console.log(process.env.url);
 
-  let logged = <div>{cookies.name}</div>;
+  const [img, setImg] = useState();
+  useEffect(() => {
+
+    const fetchImage = async () => {
+      try {
+        const r = await fetch(`${process.env.url}api/v1/users/staff/getPhoto/${cookies._id}`, {
+          method: "GET",
+
+          headers: {
+            Accept: "application/form-data",
+            Authorization: "Bearer " + cookies.token,
+          },
+        });
+
+        const res = await r;
+        console.log(res);
+        const imageBlob = await res.blob();
+        const imageObjectURL = URL.createObjectURL(imageBlob);
+        console.log(imageObjectURL)
+        setImg(imageObjectURL);
+      } catch (e) { console.log(e) }
+    }
+    fetchImage();
+  }, []);
+
+
+  let logged = <a className="relative hover:underline hover:text-green-400" href="/profile">
+    <div>
+      <Image
+        src={img}
+        alt="no photo"
+        style={{ position: "absolute", left: -50, top: -6, borderRadius: "50%" }}
+        width={40}
+        height={50}
+        Layout={"fixed"}
+        quality={100}
+
+      />
+    </div>
+    <span className="">{cookies.name}</span></a>;
   let not = (
     <><div className="flex items-center justify-center gap-10  ">
       <div className="translate-x-24"><MdOutlineLogin style={{ fontSize: 30 }} /></div>
@@ -32,7 +71,7 @@ export default function Layout({ children, cookies }) {
       >
         <div className="text  translate-y-7">Register</div>
       </Link>
-      
+
     </div></>
   );
 
@@ -51,13 +90,13 @@ export default function Layout({ children, cookies }) {
             </div>
           </div>
           {cookies.loggedInStatus ? logged : not}
-          
+
         </div>
-        
+
       </div>
-      
+
       <div>{children}</div>
-      
+
     </>
   );
 }

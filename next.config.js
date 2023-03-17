@@ -4,6 +4,9 @@ const nextConfig = {
     // url: "http://ec2-52-3-250-20.compute-1.amazonaws.com/",
     url: "http://localhost:80/",
   },
+  images: {
+    domains: ['localhost'],
+  },
 };
 
 module.exports = nextConfig;

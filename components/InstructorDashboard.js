@@ -75,7 +75,7 @@ export default function InstructorDashboard() {
   }, []);
   return (
     <nav className="nav44 scrollbar-none">
-      <a className="link2 focus:text-green-400 " href="/instructor/profile">
+      <a className="link2 focus:text-green-400 " href="/profile">
         <span>
           <CgProfile
             style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
