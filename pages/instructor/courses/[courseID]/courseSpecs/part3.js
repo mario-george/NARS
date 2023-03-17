@@ -8,6 +8,12 @@ import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import BloomTaxonomyInput from "@/pages/pdf2/taxonomy";
 
 const part3 = ({ cookies }) => {
+  const userState= useSelector(s=>s.user)
+
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token
   const cognitiveDomainVerbs = [
     'add', 'acquire', 'analyze', 'abstract', 'appraise',
     'define', 'approximate', 'adapt', 'audit', 'animate', 'assess',
@@ -190,9 +196,7 @@ const part3 = ({ cookies }) => {
       </>
     );
   }
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
-    return <div className="error">404 could not found</div>;
-  }
+ 
   useEffect(() => { document.querySelector("body").classList.add("scrollbar-none") });
   const removeLO2 = (e, input) => {
     e.preventDefault();
@@ -321,7 +325,7 @@ const part3 = ({ cookies }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + cookies.token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -361,7 +365,9 @@ const part3 = ({ cookies }) => {
     // window.location.href="/instructor/coursespecs/part4"
     setTimeout(() => {
       console.log('capturing')
-      window.location.href = `/instructor/courses/${courseID}/courseSpecs/part4`;
+      // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part4`;
+    router.push(`/instructor/courses/${courseID}/courseSpecs/part4`);
+
     }, 1000)
   };
 

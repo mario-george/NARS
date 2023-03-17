@@ -7,6 +7,12 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part4 = ({ cookies }) => {
+  const userState= useSelector(s=>s.user)
+
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token
   const [isRunning, setIsRunning] = useState(true);
   const refToImgBlob = useRef();
   const buttonRef = useRef(null);
@@ -128,7 +134,7 @@ const part4 = ({ cookies }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + cookies.token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -141,7 +147,7 @@ const part4 = ({ cookies }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + cookies.token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -407,7 +413,7 @@ const part4 = ({ cookies }) => {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
-              Authorization: "Bearer " + cookies.token,
+              Authorization: "Bearer " + token,
             },
             body: JSON.stringify({ competences: cm }),
           }
@@ -418,7 +424,9 @@ const part4 = ({ cookies }) => {
         console.log(data);
         if (data.status === "success") {
           setMsg(success);
-          window.location.href = `/instructor/courses/${courseID}/courseSpecs/part5`;
+          // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part5`;
+    router.push(`/instructor/courses/${courseID}/courseSpecs/part5`);
+
         } else {
           setMsg(fail);
         }
@@ -440,7 +448,7 @@ const part4 = ({ cookies }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + cookies.token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -453,9 +461,6 @@ const part4 = ({ cookies }) => {
     console.log("affective");
     console.log(tableData3);
   };
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
-    return <div className="error">404 could not found</div>;
-  }
 
   const submitHandler = async (e) => {
     buttonRef.current.click();

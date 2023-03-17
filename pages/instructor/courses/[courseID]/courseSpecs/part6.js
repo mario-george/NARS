@@ -9,6 +9,12 @@ import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 
 const part7 = ({ cookies }) => {
+  const userState= useSelector(s=>s.user)
+
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token
   useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const [running, setIsRunning] = useState(true);
 
@@ -247,16 +253,14 @@ const part7 = ({ cookies }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + cookies.token,
+          Authorization: "Bearer " + token,
         },
       }
     );
     const resp = await r.json();
     console.log(resp);
   };
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
-    return <div className="error">404 could not found</div>;
-  }
+
 
   const submitHandler = async (e) => {
     buttonRef.current.click();
@@ -265,7 +269,9 @@ const part7 = ({ cookies }) => {
     setIsRunning(false);
     setTimeout(()=>{
 
-    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part7`;
+    // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part7`;
+    router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
+
   },1000)
   };
   const tableData22 = [

@@ -9,6 +9,7 @@ let initialState = {
   navStatus: false,
   cookies: {},
   _id:"null",
+  id:"null",
   name:"undefined",
   courses:"undefined",
   jwt:"undefined",

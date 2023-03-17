@@ -10,15 +10,14 @@ import { GiTeacher } from "react-icons/gi";
 import { FaUniversity } from "react-icons/fa";
 
 export default function AdminDashBoard() {
-  const r = useRouter();
-  // const navStatus = useSelector((s) => s.user.navStatus);
-  const navStatus = false;
+  const router = useRouter();
+  const navStatus = useSelector((s) => s.user.navStatus);
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());
-    r.push('/logout')
+    // router.push('/logout')
 
-    // window.location.href = "/logout";
+    window.location.href = "/logout";
   };
   return (
     <nav
@@ -26,7 +25,7 @@ export default function AdminDashBoard() {
         navStatus ? ` -translate-x-full` : `translate-x-0 `
       }`}
     >
-      <Link className="link2 focus:text-green-400 " href="/admin/profile">
+      <Link className="link2 focus:text-green-400 " href="/profile">
         <span>
           <CgProfile
             style={{ fontSize: 30, display: "inline", marginBottom: 5 }}

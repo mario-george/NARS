@@ -4,9 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import AdminDashBoard from "@/components/AdminDashBoard";
 import { handleFile } from "../../../common/uploadFile";
+import { useSelector } from "react-redux";
 
 const addStudent = ({ cookies }) => {
-  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+  const userState= useSelector(s=>s.user)
+  if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
   useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
@@ -15,7 +17,7 @@ const addStudent = ({ cookies }) => {
       const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + userState.token,
         },
       });
       const data = await resp.json();
@@ -121,7 +123,7 @@ const addStudent = ({ cookies }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: "Bearer " + userState.token,
       },
       body: JSON.stringify({
         code: code.current.value,
@@ -157,7 +159,7 @@ const addStudent = ({ cookies }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + userState.token,
         },
         body: JSON.stringify(obj),
       });

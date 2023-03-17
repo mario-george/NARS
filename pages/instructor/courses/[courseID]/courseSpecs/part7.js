@@ -8,6 +8,12 @@ import cn from "classnames";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part8 = ({ cookies }) => {
+  const userState= useSelector(s=>s.user)
+
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token
   useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const [isRunning, setIsRunning] = useState(true);
 
@@ -242,16 +248,14 @@ const part8 = ({ cookies }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + cookies.token,
+          Authorization: "Bearer " + token,
         },
       }
     );
     const resp = await r.json();
     console.log(resp);
   };
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
-    return <div className="error">404 could not found</div>;
-  }
+
 
   const submitHandler = async (e) => {
     buttonRef.current.click();
@@ -261,7 +265,9 @@ const part8 = ({ cookies }) => {
     // window.location.href="/instructor/coursespecs/part8"
     setTimeout(()=>{
 
-      window.location.href = `/instructor/courses/${courseID}/courseSpecs/part8`;
+      // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part8`;
+    router.push(`/instructor/courses/${courseID}/courseSpecs/part8`);
+
     },1000)
   };
   const tableData22 = [

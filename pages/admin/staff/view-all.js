@@ -6,8 +6,10 @@ import AdminDashBoard from "@/components/AdminDashBoard";
 import UserList from "@/components/user/UserList2";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
+import { useSelector } from "react-redux";
 const viewAll = ({ cookies }) => {
-  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+  const userState= useSelector(s=>s.user)
+  if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
   useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
@@ -30,7 +32,7 @@ const viewAll = ({ cookies }) => {
     saveAs(file, "staff.xlsx");
   };
 
-  console.log(cookies.token);
+  console.log(userState.token);
   const router = useRouter();
   const [staff, setStaff] = useState([]);
   useEffect(() => {
@@ -43,7 +45,7 @@ const viewAll = ({ cookies }) => {
     try {
       const resp = await fetch(`${process.env.url}api/v1/users/staff`, {
         headers: {
-          Authorization: "Bearer " + cookies.token,
+          Authorization: "Bearer " + userState.token,
         },
       });
       const data = await resp.json();

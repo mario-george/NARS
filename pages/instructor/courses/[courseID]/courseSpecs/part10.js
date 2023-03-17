@@ -20,6 +20,12 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 
 const part10 = ({ cookies }) => {
+  const userState= useSelector(s=>s.user)
+
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token
   const [isRunning, setIsRunning] = useState(true);
   const downloadMergedPDF = async () => {
     const pdfBase64 = localStorage.getItem("pdf1");
@@ -226,7 +232,6 @@ const part10 = ({ cookies }) => {
   );
   const router = useRouter();
   const { courseID } = router.query;
-  const token = Cookies.get("token");
   const [selectedItems, setSelectedItems] = useState([]);
   const [handler, setHandler] = useState(false);
   const addOtherHander = () => {

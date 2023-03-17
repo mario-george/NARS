@@ -20,8 +20,8 @@ export default function InstructorDashboard() {
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());
-    // window.location.href = "/logout";
-    r.push('/logout')
+    window.location.href = "/logout";
+    // r.push('/logout')
   };
   const handel_set_cookies = (e) => {
     Cookies.set("instance_id", e);

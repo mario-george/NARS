@@ -5,33 +5,32 @@ import { useDispatch } from "react-redux";
 export default function Logout() {
   const r = useRouter();
   const dispatch = useDispatch();
-  setTimeout(() => {
-    Cookies.remove("token");
-    Cookies.remove("data");
-    Cookies.remove("loggedInStatus");
-    Cookies.remove("role");
-    Cookies.remove("name");
-    Cookies.remove("email");
-    Cookies.remove("_id");
-    Cookies.remove("photo");
-    Cookies.remove("original_id");
-    Cookies.remove("courses");
-    Cookies.remove("jwt");
-    Cookies.remove("instance_id");
-  }, 300);
+  setTimeout(()=>{
+  Cookies.remove("token");
+  Cookies.remove("data");
+  Cookies.remove("loggedInStatus");
+  Cookies.remove("role");
+  Cookies.remove("name");
+  Cookies.remove("email");
+  Cookies.remove("_id");
+  Cookies.remove("photo");
+  Cookies.remove("original_id");
+  Cookies.remove("courses");
+  Cookies.remove("jwt");
+  Cookies.remove("instance_id");
 
-  setTimeout(() => {
-    dispatch(updateField({ field: "courses", value: "null" }));
-    dispatch(updateField({ field: "loggedInStatus", value: "false" }));
-    dispatch(updateField({ field: "role", value: "null" }));
-    dispatch(updateField({ field: "_id", value: "null" }));
-    dispatch(updateField({ field: "email", value: "null" }));
-    dispatch(updateField({ field: "jwt", value: "null" }));
-    dispatch(updateField({ field: "token", value: "null" }));
-    dispatch(updateField({ field: "name", value: "null" }));
+  dispatch(updateField({ field: "courses", value: "null" }));
+  dispatch(updateField({ field: "loggedInStatus", value: "false" }));
+  dispatch(updateField({ field: "role", value: "null" }));
+  dispatch(updateField({ field: "_id", value: "null" }));
+  dispatch(updateField({ field: "email", value: "null" }));
+  dispatch(updateField({ field: "jwt", value: "null" }));
+  dispatch(updateField({ field: "token", value: "null" }));
+  dispatch(updateField({ field: "name", value: "null" }));
 
-    // window.location.href = "/login";
-    r.push("/login");
-  }, 300);
-  return <></>;
+  r.push("/login");
+
+
+  },[1000])
+  return <div>Logging out ...</div>;
 }

@@ -5,12 +5,12 @@ import Cookies from "js-cookie";
 import AdminDashBoard from "@/components/AdminDashBoard";
 import UserList from "@/components/user/UserList";
 import UserCard from "@/components/user/UserCard";
+import { useSelector } from "react-redux";
 const SearchStudent = ({cookies}) => {
-  
-if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
-
-  return <div className='error'>404 could not found</div>
-}
+  const userState= useSelector(s=>s.user)
+  if (userState.role != "system admin" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
 
   const [view, setView] = useState(false);
   const router = useRouter();
@@ -40,7 +40,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + cookies.token,
+            Authorization: "Bearer " + userState.token,
             // 'Custom-Header':code.current.value,
           },
           // body: JSON.stringify({
@@ -82,7 +82,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + userState.token,
           },
         }
       );
@@ -106,7 +106,7 @@ if(cookies.role!='system admin'||cookies.loggedInStatus!='true'){
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + userState.token,
           },
           body: JSON.stringify({
             name: name.current.value,
