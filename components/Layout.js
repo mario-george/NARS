@@ -6,55 +6,69 @@ import { userActions } from "./store/userSlice";
 import Cookies from "js-cookie";
 import { MdOutlineLogin } from "react-icons/md";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
-import Image from 'next/image'
+import Image from "next/image";
 import { relative } from "path";
 export default function Layout({ children, cookies }) {
   const d = useDispatch();
 
   d(userActions.setCookies(cookies));
   const dispatch = useDispatch();
-  const userState= useSelector((s) => s.user);
-  console.log(userState)
   const router = useRouter();
+  const userState = useSelector((s) => s.user);
 
   const [img, setImg] = useState();
   useEffect(() => {
-
     const fetchImage = async () => {
       try {
-        const r = await fetch(`${process.env.url}api/v1/users/staff/getPhoto/${cookies._id}`, {
-          method: "GET",
+        const r = await fetch(
+          `${process.env.url}api/v1/users/staff/getPhoto/${userState._id}`,
+          {
+            method: "GET",
 
-          headers: {
-            Accept: "application/form-data",
-            Authorization: "Bearer " + cookies.token,
-          },
-        });
+            headers: {
+              Accept: "application/form-data",
+              Authorization: "Bearer " + cookies.token,
+            },
+          }
+        );
 
         const res = await r;
         console.log(res);
         const imageBlob = await res.blob();
         const imageObjectURL = URL.createObjectURL(imageBlob);
-        console.log(imageObjectURL)
+        console.log(imageObjectURL);
         setImg(imageObjectURL);
-      } catch (e) { console.log(e) }
-    }
+      } catch (e) {
+        console.log(e);
+      }
+    };
     fetchImage();
   }, []);
 
-
-  let logged = <a className="relative hover:underline hover:text-green-400" href="/profile">
-    <div>
-      <Image
-        src={img}
-        alt="no photo"
-        style={{ position: "absolute", left: -50, top: -6, borderRadius: "50%" }}
-        width={40}
-        height={50}
-        Layout={"fixed"}
-        quality={100}
-
-  let logged = <div>{userState.name}</div>;
+  let logged = (
+    <Link
+      className="relative hover:underline hover:text-green-400"
+      href="/profile"
+    >
+      <div>
+        <Image
+          src={img}
+          alt="no photo"
+          style={{
+            position: "absolute",
+            left: -50,
+            top: -6,
+            borderRadius: "50%",
+          }}
+          width={40}
+          height={50}
+          Layout={"fixed"}
+          quality={100}
+        />
+      </div>
+      <span className="">{userState.name}</span>
+    </Link>
+  );
   let not = (
     <>
       <div className="flex items-center justify-center gap-10  ">
@@ -96,7 +110,7 @@ export default function Layout({ children, cookies }) {
               <div className="text  ">Quality Assurance</div>
             </div>
           </div>
-          {userState.loggedInStatus==="true" ? logged : not}
+          {userState.loggedInStatus === "true" ? logged : not}
         </div>
       </div>
 
