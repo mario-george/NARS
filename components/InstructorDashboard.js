@@ -14,7 +14,7 @@ import { GrAddCircle } from "react-icons/gr";
 export default function InstructorDashboard() {
   const [c, sC] = useState([]);
   const coursesRef = useRef([]);
-  const r = useRouter()
+  const r = useRouter();
   const cookies = useSelector((s) => s.cookies);
   const userState = useSelector((s) => s.user);
   const dispatch = useDispatch();

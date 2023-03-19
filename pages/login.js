@@ -111,7 +111,7 @@ const router = useRouter()
           </div>
           {invalidData && (
             <span className="text-red-500 flex justify-center">
-              Wong email or passoword{" "}
+              Wrong email or passoword{" "}
             </span>
           )}
         </form>
