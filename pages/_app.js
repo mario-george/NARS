@@ -1,48 +1,36 @@
 import Layout from "../components/Layout";
-import LayoutLoggedIn from "../components/LayoutLoggedIn";
 import "../styles/styles.css";
 import Head from "next/head";
 import { PersistGate } from "redux-persist/integration/react";
-
 import { store, persistor } from "../components/store/store";
 import { Provider, useDispatch } from "react-redux";
-import Cookies from "js-cookie";
-import { useEffect } from "react";
 import cookie from "cookie";
 import App from "next/app";
-import { userActions } from "@/components/store/userSlice";
 function MyApp({ Component, pageProps, cookies }) {
-  // if (cookies.loggedInStatus == "false") {
+  if (Component.getPageLayout) {
+    return Component.getPageLayout(
+      <Provider store={store} className="scrollbar-none">
+        <PersistGate loading={null} persistor={persistor}>
+          <Component {...pageProps} cookies={cookies} />
+        </PersistGate>
+      </Provider>
+    );
+  }
+
   return (
     <>
       <Head>
         <title>NARQA Quality Assurance</title>
       </Head>
       <Provider store={store} className="scrollbar-none">
-      <PersistGate loading={null} persistor={persistor}>
-        <Layout cookies={cookies}>
-          <Component {...pageProps} cookies={cookies} />
-        </Layout>
+        <PersistGate loading={null} persistor={persistor}>
+          <Layout cookies={cookies}>
+            <Component {...pageProps} cookies={cookies} />
+          </Layout>
         </PersistGate>
-
       </Provider>
     </>
   );
-  // }
-  // if (cookies.loggedInStatus == "true") {
-  //   return (
-  //     <>
-  //       <Head>
-  //         <title>React Meetup</title>
-  //       </Head>
-  //       <Provider store={store}>
-  //         <LayoutLoggedIn cookies={cookies}>
-  //           <Component {...pageProps} cookies={cookies} />
-  //         </LayoutLoggedIn>
-  //       </Provider>
-  //     </>
-  //   );
-  // }
 }
 
 MyApp.getInitialProps = async (appContext) => {
@@ -61,14 +49,5 @@ MyApp.getInitialProps = async (appContext) => {
   // Return the cookies and page props as an object
   return { cookies, pageProps };
 };
-// export async function getServerSideProps(context) {
-//   const { req } = context;
-//   const cookies = cookie.parse(req.headers.cookie || "");
 
-//   return {
-//     props: {
-//       cookies,
-//     },
-//   };
-// }
 export default MyApp;

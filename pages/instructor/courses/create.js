@@ -2,10 +2,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
 const create = ({ cookies }) => {
-  const userState= useSelector(s=>s.user)
+  const userState = useSelector((s) => s.user);
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
@@ -92,7 +90,6 @@ const create = ({ cookies }) => {
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
-        <InstructorDashboard />
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"

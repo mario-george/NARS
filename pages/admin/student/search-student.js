@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState,useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import AdminDashBoard from "@/components/AdminDashBoard";
 import UserList from "@/components/user/UserList";
 import UserCard from "@/components/user/UserCard";
 import { useSelector } from "react-redux";
-const SearchStudent = ({cookies}) => {
-  const userState= useSelector(s=>s.user)
+const SearchStudent = ({ cookies }) => {
+  const userState = useSelector((s) => s.user);
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
@@ -28,7 +27,9 @@ const SearchStudent = ({cookies}) => {
   const faculty = useRef();
   const [tobeDeleted, setTobeDeleted] = useState();
   const [emptyArray, setEmptyArray] = useState(false);
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const submitHandler = async (e) => {
     if (e) {
       e.preventDefault();
@@ -244,7 +245,6 @@ const SearchStudent = ({cookies}) => {
           editModalIsOpen ? `bg-gray-500 opacity-60 overflow-hidden ` : null
         }`}
       >
-        <AdminDashBoard />
         <form
           onSubmit={submitHandler}
           className=" bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  "

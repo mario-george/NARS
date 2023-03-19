@@ -112,12 +112,12 @@ const NavLinks = ({cookies,id}) => {
                         </h1>
                         {mysublinks.sublink.map((slink) => (
                           <li className="text-sm text-gray-600 my-2.5">
-                            <a
+                            <Link
                               href={slink.link}
                               className="hover:text-primary hover:text-green-400"
                             >
                               {slink.name}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </div>
@@ -164,7 +164,7 @@ const NavLinks = ({cookies,id}) => {
                   >
                     {slinks.sublink.map((slink) => (
                       <li className="py-3 pl-14">
-                        <a href={slink.link}>{slink.name}</a>
+                        <Link href={slink.link}>{slink.name}</Link>
                       </li>
                     ))}
                   </div>

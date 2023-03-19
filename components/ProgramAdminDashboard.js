@@ -44,7 +44,7 @@ export default function ProgramAdminDashboard() {
           Programs
         </span>,
         [
-          <a
+          <Link
             className={
               router.pathname === "/programadmin/assignprogramcoordinator"
                 ? "activeLinkDashboard2"
@@ -53,8 +53,8 @@ export default function ProgramAdminDashboard() {
             href="/programadmin/assignprogramcoordinator"
           >
             Assign program coordinator
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname ===
               "/programadmin/assignprogramqualitycoordinator"
@@ -64,7 +64,7 @@ export default function ProgramAdminDashboard() {
             href="/programadmin/assignprogramqualitycoordinator"
           >
             Assign program quality coordinator
-          </a>,
+          </Link>,
         ]
       )}
       {header(
@@ -80,7 +80,7 @@ export default function ProgramAdminDashboard() {
           courses
         </span>,
         [
-          <a
+          <Link
             className={
               router.pathname === "/programadmin/addcourse"
                 ? "activeLinkDashboard2"
@@ -89,8 +89,8 @@ export default function ProgramAdminDashboard() {
             href="/programadmin/addcourse"
           >
             Create course
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname === "/programadmin/getcourse"
                 ? "activeLinkDashboard2"
@@ -99,8 +99,8 @@ export default function ProgramAdminDashboard() {
             href="/programadmin/getcourse"
           >
             View courses
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname === "/programadmin/assigninstructor"
                 ? "activeLinkDashboard2"
@@ -109,8 +109,8 @@ export default function ProgramAdminDashboard() {
             href="/programadmin/assigninstructor"
           >
             Assign instructor
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname === "/programadmin/assignta"
                 ? "activeLinkDashboard2"
@@ -119,7 +119,7 @@ export default function ProgramAdminDashboard() {
             href="/programadmin/assignta"
           >
             Assign TA
-          </a>,
+          </Link>,
         ]
       )}
       <button

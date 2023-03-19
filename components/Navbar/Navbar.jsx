@@ -15,15 +15,15 @@ const Navbar = ({cookies,id}) => {
         </div>
         <ul className="md:flex hidden uppercase items-center gap-8 font-[Poppins]">
           <li>
-            <a href={`/instructor/courses/${cookies.instance_id}/courseSpecs/part1`} className="py-7 px-3 inline-block  hover:opacity-25">
+            <Link href={`/instructor/courses/${cookies.instance_id}/courseSpecs/part1`} className="py-7 px-3 inline-block  hover:opacity-25">
               Specs
-            </a>
+            </Link>
           </li>
           <NavLinks cookies={cookies} id={id}/>
           <li>
-            <a href={ `/instructor/courses/${cookies.instance_id}/report/courseReport`} className="py-7 px-3 inline-block  hover:opacity-25">
+            <Link href={ `/instructor/courses/${cookies.instance_id}/report/courseReport`} className="py-7 px-3 inline-block  hover:opacity-25">
               Report
-            </a>
+            </Link>
           </li>
         </ul>
         <div className="md:block hidden">

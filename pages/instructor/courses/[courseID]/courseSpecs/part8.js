@@ -1,18 +1,17 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { createRef, useRef, useState ,useEffect} from "react";
+import { createRef, useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part69 = ({ cookies }) => {
-  const userState= useSelector(s=>s.user)
+  const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const token = userState.token
+  const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
 
   const refToImgBlob = useRef();
@@ -33,7 +32,7 @@ const part69 = ({ cookies }) => {
       } catch (error) {
         console.error("Failed to capture PDF:", error);
       }
-        setIsRunning(false);
+      setIsRunning(false);
     };
 
     return (
@@ -42,14 +41,15 @@ const part69 = ({ cookies }) => {
         <button ref={buttonRef} onClick={handleClick} hidden>
           Capture as PDF
         </button>
-        
       </>
     );
   }
   /*if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }*/
-    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const updateTotal = () => {
     weight5.current.value =
       Number(weight0.current.value) +
@@ -84,9 +84,8 @@ const part69 = ({ cookies }) => {
   const arr = [];
 
   const submitHandler = async (e) => {
+    buttonRef.current.click();
 
-buttonRef.current.click()
-    
     e.preventDefault();
 
     const r = await fetch(
@@ -144,22 +143,21 @@ buttonRef.current.click()
 
     // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part9`;
     router.push(`/instructor/courses/${courseID}/courseSpecs/part9`);
-
-
   };
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
-        <InstructorDashboard />
         <CustomReactToPdf targetRef={refToImgBlob} filename="part8.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 relative"
         >
-          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto" ref={refToImgBlob}>
+          <div
+            className="contentAddUser2 flex flex-col gap-10 overflow-auto"
+            ref={refToImgBlob}
+          >
             <table className="table-auto">
               <thead>
                 <tr>
@@ -335,7 +333,7 @@ buttonRef.current.click()
 
                   <td className="border-2 px-2 py-2 w-0.5">
                     <label className="inline-flex items-center">
-                      <input type="number" name="week" ref={week5} disabled/>
+                      <input type="number" name="week" ref={week5} disabled />
                     </label>
                   </td>
 
@@ -349,14 +347,14 @@ buttonRef.current.click()
             </table>
           </div>
 
-              <div className="flex justify-end absolute bottom-[20rem] right-[7rem]">
-                <button
-                  type="submit"
-                  class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                >
-                  Next
-                </button>
-              </div>
+          <div className="flex justify-end absolute bottom-[20rem] right-[7rem]">
+            <button
+              type="submit"
+              class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Next
+            </button>
+          </div>
         </form>
       </div>
     </>
