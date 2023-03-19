@@ -5,7 +5,7 @@ import HeaderElement from "./HeaderElement.js";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { header } from "./header";
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
 import { BsBook } from "react-icons/bs";
@@ -14,11 +14,14 @@ import { GrAddCircle } from "react-icons/gr";
 export default function InstructorDashboard() {
   const [c, sC] = useState([]);
   const coursesRef = useRef([]);
-  const cookies = useSelector((s) => s.user.cookies);
+  const r = useRouter();
+  const cookies = useSelector((s) => s.cookies);
+  const userState = useSelector((s) => s.user);
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());
     window.location.href = "/logout";
+    // r.push('/logout')
   };
   const handel_set_cookies = (e) => {
     Cookies.set("instance_id", e);
@@ -29,13 +32,13 @@ export default function InstructorDashboard() {
 
     async function getCreatedCoursesForInstructor() {
       const data = await fetch(
-        `${process.env.url}api/v1/courses/created-courses?instructor=${cookies._id}`,
+        `${process.env.url}api/v1/courses/created-courses?instructor=${userState._id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + cookies.token,
+            Authorization: "Bearer " + userState.token,
           },
         }
       );
@@ -49,7 +52,7 @@ export default function InstructorDashboard() {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
-              Authorization: "Bearer " + cookies.token,
+              Authorization: "Bearer " + userState.token,
             },
           }
         );
@@ -64,8 +67,8 @@ export default function InstructorDashboard() {
         });
       });
 
-    sC(newData33);
-  }
+      sC(newData33);
+    }
 
     try {
       getCreatedCoursesForInstructor();
@@ -75,33 +78,46 @@ export default function InstructorDashboard() {
   }, []);
   return (
     <nav className="nav44 scrollbar-none">
-      <a className="link2 focus:text-green-400 " href="/profile">
+      <Link className="link2 focus:text-green-400 " href="/profile">
         <span>
           <CgProfile
             style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
           />
         </span>
         <span className="ml-2">Profile</span>
-      </a>
+      </Link>
 
-      {header(<span><BsBook style={{ fontSize: 30, display: "inline", marginBottom: 0, marginRight: 9 }} />courses</span>, [
-        Array(
-          c.map((e) => {
-            return (
-              <div key={e._id} className=" mb-5 -mx-4  px-0 ">
-                <HeaderElement
-                  className={``}
-                  key={e._id}
-                  id={e._id.toString()}
-                  name={e.name}
-                  createdAt={e.createdAt}
-                  cookies={cookies}
-                />
-              </div>
-            );
-          })
-        ),
-      ])}
+      {header(
+        <span>
+          <BsBook
+            style={{
+              fontSize: 30,
+              display: "inline",
+              marginBottom: 0,
+              marginRight: 9,
+            }}
+          />
+          courses
+        </span>,
+        [
+          Array(
+            c.map((e) => {
+              return (
+                <div key={e._id} className=" mb-5 -mx-4  px-0 ">
+                  <HeaderElement
+                    className={``}
+                    key={e._id}
+                    id={e._id.toString()}
+                    name={e.name}
+                    createdAt={e.createdAt}
+                    cookies={cookies}
+                  />
+                </div>
+              );
+            })
+          ),
+        ]
+      )}
 
       {/* {c.length!=0?c.map((e) => {
          
@@ -115,7 +131,7 @@ export default function InstructorDashboard() {
         
       }):null} */}
 
-      <a
+      <Link
         className="link2 focus:text-green-400 "
         href="/instructor/courses/create"
       >
@@ -125,7 +141,7 @@ export default function InstructorDashboard() {
           />
         </span>
         <span className="ml-2">Create course </span>
-      </a>
+      </Link>
       <button
         className="link2 focus:text-green-400 text-left"
         onClick={logoutHandler}

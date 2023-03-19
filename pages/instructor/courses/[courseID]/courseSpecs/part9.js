@@ -7,6 +7,12 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part2 = ({ cookies }) => {
+  const userState= useSelector(s=>s.user)
+
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token
   const [isRunning, setIsRunning] = useState(true);
 
   const refToImgBlob = useRef();
@@ -47,7 +53,6 @@ const part2 = ({ cookies }) => {
      useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   const router = useRouter();
   const { courseID } = router.query;
-  const token = Cookies.get("token");
   const notes = useRef();
   const books = useRef();
   const Rbooks = useRef();
@@ -81,7 +86,9 @@ const part2 = ({ cookies }) => {
     const resp = await r.json();
     console.log(resp);
 
-    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part10`;
+    // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part10`;
+    router.push(`/instructor/courses/${courseID}/courseSpecs/part10`);
+
   };
 
   return (

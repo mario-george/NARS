@@ -1,5 +1,6 @@
 import { header2 } from "./header2";
 import Cookies from "js-cookie";
+import Link from "next/link";
 
 const { useState } = require("react");
 function HeaderElement({ id, name, createdAt,cookies }) {
@@ -24,6 +25,6 @@ function HeaderElement({ id, name, createdAt,cookies }) {
         Cookies.set("instance_id", e);
         
     }
-    return header2(<a href={`/instructor/courses/${id}/courseSpecs/part1`} onClick={handel_set_cookies(id,cookies)}>{name}<br></br>{createdAt}</a>, []);
+    return header2(<Link href={`/instructor/courses/${id}/courseSpecs/part1`} onClick={handel_set_cookies(id,cookies)}>{name}<br></br>{createdAt}</Link>, []);
 }
 export default HeaderElement

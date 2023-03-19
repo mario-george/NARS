@@ -5,8 +5,10 @@ import Cookies from "js-cookie";
 import AdminDashBoard from "@/components/AdminDashBoard";
 import UserList from "@/components/user/UserList";
 import UserCard from "@/components/user/UserCard";
+import { useSelector } from "react-redux";
 const SearchStudent = ({ cookies }) => {
-  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+  const userState= useSelector(s=>s.user)
+  if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
   useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );

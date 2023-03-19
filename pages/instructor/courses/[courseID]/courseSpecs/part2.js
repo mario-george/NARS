@@ -46,7 +46,12 @@ const part2 = ({ cookies }) => {
       </>
     );
   }
-  const token = Cookies.get("token");
+  const userState= useSelector(s=>s.user)
+
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token
   const courseAims = useRef();
   const courseContent = useRef();
   const lvla = useRef();
@@ -81,9 +86,8 @@ const part2 = ({ cookies }) => {
     const resp = await r.json();
     console.log(resp);
     // window.location.href = '/instructor/coursespecs/part3';
-    setTimeout(() => {
-      window.location.href = `/instructor/courses/${courseID}/courseSpecs/part3`;
-    }, 2000);
+    router.push(`/instructor/courses/${courseID}/courseSpecs/part3`);
+
   };
 
   return (

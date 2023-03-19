@@ -8,7 +8,12 @@ import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part69 = ({ cookies }) => {
   const [isRunning, setIsRunning] = useState(true);
+  const userState= useSelector(s=>s.user)
 
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token
   const refToImgBlob = useRef();
   const buttonRef = useRef(null);
   function ChildComponent({ toPdf }) {
@@ -187,16 +192,14 @@ const part69 = ({ cookies }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + cookies.token,
+          Authorization: "Bearer " + token,
         },
       }
     );
     const resp = await r.json();
     console.log(resp);
   };
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
-    return <div className="error">404 could not found</div>;
-  }
+
 
   const submitHandler = async (e) => {
       setIsRunning(false)
@@ -208,7 +211,9 @@ const part69 = ({ cookies }) => {
     // window.location.href="/instructor/coursespecs/part6"
 
 
-    window.location.href = `/instructor/courses/${courseID}/courseSpecs/part6`;
+    // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part6`;
+    router.push(`/instructor/courses/${courseID}/courseSpecs/part6`);
+
    
   };
   return (

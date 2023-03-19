@@ -11,15 +11,16 @@ import Navbar from "@/components/Navbar/Navbar"
 
 const part1 = ({ cookies }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const userState= useSelector(s=>s.user)
 
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token
   const [isRunning, setIsRunning] = useState(true);
   const refToImgBlob = useRef();
   const buttonRef = useRef(null);
 
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
-    return <div className="error">404 could not found</div>;
-  }
-  const token = Cookies.get("token");
   const code = useRef("");
   const year = useRef("");
   const special = useRef("");
@@ -58,13 +59,9 @@ const part1 = ({ cookies }) => {
     );
   }
   const { courseID } = router.query;
-  //Cookies.set("instance_id", courseID);
   useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
   useEffect(() => {
 
-    //Cookies.set("instance_id", courseID);
-    console.log(cookies.instance_id);
-    console.log(cookies.original_id)
   }, []);
 
   const submitHandler = async (e) => {
@@ -75,7 +72,7 @@ const part1 = ({ cookies }) => {
     e.preventDefault();
 
     const r = await fetch(
-      `${process.env.url}api/v1/courses/created-courses/${cookies.instance_id}`,
+      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
       {
         method: "PATCH",
         body: JSON.stringify({
@@ -102,8 +99,8 @@ const part1 = ({ cookies }) => {
     console.log(resp);
 
     // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part2`;
-    // router.push(`/instructor/courses/${courseID}/courseSpecs/part2`);
-    window.location.href = `/instructor/courses/${cookies.instance_id}/courseSpecs/part2`;
+    router.push(`/instructor/courses/${courseID}/courseSpecs/part2`);
+    // window.location.href = `/instructor/courses/${cookies.instance_id}/courseSpecs/part2`;
   };
   return (
     <>

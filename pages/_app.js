@@ -2,7 +2,9 @@ import Layout from "../components/Layout";
 import LayoutLoggedIn from "../components/LayoutLoggedIn";
 import "../styles/styles.css";
 import Head from "next/head";
-import store from "../components/store/store";
+import { PersistGate } from "redux-persist/integration/react";
+
+import { store, persistor } from "../components/store/store";
 import { Provider, useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
@@ -17,9 +19,12 @@ function MyApp({ Component, pageProps, cookies }) {
         <title>NARQA Quality Assurance</title>
       </Head>
       <Provider store={store} className="scrollbar-none">
+      <PersistGate loading={null} persistor={persistor}>
         <Layout cookies={cookies}>
           <Component {...pageProps} cookies={cookies} />
         </Layout>
+        </PersistGate>
+
       </Provider>
     </>
   );
