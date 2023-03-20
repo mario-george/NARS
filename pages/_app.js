@@ -3,7 +3,7 @@ import "../styles/styles.css";
 import Head from "next/head";
 import { PersistGate } from "redux-persist/integration/react";
 import { useSelector } from "react-redux";
-
+import MainHeader from "@/components/shared/MainHeader";
 import { store, persistor } from "../components/store/store";
 import { Provider, useDispatch } from "react-redux";
 import cookie from "cookie";
@@ -13,7 +13,9 @@ function MyApp({ Component, pageProps, cookies }) {
     return Component.getPageLayout(
       <Provider store={store} className="scrollbar-none">
         <PersistGate loading={null} persistor={persistor}>
-          <GiveState Component={Component} {...pageProps} />
+          <div className=" flex flex-col">
+            <GiveState Component={Component} {...pageProps} />
+          </div>
         </PersistGate>
       </Provider>
     );

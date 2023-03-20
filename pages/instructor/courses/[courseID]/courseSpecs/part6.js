@@ -308,7 +308,7 @@ const part7 = ({ cookies }) => {
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className={`bg-sky-50 h-auto w-screen flex flex-col justify-center items-center text-black ml-1 overflow-auto relative  `}
+          className={`bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative overflow-auto  `}
         >
           <div className={`contentAddUser2 flex flex-col  `} ref={refToImgBlob}>
             <table className="table-fixed border-collapse mb-[15rem]">

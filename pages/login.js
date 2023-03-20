@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
-
+import MainHeader from "@/components/shared/MainHeader";
+import { Main } from "next/document";
 export default function Login({ cookies }) {
   const s = useSelector((s) => s.user);
   console.log(s);
@@ -53,7 +54,9 @@ export default function Login({ cookies }) {
       dispatch(updateField({ field: "jwt", value: resp.token }));
       dispatch(updateField({ field: "token", value: resp.token }));
       dispatch(updateField({ field: "name", value: resp.data.user.name }));
-      dispatch(updateField({ field: "program", value: resp.data.user.program }));
+      dispatch(
+        updateField({ field: "program", value: resp.data.user.program })
+      );
 
       // window.location.href = "/profile";
       router.push("/profile");
@@ -61,74 +64,77 @@ export default function Login({ cookies }) {
   };
   return (
     <>
-      <div className="flex flex-col justify-center items-center gap-10 w-full mt-10">
-        <div class="text2 text-2xl "> Login</div>
-        <form
-          onSubmit={submitHandler}
-          className="text-1xl border-2  border-none shadow-2xl rounded-2xl px-7 py-4  gap-10"
-        >
-          <label for="email" className="font-bold mr-10">
-            Edu email
-          </label>
-          <div class="my-5">
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="button"
-              placeholder=""
-              required
-              ref={email}
-            />
-          </div>
-          <label for="password" className="font-bold ">
-            Password
-          </label>
-          <div class="flex-for-reg mt-5">
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className="button"
-              placeholder=""
-              required
-              ref={password}
-            />
-          </div>
-          <button type="submit" class="w-full  text-center home-btn1 my-5">
-            Login
-          </button>
-          <div className="mx-auto">
-            <p className="text-1xl inline ">
-              Don't have account?{" "}
-              <Link
-                href="/register"
-                className={`inline text-1xl underline  text-[#0277BD]`}
-              >
-                Register now!
-              </Link>
-            </p>
-          </div>
-          {invalidData && (
-            <span className="text-red-500 flex justify-center">
-              Wrong email or passoword{" "}
-            </span>
-          )}
-        </form>
-        <p className="text-1xl">
-          -Forgot your password?
-          <Link
-            href="/forget_password"
-            className={`inline text-1xl underline  text-[#0277BD]`}
+      <div className=" flex flex-col">
+        <MainHeader />
+        <div className="flex flex-col justify-center items-center gap-10 w-full mt-10">
+          <div class="text2 text-2xl "> Login</div>
+          <form
+            onSubmit={submitHandler}
+            className="text-1xl border-2  border-none shadow-2xl rounded-2xl px-7 py-4  gap-10"
           >
-            Reset now!
-          </Link>{" "}
-        </p>
+            <label for="email" className="font-bold mr-10">
+              Edu email
+            </label>
+            <div class="my-5">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="button"
+                placeholder=""
+                required
+                ref={email}
+              />
+            </div>
+            <label for="password" className="font-bold ">
+              Password
+            </label>
+            <div class="flex-for-reg mt-5">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                className="button"
+                placeholder=""
+                required
+                ref={password}
+              />
+            </div>
+            <button type="submit" class="w-full  text-center home-btn1 my-5">
+              Login
+            </button>
+            <div className="mx-auto">
+              <p className="text-1xl inline ">
+                Don't have account?{" "}
+                <Link
+                  href="/register"
+                  className={`inline text-1xl underline  text-[#0277BD]`}
+                >
+                  Register now!
+                </Link>
+              </p>
+            </div>
+            {invalidData && (
+              <span className="text-red-500 flex justify-center">
+                Wrong email or passoword{" "}
+              </span>
+            )}
+          </form>
+          <p className="text-1xl">
+            -Forgot your password?
+            <Link
+              href="/forget_password"
+              className={`inline text-1xl underline  text-[#0277BD]`}
+            >
+              Reset now!
+            </Link>{" "}
+          </p>
+        </div>
       </div>
     </>
   );
 }
 
 Login.getPageLayout = function PageLayout(page) {
-  return <>{page}</>;
+  return <div className=" flex flex-col">{page}</div>;
 };

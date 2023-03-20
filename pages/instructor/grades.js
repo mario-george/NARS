@@ -54,7 +54,7 @@ const part1 = ({ cookies }) => {
       <div className="flex flex-row w-screen h-screen mt-2">
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
+          className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none"
         >
           <div className="contentAddUser2 flex flex-col gap-10">
             <div className="font-sans text-center h-screen flex flex-col justify-center items-center gap-5">

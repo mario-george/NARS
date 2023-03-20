@@ -120,7 +120,7 @@ function directAssessment({ cookies }) {
     <>
       {courseInstance && courseInstance.course && (
         <div className=" flex flex-row w-screen h-screen mt-2 scrollbar-none">
-          <div className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
+          <div className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative">
             <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
               <Navbar cookies={cookies} />
               <div className=" flex flex-col items-center justify-center">

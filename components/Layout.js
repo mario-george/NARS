@@ -9,20 +9,10 @@ export default function Layout({ children, cookies }) {
 
   return (
     <>
-      <div className="layout ">
-        <div className="flex justify-between items-center md:mx-[3rem] h-[5rem]">
-          <div className="flex space-x-8 items-center justify-center ">
-            <div className="flex flex-col space-y-2">
-              <div className="text ">NARQA </div>
-              <div className="text  ">Quality Assurance</div>
-            </div>
-          </div>
-          <MainHeader />
-        </div>
-      </div>
-      <div className="flex flex-row w-screen h-screen mt-2 ">
+      <MainHeader />
+      <div className="mt-2">
         <SideDashboard className="" />
-        {children}
+        <div className=" ">{children}</div>
       </div>
     </>
   );

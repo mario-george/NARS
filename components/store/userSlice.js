@@ -17,7 +17,7 @@ let initialState = {
   original_id: undefined,
   instance_id: "",
   courseLearningOutcomes: "",
-  program:"",
+  program: "",
 };
 const userSlice = createSlice({
   initialState,
@@ -43,6 +43,13 @@ const userSlice = createSlice({
     },
     logOut: (s, action) => {
       s.loggedInStatus = false;
+      s.courses = "null";
+      s.role = "null";
+      s._id = "null";
+      s.email = "null";
+      s.jwt = "null";
+      s.token = "null";
+      s.name = "null";
     },
     toggleNav: (s) => {
       s.navStatus = !s.navStatus;

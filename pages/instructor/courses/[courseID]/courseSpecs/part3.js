@@ -642,214 +642,209 @@ const part3 = ({ cookies }) => {
 
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2">
-        <CustomReactToPdf targetRef={refToImgBlob} filename="part3.pdf">
-          {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
-        </CustomReactToPdf>
-        <form
-          onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 rounded-2xl overflow-auto"
-        >
-          <div
-            className="contentAddUser2 flex flex-col gap-10 mt-[5rem] mb-[20rem] py-[8rem] "
-            ref={refToImgBlob}
-          >
-            <div className="flex gap-20 ">
-              <div className="flex flex-col space-y-[2rem] mb-[5rem] w-full">
-                <label class="label-form md:text-2xl  my-10">
-                  Learning Outcomes
-                </label>
-                <div class="flex space-y-[1rem] items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
-                  <div>Cognitive Domain</div>
-                  {isRunning && (
-                    <button
-                      onClick={handleAddInput}
-                      className="bg-blue-500 text-white py-2 px-4 rounded-md"
-                    >
-                      Add
-                    </button>
-                  )}
-                </div>
-                <div className="space-y-[.5rem] ">
-                  {inputs.map((input, index) => {
-                    return (
-                      <div className="flex items-center  space-x-8 relative">
-                        <div>LO{input.counter}</div>
-                        {/* <input
+      <CustomReactToPdf targetRef={refToImgBlob} filename="part3.pdf">
+        {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
+      </CustomReactToPdf>
+      <form
+        onSubmit={submitHandler}
+        className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none overflow-auto"
+      >
+        <div className="contentAddUser2 flex flex-col" ref={refToImgBlob}>
+          <div className="flex gap-20 ">
+            <div className="flex flex-col space-y-[2rem] mb-[5rem] w-full">
+              <label class="label-form md:text-2xl  my-10">
+                Learning Outcomes
+              </label>
+              <div class="flex space-y-[1rem] items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
+                <div>Cognitive Domain</div>
+                {isRunning && (
+                  <button
+                    onClick={handleAddInput}
+                    className="bg-blue-500 text-white py-2 px-4 rounded-md"
+                  >
+                    Add
+                  </button>
+                )}
+              </div>
+              <div className="space-y-[.5rem] ">
+                {inputs.map((input, index) => {
+                  return (
+                    <div className="flex items-center  space-x-8 relative">
+                      <div>LO{input.counter}</div>
+                      {/* <input
                         key={index}
                         type="text"
                         placeholder={`LO ${input.counter}`}
                         ref={input.ref}
                         className="input-form w-1/2"
                       /> */}
-                        <div className="space-y-[.5rem] w-full ">
-                          <BloomTaxonomyInput
-                            className="input-form  space-y-[.5rem]"
-                            ref={input.ref}
-                            key={index}
-                            bloomVerbs={cognitiveDomainVerbs}
-                            placeholder={`LO ${input.counter}`}
-                          />
-                        </div>
-                        {isRunning && (
-                          <button
-                            type="button"
-                            onClick={(e) => removeLO1(e, input)}
-                            className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                            data-dismiss-target="#alert-border-2"
-                            aria-label="Close"
-                          >
-                            <span className="sr-only">Dismiss</span>
-                            <svg
-                              aria-hidden="true"
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              ></path>
-                            </svg>
-                          </button>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div class="flex items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <div>Psychomotor Domain</div>
-                  {isRunning && (
-                    <button
-                      onClick={handleAddInput2}
-                      className="bg-blue-500 text-white py-2 px-4 rounded-md"
-                    >
-                      Add
-                    </button>
-                  )}
-                </div>
-                <div className="space-y-[.5rem]">
-                  {inputs2.map((input, index) => {
-                    return (
-                      <div className="flex items-center  space-x-8 relative">
-                        <div>LO{input.counter}</div>
-                        {/* <input
-                        key={index}
-                        type="text"
-                        placeholder={`LO ${input.counter}`}
-                        ref={input.ref}
-                        className="input-form w-1/2"
-                      /> */}
+                      <div className="space-y-[.5rem] w-full ">
                         <BloomTaxonomyInput
                           className="input-form  space-y-[.5rem]"
                           ref={input.ref}
                           key={index}
-                          bloomVerbs={PsychomotorDomainVerbs}
+                          bloomVerbs={cognitiveDomainVerbs}
                           placeholder={`LO ${input.counter}`}
                         />
-
-                        {isRunning && (
-                          <button
-                            type="button"
-                            onClick={(e) => removeLO2(e, input)}
-                            className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                            data-dismiss-target="#alert-border-2"
-                            aria-label="Close"
-                          >
-                            <span className="sr-only">Dismiss</span>
-                            <svg
-                              aria-hidden="true"
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              ></path>
-                            </svg>
-                          </button>
-                        )}
                       </div>
-                    );
-                  })}
-                </div>
-                <div class="flex items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <div>Affective Domain</div>
-                  {isRunning && (
-                    <button
-                      onClick={handleAddInput3}
-                      className="bg-blue-500 text-white py-2 px-4 rounded-md"
-                    >
-                      Add
-                    </button>
-                  )}
-                </div>
-                <div className="space-y-[.5rem]">
-                  {inputs3.map((input, index) => {
-                    return (
-                      <div className="flex items-center  space-x-8 relative">
-                        <div>LO{input.counter}</div>
-                        {/* <input
+                      {isRunning && (
+                        <button
+                          type="button"
+                          onClick={(e) => removeLO1(e, input)}
+                          className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                          data-dismiss-target="#alert-border-2"
+                          aria-label="Close"
+                        >
+                          <span className="sr-only">Dismiss</span>
+                          <svg
+                            aria-hidden="true"
+                            className="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <div class="flex items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <div>Psychomotor Domain</div>
+                {isRunning && (
+                  <button
+                    onClick={handleAddInput2}
+                    className="bg-blue-500 text-white py-2 px-4 rounded-md"
+                  >
+                    Add
+                  </button>
+                )}
+              </div>
+              <div className="space-y-[.5rem]">
+                {inputs2.map((input, index) => {
+                  return (
+                    <div className="flex items-center  space-x-8 relative">
+                      <div>LO{input.counter}</div>
+                      {/* <input
                         key={index}
                         type="text"
                         placeholder={`LO ${input.counter}`}
                         ref={input.ref}
                         className="input-form w-1/2"
                       /> */}
-                        <BloomTaxonomyInput
-                          className="input-form  space-y-[.5rem]"
-                          ref={input.ref}
-                          key={index}
-                          bloomVerbs={AffectiveDomainVerbs}
-                          placeholder={`LO ${input.counter}`}
-                        />
+                      <BloomTaxonomyInput
+                        className="input-form  space-y-[.5rem]"
+                        ref={input.ref}
+                        key={index}
+                        bloomVerbs={PsychomotorDomainVerbs}
+                        placeholder={`LO ${input.counter}`}
+                      />
 
-                        {isRunning && (
-                          <button
-                            type="button"
-                            onClick={(e) => removeLO3(e, input)}
-                            className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                            data-dismiss-target="#alert-border-2"
-                            aria-label="Close"
+                      {isRunning && (
+                        <button
+                          type="button"
+                          onClick={(e) => removeLO2(e, input)}
+                          className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                          data-dismiss-target="#alert-border-2"
+                          aria-label="Close"
+                        >
+                          <span className="sr-only">Dismiss</span>
+                          <svg
+                            aria-hidden="true"
+                            className="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
                           >
-                            <span className="sr-only">Dismiss</span>
-                            <svg
-                              aria-hidden="true"
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              ></path>
-                            </svg>
-                          </button>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
+                            <path
+                              fillRule="evenodd"
+                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <div class="flex items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <div>Affective Domain</div>
+                {isRunning && (
+                  <button
+                    onClick={handleAddInput3}
+                    className="bg-blue-500 text-white py-2 px-4 rounded-md"
+                  >
+                    Add
+                  </button>
+                )}
+              </div>
+              <div className="space-y-[.5rem]">
+                {inputs3.map((input, index) => {
+                  return (
+                    <div className="flex items-center  space-x-8 relative">
+                      <div>LO{input.counter}</div>
+                      {/* <input
+                        key={index}
+                        type="text"
+                        placeholder={`LO ${input.counter}`}
+                        ref={input.ref}
+                        className="input-form w-1/2"
+                      /> */}
+                      <BloomTaxonomyInput
+                        className="input-form  space-y-[.5rem]"
+                        ref={input.ref}
+                        key={index}
+                        bloomVerbs={AffectiveDomainVerbs}
+                        placeholder={`LO ${input.counter}`}
+                      />
+
+                      {isRunning && (
+                        <button
+                          type="button"
+                          onClick={(e) => removeLO3(e, input)}
+                          className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                          data-dismiss-target="#alert-border-2"
+                          aria-label="Close"
+                        >
+                          <span className="sr-only">Dismiss</span>
+                          <svg
+                            aria-hidden="true"
+                            className="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            <div className="flex justify-end ">
-              <button
-                type="submit"
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Next
-              </button>
-            </div>
           </div>
-        </form>
-      </div>
+          <div className="flex justify-end ">
+            <button
+              type="submit"
+              class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </form>
     </>
   );
 };

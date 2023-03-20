@@ -17,8 +17,8 @@ export default function InstructorDashboard({ cookies }) {
   const r = useRouter();
   const userState = useSelector((s) => s.user);
   const dispatch = useDispatch();
+
   const logoutHandler = () => {
-    dispatch(userActions.logOut());
     window.location.href = "/logout";
     // r.push('/logout')
   };

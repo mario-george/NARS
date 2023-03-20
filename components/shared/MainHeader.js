@@ -92,7 +92,21 @@ function MainHeader() {
     </>
   );
 
-  return <div>{userState.loggedInStatus === "true" ? logged : not}</div>;
+  return (
+    <div>
+      <div className="layout ">
+        <div className="flex justify-between items-center md:mx-[3rem] h-[5rem]">
+          <div className="flex space-x-8 items-center justify-center ">
+            <div className="flex flex-col space-y-2">
+              <div className="text ">NARQA </div>
+              <div className="text  ">Quality Assurance</div>
+            </div>
+          </div>
+          {userState.loggedInStatus === "true" ? logged : not}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default MainHeader;

@@ -106,22 +106,22 @@ const part1 = ({ cookies }) => {
   };
   return (
     <>
-      
+      <div className="flex flex-row w-screen h-screen mt-2 scrollbar-none">
         <CustomReactToPdf targetRef={refToImgBlob} filename="part1.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-[80%] absolute translate-x-[295px]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
-          >
+          className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
+        >
           {/* <div className="absolute top-12 "> */}
 
           {/* </div> */}
-          <div className="topNav absolute top-12 ">
+          <div className="topNav absolute top-14 ">
             <Navbar cookies={cookies} id={courseID} />
           </div>
           <div
-            className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none py-[4rem] "
+            className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none py-[10rem] m-10"
             ref={refToImgBlob}
           >
             <p className="underline mb-1 pt-[5rem]">-Course Data:</p>
@@ -197,7 +197,7 @@ const part1 = ({ cookies }) => {
             </button>
           </div>
         </form>
-      
+      </div>
     </>
   );
 };
