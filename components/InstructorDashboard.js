@@ -29,6 +29,8 @@ export default function InstructorDashboard() {
   };
   useEffect(() => {
     let newData33 = [];
+    console.log("TOKEN IS ", JSON.stringify(userState._id));
+    console.log("TOKEN IS ", JSON.stringify(userState.token));
 
     async function getCreatedCoursesForInstructor() {
       const data = await fetch(
@@ -44,30 +46,19 @@ export default function InstructorDashboard() {
       );
 
       const resp = await data.json();
-      const newData = await resp.data.map(async (e) => {
-        let data2 = await fetch(
-          `${process.env.url}api/v1/courses/original-courses?_id=${e.course}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "Bearer " + userState.token,
-            },
-          }
-        );
-        let resp2 = await data2.json();
-        const dateString = e.createdAt;
-        const dateOnly = dateString.split("T")[0];
 
-        newData33.push({
-          name: resp2.data[0].name,
-          createdAt: dateOnly,
-          _id: e._id,
-        });
-      });
-
-      sC(newData33);
+      sC(
+        resp.data.map((courseInstance) => {
+          const dateString = courseInstance.createdAt;
+          console.log("DATE IS ", JSON.stringify(courseInstance.course));
+          const dateOnly = dateString.split("T")[0];
+          return {
+            name: courseInstance.course.name,
+            createdAt: dateOnly,
+            _id: courseInstance._id,
+          };
+        })
+      );
     }
 
     try {
