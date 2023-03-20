@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps, cookies }) {
     return Component.getPageLayout(
       <Provider store={store} className="scrollbar-none">
         <PersistGate loading={null} persistor={persistor}>
-          <Component {...pageProps} cookies={cookies} />
+          <GiveState Component={Component} {...pageProps} />
         </PersistGate>
       </Provider>
     );
