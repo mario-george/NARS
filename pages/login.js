@@ -53,6 +53,7 @@ export default function Login({ cookies }) {
       dispatch(updateField({ field: "jwt", value: resp.token }));
       dispatch(updateField({ field: "token", value: resp.token }));
       dispatch(updateField({ field: "name", value: resp.data.user.name }));
+      dispatch(updateField({ field: "program", value: resp.data.user.program }));
 
       // window.location.href = "/profile";
       router.push("/profile");

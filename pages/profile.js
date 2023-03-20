@@ -2,6 +2,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useRef, useState, useEffect } from "react";
+import InstructorDashboard from "@/components/InstructorDashboard";
+import AdminDashBoard from "@/components/AdminDashBoard";
+import ProgramAdminDashboard from '@/components/ProgramAdminDashboard';
+import FacultyAdminDashboard from '@/components/FacultyAdminDashboard';
+import QualityCoordinatorDashboard from "@/components/QualityCoordinatorDashboard"
 import Cookies from "js-cookie";
 import Modal from "@/components/Modal";
 
@@ -73,66 +78,95 @@ const profile = ({ cookies }) => {
         }
       );
 
-      const resp = await r.json();
-      console.log(resp);
+            const resp = await r.json();
+            console.log(resp);
+            
+            if (resp.status == "success") {
+                setMsg(success);
+                Cookies.set("name", name.current.value);
+                cookies.set("photo", selectedFile);
+            } else {
+                setMsg(fail);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    const [errorMsg,setErrormsg]=useState('');
+    const [instructor, setInstructor] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [admin, setAdmin] = useState(false);
+    const [progadmin, setProgadmin] = useState(false);
+    const [facadmin, setFacadmin] = useState(false);
+    const[qualityCoo,setQualityCoo]=useState(false);
+    const name = useRef()
+    const oldPassowrd = useRef();
+    const newPassowrd = useRef();
+    const cnfrmPassowrd = useRef();
+    const [msg, setMsg] = useState("");
+    const closeMsg = () => {
+        setMsg("");
+    };
 
-      if (resp.status == "success") {
-        setMsg(success);
-        Cookies.set("name", name.current.value);
-        cookies.set("photo", selectedFile);
-      } else {
-        setMsg(fail);
-      }
-    } catch (e) {
-      console.log(e);
+    if (cookies.role === "system admin") {
+        useEffect(() => {
+            setAdmin(true);
+        }, [])
+    } else if (cookies.role === "instructor") {
+        useEffect(() => {
+            setInstructor(true);
+        }, [])
     }
-  };
-  const [errorMsg, setErrormsg] = useState("");
-
-  const name = useRef();
-  const oldPassowrd = useRef();
-  const newPassowrd = useRef();
-  const cnfrmPassowrd = useRef();
-  const [msg, setMsg] = useState("");
-  const closeMsg = () => {
-    setMsg("");
-  };
-
-  let fail = (
-    <div
-      id="alert-border-2"
-      class="flex p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
-      role="alert"
-    >
-      <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
-      <div class="ml-3 text-sm font-medium">
-        Failed to update your information
-        <a href="#" class="font-semibold underline hover:no-underline"></a>.
-      </div>
-      <button
-        type="button"
-        onClick={closeMsg}
-        class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-        data-dismiss-target="#alert-border-2"
-        aria-label="Close"
-      >
-        <span class="sr-only">Dismiss</span>
-        <svg
-          aria-hidden="true"
-          class="w-5 h-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
+    else if (cookies.role === "program admin") {
+        useEffect(() => {
+            setProgadmin(true);
+        }, [])
+    }
+    else if (cookies.role === "faculty admin") {
+        useEffect(() => {
+            setFacadmin(true);
+        }, [])
+    }
+    else if (cookies.role === "quality coordinator") {
+        useEffect(() => {
+            setQualityCoo(true);
+        }, [])
+    }
+    let fail = (
+        <div
+            id="alert-border-2"
+            class="flex p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+            role="alert"
         >
-          <path
-            fill-rule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </button>
-    </div>
-  );
+            <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+            <div class="ml-3 text-sm font-medium">
+                Failed to update your information
+                <a href="#" class="font-semibold underline hover:no-underline"></a>.
+            </div>
+            <button
+                type="button"
+                onClick={closeMsg}
+                class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                data-dismiss-target="#alert-border-2"
+                aria-label="Close"
+            >
+                <span class="sr-only">Dismiss</span>
+                <svg
+                    aria-hidden="true"
+                    class="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                    ></path>
+                </svg>
+            </button>
+        </div>
+    );
 
   let success = (
     <div
@@ -172,50 +206,55 @@ const profile = ({ cookies }) => {
   const [showModal, setShowModal] = useState(false);
   const [invalidData, setInvalidData] = useState(false);
 
-  return (
-    <>
-      <div className="">
-        <form
-          onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
-        >
-          <div className="contentAddUser2 flex flex-col gap-10">
-            <p className="underline mb-1">Profile details:</p>
-            <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5 w-1/3">
-                <div>Role</div>
-                <input
-                  type="text"
-                  className="inputAddUser2 w-full"
-                  value={globalState.role}
-                  disabled
-                />
-              </div>
-              <div className="flex flex-col gap-5  w-2/5">
-                <div> Name</div>
-                <input
-                  type="text"
-                  className="inputAddUser2  w-full"
-                  defaultValue={globalState.name}
-                  ref={name}
-                />
-              </div>
-            </div>
-            <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5  w-1/3">
-                <div> Email </div>
-                <input
-                  type="text"
-                  className="inputAddUser2  w-full"
-                  value={globalState.email}
-                  disabled
-                />
-              </div>
-              <div className="flex flex-col gap-5  w-2/5">
-                <div> select photo:</div>
-                <input
-                  type="file"
-                  class="text-sm text-grey-500
+    return (
+        <>
+            
+
+               {/* {admin && <AdminDashBoard />}
+                {facadmin && <FacultyAdminDashboard />}
+                {instructor && <InstructorDashboard />}
+                {progadmin && <ProgramAdminDashboard />}
+    {qualityCoo && <QualityCoordinatorDashboard/>}*/}
+
+                <form
+                    onSubmit={submitHandler}
+                    className="bg-sky-50 h-screen w-[80%] absolute translate-x-[295px]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+                >
+                    <div className="contentAddUser2 flex flex-col gap-10">
+                        <p className="underline mb-1">Profile details:</p>
+                        <div className="flex gap-20 ">
+                            <div className="flex flex-col gap-5 w-1/3">
+                                <div>Role</div>
+                                <input
+                                    type="text"
+                                    className="inputAddUser2 w-full"
+                                    value={cookies.role}
+                                    disabled
+                                />
+                            </div>
+                            <div className="flex flex-col gap-5  w-2/5">
+                                <div> Name</div>
+                                <input
+                                    type="text"
+                                    className="inputAddUser2  w-full"
+                                    defaultValue={cookies.name}
+                                    ref={name}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex gap-20 ">
+                            <div className="flex flex-col gap-5  w-1/3">
+                                <div> Email </div>
+                                <input
+                                    type="text"
+                                    className="inputAddUser2  w-full"
+                                    value={cookies.email}
+                                    disabled
+                                />
+                            </div>
+                            <div className="flex flex-col gap-5  w-2/5">
+                                <div> select photo:</div>
+                                <input type="file" class="text-sm text-grey-500
                             file:mr-5 file:py-3 file:px-10
                             file:rounded-full file:border-0
                             file:text-sm file:font-medium
@@ -251,7 +290,7 @@ const profile = ({ cookies }) => {
             </div>
           </div>
         </form>
-      </div>
+      
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
         <div className="py-6 px-6 lg:px-8 text-left">
           <h3 className="mb-4 text-xl font-medium text-gray-900">

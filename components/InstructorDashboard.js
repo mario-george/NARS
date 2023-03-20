@@ -59,9 +59,14 @@ export default function InstructorDashboard({ cookies }) {
 
     sC(resp.data);
   }
+  const navStatus = useSelector((s) => s.user.navStatus);
 
   return (
-    <nav className="nav44 scrollbar-none">
+    <nav
+      className={`nav2 transition-all duration-300 transform ${
+        navStatus ? ` -translate-x-full` : `translate-x-0 `
+      }`}
+    >
       <Link className="link2 focus:text-green-400 " href="/profile">
         <span>
           <CgProfile

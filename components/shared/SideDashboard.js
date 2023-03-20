@@ -10,6 +10,8 @@ import InstructorDashboard from "../InstructorDashboard";
 import ProgramAdminDashboard from "../ProgramAdminDashboard";
 import FacultyAdminDashboard from "../FacultyAdminDashboard";
 import AdminDashboard from "../AdminDashBoard";
+import QualityCoordinatorDashboard from "@/components/QualityCoordinatorDashboard"
+
 
 import React from "react";
 
@@ -20,6 +22,8 @@ function SideDashboard() {
   const [admin, setAdmin] = useState(false);
   const [programAdmin, setProgramAdmin] = useState(false);
   const [facultyAdmin, setFacultyAdmin] = useState(false);
+  const[qualityCoo,setQualityCoo]=useState(false);
+
 
   useEffect(() => {
     if (globalState.role === "system admin") {
@@ -30,6 +34,8 @@ function SideDashboard() {
       setProgramAdmin(true);
     } else if (globalState.role === "faculty admin") {
       setFacultyAdmin(true);
+    }else if (globalState.role === "quality coordinator") {
+      setQualityCoo(true);
     }
   }, []);
 
@@ -37,8 +43,9 @@ function SideDashboard() {
     <div>
       {admin && <AdminDashboard />}
       {facultyAdmin && <FacultyAdminDashboard />}
-      {instructor && <ProgramAdminDashboard />}
+      {instructor && <InstructorDashboard />}
       {programAdmin && <ProgramAdminDashboard />}
+      {qualityCoo && <QualityCoordinatorDashboard/>}
     </div>
   );
 }
