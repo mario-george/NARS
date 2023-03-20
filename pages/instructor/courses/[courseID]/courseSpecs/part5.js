@@ -3,17 +3,16 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part69 = ({ cookies }) => {
   const [isRunning, setIsRunning] = useState(true);
-  const userState= useSelector(s=>s.user)
+  const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const token = userState.token
+  const token = userState.token;
   const refToImgBlob = useRef();
   const buttonRef = useRef(null);
   function ChildComponent({ toPdf }) {
@@ -43,7 +42,9 @@ const part69 = ({ cookies }) => {
       </>
     );
   }
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const [hoursValue, setHoursValue] = useState("");
   const [outcomes, setoutcomes] = useState([]);
   let a = [];
@@ -200,35 +201,32 @@ const part69 = ({ cookies }) => {
     console.log(resp);
   };
 
-
   const submitHandler = async (e) => {
-      setIsRunning(false)
-      buttonRef.current.click();
+    setIsRunning(false);
+    buttonRef.current.click();
 
     e.preventDefault();
     handleSubmit();
 
     // window.location.href="/instructor/coursespecs/part6"
 
-
     // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part6`;
     router.push(`/instructor/courses/${courseID}/courseSpecs/part6`);
-
-   
   };
   return (
     <>
       <div className="flex flex-row w-screen h-auto  mt-2">
-        <InstructorDashboard />
         <CustomReactToPdf targetRef={refToImgBlob} filename="part5.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
-          
           onSubmit={submitHandler}
           className="bg-sky-50 h-auto w-screen flex flex-col justify-center items-center text-black ml-1 relative"
         >
-          <div className="contentAddUser2 flex flex-col gap-10  " ref={refToImgBlob}>
+          <div
+            className="contentAddUser2 flex flex-col gap-10  "
+            ref={refToImgBlob}
+          >
             <table className="table-auto mb-[35rem] ">
               <thead>
                 <tr>
@@ -282,20 +280,20 @@ const part69 = ({ cookies }) => {
               </tbody>
             </table>
           </div>
-              <div className="flex justify-end absolute  right-24">
-                <button
-                  onClick={addRowWeek}
-                  class="w-[7rem]  font-Roboto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base  px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                >
-                  Add Row
-                </button>
-                <button
-                  type="submit"
-                  class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                >
-                  Next
-                </button>
-              </div>
+          <div className="flex justify-end absolute  right-24">
+            <button
+              onClick={addRowWeek}
+              class="w-[7rem]  font-Roboto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base  px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Add Row
+            </button>
+            <button
+              type="submit"
+              class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Next
+            </button>
+          </div>
         </form>
       </div>
     </>

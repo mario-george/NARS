@@ -3,16 +3,15 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part4 = ({ cookies }) => {
-  const userState= useSelector(s=>s.user)
+  const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const token = userState.token
+  const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
   const refToImgBlob = useRef();
   const buttonRef = useRef(null);
@@ -47,7 +46,9 @@ const part4 = ({ cookies }) => {
     );
   }
   const router = useRouter();
-  useEffect(() => { document.querySelector("body").classList.add("scrollbar-none") });
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const closeMsg = () => {
     setMsg("");
   };
@@ -425,8 +426,7 @@ const part4 = ({ cookies }) => {
         if (data.status === "success") {
           setMsg(success);
           // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part5`;
-    router.push(`/instructor/courses/${courseID}/courseSpecs/part5`);
-
+          router.push(`/instructor/courses/${courseID}/courseSpecs/part5`);
         } else {
           setMsg(fail);
         }
@@ -484,7 +484,6 @@ const part4 = ({ cookies }) => {
   return (
     <>
       <div className="flex flex-row w-screen h-auto mt-2">
-        <InstructorDashboard />
         <CustomReactToPdf targetRef={refToImgBlob} filename="part4.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
@@ -597,7 +596,6 @@ const part4 = ({ cookies }) => {
                 ))}
               </tbody>
             </table>
-
           </div>
           <div className="flex justify-between absolute bottom-44 right-24">
             <div>{msg}</div>

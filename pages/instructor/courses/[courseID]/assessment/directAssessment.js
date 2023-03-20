@@ -2,7 +2,6 @@ import { Button } from "@mui/material";
 import React from "react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import InstructorDashboard from "../../../../../components/InstructorDashboard";
 import { handleFile } from "../../../../../common/uploadFile";
 import Navbar from "@/components/Navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
@@ -121,7 +120,6 @@ function directAssessment({ cookies }) {
     <>
       {courseInstance && courseInstance.course && (
         <div className=" flex flex-row w-screen h-screen mt-2 scrollbar-none">
-          <InstructorDashboard />
           <div className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
             <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
               <Navbar cookies={cookies} />

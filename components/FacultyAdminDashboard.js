@@ -8,7 +8,7 @@ import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
 import { FaUniversity } from "react-icons/fa";
 
-export default function FacultyadminDashboard() {
+export default function FacultyAdminDashboard() {
   const router = useRouter();
   const navStatus = useSelector((s) => s.navStatus);
   const dispatch = useDispatch();
@@ -18,14 +18,14 @@ export default function FacultyadminDashboard() {
   };
   return (
     <nav className="nav2">
-      <a className="link2 focus:text-green-400 " href="/admin/profile">
+      <Link className="link2 focus:text-green-400 " href="/profile">
         <span>
           <CgProfile
             style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
           />
         </span>
         <span className="ml-2">Profile</span>
-      </a>
+      </Link>
       {header(
         <span>
           <FaUniversity
@@ -39,7 +39,7 @@ export default function FacultyadminDashboard() {
           Faculty
         </span>,
         [
-          <a
+          <Link
             className={
               router.pathname === "/facultyadmin/addfaculty"
                 ? "activeLinkDashboard2"
@@ -48,8 +48,8 @@ export default function FacultyadminDashboard() {
             href="/facultyadmin/addfaculty"
           >
             Add Faculty
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname === "/facultyadmin/updatefaculty"
                 ? "activeLinkDashboard2"
@@ -58,8 +58,8 @@ export default function FacultyadminDashboard() {
             href="/facultyadmin/updatefaculty"
           >
             Update Faculty
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname === "/facultyadmin/deletefaculty"
                 ? "activeLinkDashboard2"
@@ -68,8 +68,8 @@ export default function FacultyadminDashboard() {
             href="/facultyadmin/deletefaculty"
           >
             Delete Faculty
-          </a>,
-          <a
+          </Link>,
+          <Link
             className={
               router.pathname === "/facultyadmin/viewfaculty"
                 ? "activeLinkDashboard2"
@@ -78,7 +78,7 @@ export default function FacultyadminDashboard() {
             href="/facultyadmin/viewfaculty"
           >
             View Faculties
-          </a>,
+          </Link>,
         ]
       )}
       <button

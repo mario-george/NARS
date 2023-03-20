@@ -1,4 +1,3 @@
-import AdminDashBoard from "@/components/AdminDashBoard";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef, useEffect } from "react";
@@ -232,7 +231,6 @@ const addStaff = ({ cookies }) => {
           exportModalIsOpen ? `bg-black opacity-60 overflow-hidden ` : null
         }`}
       >
-        <AdminDashBoard />
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   "

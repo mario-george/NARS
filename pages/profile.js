@@ -2,13 +2,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useRef, useState, useEffect } from "react";
-import InstructorDashboard from "@/components/InstructorDashboard";
-import AdminDashBoard from "@/components/AdminDashBoard";
-import ProgramAdminDashboard from "@/components/ProgramAdminDashboard";
-import FacultyadminDashboard from "@/components/FacultyadminDashboard";
 import Cookies from "js-cookie";
 import Modal from "@/components/Modal";
-import password from "./password";
 
 const profile = ({ cookies }) => {
   useEffect(() => {
@@ -18,6 +13,10 @@ const profile = ({ cookies }) => {
   if (globalState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+
+  useEffect(() => {
+    console.log("MOHAMED ROLE IS ", globalState.role);
+  }, []);
 
   const passowrdHandler = async (e) => {
     if (e) {
@@ -89,11 +88,7 @@ const profile = ({ cookies }) => {
     }
   };
   const [errorMsg, setErrormsg] = useState("");
-  const [instructor, setInstructor] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [admin, setAdmin] = useState(false);
-  const [progadmin, setProgadmin] = useState(false);
-  const [facadmin, setFacadmin] = useState(false);
+
   const name = useRef();
   const oldPassowrd = useRef();
   const newPassowrd = useRef();
@@ -103,23 +98,6 @@ const profile = ({ cookies }) => {
     setMsg("");
   };
 
-  if (globalState.role === "system admin") {
-    useEffect(() => {
-      setAdmin(true);
-    }, []);
-  } else if (globalState.role === "instructor") {
-    useEffect(() => {
-      setInstructor(true);
-    }, []);
-  } else if (globalState.role === "program admin") {
-    useEffect(() => {
-      setProgadmin(true);
-    }, []);
-  } else if (globalState.role === "faculty admin") {
-    useEffect(() => {
-      setFacadmin(true);
-    }, []);
-  }
   let fail = (
     <div
       id="alert-border-2"
@@ -196,12 +174,7 @@ const profile = ({ cookies }) => {
 
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2 ">
-        {admin && <AdminDashBoard />}
-        {facadmin && <FacultyadminDashboard />}
-        {instructor && <InstructorDashboard />}
-        {progadmin && <ProgramAdminDashboard />}
-
+      <div className="">
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
