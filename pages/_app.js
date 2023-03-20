@@ -2,6 +2,8 @@ import Layout from "../components/Layout";
 import "../styles/styles.css";
 import Head from "next/head";
 import { PersistGate } from "redux-persist/integration/react";
+import { useSelector } from "react-redux";
+
 import { store, persistor } from "../components/store/store";
 import { Provider, useDispatch } from "react-redux";
 import cookie from "cookie";
@@ -25,14 +27,18 @@ function MyApp({ Component, pageProps, cookies }) {
       <Provider store={store} className="scrollbar-none">
         <PersistGate loading={null} persistor={persistor}>
           <Layout cookies={cookies}>
-            <Component {...pageProps} cookies={cookies} />
+            <GiveState Component={Component} {...pageProps} />
           </Layout>
         </PersistGate>
       </Provider>
     </>
   );
 }
+function GiveState({ Component, pageProps }) {
+  const userState = useSelector((state) => state.user);
 
+  return <Component {...pageProps} cookies={userState} />;
+}
 MyApp.getInitialProps = async (appContext) => {
   const { ctx } = appContext;
   const { req } = ctx;

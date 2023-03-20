@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
 import Cookies from "js-cookie";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import ReactDOMServer from "react-dom/server";
 import Navbar from "@/components/Navbar/Navbar";
-
+import { updateField } from "@/components/store/userSlice";
 const part1 = ({ cookies }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const userState = useSelector((s) => s.user);
@@ -58,6 +58,9 @@ const part1 = ({ cookies }) => {
     );
   }
   const { courseID } = router.query;
+  const d = useDispatch();
+  d(updateField({ field: "instance_id", value: courseID }));
+
   useEffect(() => {
     document.querySelector("body").classList.add("scrollbar-none");
   });
@@ -114,12 +117,14 @@ const part1 = ({ cookies }) => {
           {/* <div className="absolute top-12 "> */}
 
           {/* </div> */}
+          <div className="topNav absolute top-12 ">
+            <Navbar cookies={cookies} id={courseID} />
+          </div>
           <div
-            className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none py-[4rem]"
+            className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none py-[4rem] "
             ref={refToImgBlob}
           >
-            <Navbar cookies={cookies} id={courseID} />
-            <p className="underline mb-1 ">-Course Data:</p>
+            <p className="underline mb-1 pt-[5rem]">-Course Data:</p>
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Course Code & Title:</div>

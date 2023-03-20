@@ -17,10 +17,10 @@ const addassignment = ({ cookies }) => {
   const closeMsg = () => {
     setMsg("");
   };
-
+  console.log(cookies);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const token = Cookies.get("token");
+  const token = cookies.token;
   const name = useRef();
   const desc = useRef();
   const router = useRouter();
