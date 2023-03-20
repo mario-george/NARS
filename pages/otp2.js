@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../components/store/userSlice";
 export default function otp2() {
-  const completed = useSelector((s) => s.user.registerCompletionPart1);
+  const completed = useSelector((s) => s.registerCompletionPart1);
   const d = useDispatch();
   const router = useRouter();
   const submitHandler = async (e) => {

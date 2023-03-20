@@ -8,6 +8,15 @@ let initialState = {
   loggedInStatus: false,
   navStatus: false,
   cookies: {},
+  _id: "null",
+  id: "null",
+  name: "undefined",
+  courses: "undefined",
+  jwt: "undefined",
+  token: "undefined",
+  original_id: undefined,
+  instance_id: "",
+  courseLearningOutcomes: "",
 };
 const userSlice = createSlice({
   initialState,
@@ -26,6 +35,9 @@ const userSlice = createSlice({
       state.data = action.payload;
     },
     toggleLoggedIn: (s, action) => {
+      console.log(s);
+      console.log(s.loggedInStatus);
+      console.log(s.role);
       s.loggedInStatus = action.payload;
     },
     logOut: (s, action) => {
@@ -37,7 +49,23 @@ const userSlice = createSlice({
     setCookies: (s, a) => {
       s.cookies = a.payload;
     },
+    updateField: (state, action) => {
+      const { field, value } = action.payload;
+      state[field] = value;
+    },
   },
 });
+export const {
+  updateField,
+  updateVerifyCode,
+  registerCompletionPart1,
+  registerCompletionPart2,
+  getUserData,
+  toggleLoggedIn,
+  logOut,
+  toggleNav,
+  setCookies,
+} = userSlice.actions;
+
 export const userActions = userSlice.actions;
 export default userSlice.reducer;

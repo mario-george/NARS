@@ -2,8 +2,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import Textarea from "@/components/Textarea/Textarea";
 
@@ -46,14 +44,21 @@ const part2 = ({ cookies }) => {
       </>
     );
   }
-  const token = Cookies.get("token");
+  const userState = useSelector((s) => s.user);
+
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token;
   const courseAims = useRef();
   const courseContent = useRef();
   const lvla = useRef();
   const lvlb = useRef();
   const router = useRouter();
   const { courseID } = router.query;
-    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const submitHandler = async (e) => {
     buttonRef.current.click();
 
@@ -81,16 +86,12 @@ const part2 = ({ cookies }) => {
     const resp = await r.json();
     console.log(resp);
     // window.location.href = '/instructor/coursespecs/part3';
-    setTimeout(() => {
-      window.location.href = `/instructor/courses/${courseID}/courseSpecs/part3`;
-    }, 2000);
+    router.push(`/instructor/courses/${courseID}/courseSpecs/part3`);
   };
 
   return (
     <>
       <div className="flex flex-row w-screen h-auto mt-2 bg-sky-50 relative">
-        <InstructorDashboard />
-
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-auto w-screen flex flex-col justify-center items-center text-black ml-1"
@@ -110,8 +111,11 @@ const part2 = ({ cookies }) => {
                   ref={courseAims}
                   placeholder="Type here the Course Aims"
                 ></textarea> */}
-              <Textarea rows="4" placeholder="Type here the Course Aims" ref={courseAims}/>
-
+                <Textarea
+                  rows="4"
+                  placeholder="Type here the Course Aims"
+                  ref={courseAims}
+                />
               </div>
             </div>
             <div className="flex flex-col gap-5  w-full">
@@ -123,8 +127,11 @@ const part2 = ({ cookies }) => {
                 className="w-full input-form"
                 placeholder="Type here the Course Contents"
               ></textarea> */}
-              <Textarea rows="4" placeholder="Type here the Course Contents" ref={courseContent}/>
-
+              <Textarea
+                rows="4"
+                placeholder="Type here the Course Contents"
+                ref={courseContent}
+              />
             </div>
 
             <div className="flex gap-20 ">
@@ -137,8 +144,11 @@ const part2 = ({ cookies }) => {
                   className="w-full input-form pl-1"
                   placeholder="Level (A) Competencies"
                 ></textarea> */}
-              <Textarea rows="4" placeholder="Level (A) Competencies " ref={lvla}/>
-
+                <Textarea
+                  rows="4"
+                  placeholder="Level (A) Competencies "
+                  ref={lvla}
+                />
               </div>
             </div>
             <div className="flex flex-col gap-5  w-full">
@@ -150,11 +160,15 @@ const part2 = ({ cookies }) => {
                 className="w-full input-form pl-1  mb-32 h-auto resize-none overflow-hidden   "
                 placeholder="Level (B) Competencies "
               ></textarea> */}
-              <Textarea className='  ' rows="4" placeholder="Level (B) Competencies " ref={lvlb}/>
+              <Textarea
+                className="  "
+                rows="4"
+                placeholder="Level (B) Competencies "
+                ref={lvlb}
+              />
               <div className="mb-32"></div>
             </div>
           </div>
-
         </form>
         <div className="flex justify-end absolute bottom-12 right-24">
           <button

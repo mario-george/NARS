@@ -10,7 +10,7 @@ class CustomReactToPdf extends ReactToPdf {
 
     if (!targetComponent) {
       throw new Error(
-        "Target ref must be used or informed. See https://github.com/ivmarcos/react-to-pdf#usage."
+        "Target ref must be used or informed."
       );
     }
 

@@ -3,12 +3,19 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import cn from "classnames";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part8 = ({ cookies }) => {
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  const userState = useSelector((s) => s.user);
+
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+  const token = userState.token;
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const [isRunning, setIsRunning] = useState(true);
 
   const refToImgBlob = useRef();
@@ -242,16 +249,13 @@ const part8 = ({ cookies }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + cookies.token,
+          Authorization: "Bearer " + token,
         },
       }
     );
     const resp = await r.json();
     console.log(resp);
   };
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
-    return <div className="error">404 could not found</div>;
-  }
 
   const submitHandler = async (e) => {
     buttonRef.current.click();
@@ -259,10 +263,10 @@ const part8 = ({ cookies }) => {
     handleSubmit();
 
     // window.location.href="/instructor/coursespecs/part8"
-    setTimeout(()=>{
-
-      window.location.href = `/instructor/courses/${courseID}/courseSpecs/part8`;
-    },1000)
+    setTimeout(() => {
+      // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part8`;
+      router.push(`/instructor/courses/${courseID}/courseSpecs/part8`);
+    }, 1000);
   };
   const tableData22 = [
     [
@@ -297,7 +301,6 @@ const part8 = ({ cookies }) => {
   return (
     <>
       <div className="flex flex-row w-screen h-auto mt-2">
-        <InstructorDashboard />
         <CustomReactToPdf targetRef={refToImgBlob} filename="part7.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>

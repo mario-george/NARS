@@ -2,16 +2,19 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-import AdminDashBoard from "@/components/AdminDashBoard";
 import UserCard from "@/components/user/UserCard";
 import UserList from "@/components/user/UserListStudent";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
+import { useSelector } from "react-redux";
 const Students = ({ cookies }) => {
-  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+  const userState = useSelector((s) => s.user);
+  if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const router = useRouter();
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
@@ -26,7 +29,7 @@ const Students = ({ cookies }) => {
     try {
       const resp = await fetch(`${process.env.url}api/v1/users/students`, {
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + userState.token,
         },
       });
       const data = await resp.json();
@@ -72,7 +75,6 @@ const Students = ({ cookies }) => {
   return (
     <>
       <div className="flex flex-row w-screen h-screen w-full">
-        <AdminDashBoard />
         <form
           onSubmit={submitHandler}
           className=" bg-sky-50 h-[90%] w-[82%] flex flex-col justify-center items-center text-black   "
@@ -88,9 +90,7 @@ const Students = ({ cookies }) => {
                   Download Excel
                 </button>
               </div>
-        
             </div>
-         
 
             {filteredStudents ? (
               <>

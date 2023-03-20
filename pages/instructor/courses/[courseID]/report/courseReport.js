@@ -1,8 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import Link from "next/link";
 import Navbar from "@/components/Navbar/Navbar";
 // import {
@@ -110,7 +108,6 @@ const courseReport = ({ cookies }) => {
 
   return (
     <div className="flex flex-row w-screen h-screen mt-2">
-      <InstructorDashboard />
       <div className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1">
         <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
           <Navbar cookies={cookies} />

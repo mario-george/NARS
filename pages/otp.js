@@ -3,20 +3,17 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../components/store/userSlice";
 export default function otp() {
-  const completed = useSelector((s) => s.user.registerCompletionPart1);
+  const completed = useSelector((s) => s.registerCompletionPart1);
   const d = useDispatch();
   const router = useRouter();
   const submitHandler = async (e) => {
     e.preventDefault();
     d(userActions.updateVerifyCode(otp.current.value));
-    const r = await fetch(
-      `${process.env.url}/api/v1/users/verifyCode`,
-      {
-        method: "POST",
-        body: JSON.stringify({ verifyCode: otp.current.value }),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const r = await fetch(`${process.env.url}/api/v1/users/verifyCode`, {
+      method: "POST",
+      body: JSON.stringify({ verifyCode: otp.current.value }),
+      headers: { "Content-Type": "application/json" },
+    });
 
     const resp = await r.json();
     console.log(resp);

@@ -62,6 +62,9 @@
 .contentAddUser2 {
   @apply w-[90%] h-[90%] rounded-3xl p-12  bg-white  font-Roboto  text-lg md:text-lg shadow-lg border-2;
 }
+.topNav {
+  @apply w-[90%] p-4   font-Roboto  text-lg md:text-lg;
+}
 .inputAddUser2 {
   @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300 focus:border-gray-500 font-Roboto text-lg;
   transition-property: background-color;
@@ -202,31 +205,31 @@ td {
   white-space: nowrap;
 }
 
-.fileView{
+.fileView {
   width: 100%;
 }
 
-.fileView__row{
+.fileView__row {
   height: 250px;
   display: flex;
   align-items: center;
 }
 
-.fileView__titles{
+.fileView__titles {
   display: flex;
   margin-bottom: 5px;
   color: rgb(85, 78, 78);
 }
 
-.fileView__titles>div>*{
+.fileView__titles > div > * {
   margin: 5px;
 }
 
-.fileView__titles--left{
+.fileView__titles--left {
   flex: 1;
 }
 
-.fileView__titles--right{
+.fileView__titles--right {
   display: flex;
 }
 .fileCard {
@@ -253,35 +256,35 @@ td {
   height: 30%;
 }
 
-.fileCard--bottom>p {
+.fileCard--bottom > p {
   width: 90%;
-  overflow:hidden;
+  overflow: hidden;
   white-space: nowrap;
 }
-.fileItem{
+.fileItem {
   height: 55px;
   border-bottom: 1px solid rgb(219, 219, 219);
   border-top: 1px solid rgb(219, 219, 219);
   width: 100%;
 }
 
-.fileItem>a{
+.fileItem > a {
   height: 100%;
   display: flex;
   text-decoration: none;
   color: rgb(85, 78, 78);
 }
 
-.fileItem>a>div{
+.fileItem > a > div {
   display: flex;
   align-items: center;
 }
 
-.fileItem>a>div>*{
+.fileItem > a > div > * {
   margin: 10px;
 }
 
-.fileItem--left{
+.fileItem--left {
   flex: 1;
 }
 img {

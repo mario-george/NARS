@@ -1,18 +1,21 @@
-import AdminDashBoard from "@/components/AdminDashBoard";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef,useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { successFailMsg } from "@/components/successFail/success-fail";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import XLSX from "xlsx";
 import { read, utils } from "xlsx";
 import CircularJSON from "circular-json";
+import { useSelector } from "react-redux";
 const addStaff = ({ cookies }) => {
-  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+  const userState = useSelector((s) => s.user);
+  if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const [exportModalIsOpen, setExportModalIsOpen] = useState(false);
   const [data, setData] = useState([]);
 
@@ -58,7 +61,7 @@ const addStaff = ({ cookies }) => {
     setMsg(success);
   }
 
-  const token = Cookies.get("token");
+  const token = userState.token;
   const router = useRouter();
   const name = useRef();
   const email = useRef();
@@ -228,7 +231,6 @@ const addStaff = ({ cookies }) => {
           exportModalIsOpen ? `bg-black opacity-60 overflow-hidden ` : null
         }`}
       >
-        <AdminDashBoard />
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   "
@@ -257,11 +259,7 @@ const addStaff = ({ cookies }) => {
               <div className="flex flex-col gap-5 w-1/4 ">
                 <div>Role</div>
 
-                <select
-                  ref={role}
-                  id="small"
-                  class="choose-form"
-                >
+                <select ref={role} id="small" class="choose-form">
                   <option selected>Choose a role</option>
 
                   <option value="instructor">Instructor</option>
@@ -282,15 +280,12 @@ const addStaff = ({ cookies }) => {
               </div>
               <div className="flex flex-col gap-5  w-1/2 ">
                 <div> Faculty </div>
-                <input
-                  type="text"
-                  className="inputAddUser2  w-full "
-                />
+                <input type="text" className="inputAddUser2  w-full " />
               </div>
             </div>
             <div className="flex gap-10 flex-1 -mt-24 ">
               <div className="flex flex-col gap-5 w-1/4 ">
-              <div>Department </div>
+                <div>Department </div>
                 <input type="text" className="inputAddUser2 w-full" />
               </div>
               <div className="flex justify-end w-3/4 space-x-8 items-center -mt-24 ">

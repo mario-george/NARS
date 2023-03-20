@@ -2,18 +2,20 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
 const create = ({ cookies }) => {
+  const userState = useSelector((s) => s.user);
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
   const router = useRouter();
   const [coursesTitles, setCoursesTitles] = useState([]);
   const courseId = useRef();
   useEffect(() => {
-    let courses = cookies.courses;
+    let courses = userState.courses;
     let coursesParsed;
     if (courses) {
       try {
-        coursesParsed = JSON.parse(cookies.courses);
+        coursesParsed = JSON.parse(userState.courses);
       } catch (e) {
         console.log(e);
       }
@@ -25,7 +27,7 @@ const create = ({ cookies }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + cookies.token,
+            Authorization: "Bearer " + userState.token,
           },
         }
       );
@@ -67,7 +69,7 @@ const create = ({ cookies }) => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + cookies.token,
+            Authorization: "Bearer " + userState.token,
           },
         }
       );
@@ -88,7 +90,6 @@ const create = ({ cookies }) => {
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
-        <InstructorDashboard />
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"

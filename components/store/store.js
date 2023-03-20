@@ -1,8 +1,25 @@
-const { configureStore } = require('@reduxjs/toolkit');
+import { combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
 import userReducer from './userSlice';
-const store = configureStore({
-  reducer: {
-    user: userReducer,
-  },
+
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const rootReducer = combineReducers({
+  user: persistReducer(persistConfig, userReducer),
 });
-export default store;
+
+const store = configureStore({
+  reducer: rootReducer,
+});
+
+const persistor = persistStore(store);
+
+persistor.subscribe(() => console.log('Persisted state', store.getState()));
+
+export { store, persistor };

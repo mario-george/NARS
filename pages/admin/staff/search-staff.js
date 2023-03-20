@@ -1,15 +1,18 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState,useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import AdminDashBoard from "@/components/AdminDashBoard";
 import UserList from "@/components/user/UserList";
 import UserCard from "@/components/user/UserCard";
+import { useSelector } from "react-redux";
 const SearchStudent = ({ cookies }) => {
-  if (cookies.role != "system admin" || cookies.loggedInStatus != "true") {
+  const userState = useSelector((s) => s.user);
+  if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const token = Cookies.get("token");
   const router = useRouter();
   const [staff, setStaff] = useState([]);
@@ -92,7 +95,8 @@ const SearchStudent = ({ cookies }) => {
       const data = await resp.json();
       console.log(data);
     } catch (e) {
-      console.log(e);`http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/staff/?role=${role.current.value}`
+      console.log(e);
+      `http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/staff/?role=${role.current.value}`;
     }
     setEditModalIsOpen(false);
     document.body.classList.toggle("overflow-hidden");
@@ -105,8 +109,7 @@ const SearchStudent = ({ cookies }) => {
     }
     try {
       const resp = await fetch(
-        `${process.env.url}api/v1/users/staff/?role=${role.current.value}`
-        ,
+        `${process.env.url}api/v1/users/staff/?role=${role.current.value}`,
         {
           method: "GET",
           headers: {
@@ -223,7 +226,6 @@ const SearchStudent = ({ cookies }) => {
           editModalIsOpen ? `bg-gray-500 opacity-60 overflow-hidden ` : null
         } `}
       >
-        <AdminDashBoard />
         <form
           onSubmit={submitHandler}
           className="  bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   "
