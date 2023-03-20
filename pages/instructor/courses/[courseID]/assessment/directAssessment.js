@@ -5,12 +5,14 @@ import { useEffect, useRef, useState } from "react";
 import InstructorDashboard from "../../../../../components/InstructorDashboard";
 import { handleFile } from "../../../../../common/uploadFile";
 import Navbar from "@/components/Navbar/Navbar";
+import { useDispatch, useSelector } from "react-redux";
 
 function directAssessment({ cookies }) {
   const finalQuestions = useRef([]);
   const midtermQuestions = useRef([]);
   const supports = useRef([]);
   const isReady = useRef([false, false, false]);
+  const userState = useSelector((s) => s.user);
 
   const [isRequired, setRequired] = useState([false, false, false]);
   const [courseInstance, setCourseInstance] = useState();
@@ -18,8 +20,9 @@ function directAssessment({ cookies }) {
 
   const router = useRouter();
   const { courseID } = router.query;
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
-
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
 
   useEffect(() => {
     getCourse();
@@ -31,7 +34,7 @@ function directAssessment({ cookies }) {
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
           headers: {
-            Authorization: "Bearer " + cookies.token,
+            Authorization: "Bearer " + userState.token,
           },
         }
       );
@@ -81,7 +84,7 @@ function directAssessment({ cookies }) {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + cookies.token,
+              Authorization: "Bearer " + userState.token,
             },
             body: JSON.stringify({
               questions: allQuestions,
@@ -129,6 +132,7 @@ function directAssessment({ cookies }) {
                 <UploadFileComponent
                   title="Final Exam"
                   competences={courseInstance.course.competences}
+                  type="final"
                   onQuestionsUpdated={(questions) =>
                     (finalQuestions.current = questions)
                   }
@@ -138,6 +142,7 @@ function directAssessment({ cookies }) {
                 <UploadFileComponent
                   title="Midterm Exam"
                   competences={courseInstance.course.competences}
+                  type="midterm"
                   onQuestionsUpdated={(questions) =>
                     (midtermQuestions.current = questions)
                   }
@@ -147,6 +152,7 @@ function directAssessment({ cookies }) {
                 <UploadFileComponent
                   title="Supports"
                   competences={courseInstance.course.competences}
+                  type="quiz"
                   onQuestionsUpdated={(questions) =>
                     (supports.current = questions)
                   }
@@ -191,6 +197,7 @@ const UploadFileComponent = ({
   onQuestionsUpdated,
   onQuestionsReady,
   isRequired,
+  type,
 }) => {
   //used to determine if the filed is uploaded or not and ready to be submitted
   const [questionsData, setQuestionsData] = useState([]);
@@ -218,6 +225,7 @@ const UploadFileComponent = ({
             questionsData.push({
               question: Object.values(item)[Object.keys(item).length - 2], //get Question name in Question Info Section
               fullMark: Object.values(item)[Object.keys(item).length - 1], //last value stores the full mark
+              type: type,
               grades: [],
             });
           }
