@@ -8,6 +8,7 @@ const create = ({ cookies }) => {
   const router = useRouter();
   const [coursesTitles, setCoursesTitles] = useState([]);
   const courseId = useRef();
+  const token = Cookies.get("token");
   useEffect(() => {
     let courses = cookies.courses;
     let coursesParsed;
@@ -19,33 +20,24 @@ const create = ({ cookies }) => {
       }
     }
     const getCoursesNames = async () => {
-      // const d = await fetch(
-      //   `${process.env.url}api/v1/courses/original-courses`,
-      //   {
+      const d = await fetch(
+        `${process.env.url}api/v1/users/userToken`,
+        {
 
-      //     method: "GET",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Authorization: "Bearer " + cookies.token,
-      //     },
-      //   }
-      // );
-      // const data = await d.json();
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + cookies.token,
+          },
+        }
+      );
+      const userData = await d.json();
 
-      // console.log(data);
-      // const newArr = data.data.filter((e) => {
-      //   return coursesParsed.map((id) => {
-      //     id === e._id;
-      //   });
-      // });
-      let courses = Cookies.get('courses');
-
-    let ctemp = JSON.parse(courses);
+    let ctemp = userData.data.courses;
     if(!Array.isArray(ctemp)){
       ctemp = [ctemp]
     }
 
-    const token = Cookies.get("token");
 
     const userCourses = []
 
@@ -59,6 +51,7 @@ const create = ({ cookies }) => {
         },
       });
       const o_course = await ocr.json();
+      // console.log(o_course);
       // const cr = await fetch(`${process.env.url}api/v1/courses/created-courses/?course=${c}`,{
       //   headers: {
       //     "Content-Type": "application/json",
