@@ -74,11 +74,10 @@ const Students = ({ cookies }) => {
 
   return (
     <>
-      <div className="flex flex-row w-screen h-screen w-full">
         <form
           onSubmit={submitHandler}
-          className=" bg-sky-50 h-[90%] w-[82%] flex flex-col justify-center items-center text-black   "
-        >
+          className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          >
           <div className=" contentAddUser2 overflow-auto flex flex-col gap-10 ">
             <div className="flex w-full">
               <div className="flex items-center justify-between w-full">
@@ -102,7 +101,6 @@ const Students = ({ cookies }) => {
             )}
           </div>
         </form>
-      </div>
     </>
   );
 };

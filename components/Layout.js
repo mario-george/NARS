@@ -20,7 +20,7 @@ export default function Layout({ children, cookies }) {
           <MainHeader />
         </div>
       </div>
-      <div className="flex flex-row w-screen h-screen mt-2 ">
+      <div className="flex flex-col w-screen h-screen mt-2 ">
         <SideDashboard className="" />
         {children}
       </div>

@@ -22,13 +22,13 @@ export default function QualityCoordinatorDashboard() {
             className={`nav2 transition-all duration-300 transform ${navStatus ? ` -translate-x-full` : `translate-x-0 `
                 }`}
         >
-            <a className="link2 focus:text-green-400 " href="/profile">
+            <Link className="link2 focus:text-green-400 " href="/profile">
                 <span><CgProfile style={{ fontSize: 30, display: "inline", marginBottom: 5 }} /></span><span className="ml-2">Profile</span>
-            </a>
+            </Link>
 
-            <a className="link2 focus:text-green-400 " href="/qualitycoordinator/coursecomp">
+            <Link className="link2 focus:text-green-400 " href="/qualitycoordinator/coursecomp">
                 <span><VscChecklist style={{ fontSize: 30, display: "inline", marginBottom: 5 }} /></span><span className="ml-2">Assign courses competences</span>
-            </a>
+            </Link>
 
             <button
                 className="link2 focus:text-green-400 text-left"

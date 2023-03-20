@@ -224,8 +224,8 @@ const addStudent = ({ cookies }) => {
       <div className="flex flex-row w-screen h-screen">
         <form
           onSubmit={submitHandler}
-          className=" bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   "
-        >
+          className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          >
           <div className="contentAddUser2 flex flex-col gap-10 py-20">
             <div className=" ">Add Student</div>
 
