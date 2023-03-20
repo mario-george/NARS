@@ -7,7 +7,6 @@ import Cookies from "js-cookie";
 import Checkbox from "@/components/checkbox/checkbox";
 
 const updatefaculty = ({ cookies }) => {
-  const token = Cookies.get("token");
   const [selectedItems, setSelectedItems] = useState([]);
   const [facultyArr, setFaculty] = useState([]);
   useEffect(() => {
@@ -18,7 +17,7 @@ const updatefaculty = ({ cookies }) => {
       const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + userState.token,
         },
       });
       const data = await resp.json();
@@ -38,7 +37,8 @@ const updatefaculty = ({ cookies }) => {
       setSelectedItems(selectedItems.filter((item) => item !== value));
     }
   };
-  if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
+  const userState = useSelector((s) => s.user);
+  if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
   const faculty = useRef();
@@ -61,7 +61,7 @@ const updatefaculty = ({ cookies }) => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + userState.token,
           },
         }
       );
@@ -154,8 +154,8 @@ const updatefaculty = ({ cookies }) => {
       <div className="flex flex-row w-screen h-screen mt-2">
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
-        >
+          className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          >
           <div className="contentAddUser2 flex flex-col gap-10">
             <p className="font-normal">Faculty {">"} Update Faculty</p>
             <div className="flex gap-20 ">

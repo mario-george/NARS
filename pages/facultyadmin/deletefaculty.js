@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 import { useRef } from "react";
 import React from "react";
 const assigninstrctor = ({ cookies }) => {
-  if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
+  const userState = useSelector((s) => s.user);
+  if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
   useEffect(() => {
@@ -16,7 +17,6 @@ const assigninstrctor = ({ cookies }) => {
   const closeMsg = () => {
     setMsg("");
   };
-  const token = Cookies.get("token");
   const faculty = useRef();
   const [facultyArr, setFaculty] = useState([]);
 
@@ -25,7 +25,7 @@ const assigninstrctor = ({ cookies }) => {
       const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + userState.token,
         },
       });
       const data = await resp.json();
@@ -49,7 +49,7 @@ const assigninstrctor = ({ cookies }) => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " +userState.token,
           },
         }
       );
@@ -143,8 +143,8 @@ const assigninstrctor = ({ cookies }) => {
       <div className="flex flex-row w-screen h-screen mt-2">
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"
-        >
+          className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          >
           <div className="contentAddUser2 flex flex-col gap-10">
             <p className="font-normal">Faculty {">"} Delete Faculty</p>
             <div className="flex flex-col gap-10 ">

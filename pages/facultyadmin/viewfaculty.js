@@ -3,9 +3,11 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import FacultyList from "@/components/user/FacultyList";
+import { useSelector } from "react-redux";
 
 const viewfaculty = ({ cookies }) => {
-  if (cookies.role != "faculty admin" || cookies.loggedInStatus != "true") {
+  const userState = useSelector((s) => s.user);
+  if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
 
@@ -25,7 +27,7 @@ const viewfaculty = ({ cookies }) => {
     try {
       const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
         headers: {
-          Authorization: "Bearer " + cookies.token,
+          Authorization: "Bearer " + userState.token,
         },
       });
       const data = await resp.json();
@@ -53,8 +55,8 @@ const viewfaculty = ({ cookies }) => {
       <div className="flex flex-row w-screen h-screen mt-2">
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  ml-1 "
-        >
+          className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          >
           <div className="contentAddUser2 overflow-auto flex flex-col gap-10">
             <div className="flex items-center justify-between">
               <p className="font-normal">Faculty {">"} View Faculties</p>

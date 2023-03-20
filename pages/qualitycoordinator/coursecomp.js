@@ -109,7 +109,7 @@ const coursecomp = ({ cookies }) => {
                 <QualityCoordinatorDashboard />
                 <form
                     onSubmit={submitHandler}
-                    className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  ml-1 "
+                    className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
                 >
                     <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
                         <label class="label-form md:text-2xl text-center">

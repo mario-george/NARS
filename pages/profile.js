@@ -213,7 +213,7 @@ const profile = ({ cookies }) => {
 
       <form
         onSubmit={submitHandler}
-        className="bg-sky-50 h-screen w-[80%] absolute translate-x-[25%] flex flex-col justify-end items-center text-black ml-1 rounded-2xl"
+        className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
       >
         <div className="contentAddUser2 flex flex-col gap-10">
           <p className="underline mb-1">Profile details:</p>

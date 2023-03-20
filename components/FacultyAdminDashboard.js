@@ -14,7 +14,7 @@ export default function FacultyAdminDashboard() {
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());
-    window.location.href = "/logout";
+    router.push("/logout");
   };
   return (
     <nav className="nav2">
