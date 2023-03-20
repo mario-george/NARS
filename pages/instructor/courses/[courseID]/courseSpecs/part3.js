@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createRef, useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import BloomTaxonomyInput from "@/pages/pdf2/taxonomy";
+import { updateField } from "@/components/store/userSlice";
 
 const part3 = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
@@ -459,9 +460,6 @@ const part3 = ({ cookies }) => {
     );
   }
 
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
   const removeLO2 = (e, input) => {
     e.preventDefault();
     setInputs2(
@@ -517,6 +515,8 @@ const part3 = ({ cookies }) => {
       },
     ]);
   };
+  const d = useDispatch();
+
   const handleAddInput3 = (e) => {
     e.preventDefault();
 
@@ -597,6 +597,12 @@ const part3 = ({ cookies }) => {
     console.log(resp);
 
     Cookies.set("courseLearningOutcomes", stringifiedCourseLearningOutcomes);
+    d(
+      updateField({
+        field: "courseLearningOutcomes",
+        value: stringifiedCourseLearningOutcomes,
+      })
+    );
 
     const stringifiedCognitive = JSON.stringify(cognitive);
     const stringifiedPsychomotor = JSON.stringify(psychomotor);
@@ -642,10 +648,10 @@ const part3 = ({ cookies }) => {
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 rounded-2xl overflow-auto"
         >
           <div
-            className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none"
+            className="contentAddUser2 flex flex-col gap-10 mt-[5rem] mb-[20rem] py-[8rem] "
             ref={refToImgBlob}
           >
             <div className="flex gap-20 ">

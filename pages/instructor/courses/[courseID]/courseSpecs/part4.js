@@ -142,8 +142,9 @@ const part4 = ({ cookies }) => {
     const data = await resp.json();
     console.log(data);
     const { course } = data;
+    console.log(data.course)
     const resp2 = await fetch(
-      `${process.env.url}api/v1/courses/original-courses/?_id=${data.data.course._id}`,
+      `${process.env.url}api/v1/courses/original-courses/?_id=${data.data.course}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -184,6 +185,7 @@ const part4 = ({ cookies }) => {
   let psychomotorParsed;
   let affectiveParsed;
   let courseLearningOutcomes;
+  
   useEffect(() => {
     getComp();
     if (cognitive && affective && psychomotor) {
