@@ -34,17 +34,17 @@ const router = useRouter()
     if (resp.status == "fail") {
       setInvalidData(true);
     } else {
-      Cookies.set("token", resp.token, { expires: 365 });
-      Cookies.set("jwt", resp.token, { expires: 365 });
+      // Cookies.set("token", resp.token, { expires: 365 });
+      // Cookies.set("jwt", resp.token, { expires: 365 });
       const courses = JSON.stringify(resp.data.user.courses);
-      Cookies.set("courses", courses, { expires: 365 });
+      // Cookies.set("courses", courses, { expires: 365 });
       
-      Cookies.set("name", resp.data.user.name, { expires: 365 });
-      Cookies.set("email", resp.data.user.email, { expires: 365 });
-      Cookies.set("_id", resp.data.user._id, { expires: 365 });
-      Cookies.set("role", resp.data.user.role, { expires: 365 });
-      console.log(resp.data.user.name, { expires: 365 });
-      Cookies.set("loggedInStatus", true, { expires: 365 });
+      // Cookies.set("name", resp.data.user.name, { expires: 365 });
+      // Cookies.set("email", resp.data.user.email, { expires: 365 });
+      // Cookies.set("_id", resp.data.user._id, { expires: 365 });
+      // Cookies.set("role", resp.data.user.role, { expires: 365 });
+      // console.log(resp.data.user.name, { expires: 365 });
+      // Cookies.set("loggedInStatus", true, { expires: 365 });
       dispatch(userActions.toggleLoggedIn(true));
       dispatch(updateField({ field: 'courses', value: courses}));
       dispatch(updateField({ field: 'loggedInStatus', value: 'true' }));

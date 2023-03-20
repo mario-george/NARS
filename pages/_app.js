@@ -27,10 +27,11 @@ function MyApp({ Component, pageProps, cookies }) {
       </Provider>
     </>
   );
-
 }
 function GiveState({ Component, pageProps }) {
   const userState = useSelector((state) => state.user);
+
+ 
 
   return <Component {...pageProps} cookies={userState} />;
 }
