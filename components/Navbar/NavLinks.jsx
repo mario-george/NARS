@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
-
-const NavLinks = ({cookies,id}) => {
+const NavLinks = () => {
   const [heading, setHeading] = useState("");
   const [subHeading, setSubHeading] = useState("");
+  const userState= useSelector(s=>s.user);
   const links  = [
     {
       name: "Materials",
@@ -12,8 +13,8 @@ const NavLinks = ({cookies,id}) => {
       sublinks: [
         {
           sublink: [
-            { name: "Upload materials", link: `/instructor/courses/${cookies.instance_id}/materials/addmaterial` },
-            { name: "View materials", link: `/instructor/courses/${cookies.instance_id}/materials/viewmaterials` },
+            { name: "Upload materials", link: `/instructor/courses/${userState.instance_id}/materials/addmaterial` },
+            { name: "View materials", link: `/instructor/courses/${userState.instance_id}/materials/viewmaterials` },
           ],
         },
         
@@ -25,8 +26,8 @@ const NavLinks = ({cookies,id}) => {
       sublinks: [
         {
           sublink: [
-            { name: "Upload assingment", link: `/instructor/courses/${cookies.instance_id}/assignment/addassignment` },
-            { name: "View assingments ", link: `/instructor/courses/${cookies.instance_id}/assignment/viewassignments` },
+            { name: "Upload assingment", link: `/instructor/courses/${userState.instance_id}/assignment/addassignment` },
+            { name: "View assingments ", link: `/instructor/courses/${userState.instance_id}/assignment/viewassignments` },
           ],
         },
         
@@ -38,8 +39,8 @@ const NavLinks = ({cookies,id}) => {
       sublinks: [
         {
           sublink: [
-            { name: "Upload exam", link: `/instructor/courses/${cookies.instance_id}/exams/addexam` },
-            { name: "View exams ", link: `/instructor/courses/${cookies.instance_id}/exams/viewexams  ` },
+            { name: "Upload exam", link: `/instructor/courses/${userState.instance_id}/exams/addexam` },
+            { name: "View exams ", link: `/instructor/courses/${userState.instance_id}/exams/viewexams  ` },
           ],
         },
         
@@ -63,8 +64,8 @@ const NavLinks = ({cookies,id}) => {
       sublinks: [
         {
           sublink: [
-            { name: "Direct assesment", link: `/instructor/courses/${cookies.instance_id}/assessment/directAssessment` },
-            { name: "Indirect assesment ", link: `/instructor/courses/${cookies.instance_id}/exams/viewexams` },
+            { name: "Direct assesment", link: `/instructor/courses/${userState.instance_id}/assessment/directAssessment` },
+            { name: "Indirect assesment ", link: `/instructor/courses/${userState.instance_id}/exams/viewexams` },
           ],
         },
         
