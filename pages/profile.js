@@ -6,6 +6,7 @@ import InstructorDashboard from "@/components/InstructorDashboard";
 import AdminDashBoard from "@/components/AdminDashBoard";
 import ProgramAdminDashboard from '@/components/ProgramAdminDashboard';
 import FacultyadminDashboard from '@/components/FacultyadminDashboard';
+import QualityCoordinatorDashboard from "@/components/QualityCoordinatorDashboard"
 import Cookies from "js-cookie";
 import Modal from "@/components/Modal";
 import password from "./password";
@@ -98,6 +99,7 @@ const profile = ({ cookies }) => {
     const [admin, setAdmin] = useState(false);
     const [progadmin, setProgadmin] = useState(false);
     const [facadmin, setFacadmin] = useState(false);
+    const[qualityCoo,setQualityCoo]=useState(false);
     const name = useRef()
     const oldPassowrd = useRef();
     const newPassowrd = useRef();
@@ -124,6 +126,11 @@ const profile = ({ cookies }) => {
     else if (cookies.role === "faculty admin") {
         useEffect(() => {
             setFacadmin(true);
+        }, [])
+    }
+    else if (cookies.role === "quality coordinator") {
+        useEffect(() => {
+            setQualityCoo(true);
         }, [])
     }
     let fail = (
@@ -208,6 +215,7 @@ const profile = ({ cookies }) => {
                 {facadmin && <FacultyadminDashboard />}
                 {instructor && <InstructorDashboard />}
                 {progadmin && <ProgramAdminDashboard />}
+                {qualityCoo && <QualityCoordinatorDashboard/>}
 
                 <form
                     onSubmit={submitHandler}

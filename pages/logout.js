@@ -13,6 +13,7 @@ export default function Logout() {
     Cookies.remove("courses");
     Cookies.remove("jwt");
     Cookies.remove("instance_id");
+    Cookies.remove("program")
   }, 300);
   
   setTimeout(() => {

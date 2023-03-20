@@ -40,6 +40,7 @@ export default function Login({ cookies }) {
       Cookies.set("email", resp.data.user.email,{ expires: 365 });
       Cookies.set("_id", resp.data.user._id,{ expires: 365 });
       Cookies.set("role", resp.data.user.role,{ expires: 365 });
+      Cookies.set("program", resp.data.user.program,{ expires: 365 });
       console.log(resp.data.user.name,{ expires: 365 });
       Cookies.set("loggedInStatus", true,{ expires: 365 });
       dispatch(userActions.toggleLoggedIn(true));
