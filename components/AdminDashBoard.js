@@ -15,9 +15,9 @@ export default function AdminDashBoard() {
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());
-    // router.push('/logout')
+     router.push('/logout')
 
-    window.location.href = "/logout";
+    //window.location.href = "/logout";
   };
   return (
     <nav

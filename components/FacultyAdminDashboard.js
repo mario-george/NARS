@@ -13,7 +13,6 @@ export default function FacultyAdminDashboard() {
   const navStatus = useSelector((s) => s.navStatus);
   const dispatch = useDispatch();
   const logoutHandler = () => {
-    dispatch(userActions.logOut());
     router.push("/logout");
   };
   return (

@@ -7,7 +7,8 @@ import { useRef } from "react";
 import React from "react";
 import Navbar from "@/components/Navbar/Navbar";
 const addexam = ({ cookies }) => {
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
+  const userState = useSelector((s) => s.user);
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
   useEffect(() => {
@@ -20,7 +21,7 @@ const addexam = ({ cookies }) => {
 
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const token = Cookies.get("token");
+  //const token = Cookies.get("token");
   const name = useRef();
   const desc = useRef();
   const router = useRouter();
@@ -66,7 +67,7 @@ const addexam = ({ cookies }) => {
         body: data,
         headers: {
           Accept: "application/form-data",
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + userState.token,
         },
       });
 
