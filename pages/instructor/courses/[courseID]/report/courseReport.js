@@ -3,6 +3,23 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar/Navbar";
+import InstructorDashBoard from "@/components/InstructorDashBoard2";
+import Attainment from '@/components/chart/Attainment';
+import Grad2Litter from '@/components/chart/Grad2Litter'
+import StudentScatter from '@/components/chart/StudentScatter';
+import CompetenciesBoxPlot from '@/components/chart/CompetenciesBoxPlot';
+import CompetenciesQ from '@/components/chart/CompetenciesQ';
+import CompetenciesAttainment from '@/components/chart/CompetenciesAttainment';
+import CompetenciesStatisticsTable from '@/components/chart/CompetenciesStatisticsTable';
+import CompetenciesBar from '@/components/chart/CompetenciesBar';
+import CLOBar from '@/components/chart/CLOBar';
+import CLOQ from '@/components/chart/CLOQ';
+import CLOAttainment from '@/components/chart/CLOAttainment';
+import CLOStatisticsTable from '@/components/chart/CLOStatisticsTable';
+import CLOBoxPlot from '@/components/chart/CLOBoxPlot';
+import CLOTable from '@/components/chart/CLOTable';
+import GradHist from "@/components/chart/GradHist";
+import getData from "@/components/chart/getData";
 import {
   Chart as ChartJS,
   BarElement,
@@ -16,10 +33,10 @@ import { Bar } from "react-chartjs-2";
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const courseReport = ({ cookies }) => {
-  //const router = useRouter();
+  const router = useRouter();
   const [competence, setCompetences] = useState([]);
   const [avgValues, setAvgValues] = useState([]);
-  //const { courseID } = router.query;
+  const { courseID } = router.query;
 
   useEffect(() => {
     getCourse();
@@ -28,7 +45,7 @@ const courseReport = ({ cookies }) => {
   const getCourse = async () => {
     try {
       const resp = await fetch(
-        `${process.env.url}api/v1/courses/created-courses/${cookies.instance_id}`,
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
           headers: {
             Authorization: "Bearer " + cookies.token,
