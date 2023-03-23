@@ -9,6 +9,51 @@ import ReactDOMServer from "react-dom/server";
 import Navbar from "@/components/Navbar/Navbar";
 import { updateField } from "@/components/store/userSlice";
 const part1 = ({ cookies }) => {
+
+useEffect(()=>{
+ 
+const getData = async function (){
+
+  const r = await fetch(
+    `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+    {
+
+
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+  const data = await r.json();
+  console.log(data)
+  console.log(data.data.courseSpecs)
+  d(updateField({ field: "courseSpecs", value: data.data.courseSpecs}));
+  // code.current.value=data.courseSpecs.courseData.courseCode
+  // year.current.value=data.courseSpecs.courseData.year
+  // practical.current.value=data.courseSpecs.courseData.practical
+  lecture.current.value=data.data.courseSpecs.courseData.lectures
+  hours.current.value=data.data.courseSpecs.courseData.contactHourse
+  special.current.value=data.data.courseSpecs.courseData.specialization
+  // body: JSON.stringify({
+  //   courseSpecs: {
+  //     courseData: {
+  //       courseCode: code.current.value,
+  //       year: year.current.value,
+  //       practical: practical.current.value,
+  //       lectures: lecture.current.value,
+  //       contactHourse: hours.current.value,
+  //       specialization: special.current.value,
+  //     },
+  //   },
+  // }),
+ 
+  console.log(data)
+}
+getData()
+},[])
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const userState = useSelector((s) => s.user);
 

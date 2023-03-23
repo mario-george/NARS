@@ -4,6 +4,7 @@ import Autocomplete from "react-autocomplete";
 
 const BloomTaxonomyInput = forwardRef((props,ref) => {
   const  bloomVerbs = props.bloomVerbs;
+  const  v = props.v;
   const [selectedSentence, setSelectedSentence] = useState("");
   const handleSentenceChange = (event) => {
     const newValue = event.target.value;
@@ -62,7 +63,7 @@ const BloomTaxonomyInput = forwardRef((props,ref) => {
   });
 
   return (
-    <Textarea ref={ref} small={true} rows={0}  className="w-full  mb-[2.5rem] mr-[5rem] items-center  ">
+    <Textarea v={v} ref={ref} small={true} rows={0}  className="w-full  mb-[2.5rem] mr-[5rem] items-center  ">
       <Autocomplete
         ref={ref}
         getItemValue={(item) => item}

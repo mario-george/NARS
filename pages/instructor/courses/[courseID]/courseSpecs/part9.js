@@ -6,7 +6,34 @@ import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part2 = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
+  const courseSpecs=cookies.courseSpecs
+  useEffect(()=>{
+ 
+    const getData = async function (){
+    
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+    
+    
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data)
+      const references=courseSpecs.references
+      notes.current.value=references.courseNotes
+websites.current.value=references.courseWebsites
+books.current.value=references.bookes
+Rbooks.current.value=references.recommendedBooks
 
+    }
+    getData()
+    },[])
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
