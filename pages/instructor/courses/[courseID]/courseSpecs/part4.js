@@ -3,16 +3,15 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part4 = ({ cookies }) => {
-  const userState= useSelector(s=>s.user)
+  const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const token = userState.token
+  const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
   const refToImgBlob = useRef();
   const buttonRef = useRef(null);
@@ -47,7 +46,9 @@ const part4 = ({ cookies }) => {
     );
   }
   const router = useRouter();
-  useEffect(() => { document.querySelector("body").classList.add("scrollbar-none") });
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const closeMsg = () => {
     setMsg("");
   };
@@ -139,21 +140,8 @@ const part4 = ({ cookies }) => {
       }
     );
     const data = await resp.json();
-    console.log(data);
-    const { course } = data;
-    const resp2 = await fetch(
-      `${process.env.url}api/v1/courses/original-courses/?_id=${data.data.course._id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    const data2 = await resp2.json();
-    console.log(data2);
-    const c = data2.data[0].competences;
+    const createdCourse = data.data;
+    const c = createdCourse.course.competences;
     console.log(c);
     let comp = [];
     c.map((e) => {
@@ -183,6 +171,7 @@ const part4 = ({ cookies }) => {
   let psychomotorParsed;
   let affectiveParsed;
   let courseLearningOutcomes;
+
   useEffect(() => {
     getComp();
     if (cognitive && affective && psychomotor) {
@@ -425,8 +414,7 @@ const part4 = ({ cookies }) => {
         if (data.status === "success") {
           setMsg(success);
           // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part5`;
-    router.push(`/instructor/courses/${courseID}/courseSpecs/part5`);
-
+          router.push(`/instructor/courses/${courseID}/courseSpecs/part5`);
         } else {
           setMsg(fail);
         }
@@ -483,19 +471,15 @@ const part4 = ({ cookies }) => {
   //   : null;
   return (
     <>
-      <div className="flex flex-row w-screen h-auto mt-2">
-        <InstructorDashboard />
+      <div className="flex flex-row w-screen h-auto">
         <CustomReactToPdf targetRef={refToImgBlob} filename="part4.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-auto w-screen flex flex-col justify-center items-center text-black ml-1 relative "
+          className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
         >
-          <div
-            className="contentAddUser2 flex flex-col gap-10 mb-[8rem] pb-[24rem]"
-            ref={refToImgBlob}
-          >
+          <div className="contentAddUser2 flex flex-col" ref={refToImgBlob}>
             <table className="table-auto my-24">
               <thead>
                 <tr>
@@ -597,7 +581,6 @@ const part4 = ({ cookies }) => {
                 ))}
               </tbody>
             </table>
-
           </div>
           <div className="flex justify-between absolute bottom-44 right-24">
             <div>{msg}</div>

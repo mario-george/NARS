@@ -2,17 +2,18 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-import AdminDashBoard from "@/components/AdminDashBoard";
 import UserList from "@/components/user/UserList2";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import { useSelector } from "react-redux";
 const viewAll = ({ cookies }) => {
-  const userState= useSelector(s=>s.user)
+  const userState = useSelector((s) => s.user);
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const handleClick = () => {
     const header = ["name", "role", "email"];
     const rows = staff.map((item) => [item.name, item.role, item.email]);
@@ -64,11 +65,10 @@ const viewAll = ({ cookies }) => {
   return (
     <>
       <div className="flex flex-row w-screen h-screen">
-        <AdminDashBoard />
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   "
-        >
+          className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          >
           <div className="contentAddUser2 overflow-auto flex flex-col gap-10">
             <div className="flex items-center justify-between">
               <p>List of all Staff</p>

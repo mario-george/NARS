@@ -2,7 +2,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import React from "react";
-import ProgramAdminDashboard from "@/components/ProgramAdminDashboard";
 const assignprogramqualitycoordinator = () => {
   const router = useRouter();
   const pro = useSelector((s) => s.data.programs);
@@ -14,7 +13,6 @@ const assignprogramqualitycoordinator = () => {
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
-        <ProgramAdminDashboard />
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1"

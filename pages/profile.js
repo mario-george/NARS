@@ -5,10 +5,10 @@ import { useRef, useState, useEffect } from "react";
 import InstructorDashboard from "@/components/InstructorDashboard";
 import AdminDashBoard from "@/components/AdminDashBoard";
 import ProgramAdminDashboard from "@/components/ProgramAdminDashboard";
-import FacultyadminDashboard from "@/components/FacultyadminDashboard";
+import FacultyAdminDashboard from "@/components/FacultyAdminDashboard";
+import QualityCoordinatorDashboard from "@/components/QualityCoordinatorDashboard";
 import Cookies from "js-cookie";
 import Modal from "@/components/Modal";
-import password from "./password";
 
 const profile = ({ cookies }) => {
   useEffect(() => {
@@ -18,6 +18,10 @@ const profile = ({ cookies }) => {
   if (globalState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+
+  useEffect(() => {
+    console.log("MOHAMED ROLE IS ", globalState.role);
+  }, []);
 
   const passowrdHandler = async (e) => {
     if (e) {
@@ -94,6 +98,7 @@ const profile = ({ cookies }) => {
   const [admin, setAdmin] = useState(false);
   const [progadmin, setProgadmin] = useState(false);
   const [facadmin, setFacadmin] = useState(false);
+  const [qualityCoo, setQualityCoo] = useState(false);
   const name = useRef();
   const oldPassowrd = useRef();
   const newPassowrd = useRef();
@@ -103,21 +108,25 @@ const profile = ({ cookies }) => {
     setMsg("");
   };
 
-  if (globalState.role === "system admin") {
+  if (cookies.role === "system admin") {
     useEffect(() => {
       setAdmin(true);
     }, []);
-  } else if (globalState.role === "instructor") {
+  } else if (cookies.role === "instructor") {
     useEffect(() => {
       setInstructor(true);
     }, []);
-  } else if (globalState.role === "program admin") {
+  } else if (cookies.role === "program admin") {
     useEffect(() => {
       setProgadmin(true);
     }, []);
-  } else if (globalState.role === "faculty admin") {
+  } else if (cookies.role === "faculty admin") {
     useEffect(() => {
       setFacadmin(true);
+    }, []);
+  } else if (cookies.role === "quality coordinator") {
+    useEffect(() => {
+      setQualityCoo(true);
     }, []);
   }
   let fail = (
@@ -196,53 +205,53 @@ const profile = ({ cookies }) => {
 
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2 ">
-        {admin && <AdminDashBoard />}
-        {facadmin && <FacultyadminDashboard />}
-        {instructor && <InstructorDashboard />}
-        {progadmin && <ProgramAdminDashboard />}
+      {/* {admin && <AdminDashBoard />}
+                {facadmin && <FacultyAdminDashboard />}
+                {instructor && <InstructorDashboard />}
+                {progadmin && <ProgramAdminDashboard />}
+    {qualityCoo && <QualityCoordinatorDashboard/>}*/}
 
-        <form
-          onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
-        >
-          <div className="contentAddUser2 flex flex-col gap-10">
-            <p className="underline mb-1">Profile details:</p>
-            <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5 w-1/3">
-                <div>Role</div>
-                <input
-                  type="text"
-                  className="inputAddUser2 w-full"
-                  value={globalState.role}
-                  disabled
-                />
-              </div>
-              <div className="flex flex-col gap-5  w-2/5">
-                <div> Name</div>
-                <input
-                  type="text"
-                  className="inputAddUser2  w-full"
-                  defaultValue={globalState.name}
-                  ref={name}
-                />
-              </div>
+      <form
+        onSubmit={submitHandler}
+        className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+      >
+        <div className="contentAddUser2 flex flex-col gap-10">
+          <p className="underline mb-1">Profile details:</p>
+          <div className="flex gap-20 ">
+            <div className="flex flex-col gap-5 w-1/3">
+              <div>Role</div>
+              <input
+                type="text"
+                className="inputAddUser2 w-full"
+                value={cookies.role}
+                disabled
+              />
             </div>
-            <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5  w-1/3">
-                <div> Email </div>
-                <input
-                  type="text"
-                  className="inputAddUser2  w-full"
-                  value={globalState.email}
-                  disabled
-                />
-              </div>
-              <div className="flex flex-col gap-5  w-2/5">
-                <div> select photo:</div>
-                <input
-                  type="file"
-                  class="text-sm text-grey-500
+            <div className="flex flex-col gap-5  w-2/5">
+              <div> Name</div>
+              <input
+                type="text"
+                className="inputAddUser2  w-full"
+                defaultValue={cookies.name}
+                ref={name}
+              />
+            </div>
+          </div>
+          <div className="flex gap-20 ">
+            <div className="flex flex-col gap-5  w-1/3">
+              <div> Email </div>
+              <input
+                type="text"
+                className="inputAddUser2  w-full"
+                value={cookies.email}
+                disabled
+              />
+            </div>
+            <div className="flex flex-col gap-5  w-2/5">
+              <div> select photo:</div>
+              <input
+                type="file"
+                class="text-sm text-grey-500
                             file:mr-5 file:py-3 file:px-10
                             file:rounded-full file:border-0
                             file:text-sm file:font-medium
@@ -250,35 +259,35 @@ const profile = ({ cookies }) => {
                             hover:file:cursor-pointer hover:file:bg-amber-50
                             hover:file:text-amber-700
                             "
-                  onChange={(e) => setSelectedFile(e.target.files[0])}
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-20 ">
-              {<div className="w-1/2 mt-10">{msg}</div>}
-            </div>
-
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Update
-              </button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowModal(true);
-                }}
-                class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                password
-              </button>
+                onChange={(e) => setSelectedFile(e.target.files[0])}
+              />
             </div>
           </div>
-        </form>
-      </div>
+
+          <div className="flex gap-20 ">
+            {<div className="w-1/2 mt-10">{msg}</div>}
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Update
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setShowModal(true);
+              }}
+              class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              password
+            </button>
+          </div>
+        </div>
+      </form>
+
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
         <div className="py-6 px-6 lg:px-8 text-left">
           <h3 className="mb-4 text-xl font-medium text-gray-900">

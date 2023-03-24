@@ -8,12 +8,16 @@ let initialState = {
   loggedInStatus: false,
   navStatus: false,
   cookies: {},
-  _id:"null",
-  id:"null",
-  name:"undefined",
-  courses:"undefined",
-  jwt:"undefined",
-  token:"undefined",
+  _id: "null",
+  id: "null",
+  name: "undefined",
+  courses: "undefined",
+  jwt: "undefined",
+  token: "undefined",
+  original_id: "undefined",
+  instance_id: "",
+  courseLearningOutcomes: "",
+  program: "",
 };
 const userSlice = createSlice({
   initialState,
@@ -32,13 +36,20 @@ const userSlice = createSlice({
       state.data = action.payload;
     },
     toggleLoggedIn: (s, action) => {
-      console.log(s)
-      console.log(s.loggedInStatus)
-      console.log(s.role)
+      console.log(s);
+      console.log(s.loggedInStatus);
+      console.log(s.role);
       s.loggedInStatus = action.payload;
     },
     logOut: (s, action) => {
       s.loggedInStatus = false;
+      s.courses = "null";
+      s.role = "null";
+      s._id = "null";
+      s.email = "null";
+      s.jwt = "null";
+      s.token = "null";
+      s.name = "null";
     },
     toggleNav: (s) => {
       s.navStatus = !s.navStatus;
@@ -52,7 +63,17 @@ const userSlice = createSlice({
     },
   },
 });
-export const { updateField,updateVerifyCode, registerCompletionPart1, registerCompletionPart2, getUserData, toggleLoggedIn, logOut, toggleNav, setCookies } = userSlice.actions;
+export const {
+  updateField,
+  updateVerifyCode,
+  registerCompletionPart1,
+  registerCompletionPart2,
+  getUserData,
+  toggleLoggedIn,
+  logOut,
+  toggleNav,
+  setCookies,
+} = userSlice.actions;
 
 export const userActions = userSlice.actions;
 export default userSlice.reducer;

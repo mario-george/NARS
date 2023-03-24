@@ -2,16 +2,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-import AdminDashBoard from "@/components/AdminDashBoard";
 import { handleFile } from "../../../common/uploadFile";
 import { useSelector } from "react-redux";
 
 const addStudent = ({ cookies }) => {
-  const userState= useSelector(s=>s.user)
+  const userState = useSelector((s) => s.user);
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   useEffect(() => {
     async function doThis() {
       const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
@@ -221,11 +222,10 @@ const addStudent = ({ cookies }) => {
         </div>
       ) : null}
       <div className="flex flex-row w-screen h-screen">
-        <AdminDashBoard />
         <form
           onSubmit={submitHandler}
-          className=" bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black   "
-        >
+          className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          >
           <div className="contentAddUser2 flex flex-col gap-10 py-20">
             <div className=" ">Add Student</div>
 
@@ -277,7 +277,6 @@ const addStudent = ({ cookies }) => {
                   {facultyArr.map((e) => {
                     return <option value={e.id}>{e.name}</option>;
                   })}{" "}
-        
                 </select>
               </div>
               <div className="flex flex-col gap-5  w-1/2">

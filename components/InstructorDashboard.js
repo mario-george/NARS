@@ -11,64 +11,29 @@ import { CgLogOut } from "react-icons/cg";
 import { BsBook } from "react-icons/bs";
 import { GrAddCircle } from "react-icons/gr";
 
-export default function InstructorDashboard() {
+export default function InstructorDashboard({ cookies }) {
   const [c, sC] = useState([]);
   const coursesRef = useRef([]);
   const r = useRouter();
-  const cookies = useSelector((s) => s.cookies);
   const userState = useSelector((s) => s.user);
   const dispatch = useDispatch();
+
   const logoutHandler = () => {
-    dispatch(userActions.logOut());
-    window.location.href = "/logout";
-    // r.push('/logout')
+    //window.location.href = "/logout";
+     r.push('/logout')
   };
   const handel_set_cookies = (e) => {
     Cookies.set("instance_id", e);
     //window.location.href=`/instructor/courses/${e}/courseSpecs/part1`
   };
+
   useEffect(() => {
-    let newData33 = [];
+    console.log("Render");
+  });
 
-    async function getCreatedCoursesForInstructor() {
-      const data = await fetch(
-        `${process.env.url}api/v1/courses/created-courses?instructor=${userState._id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: "Bearer " + userState.token,
-          },
-        }
-      );
-
-      const resp = await data.json();
-      const newData = await resp.data.map(async (e) => {
-        let data2 = await fetch(
-          `${process.env.url}api/v1/courses/original-courses?_id=${e.course}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "Bearer " + userState.token,
-            },
-          }
-        );
-        let resp2 = await data2.json();
-        const dateString = e.createdAt;
-        const dateOnly = dateString.split("T")[0];
-
-        newData33.push({
-          name: resp2.data[0].name,
-          createdAt: dateOnly,
-          _id: e._id,
-        });
-      });
-
-      sC(newData33);
-    }
+  useEffect(() => {
+    console.log("TOKEN IS ", JSON.stringify(userState._id));
+    console.log("TOKEN IS ", JSON.stringify(userState.token));
 
     try {
       getCreatedCoursesForInstructor();
@@ -76,8 +41,32 @@ export default function InstructorDashboard() {
       console.log(e);
     }
   }, []);
+
+  async function getCreatedCoursesForInstructor() {
+    const data = await fetch(
+      `${process.env.url}api/v1/courses/created-courses?instructor=${userState._id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + userState.token,
+        },
+      }
+    );
+
+    const resp = await data.json();
+
+    sC(resp.data);
+  }
+  const navStatus = useSelector((s) => s.user.navStatus);
+
   return (
-    <nav className="nav44 scrollbar-none">
+    <nav
+      className={`nav2 transition-all duration-300 transform ${
+        navStatus ? ` -translate-x-full` : `translate-x-0 `
+      }`}
+    >
       <Link className="link2 focus:text-green-400 " href="/profile">
         <span>
           <CgProfile
@@ -101,15 +90,16 @@ export default function InstructorDashboard() {
         </span>,
         [
           Array(
-            c.map((e) => {
+            c.map((courseInstance) => {
               return (
-                <div key={e._id} className=" mb-5 -mx-4  px-0 ">
+                <div key={courseInstance._id} className=" mb-5 -mx-4  px-0 ">
                   <HeaderElement
                     className={``}
-                    key={e._id}
-                    id={e._id.toString()}
-                    name={e.name}
-                    createdAt={e.createdAt}
+                    key={courseInstance._id}
+                    id={courseInstance._id.toString()}
+                    originalId={courseInstance.course._id.toString()}
+                    name={courseInstance.course.name}
+                    createdAt={courseInstance.createdAt.split("T")[0]}
                     cookies={cookies}
                   />
                 </div>
@@ -118,18 +108,6 @@ export default function InstructorDashboard() {
           ),
         ]
       )}
-
-      {/* {c.length!=0?c.map((e) => {
-         
-        
-         return header(e._id.toString(), [ "course specs", "Materials",
-          "Assignments", "Exams", "Grades", "Direct assesment",
-           "Indirect assesment", ]);
-
-          
-   
-        
-      }):null} */}
 
       <Link
         className="link2 focus:text-green-400 "

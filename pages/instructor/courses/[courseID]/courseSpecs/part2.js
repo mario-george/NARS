@@ -2,8 +2,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import Textarea from "@/components/Textarea/Textarea";
 
@@ -46,19 +44,21 @@ const part2 = ({ cookies }) => {
       </>
     );
   }
-  const userState= useSelector(s=>s.user)
+  const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const token = userState.token
+  const token = userState.token;
   const courseAims = useRef();
   const courseContent = useRef();
   const lvla = useRef();
   const lvlb = useRef();
   const router = useRouter();
   const { courseID } = router.query;
-    useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const submitHandler = async (e) => {
     buttonRef.current.click();
 
@@ -87,26 +87,22 @@ const part2 = ({ cookies }) => {
     console.log(resp);
     // window.location.href = '/instructor/coursespecs/part3';
     router.push(`/instructor/courses/${courseID}/courseSpecs/part3`);
-
   };
 
   return (
     <>
-      <div className="flex flex-row w-screen h-auto mt-2 bg-sky-50 relative">
-        <InstructorDashboard />
-
-        <form
-          onSubmit={submitHandler}
-          className="bg-sky-50 h-auto w-screen flex flex-col justify-center items-center text-black ml-1"
-        >
-          <CustomReactToPdf targetRef={refToImgBlob} filename="part2.pdf">
-            {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
-          </CustomReactToPdf>
-          <div className="contentAddUser2 flex flex-col   " ref={refToImgBlob}>
-            <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5 w-full">
-                <div>-Course Aims:</div>
-                {/* <textarea
+      <form
+        onSubmit={submitHandler}
+        className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
+      >
+        <CustomReactToPdf targetRef={refToImgBlob} filename="part2.pdf">
+          {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
+        </CustomReactToPdf>
+        <div className="contentAddUser2 flex flex-col   " ref={refToImgBlob}>
+          <div className="flex gap-20 ">
+            <div className="flex flex-col gap-5 w-full">
+              <div>-Course Aims:</div>
+              {/* <textarea
                   rows="4"
                   name="aims"
                   className="w-full input-form"
@@ -114,61 +110,73 @@ const part2 = ({ cookies }) => {
                   ref={courseAims}
                   placeholder="Type here the Course Aims"
                 ></textarea> */}
-              <Textarea rows="4" placeholder="Type here the Course Aims" ref={courseAims}/>
-
-              </div>
+              <Textarea
+                rows="4"
+                placeholder="Type here the Course Aims"
+                ref={courseAims}
+              />
             </div>
-            <div className="flex flex-col gap-5  w-full">
-              <div> -Course Contents(As indicated in the program):</div>
-              {/* <textarea
+          </div>
+          <div className="flex flex-col gap-5  w-full">
+            <div> -Course Contents(As indicated in the program):</div>
+            {/* <textarea
                 ref={courseContent}
                 rows="4"
                 name="contents"
                 className="w-full input-form"
                 placeholder="Type here the Course Contents"
               ></textarea> */}
-              <Textarea rows="4" placeholder="Type here the Course Contents" ref={courseContent}/>
+            <Textarea
+              rows="4"
+              placeholder="Type here the Course Contents"
+              ref={courseContent}
+            />
+          </div>
 
-            </div>
-
-            <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5 w-full">
-                <div>-Level (A) Competencies:</div>
-                {/* <textarea
+          <div className="flex gap-20 ">
+            <div className="flex flex-col gap-5 w-full">
+              <div>-Level (A) Competencies:</div>
+              {/* <textarea
                   ref={lvla}
                   rows="4"
                   name="lvla"
                   className="w-full input-form pl-1"
                   placeholder="Level (A) Competencies"
                 ></textarea> */}
-              <Textarea rows="4" placeholder="Level (A) Competencies " ref={lvla}/>
-
-              </div>
+              <Textarea
+                rows="4"
+                placeholder="Level (A) Competencies "
+                ref={lvla}
+              />
             </div>
-            <div className="flex flex-col gap-5  w-full">
-              <div> -Level (B) Competencies: </div>
-              {/* <textarea
+          </div>
+          <div className="flex flex-col gap-5  w-full">
+            <div> -Level (B) Competencies: </div>
+            {/* <textarea
                 ref={lvlb}
                 rows="4"
                 name="lvlb"
                 className="w-full input-form pl-1  mb-32 h-auto resize-none overflow-hidden   "
                 placeholder="Level (B) Competencies "
               ></textarea> */}
-              <Textarea className='  ' rows="4" placeholder="Level (B) Competencies " ref={lvlb}/>
-              <div className="mb-32"></div>
-            </div>
+            <Textarea
+              className="  "
+              rows="4"
+              placeholder="Level (B) Competencies "
+              ref={lvlb}
+            />
+            <div className="mb-32"></div>
           </div>
-
-        </form>
-        <div className="flex justify-end absolute bottom-12 right-24">
-          <button
-            onClick={submitHandler}
-            type="submit"
-            class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          >
-            Next
-          </button>
         </div>
+      </form>
+      <div className="flex justify-end absolute bottom-12 right-24">
+        <button
+          onClick={submitHandler}
+          type="submit"
+          class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        >
+          Next
+        </button>
       </div>
     </>
   );

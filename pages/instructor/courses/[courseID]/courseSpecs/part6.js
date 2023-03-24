@@ -3,19 +3,19 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import cn from "classnames";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
-
 const part7 = ({ cookies }) => {
-  const userState= useSelector(s=>s.user)
+  const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const token = userState.token
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  const token = userState.token;
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const [running, setIsRunning] = useState(true);
 
   const refToImgBlob = useRef();
@@ -261,18 +261,15 @@ const part7 = ({ cookies }) => {
     console.log(resp);
   };
 
-
   const submitHandler = async (e) => {
     buttonRef.current.click();
     e.preventDefault();
     handleSubmit();
     setIsRunning(false);
-    setTimeout(()=>{
-
-    // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part7`;
-    router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
-
-  },1000)
+    setTimeout(() => {
+      // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part7`;
+      router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
+    }, 1000);
   };
   const tableData22 = [
     [
@@ -306,18 +303,14 @@ const part7 = ({ cookies }) => {
   return (
     <>
       <div className="flex flex-row w-screen h-auto mt-2">
-        <InstructorDashboard />
         <CustomReactToPdf targetRef={refToImgBlob} filename="part6.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className={`bg-sky-50 h-auto w-screen flex flex-col justify-center items-center text-black ml-1 overflow-auto relative  `}
+          className={`bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative overflow-auto  `}
         >
-          <div
-            className={`contentAddUser2 flex flex-col  `}
-            ref={refToImgBlob}
-          >
+          <div className={`contentAddUser2 flex flex-col  `} ref={refToImgBlob}>
             <table className="table-fixed border-collapse mb-[15rem]">
               <thead>
                 <tr>
@@ -471,16 +464,15 @@ const part7 = ({ cookies }) => {
                 ))}
               </tbody>
             </table>
-
           </div>
-              <div className="flex justify-end absolute right-[6rem] bottom-[6rem]">
-                <button
-                  type="submit"
-                  class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                >
-                  Next
-                </button>
-              </div>
+          <div className="flex justify-end absolute right-[6rem] bottom-[6rem]">
+            <button
+              type="submit"
+              class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Next
+            </button>
+          </div>
         </form>
       </div>
     </>

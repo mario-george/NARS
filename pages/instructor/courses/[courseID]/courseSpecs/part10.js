@@ -2,10 +2,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useRef,useEffect } from "react";
+import { useRef, useEffect } from "react";
 import Cookies from "js-cookie";
 import Checkbox from "@/components/checkbox/checkbox";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import jsPDF from "jspdf";
 // import mergePDFs from "@/pages/pdf2/merge2.js";
@@ -13,19 +12,18 @@ import mergeTest from "../getPdf/merge2TwoOne";
 // import mergeAllPdf from "./mergePagesToOnePDF";
 import { saveAs } from "file-saver";
 import { PDFDocument } from "pdf-lib";
-import { Worker } from 'pdfjs-dist/legacy/build/pdf.worker.entry';
-import * as  pdfjs from 'pdfjs-dist';
+import { Worker } from "pdfjs-dist/legacy/build/pdf.worker.entry";
+import * as pdfjs from "pdfjs-dist";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-
 const part10 = ({ cookies }) => {
-  const userState= useSelector(s=>s.user)
+  const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const token = userState.token
+  const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
   const downloadMergedPDF = async () => {
     const pdfBase64 = localStorage.getItem("pdf1");
@@ -111,16 +109,24 @@ const part10 = ({ cookies }) => {
     const mergedPdf5 = await mergeTest([blob9, blob10]);
 
     const blobs = [mergedPdf1, mergedPdf2, mergedPdf3, mergedPdf4, mergedPdf5];
-    const ImgBlobs = [blob, blob2, blob3, blob4, blob5,blob6,blob7,blob8,blob9,blob10];
+    const ImgBlobs = [
+      blob,
+      blob2,
+      blob3,
+      blob4,
+      blob5,
+      blob6,
+      blob7,
+      blob8,
+      blob9,
+      blob10,
+    ];
     const mergedBlob = await mergeTest(ImgBlobs);
 
     saveAs(mergedBlob, "CourseSpecs.pdf");
     console.log("asdsadsad");
     console.log(mergedBlob);
-
-
-  
-};
+  };
   const refToImgBlob = useRef();
   const buttonRef = useRef(null);
   const buttonRef2 = useRef(null);
@@ -154,7 +160,9 @@ const part10 = ({ cookies }) => {
       </>
     );
   }
-  useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
   const closeMsg = () => {
     setMsg("");
   };
@@ -287,23 +295,22 @@ const part10 = ({ cookies }) => {
       setMsg(fail);
     }
     console.log(resp);
-setTimeout(()=>{
-  // window.location.href = `/instructor/courses/${courseID}/courseSpecs/Pdf`;
+    setTimeout(() => {
+      // window.location.href = `/instructor/courses/${courseID}/courseSpecs/Pdf`;
 
-downloadMergedPDF()
-},1000)
+      downloadMergedPDF();
+    }, 1000);
   };
 
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
-        <InstructorDashboard />
         <CustomReactToPdf targetRef={refToImgBlob} filename="part10.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 relative"
+          className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
         >
           <div
             className="contentAddUser2 flex flex-col gap-10"
@@ -342,16 +349,16 @@ downloadMergedPDF()
           <div className="flex justify-between absolute bottom-[20rem] right-[7rem]">
             <div>{msg}</div>
             <button
-
               type="submit"
               class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Export
             </button>
             <button
-            ref={buttonRef2}
+              ref={buttonRef2}
               class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            hidden>
+              hidden
+            >
               Download pdf
             </button>
           </div>

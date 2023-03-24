@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import Navbar from "@/components/Navbar/Navbar";
 import ExamFileItem from "@/components/filesView/AssignFileItem";
 import ExamFileCard from "@/components/filesView/AssignFileCard";
@@ -79,8 +78,7 @@ const viewassignments = ({ cookies }) => {
     return (
       <>
         <div className="flex flex-row w-screen h-screen mt-2">
-          <InstructorDashboard />
-          <form className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  ml-1 ">
+          <form className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none ">
             <div className="contentAddUser2 flex flex-col gap-10 overflow-auto ">
               <Navbar cookies={cookies} />
               <div className="flex justify-center flex-col items-center">
@@ -110,8 +108,7 @@ const viewassignments = ({ cookies }) => {
     return (
       <>
         <div className="flex flex-row w-screen h-screen mt-2">
-          <InstructorDashboard />
-          <form className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  ml-1 ">
+          <form className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none ">
             <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
               <Navbar cookies={cookies} />
               <div className="flex items-center justify-between">

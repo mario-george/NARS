@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { useRef, useEffect } from "react";
 import Cookies from "js-cookie";
 import Checkbox from "@/components/checkbox/checkbox";
-import InstructorDashboard from "@/components/InstructorDashboard";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import jsPDF from "jspdf";
 // import mergePDFs from "@/pages/pdf2/merge2.js";
@@ -276,11 +275,9 @@ const part10 = ({ cookies }) => {
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
-        <InstructorDashboard />
-
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black ml-1 relative"
+          className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
         >
           <div className="contentAddUser2 flex flex-col gap-10"></div>
           <div className="flex justify-between absolute bottom-[20rem] right-[7rem]">
