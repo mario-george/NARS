@@ -24,24 +24,7 @@ const viewassignments = ({ cookies }) => {
     //get_id();
     submitHandler();
   }, []);
-  /*const get_id = async (e) => {
-        if (e) {
-            e.preventDefault();
-        }
-        try {
-            const resp = await fetch(`${process.env.url}api/v1/courses/created-courses/${courseID}`, {
-                headers: {
-                    Authorization: "Bearer " + cookies.token,
-                },
-            });
-            const data = await resp.json();
-            setId(data.data.course);
-            Cookies.set('original_id', data.data.course);
-            //console.log(id);
-        } catch (e) {
-            console.log(e);
-        }
-    };*/
+
   const submitHandler = async (e) => {
     if (e) {
       e.preventDefault();
@@ -79,7 +62,7 @@ const viewassignments = ({ cookies }) => {
       <>
         <div className="flex flex-row w-screen h-screen mt-2">
           <form className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none ">
-            <div className="contentAddUser2 flex flex-col gap-10 overflow-auto ">
+            <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
               <Navbar cookies={cookies} />
               <div className="flex justify-center flex-col items-center">
                 <Lottie
@@ -96,7 +79,7 @@ const viewassignments = ({ cookies }) => {
                       }}
                     />
                   </span>
-                  There is not files yet
+                  There are no files yet
                 </div>
               </div>
             </div>
