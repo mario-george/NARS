@@ -54,9 +54,10 @@ const courseReport = ({ cookies }) => {
         }
       );
       const jsonData = await resp.json();
-      const [competenciesMapData, qsData, exams] = getData();
-      //setSNum();
-      const [quizData, midData, finalData] = exams;
+      const [competenciesMapData, exams, qsData, sNumData] = getData(jsonData.data.report.questions);
+      setSNum(sNumData);
+      setAvgValues(getAvg(jsonData.data.report.avgCompetences))
+      const [finalData, midData, quizData] = exams;
       setCompetenciesMap(competenciesMapData);
       setQs(qsData);
       setQuiz(quizData);

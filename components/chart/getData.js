@@ -1,5 +1,6 @@
 const getData = (props) => {
-  const competenciesMap = {}
+  const competenciesMap = {};
+  const snum = props.data[0].grads;
   const exam = {
     final: new Array(props.snum).fill(0),
     midterm: new Array(props.snum).fill(0),
@@ -54,7 +55,7 @@ const getData = (props) => {
     // exam[elm] = temp;
   });
 
-  return [competenciesMap, exam, qs]
+  return [competenciesMap, exam, qs, snum];
 }
 
 export default getData;
