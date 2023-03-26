@@ -2,9 +2,9 @@ const getData = (props) => {
   const competenciesMap = {};
   const snum = props.data[0].grads;
   const exam = {
-    final: new Array(props.snum).fill(0),
-    midterm: new Array(props.snum).fill(0),
-    quiz: new Array(props.snum).fill(0)
+    final: new Array(snum).fill(0),
+    midterm: new Array(snum).fill(0),
+    quiz: new Array(snum).fill(0)
   };
   // const examQNum = {
   //   final: 0,
