@@ -6,6 +6,7 @@ const MassageAlert =(props) => {
   const closeMsg = useCallback(() => {
       setClose(0);
   }, []);
+  
 
   let fail = (
     <div
