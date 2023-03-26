@@ -13,11 +13,6 @@ const addassignment = ({ cookies }) => {
         return <div className="error">404 could not found</div>;
     }
     useEffect( () => { document.querySelector("body").classList.add("scrollbar-none") } );
-    // const [msg, setMsg] = useState("");
-    const [status, setStatus] = useState("");
-    // const closeMsg = () => {
-    //     setMsg("");
-    // };
 
     const [selectedFile, setSelectedFile] = useState(null);
 
