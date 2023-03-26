@@ -1,23 +1,12 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo  } from "react";
 
 const MassageAlert =(props) => {
 
   const [close, setClose] = useState(1);
   const closeMsg = useCallback(() => {
-      console.log("kkfkg");
       setClose(0);
   }, []);
 
-  const openMsg = useCallback(() => {
-    console.log("gkfo");
-    setClose(1);
-}, []);
-
-useEffect=(()=>{
-  setClose(1)
-}, [props.flip])
-
-  
   let fail = (
     <div
         id="alert-border-2"
@@ -90,53 +79,17 @@ useEffect=(()=>{
     </div>
   );
 
-  // if (props.status == "success") {
-  //   setMsg(success);
-  // } else if (props.status == "") {
-  //   setMsg("");
-  // } else {
-  //   setMsg(fail);
-  // }
-
-  // const [temp, setTemp] = useState(2);
-  // const flipIt = (n) => (n+1) % 2;
-
-  // const flip = useMemo(() => {
-  //   // let t = flipIt(temp);
-  //   // setTemp(t);
-  //   return flipIt(props.flip);
-  // }, [props.flip])
-
-  // const flip = useCallback(() => setClose(1), [props.flip]);
-  // // flip()
-
   const msg = useMemo(() => {
-    // console.log("Flip", flip);
-    // if(flip){// && temp !== flip){
-    //   // console.log("T", temp);
-    //   setClose(1)
-    //   // setTemp(flip);
-    // }
-
-    // flip();
-  
     if (props.status == "success"  && close !== 0) {
-      // setClose(1);
       return success;
     }
     if (props.status == "fail" && close !== 0){
-      // setClose(1);
       return fail;
     }
     if (props.status == "" || close === 0) {
-      // flip()
-      // openMsg()
       return <div></div>;
     }
-  }, [props.flip, close])
-  
-  // setClose(1);
-  console.log(close, props.status);
+  }, [close])
 
   return msg;
 }

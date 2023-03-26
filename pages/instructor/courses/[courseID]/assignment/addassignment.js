@@ -27,6 +27,7 @@ const addassignment = ({ cookies }) => {
     const router = useRouter();
     const { courseID } = router.query;
     const [id, setId] = useState("");
+    const [alerts, setAlerts] = useState([]);
     const date = useRef();
 
     useEffect(() => {
@@ -78,6 +79,20 @@ const addassignment = ({ cookies }) => {
             console.log(resp);
             //console.log(origninal_id);
             setStatus(resp.status);
+            if(resp.status === "fail"){
+                setAlerts(alt => [...alt, <MassageAlert 
+                    fail="Failed to upload the assignment"
+                    status="success"
+                    key={Math.random()} 
+                />])
+            }
+            if(resp.status === "success"){
+                setAlerts(alt => [...alt, <MassageAlert 
+                    success="Assignment has been uploaded successfully"
+                    status="success"
+                    key={Math.random()} 
+                />])
+            }
         } catch (e) {
             console.log(e);
         }
@@ -88,7 +103,8 @@ const addassignment = ({ cookies }) => {
     
 
     return (
-        <>
+        <>  
+            <div>{alerts.map(e=><div>{e}</div>)}</div>
             <div className="flex flex-row w-screen h-screen mt-2">
                 <InstructorDashboard />
                 <form
@@ -135,13 +151,8 @@ const addassignment = ({ cookies }) => {
                             </div>
 
                         </div>
-                        <div className="flex gap-20 ">
-                            <MassageAlert
-                            fail="Failed to upload the assignment"
-                            success="Assignment has been uploaded successfully"
-                            status={status}
-                            />
-                        </div>
+                        {/* <div className="flex gap-20 ">
+                        </div> */}
 
                         <div className="flex justify-end">
                             <button
