@@ -24,6 +24,7 @@ const courseReport = ({ cookies }) => {
   const router = useRouter();
   const [competenciesMap, setCompetenciesMap] = useState({});
   const [avgValues, setAvgValues] = useState({});
+  const [CLO, setCLO] = useState({});
   const [qs, setQs] = useState({});
   const [quiz, setQuiz] = useState([]);
   const [mid, setMid] = useState([]);
@@ -54,6 +55,7 @@ const courseReport = ({ cookies }) => {
         }
       );
       const jsonData = await resp.json();
+      setCLO(jsonData.data.LOs);
       const [competenciesMapData, exams, qsData, sNumData] = getData(jsonData.data.report.questions);
       setSNum(sNumData);
       setAvgValues(getAvg(jsonData.data.report.avgCompetences))
@@ -68,98 +70,125 @@ const courseReport = ({ cookies }) => {
 
   return (
     <div className="flex flex-row w-screen h-screen mt-2">
-      <div className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none">
-        <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
-          <Navbar cookies={cookies} />
-          <div className="w-full h-full flex justify-center items-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-3">
+    <div className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none">
+      <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
+        <div className="hidden md:valid:">
+          <InstructorDashBoard />
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-80">
+            <p className="grad-title">
+              <span className="md:col-span-2">
+                  Quiz Grad
+              </span>
+            </p>
+            <div>
+            <Grad2Litter data={quiz} w={100} h={100} grid={15} title="Quiz"/>
+            </div>
+            <div>
+            <GradHist data={quiz} snum={sNum} w={500} h={100} grid={15}/>
+            </div>
+
               <p className="grad-title">
                 <span className="md:col-span-2">
-                    Quiz Grad
+                  Midterm Grad
                 </span>
               </p>
-              <Grad2Litter data={quiz} w={100} h={100} grid={15} title="Quiz"/>
-              <GradHist data={quiz} snum={sNnum} w={500} h={100} grid={15}/>
-
-                <p className="grad-title">
-                  <span className="md:col-span-2">
-                    Midterm Grad
-                  </span>
-                </p>
-              <Grad2Litter data={mid} w={100} h={100} grid={15} title="Midterm"/>
-              <GradHist data={mid} snum={sNnum} w={500} h={100} grid={15}/>
-
-                <p className="grad-title">
-                  <span className="md:col-span-2">
-                    Final Grad
-                  </span>
-                </p>
-              <Grad2Litter data={final} w={100} h={100} grid={15} title="Final"/>
-              <GradHist data={final} snum={sNnum} w={500} h={100} grid={15}/>
+            <div>
+            <Grad2Litter data={mid} w={100} h={100} grid={15} title="Midterm"/>
             </div>
-            {/* Competencies & LOs*/}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-3">
-              <p className="grad-asm">
-                <span className="md:col-span-3">
-                    Competencies Exam Assessment
+            <div>
+            <GradHist data={mid} snum={sNum} w={500} h={100} grid={15}/>
+            </div>
+
+              <p className="grad-title">
+                <span className="md:col-span-2">
+                  Final Grad
                 </span>
               </p>
+            <div>
+            <Grad2Litter data={final} w={100} h={100} grid={15} title="Final"/>
+            </div>
+            <div>
+            <GradHist data={final} snum={sNum} w={500} h={100} grid={15}/>
+            </div>
+          </div>
+          <div className="flex min-h-[80]"><br></br></div>
+          {/* Competencies & LOs*/}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[70%] mt-96">
+            <p className="grad-asm">
+              <span className="md:col-span-3">
+                  Competencies Exam Assessment
+              </span>
+            </p>
+            <div>
               <CompetenciesQ cmap={competenciesMap} w={60} h={60} />
+            </div>
+            <div>
               <CompetenciesBar cmap={avgValues} snum={sNum} w={60} h={60} grid={10}/>
+            </div>
               <CompetenciesBoxPlot qs={qs} cmap={competenciesMap} snum={sNum} w={60} h={60} />
 
-              <div className="md:col-span-3">
-                <CompetenciesStatisticsTable qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} />
-              </div>
-
-                {/* <p className="grad-asm">
-                  <span className="md:col-span-3">
-                    Competencies Survey Assessment
-                  </span>
-                </p>
-                <CompetenciesQ cmap={competenciesMap} w={60} h={60} title="Survey" />
-                <CompetenciesBar cmap={avgValues} snum={sNum} w={60} h={60} grid={10} title="Survey" />
-                <CompetenciesBoxPlot qs={qs} cmap={competenciesMap} snum={sNum} w={60} h={60} title="Survey" />
-
-                <div className="md:col-span-3">
-                  <CompetenciesStatisticsTable qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} title="Survey" />
-                </div> */}
-
-                <p className="grad-asm">
-                  <span className="md:col-span-3">
-                    LOs Exam Assessment
-                  </span>
-                </p>
-                <CLOQ cmap={competenciesMap} clomap={CLO} />
-                <CLOBar cmap={avgValues} snum={sNum} w={20} h={10} grid={10} clomap={CLO} />
-                <CLOBoxPlot qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} clomap={CLO} />
-
-                <div className="md:col-span-3">
-                  <CLOStatisticsTable clomap={CLO} qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} />
-                </div>
-                <CLOAttainment clomap={CLO} cmap={avgValues} snum={sNum} w={20} h={10} />
-
-                {/* <p className="grad-asm">
-                  <span className="md:col-span-3">
-                    LOs Survey Assessment
-                  </span>
-                </p>
-                <CLOQ cmap={competenciesMap} clomap={CLO} />
-                <CLOBar cmap={avgValues} snum={sNum} w={20} h={10} grid={10} clomap={CLO} />
-                <CLOBoxPlot qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} clomap={CLO} />
-
-                <div className="md:col-span-3">
-                  <CLOStatisticsTable clomap={CLO} qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} />
-                </div>
-                <CLOAttainment clomap={CLO} cmap={avgValues} snum={sNum} w={20} h={10} /> */}
+            <div className="md:col-span-3">
+              <CompetenciesStatisticsTable qs={qs} cmap={competenciesMap} snum={sNum} />
             </div>
 
+              {/* <p className="grad-asm">
+                <span className="md:col-span-3">
+                  Competencies Survey Assessment
+                </span>
+              </p>
+              <CompetenciesQ cmap={competenciesMap} w={60} h={60} title="Survey" />
+              <CompetenciesBar cmap={avgValues} snum={sNum} w={60} h={60} grid={10} title="Survey" />
+              <CompetenciesBoxPlot qs={qs} cmap={competenciesMap} snum={sNum} w={60} h={60} title="Survey" />
 
+              <div className="md:col-span-3">
+                <CompetenciesStatisticsTable qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} title="Survey" />
+              </div> */}
 
+              <p className="grad-asm">
+                <span className="md:col-span-3">
+                  LOs Exam Assessment
+                </span>
+              </p>
+              <div>
+                <CLOQ cmap={competenciesMap} clomap={CLO} />
+              </div>
+              <div>
+                <CLOBar cmap={avgValues} snum={sNum} w={20} h={10} grid={10} clomap={CLO} />
+              </div>
+              <div>
+                <CLOBoxPlot qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} clomap={CLO} />
+              </div>
+
+              <div className="md:col-span-3">
+                <CLOStatisticsTable clomap={CLO} qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} />
+              </div>
+              <div className="flex flex-row ">
+                <CLOAttainment clomap={CLO} cmap={avgValues} snum={sNum} w={20} h={10} />
+              </div>
+
+              {/* <p className="grad-asm">
+                <span className="md:col-span-3">
+                  LOs Survey Assessment
+                </span>
+              </p>
+              <CLOQ cmap={competenciesMap} clomap={CLO} />
+              <CLOBar cmap={avgValues} snum={sNum} w={20} h={10} grid={10} clomap={CLO} />
+              <CLOBoxPlot qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} clomap={CLO} />
+
+              <div className="md:col-span-3">
+                <CLOStatisticsTable clomap={CLO} qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} />
+              </div>
+              <CLOAttainment clomap={CLO} cmap={avgValues} snum={sNum} w={20} h={10} /> */}
           </div>
+
+
+
         </div>
       </div>
     </div>
+  </div>
   );
 };
 
