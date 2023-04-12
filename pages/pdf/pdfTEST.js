@@ -14,10 +14,7 @@ import {
 import { useState, useEffect } from "react";
 import { createTw } from "react-pdf-tailwind";
 
-// Font.register({
-//   family: "Roboto",
-//   src: "/Roboto-Light.ttf",
-// });
+
 const styles2 = {
   container: {
     borderRadius: 230,
@@ -168,7 +165,7 @@ const PDFView = () => {
   }, []);
 
   return (
-    <PDFViewer style={{ width: "85vw", height: "85vw" }}>
+    <PDFViewer style={{ width: "100vw", height: "100vw" }}>
       <PDF />
     </PDFViewer>
   );

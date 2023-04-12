@@ -25,8 +25,8 @@ const part2 = ({ cookies }) => {
       );
       const data = await r.json();
       console.log(data)
-courseAims.current.value=courseSpecs.courseAims
-courseContent.current.value=courseSpecs.courseContent
+courseAims.current.value=data.data.courseSpecs.courseAims
+courseContent.current.value=data.data.courseSpecs.courseContent
 
     }
     getData()
@@ -96,8 +96,8 @@ courseContent.current.value=courseSpecs.courseContent
           courseSpecs: {
             courseAims: courseAims.current.value,
             courseContent: courseContent.current.value,
-            levelA: lvla.current.value,
-            levelB: lvlb.current.value,
+            // levelA: lvla.current.value,
+            // levelB: lvlb.current.value,
           },
         }),
         headers: {
@@ -124,7 +124,7 @@ courseContent.current.value=courseSpecs.courseContent
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <div className="contentAddUser2 flex flex-col   " ref={refToImgBlob}>
-          <div className="flex gap-20 ">
+          <div className="flex my-24 ">
             <div className="flex flex-col gap-5 w-full">
               <div>-Course Aims:</div>
               {/* <textarea
@@ -158,32 +158,20 @@ courseContent.current.value=courseSpecs.courseContent
             />
           </div>
 
-          <div className="flex gap-20 ">
+          {/* <div className="flex gap-20 ">
             <div className="flex flex-col gap-5 w-full">
               <div>-Level (A) Competencies:</div>
-              {/* <textarea
-                  ref={lvla}
-                  rows="4"
-                  name="lvla"
-                  className="w-full input-form pl-1"
-                  placeholder="Level (A) Competencies"
-                ></textarea> */}
+       
               <Textarea
                 rows="4"
                 placeholder="Level (A) Competencies "
                 ref={lvla}
               />
             </div>
-          </div>
-          <div className="flex flex-col gap-5  w-full">
+          </div> */}
+          {/* <div className="flex flex-col gap-5  w-full">
             <div> -Level (B) Competencies: </div>
-            {/* <textarea
-                ref={lvlb}
-                rows="4"
-                name="lvlb"
-                className="w-full input-form pl-1  mb-32 h-auto resize-none overflow-hidden   "
-                placeholder="Level (B) Competencies "
-              ></textarea> */}
+
             <Textarea
               className="  "
               rows="4"
@@ -191,7 +179,7 @@ courseContent.current.value=courseSpecs.courseContent
               ref={lvlb}
             />
             <div className="mb-32"></div>
-          </div>
+          </div> */}
         </div>
       </form>
       <div className="flex justify-end absolute bottom-12 right-24">
@@ -206,4 +194,5 @@ courseContent.current.value=courseSpecs.courseContent
     </>
   );
 };
+
 export default part2;
