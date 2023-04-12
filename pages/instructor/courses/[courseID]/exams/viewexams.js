@@ -20,21 +20,6 @@ const viewexams = ({ cookies }) => {
     document.querySelector("body").classList.add("scrollbar-none");
   });
   useEffect(() => {
-    /* async function get_id() {
-             try {
-                 const resp = await fetch(`${process.env.url}api/v1/courses/created-courses/${cookies.instance_id}`, {
-                     headers: {
-                         Authorization: "Bearer " + cookies.token,
-                     },
-                 });
-                 
-                 const dt = await resp.json();
-                 Cookies.set('original_id', dt.data.course);
-                 console.log(dt.data.course);
-             } catch (e) {
-                 console.log(e);
-             }
-         };*/
 
     async function submitHandler() {
       try {
@@ -91,7 +76,7 @@ const viewexams = ({ cookies }) => {
                       }}
                     />
                   </span>
-                  There is not files yet
+                  There are no files yet
                 </div>
               </div>
             </div>

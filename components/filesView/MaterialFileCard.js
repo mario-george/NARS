@@ -1,16 +1,17 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import { Worker } from '@react-pdf-viewer/core';
 import { Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import InsertDriveFileRounded from '@mui/icons-material/InsertDriveFileRounded'
+import Router, { useRouter } from 'next/router';
 
-const MaterialFileCard = ({ name, id ,cookies}) => {
+const MaterialFileCard = ({ name, id, cookies }) => {
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const pdfFile = `${process.env.url}api/v1/courses/exams/63ffebc34bef8c7adbf0b482`
     const file = '../../media/ECE312C Control Systems (1) Course Specs 221CBL.pdf'
-    //const [counter, setCounter] = React.useState(0);
+    const router = useRouter();
     const handleView = () => {
 
     };
@@ -33,14 +34,14 @@ const MaterialFileCard = ({ name, id ,cookies}) => {
         } catch (e) {
             console.log(e);
         }
-       // setCounter(counter+1);
-        window.location.reload(true);
+        // setCounter(counter+1);
+        router.reload();
     }
     //const type = 'pdf'
     return (
         <div className=' fileCard relative bottom-10'>
             <div className="fileCard--top  relative left-2" onClick={handleView}>
-                <InsertDriveFileRounded className='text-zinc-600' style={{ fontSize: 140}} />
+                <InsertDriveFileRounded className='text-zinc-600' style={{ fontSize: 140 }} />
 
             </div>
 
