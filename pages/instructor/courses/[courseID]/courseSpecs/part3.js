@@ -13,6 +13,63 @@ const part3 = ({ cookies }) => {
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+
+  const courseSpecs = cookies.courseSpecs;
+  useEffect(() => {
+    const getData = async function () {
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data);
+      console.log(
+        data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes
+      );
+      setInputs3(
+        data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes.map(
+          (e) => {
+            return {
+              ref: createRef(),
+              code: e.code,
+              name: e.code,
+              description: e.description,
+            };
+          }
+        )
+      );
+      setInputs(
+        data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes.map(
+          (e) => {
+            return {
+              ref: createRef(),
+              code: e.code,
+              name: e.code,
+              description: e.description,
+            };
+          }
+      ))
+      setInputs2(
+        data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes.map(
+          (e) => {
+            return {
+              ref: createRef(),
+              code: e.code,
+              name: e.code,
+              description: e.description,
+            };
+          }
+      ))
+    };
+    getData();
+  }, []);
+
   const token = userState.token;
   const cognitiveDomainVerbs = [
     "add",
@@ -489,12 +546,15 @@ const part3 = ({ cookies }) => {
   const [inputs3, setInputs3] = useState([]);
   const handleAddInput = (e) => {
     e.preventDefault();
-
+    console.log(inputs);
     setInputs([
       ...inputs,
       {
         ref: createRef(),
         counter: inputs2.length + inputs3.length + inputs.length + 1,
+        code:
+          "LO" +
+          (inputs2.length + inputs3.length + inputs.length + 1).toString(),
         name:
           "LO" +
           (inputs2.length + inputs3.length + inputs.length + 1).toString(),
@@ -509,6 +569,9 @@ const part3 = ({ cookies }) => {
       {
         ref: createRef(),
         counter: inputs2.length + inputs3.length + inputs.length + 1,
+        code:
+          "LO" +
+          (inputs2.length + inputs3.length + inputs.length + 1).toString(),
         name:
           "LO" +
           (inputs2.length + inputs3.length + inputs.length + 1).toString(),
@@ -525,6 +588,9 @@ const part3 = ({ cookies }) => {
       {
         ref: createRef(),
         counter: inputs2.length + inputs3.length + inputs.length + 1,
+        code:
+          "LO" +
+          (inputs2.length + inputs3.length + inputs.length + 1).toString(),
         name:
           "LO" +
           (inputs2.length + inputs3.length + inputs.length + 1).toString(),
@@ -574,6 +640,12 @@ const part3 = ({ cookies }) => {
         learningOutcomes: affective,
       },
     ];
+    d(
+      updateField({
+        field: "courseLearningOutcomes",
+        value: courseLearningOutcomes,
+      })
+    );
     const stringifiedCourseLearningOutcomes = JSON.stringify(
       courseLearningOutcomes
     );
@@ -596,13 +668,7 @@ const part3 = ({ cookies }) => {
     const resp = await r.json();
     console.log(resp);
 
-    Cookies.set("courseLearningOutcomes", stringifiedCourseLearningOutcomes);
-    d(
-      updateField({
-        field: "courseLearningOutcomes",
-        value: stringifiedCourseLearningOutcomes,
-      })
-    );
+    Cookies.set("courseLearningOutcomes", courseLearningOutcomes);
 
     const stringifiedCognitive = JSON.stringify(cognitive);
     const stringifiedPsychomotor = JSON.stringify(psychomotor);
@@ -670,7 +736,7 @@ const part3 = ({ cookies }) => {
                 {inputs.map((input, index) => {
                   return (
                     <div className="flex items-center  space-x-8 relative">
-                      <div>LO{input.counter}</div>
+                      <div>{input.code}</div>
                       {/* <input
                         key={index}
                         type="text"
@@ -684,6 +750,7 @@ const part3 = ({ cookies }) => {
                           ref={input.ref}
                           key={index}
                           bloomVerbs={cognitiveDomainVerbs}
+                          v={input.description}
                           placeholder={`LO ${input.counter}`}
                         />
                       </div>
@@ -728,9 +795,11 @@ const part3 = ({ cookies }) => {
               </div>
               <div className="space-y-[.5rem]">
                 {inputs2.map((input, index) => {
+                     { console.log(input.description)}
+
                   return (
                     <div className="flex items-center  space-x-8 relative">
-                      <div>LO{input.counter}</div>
+                      <div>{input.code}</div>
                       {/* <input
                         key={index}
                         type="text"
@@ -743,6 +812,8 @@ const part3 = ({ cookies }) => {
                         ref={input.ref}
                         key={index}
                         bloomVerbs={PsychomotorDomainVerbs}
+                        
+                        v={input.description}
                         placeholder={`LO ${input.counter}`}
                       />
 
@@ -789,7 +860,7 @@ const part3 = ({ cookies }) => {
                 {inputs3.map((input, index) => {
                   return (
                     <div className="flex items-center  space-x-8 relative">
-                      <div>LO{input.counter}</div>
+                      <div>{input.code}</div>
                       {/* <input
                         key={index}
                         type="text"
@@ -801,6 +872,7 @@ const part3 = ({ cookies }) => {
                         className="input-form  space-y-[.5rem]"
                         ref={input.ref}
                         key={index}
+                        v={input.description}
                         bloomVerbs={AffectiveDomainVerbs}
                         placeholder={`LO ${input.counter}`}
                       />

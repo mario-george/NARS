@@ -6,6 +6,31 @@ import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import Textarea from "@/components/Textarea/Textarea";
 
 const part2 = ({ cookies }) => {
+  const courseSpecs=cookies.courseSpecs
+  useEffect(()=>{
+ 
+    const getData = async function (){
+    
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+    
+    
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data)
+courseAims.current.value=data.data.courseSpecs.courseAims
+courseContent.current.value=data.data.courseSpecs.courseContent
+
+    }
+    getData()
+    },[])
   const [isRunning, setIsRunning] = useState(true);
   const refToImgBlob = useRef();
   /* if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
@@ -71,8 +96,8 @@ const part2 = ({ cookies }) => {
           courseSpecs: {
             courseAims: courseAims.current.value,
             courseContent: courseContent.current.value,
-            levelA: lvla.current.value,
-            levelB: lvlb.current.value,
+            // levelA: lvla.current.value,
+            // levelB: lvlb.current.value,
           },
         }),
         headers: {
@@ -99,7 +124,7 @@ const part2 = ({ cookies }) => {
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <div className="contentAddUser2 flex flex-col   " ref={refToImgBlob}>
-          <div className="flex gap-20 ">
+          <div className="flex my-24 ">
             <div className="flex flex-col gap-5 w-full">
               <div>-Course Aims:</div>
               {/* <textarea
@@ -133,32 +158,20 @@ const part2 = ({ cookies }) => {
             />
           </div>
 
-          <div className="flex gap-20 ">
+          {/* <div className="flex gap-20 ">
             <div className="flex flex-col gap-5 w-full">
               <div>-Level (A) Competencies:</div>
-              {/* <textarea
-                  ref={lvla}
-                  rows="4"
-                  name="lvla"
-                  className="w-full input-form pl-1"
-                  placeholder="Level (A) Competencies"
-                ></textarea> */}
+       
               <Textarea
                 rows="4"
                 placeholder="Level (A) Competencies "
                 ref={lvla}
               />
             </div>
-          </div>
-          <div className="flex flex-col gap-5  w-full">
+          </div> */}
+          {/* <div className="flex flex-col gap-5  w-full">
             <div> -Level (B) Competencies: </div>
-            {/* <textarea
-                ref={lvlb}
-                rows="4"
-                name="lvlb"
-                className="w-full input-form pl-1  mb-32 h-auto resize-none overflow-hidden   "
-                placeholder="Level (B) Competencies "
-              ></textarea> */}
+
             <Textarea
               className="  "
               rows="4"
@@ -166,7 +179,7 @@ const part2 = ({ cookies }) => {
               ref={lvlb}
             />
             <div className="mb-32"></div>
-          </div>
+          </div> */}
         </div>
       </form>
       <div className="flex justify-end absolute bottom-12 right-24">
@@ -181,4 +194,5 @@ const part2 = ({ cookies }) => {
     </>
   );
 };
+
 export default part2;
