@@ -14,10 +14,11 @@ let initialState = {
   courses: "undefined",
   jwt: "undefined",
   token: "undefined",
-  original_id: undefined,
+  original_id: "undefined",
   instance_id: "",
-  courseLearningOutcomes: "",
+  courseLearningOutcomes: {},
   program: "",
+  courseSpecs: {},
 };
 const userSlice = createSlice({
   initialState,

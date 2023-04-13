@@ -15,7 +15,8 @@ export default function ProgramAdminDashboard() {
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(userActions.logOut());
-    window.location.href = "/logout";
+   // window.location.href = "/logout";
+   router.push("/logout");
   };
   return (
     <nav

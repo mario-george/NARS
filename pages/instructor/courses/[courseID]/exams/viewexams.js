@@ -20,21 +20,6 @@ const viewexams = ({ cookies }) => {
     document.querySelector("body").classList.add("scrollbar-none");
   });
   useEffect(() => {
-    /* async function get_id() {
-             try {
-                 const resp = await fetch(`${process.env.url}api/v1/courses/created-courses/${cookies.instance_id}`, {
-                     headers: {
-                         Authorization: "Bearer " + cookies.token,
-                     },
-                 });
-                 
-                 const dt = await resp.json();
-                 Cookies.set('original_id', dt.data.course);
-                 console.log(dt.data.course);
-             } catch (e) {
-                 console.log(e);
-             }
-         };*/
 
     async function submitHandler() {
       try {
@@ -91,7 +76,7 @@ const viewexams = ({ cookies }) => {
                       }}
                     />
                   </span>
-                  There is not files yet
+                  There are no files yet
                 </div>
               </div>
             </div>
@@ -103,8 +88,10 @@ const viewexams = ({ cookies }) => {
     return (
       <>
         <div className="flex flex-row w-screen h-screen mt-2">
-          <form className="bg-sky-50 h-screen w-screen flex flex-col justify-center items-center text-black  ml-1 ">
-            <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
+          <form
+            className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none"
+          >
+            <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
               <Navbar cookies={cookies} />
               <div className="flex items-center justify-between">
                 {/*<p className="font-normal">Exams {'>'} View Exams</p>*/}

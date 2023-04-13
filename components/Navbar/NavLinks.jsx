@@ -46,18 +46,7 @@ const NavLinks = () => {
         
       ],
     },
-    {
-      name: "Grades",
-      submenu: true,
-      sublinks: [
-        {
-          sublink: [
-            
-          ],
-        },
-        
-      ],
-    },
+    
     {
       name: "Assesment",
       submenu: true,

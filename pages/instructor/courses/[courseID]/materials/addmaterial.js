@@ -7,7 +7,8 @@ import { useRef } from "react";
 import React from "react";
 import Navbar from "@/components/Navbar/Navbar";
 const addmaterial = ({ cookies }) => {
-  if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
+  const userState = useSelector((s) => s.user);
+  if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
   useEffect(() => {
@@ -22,10 +23,9 @@ const addmaterial = ({ cookies }) => {
   const router = useRouter();
   const { courseID } = router.query;
 
-  const token = Cookies.get("token");
+  //const token = Cookies.get("token");
   const name = useRef();
   const desc = useRef();
-  const date = useRef();
 
   /* useEffect(() => {
         get_id();
@@ -57,7 +57,7 @@ const addmaterial = ({ cookies }) => {
     data.append("materialsPaths", selectedFile);
     data.append("name", name.current.value);
     data.append("description", desc.current.value);
-    data.append("course", cookies.original_id);
+    data.append("course", userState.original_id);
 
     try {
       const r = await fetch(
@@ -67,7 +67,7 @@ const addmaterial = ({ cookies }) => {
           body: data,
           headers: {
             Accept: "application/form-data",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + userState.token,
           },
         }
       );

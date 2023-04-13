@@ -3,18 +3,30 @@ import "../styles/styles.css";
 import Head from "next/head";
 import { PersistGate } from "redux-persist/integration/react";
 import { useSelector } from "react-redux";
-import MainHeader from "@/components/shared/MainHeader";
 import { store, persistor } from "../components/store/store";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 import cookie from "cookie";
 import App from "next/app";
+import TopBarProgress from "react-topbar-progress-indicator"
+import { useState } from "react";
+import {Router,useRouter} from "next/router"
+
 function MyApp({ Component, pageProps, cookies }) {
+  const [progress, setProgress] = useState(false);
+Router.events.on("routeChangeStart", () => {
+  setProgress(true) 
+})
+
+Router.events.on("routeChangeComplete", () => {
+  setProgress(false) 
+})
   if (Component.getPageLayout) {
     return Component.getPageLayout(
       <Provider store={store} className="scrollbar-none">
         <PersistGate loading={null} persistor={persistor}>
           <div className=" flex flex-col">
-            <GiveState Component={Component} {...pageProps} />
+          {progress && <TopBarProgress />}
+            <GiveState Component={Component} {...pageProps} progress={progress}/>
           </div>
         </PersistGate>
       </Provider>
@@ -29,17 +41,18 @@ function MyApp({ Component, pageProps, cookies }) {
       <Provider store={store} className="scrollbar-none">
         <PersistGate loading={null} persistor={persistor}>
           <Layout cookies={cookies}>
-            <GiveState Component={Component} {...pageProps} />
+          {progress && <TopBarProgress />}
+            <GiveState Component={Component} {...pageProps} progress={progress}/>
           </Layout>
         </PersistGate>
       </Provider>
     </>
   );
 }
-function GiveState({ Component, pageProps }) {
+function GiveState({ Component, pageProps,progress }) {
   const userState = useSelector((state) => state.user);
-
-  return <Component {...pageProps} cookies={userState} />;
+  const r=useRouter()
+  return <Component {...pageProps} cookies={userState} progress={progress} key={r.asPath}/>;
 }
 MyApp.getInitialProps = async (appContext) => {
   const { ctx } = appContext;

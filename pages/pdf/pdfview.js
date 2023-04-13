@@ -13,8 +13,8 @@ const View = () => {
   }, []);
 
   return (
-    <div scale={22222222222222222222220}>
-      <InvoicePDF scale={22222222222222222222220}/>
+    <div>
+      <InvoicePDF/>
     </div>
   );
 };

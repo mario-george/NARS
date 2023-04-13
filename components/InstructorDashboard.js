@@ -19,8 +19,8 @@ export default function InstructorDashboard({ cookies }) {
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
-    window.location.href = "/logout";
-    // r.push('/logout')
+    //window.location.href = "/logout";
+     r.push('/logout')
   };
   const handel_set_cookies = (e) => {
     Cookies.set("instance_id", e);
@@ -96,8 +96,8 @@ export default function InstructorDashboard({ cookies }) {
                   <HeaderElement
                     className={``}
                     key={courseInstance._id}
-                    id={courseInstance._id.toString()}
-                    originalId={courseInstance.course._id.toString()}
+                    id={courseInstance._id}
+                    originalId={courseInstance.course._id}
                     name={courseInstance.course.name}
                     createdAt={courseInstance.createdAt.split("T")[0]}
                     cookies={cookies}
