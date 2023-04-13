@@ -8,7 +8,107 @@ import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import ReactDOMServer from "react-dom/server";
 import Navbar from "@/components/Navbar/Navbar";
 import { updateField } from "@/components/store/userSlice";
+import PdfFileCard from "@/components/filesView/pdfFileCard";
+import { Document, Page } from "react-pdf";
+import dynamic from "next/dynamic";
+
 const part1 = ({ cookies }) => {
+  const router = useRouter();
+  const { courseID } = router.query;
+
+  const [client, setClient] = useState(false);
+  const [InvoicePDF, setInvoicePDF] = useState(null);
+  // useEffect(() => {
+  //   const loadInvoicePDF = async () => {
+  //     const pdfModule = await import(`@/components/pdfContinue/pdf.js`);
+  //     setInvoicePDF(pdfModule.default);
+  //   };
+  //   loadInvoicePDF();
+  //   setClient(true);
+  // }, []);
+  const [numPages, setNumPages] = useState(null);
+  const [pdfBlob, setpdfBlob] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
+  const [blobIsFound, setBlobIsFound] = useState(false);
+  async function downloadPdf(e) {
+    e.preventDefault()
+    const blob = pdfBlob;
+    const url = window.URL.createObjectURL(new Blob([blob]));
+    
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = 'file.pdf';
+    
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  
+    window.URL.revokeObjectURL(url);
+  }
+  async function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+  useEffect(() => {
+    const getData = async function () {
+      const r2 = await fetch(
+        `${process.env.url}api/v1/courses/specsPdf/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + cookies.token,
+          },
+        }
+      );
+
+      const blobpdfFile = await r2.blob();
+      console.log(blobpdfFile);
+      console.log(blobpdfFile.constructor === Blob)
+
+      if (blobpdfFile.size > 400) {
+        setpdfBlob(blobpdfFile)
+        setBlobIsFound(true);
+      }
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data);
+      console.log(data.data.courseSpecs);
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
+      // code.current.value=data.courseSpecs.courseData.courseCode
+      // year.current.value=data.courseSpecs.courseData.year
+      // practical.current.value=data.courseSpecs.courseData.practical
+      if (lecture.current &&special.current &&hours.current ) {
+        lecture.current.value = data.data.courseSpecs.courseData.lectures;
+        hours.current.value = data.data.courseSpecs.courseData.contactHourse;
+        special.current.value = data.data.courseSpecs.courseData.specialization;
+      }
+      // body: JSON.stringify({
+      //   courseSpecs: {
+      //     courseData: {
+      //       courseCode: code.current.value,
+      //       year: year.current.value,
+      //       practical: practical.current.value,
+      //       lectures: lecture.current.value,
+      //       contactHourse: hours.current.value,
+      //       specialization: special.current.value,
+      //     },
+      //   },
+      // }),
+
+      console.log(data);
+    };
+    getData();
+  }, []);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const userState = useSelector((s) => s.user);
 
@@ -26,7 +126,6 @@ const part1 = ({ cookies }) => {
   const hours = useRef("");
   const lecture = useRef("");
   const practical = useRef("");
-  const router = useRouter();
   function ChildComponent({ toPdf }) {
     const handleClick = async () => {
       try {
@@ -57,7 +156,6 @@ const part1 = ({ cookies }) => {
       </>
     );
   }
-  const { courseID } = router.query;
   const d = useDispatch();
   d(updateField({ field: "instance_id", value: courseID }));
 
@@ -99,11 +197,67 @@ const part1 = ({ cookies }) => {
 
     const resp = await r.json();
     console.log(resp);
-
     // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part2`;
     router.push(`/instructor/courses/${courseID}/courseSpecs/part2`);
     // window.location.href = `/instructor/courses/${cookies.instance_id}/courseSpecs/part2`;
   };
+//   function MyPdfViewer(props) {
+//     const { pdfBlob } = props;
+  
+//     return (
+// <Document file={{ blob: pdfBlob }} onLoadSuccess={onDocumentLoadSuccess} onError={console.error}>
+//   <Page pageNumber={1} />
+// </Document>
+//     );
+//   }
+  
+  if (blobIsFound) {
+    console.log(pdfBlob)
+    return (
+      <>
+        <div className="flex flex-row w-screen h-screen mt-2 scrollbar-none">
+          
+        <form onSubmit={downloadPdf} className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative">
+        <div className="topNav absolute top-14">
+            <Navbar cookies={cookies} id={courseID} />
+          </div>
+        <div
+            className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none py-[10rem] m-10 "
+          >
+            <div className="mt-[6rem]">
+
+
+            </div>
+          <PdfFileCard
+            name={"Course Specs"}
+            id={"CourseSpecs"}
+            cookies={cookies}
+            setBlobIsFound={setBlobIsFound}
+            downloadPdf={downloadPdf}
+          />
+          <div>
+  
+      <div >
+      {/* {client && InvoicePDF && <InvoicePDF pdfBlob={pdfBlob} variable2="value2" />} */}
+    </div>
+      {/* {pdfBlob ? (
+        <MyPdfViewer pdfBlob={pdfBlob} />
+      ) : (
+        <p>Loading PDF...</p>
+      )} */}
+ 
+      {/* {numPages !== null ? (
+        <p>
+          Page {pageNumber} of {numPages}
+        </p>
+      ) : null} */}
+    </div>
+    </div>
+        </form>
+          </div>
+      </>
+    );
+  }
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2 scrollbar-none">
@@ -201,4 +355,23 @@ const part1 = ({ cookies }) => {
     </>
   );
 };
+// export async function getServerSideProps(context) {
+
+//   const r = await fetch(
+//     `${process.env.url}api/v1/courses/specsPdf/${context.query.courseID}`,
+//     {
+
+//       headers: {
+//         "Content-Type": "application/json",
+//         Accept: "application/json",
+//         Authorization: "Bearer " + appProps.cookies.token,
+//       },
+//     }
+//   );
+//   const data = await r.json();
+//   console.log(data)
+//   const response = await fetch("{{URL}}api/v1/courses/specsPdf/641466ee7036ef196c01ff8e");
+//   const blob = await response.blob();
+//   return { props: { pdfFile: blob } };
+// }
 export default part1;

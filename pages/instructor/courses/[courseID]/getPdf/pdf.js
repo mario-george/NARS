@@ -53,8 +53,9 @@ const PDF = () => {
       height={2000}
       className="bg-red-500 w-full"
       scale={2}
+      file={{ blob: pdfBlob }} onLoadSuccess={onDocumentLoadSuccess} onError={console.error}
     >
-       <Page size="A4" style={tw("p-12 ")}>
+       {/* <Page size="A4" style={tw("p-12 ")}>
         <Text className={`px-12`}>
           <Text className={`px-12 bg-red-500`}>Hello World</Text>
           <Text className={`px-12`}>This is a sample PDF document</Text>
@@ -119,43 +120,9 @@ const PDF = () => {
             </Text>
           </Text>
         </View>
-      </Page>
-      <Page style={styles.body}>
-        <View
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Text wrap={false} style={{ alignSelf: "flex-end" }}>
-            Goodbye,
-            world!hgdkljfhsalhgfljadhsgflhasdlhfgsaljdhgflhasgflhgasdl;hfg;aksdjgf;kjsdahf;kjhasd;kjhf;kjashdf;kjhasd;kjfhjks;adhfkjhsadk;jfhaskjdhfkjsahdfkjhsadkj;hfkjsdhfkjhasd;kjhfkjsadhfkjhsda;kjh;
-          </Text>
-        </View>
-        <View>
-          <Image src="/assets/image.png" />
-        </View>
-      </Page>
-      <Page style={styles.body}>
-        <Text className="underline mb-1 bg-red-500">-Course Data:</Text>
-      </Page>
-      <Page size="A4" style={tw("p-12")}>
-        <View style={tw("p-20 bg-gray-100")}>
-          <Text style={tw("text-custom text-3xl")}>Section #1</Text>
-        </View>
-        <View style={tw("mt-12 px-8 rotate-2")}>
-          <Text style={tw("text-amber-600 text-2xl")}>Section #2</Text>
-        </View>
-      </Page>
-      <Page size="A4" style={tw("p-12")}>
-        <View style={tw("p-20 bg-gray-100")}>
-          <Text style={tw("text-custom text-3xl")}>Section #1</Text>
-        </View>
-        <View style={tw("mt-12 px-8 rotate-2")}>
-          <Text style={tw("text-amber-600 text-2xl")}>Section #2</Text>
-        </View>
-      </Page>
+      </Page> */}
+ 
+  <Page pageNumber={1} />
      
     </Document>
   );

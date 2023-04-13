@@ -14,14 +14,73 @@ import { saveAs } from "file-saver";
 import { PDFDocument } from "pdf-lib";
 import { Worker } from "pdfjs-dist/legacy/build/pdf.worker.entry";
 import * as pdfjs from "pdfjs-dist";
+import LZString from 'lz-string';
+import resizeBlobs from '../getPdf/resizeBlob'
+// Compress PDF Blob using lz-string
+const compressBlob = (pdfBlob) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const compressedData = LZString.compressToUint8Array(event.target.result);
+      const compressedBlob = new Blob([compressedData], { type: 'application/pdf' });
+      resolve(compressedBlob);
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(pdfBlob);
+  });
+};
+
+// Decompress 
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const part10 = ({ cookies }) => {
+  const courseSpecs=cookies.courseSpecs
+  useEffect(()=>{
+ 
+    const getData = async function (){
+    
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+    
+    
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data)
+
+
+    }
+    getData()
+    },[])
   const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
+  }
+  const sendPdfBlob=async(blob)=>{
+    const formData = new FormData();
+
+    formData.append("courseInstance", courseID);
+    formData.append("courseSpcs", blob, "mypdf.pdf");
+    const r = await fetch(`${process.env.url}api/v1/courses/specsPdf/`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/form-data",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      const resp = await r.json();
+      console.log(resp);
   }
   const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
@@ -91,16 +150,16 @@ const part10 = ({ cookies }) => {
       array10[i] = binaryData10.charCodeAt(i);
     }
 
-    const blob = new Blob([array], { type: "image/png" });
-    const blob2 = new Blob([array2], { type: "image/png" });
-    const blob3 = new Blob([array3], { type: "image/png" });
-    const blob4 = new Blob([array4], { type: "image/png" });
-    const blob5 = new Blob([array5], { type: "image/png" });
-    const blob6 = new Blob([array6], { type: "image/png" });
-    const blob7 = new Blob([array7], { type: "image/png" });
-    const blob8 = new Blob([array8], { type: "image/png" });
-    const blob9 = new Blob([array9], { type: "image/png" });
-    const blob10 = new Blob([array10], { type: "image/png" });
+    const blob = new Blob([array], { type: "image/jpeg" });
+    const blob2 = new Blob([array2], { type: "image/jpeg" });
+    const blob3 = new Blob([array3], { type: "image/jpeg" });
+    const blob4 = new Blob([array4], { type: "image/jpeg" });
+    const blob5 = new Blob([array5], { type: "image/jpeg" });
+    const blob6 = new Blob([array6], { type: "image/jpeg" });
+    const blob7 = new Blob([array7], { type: "image/jpeg" });
+    const blob8 = new Blob([array8], { type: "image/jpeg" });
+    const blob9 = new Blob([array9], { type: "image/jpeg" });
+    const blob10 = new Blob([array10], { type: "image/jpeg" });
 
     const mergedPdf1 = await mergeTest([blob, blob2]);
     const mergedPdf2 = await mergeTest([blob3, blob4]);
@@ -118,11 +177,13 @@ const part10 = ({ cookies }) => {
       blob6,
       blob7,
       blob8,
-      blob9,
+      blob9,  
       blob10,
     ];
     const mergedBlob = await mergeTest(ImgBlobs);
-
+    // const compressedBlob = await compressBlob(mergedBlob);
+// console.log(compressedBlob)
+sendPdfBlob(mergedBlob)
     saveAs(mergedBlob, "CourseSpecs.pdf");
     console.log("asdsadsad");
     console.log(mergedBlob);
