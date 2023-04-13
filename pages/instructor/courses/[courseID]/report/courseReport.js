@@ -51,71 +51,71 @@ const courseReport = ({ cookies }) => {
         }
       );
       const jsonData = await resp.json();
-      // console.log("hereeeeeeeeeeee", jsonData);
-      const competencesData = jsonData.data.avgCompetences.map(
+      const competencesData = jsonData.data.report.avgCompetences.map(
         (comp) => comp.code
       );
       const courseLearningOutcomesData =
         jsonData.data.courseSpecs.courseLearningOutcomes.map((e) => {
           return { name: e.title, learningOutcomes: e.learningOutcomes };
         });
+      console.log(jsonData.data);
+      console.log("comp", competencesData);
+      // console.log("loooooooos", courseLearningOutcomesData);
       setCompetences(competencesData);
       setcourseLearningOutcomes(courseLearningOutcomesData);
-
+      console.log("loooooooos", courseLearningOutcomesData.length);
       cognitive = courseLearningOutcomes[0];
       affective = courseLearningOutcomes[1];
       psychomotor = courseLearningOutcomes[2];
+      // console.log(cognitive, affective, psychomotor);
+      // console.log("hereeeeeeeeee", courseLearningOutcomes);
+      // cognitive = courseLearningOutcomes[0];
+      // affective = courseLearningOutcomes[1];
+      // psychomotor = courseLearningOutcomes[2];
+      // if (cognitive && affective && psychomotor) {
+      //   try {
+      //     setArrays((prevState) => ({
+      //       LO: cognitive,
+      //       LO2: psychomotor,
+      //       LO3: affective,
+      //     }));
+      //     numCols = competence.length;
+      //     numRows = cognitive.length;
+      //     numRows2 = psychomotor.length;
+      //     numRows3 = affectiveParsed.length;
+      //     checkboxRefs.current = Array.from({ length: numRows }, () =>
+      //       Array.from({ length: numCols }, () => false)
+      //     );
+
+      //     checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
+      //       Array.from({ length: numCols }, () => false)
+      //     );
+
+      //     checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
+      //       Array.from({ length: numCols }, () => false)
+      //     );
+      //   } catch (error) {
+      //     console.error(`Error parsing cookie: ${error}`);
+      //   }
+      // } else {
+      //   console.error("Cookie not found");
+      // }
+      // // numCols = competence.length;
+      // // numRows = arrays.LO.length;
+      // // numRows2 = arrays.LO2.length;
+      // // numRows3 = arrays.LO3.length;
+      // console.log("hereeeeeeeeeee", numRows);
     } catch (e) {}
   };
   const [arrays, setArrays] = useState({
-    LO: [],
+    cognitive: [],
     LO2: [],
     LO3: [],
   });
-  console.log("hereeeeeeeee", courseLearningOutcomes);
+  // console.log("hereeeeeeeee", courseLearningOutcomes);
   useEffect(() => {
     getCompetences();
-    console.log("hereeeeeeeeee", courseLearningOutcomes);
-    // cognitive = courseLearningOutcomes[0];
-    // affective = courseLearningOutcomes[1];
-    // psychomotor = courseLearningOutcomes[2];
-    // if (cognitive && affective && psychomotor) {
-    //   try {
-    //     setArrays((prevState) => ({
-    //       LO: cognitive,
-    //       LO2: psychomotor,
-    //       LO3: affective,
-    //     }));
-    //     numCols = competence.length;
-    //     numRows = cognitive.length;
-    //     numRows2 = psychomotor.length;
-    //     numRows3 = affectiveParsed.length;
-    //     checkboxRefs.current = Array.from({ length: numRows }, () =>
-    //       Array.from({ length: numCols }, () => false)
-    //     );
-
-    //     checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
-    //       Array.from({ length: numCols }, () => false)
-    //     );
-
-    //     checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
-    //       Array.from({ length: numCols }, () => false)
-    //     );
-    //   } catch (error) {
-    //     console.error(`Error parsing cookie: ${error}`);
-    //   }
-    // } else {
-    //   console.error("Cookie not found");
-    // }
-    // // numCols = competence.length;
-    // // numRows = arrays.LO.length;
-    // // numRows2 = arrays.LO2.length;
-    // // numRows3 = arrays.LO3.length;
-    // console.log("hereeeeeeeeeee", numRows);
   }, []);
-  cognitive = courseLearningOutcomes[0];
-  affective = courseLearningOutcomes[1];
-  psychomotor = courseLearningOutcomes[2];
   if (cognitive && affective && psychomotor) {
     try {
       setArrays((prevState) => ({
@@ -148,7 +148,7 @@ const courseReport = ({ cookies }) => {
   // numRows = arrays.LO.length;
   // numRows2 = arrays.LO2.length;
   // numRows3 = arrays.LO3.length;
-  console.log("hereeeeeeeeeee", numRows);
+  // console.log("hereeeeeeeeeee", numRows);
 
   return (
     <div className="flex flex-row w-screen h-screen mt-2">
