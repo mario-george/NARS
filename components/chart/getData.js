@@ -1,61 +1,60 @@
-const getData = (props) => {
+const getData = (questions) => {
   const competenciesMap = {};
-  const snum = props.data[0].grads;
-  const exam = {
-    final: new Array(snum).fill(0),
-    midterm: new Array(snum).fill(0),
-    quiz: new Array(snum).fill(0)
+  const numOfStudents = questions[0].grades.length;
+  const examGrades = {
+    final: new Array(numOfStudents).fill(0),
+    midterm: new Array(numOfStudents).fill(0),
+    quiz: new Array(numOfStudents).fill(0),
   };
-  // const examQNum = {
-  //   final: 0,
-  //   mid: 0,
-  //   quiz: 0
-  // };
   const examQGrad = {
     final: 0,
     midterm: 0,
-    quiz: 0
+    quiz: 0,
   };
-  const qs = {};
+  const questionsGrades = {};
 
-  props.data.forEach((elm, i) => {
+  questions.forEach((elm, i) => {
     const fm = elm.fullMarks;
     const elmType = elm.type;
     examQGrad[elmType] += fm;
-    elm.grads.forEach((elm, i) => {
-      exam[elmType][i] += elm;//(elm / fm) * 100;
+    elm.grades.forEach((grade, i) => {
+      examGrades[elmType][i] += grade; //(elm / fm) * 100;
     });
     const q = `${elm.type}${i}`;
-    qs[q] = elm.grads;
+    questionsGrades[q] = elm.grades;
     elm.competences.forEach((elm, i) => {
-      if(!competenciesMap[elm]){
+      if (!competenciesMap[elm]) {
         competenciesMap[elm] = new Set();
         competenciesMap[elm].add(q);
-      }else{
+      } else {
         competenciesMap[elm].add(q);
       }
-    })
-  })
-
-  Object.keys(competenciesMap).forEach(elm => {
-    let temp = competenciesMap[elm];
-    competenciesMap[elm] = Array.from(temp)
+    });
   });
 
-  
-  Object.keys(examQGrad).forEach(elm => {
+  Object.keys(competenciesMap).forEach((elm) => {
+    let temp = competenciesMap[elm];
+    competenciesMap[elm] = Array.from(temp);
+  });
+
+  Object.keys(examQGrad).forEach((elm) => {
     // const elmType = elm;
-      if (examQGrad[elm]) {
-        for (let i = 0; i < exam[elm].length; i++) {
-          let temp = (exam[elm][i] / examQGrad[elm]) * 100;
-          exam[elm][i] = temp
-        }
+    if (examQGrad[elm]) {
+      for (let i = 0; i < examGrades[elm].length; i++) {
+        let temp = (examGrades[elm][i] / examQGrad[elm]) * 100;
+        examGrades[elm][i] = temp;
       }
+    }
     // let temp = exam[elm] / examQNum[elm];
     // exam[elm] = temp;
   });
 
-  return [competenciesMap, exam, qs, snum];
-}
+  return {
+    competences: competenciesMap,
+    examGrades,
+    questionsGrades,
+    numOfStudents,
+  };
+};
 
 export default getData;
