@@ -3,21 +3,18 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar/Navbar";
-import Attainment from "@/components/chart/Attainment";
+// import Attainment from "@/components/chart/Attainment";
 import Grad2Litter from "@/components/chart/Grad2Litter";
-import StudentScatter from "@/components/chart/StudentScatter";
 import CompetenciesBoxPlot from "@/components/chart/CompetenciesBoxPlot";
 import CompetenciesQ from "@/components/chart/CompetenciesQ";
-import CompetenciesAttainment from "@/components/chart/CompetenciesAttainment";
 import CompetenciesStatisticsTable from "@/components/chart/CompetenciesStatisticsTable";
 import CompetenciesBar from "@/components/chart/CompetenciesBar";
 import CLOBar from "@/components/chart/CLOBar";
 import CLOAttainment from "@/components/chart/CLOAttainment";
 import CLOStatisticsTable from "@/components/chart/CLOStatisticsTable";
 import CLOBoxPlot from "@/components/chart/CLOBoxPlot";
-import CLOTable from "@/components/chart/CLOTable";
 import CLOQ from "@/components/chart/CLOQ";
-import GradHist from "@/components/chart/GradHist";
+import GradPie from "@/components/chart/GradPie";
 import getData from "@/components/chart/getData";
 import CompetencesTable from "./competencesTable";
 
@@ -99,7 +96,7 @@ const courseReport = ({ cookies }) => {
               />
               <div className="flex flex-col justify-center items-center">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%]">
-                  <p className="grad-title">
+                  {/* <p className="grad-title">
                     <span className="md:col-span-2">Quiz Grad</span>
                   </p>
                   <div>
@@ -112,14 +109,13 @@ const courseReport = ({ cookies }) => {
                     />
                   </div>
                   <div>
-                    <GradHist
+                    <GradPie
                       data={quiz}
                       snum={numberOfStudents}
                       w={500}
                       h={100}
-                      grid={15}
                     />
-                  </div>
+                  </div> */}
 
                   <p className="grad-title">
                     <span className="md:col-span-2">Midterm Grad</span>
@@ -134,12 +130,11 @@ const courseReport = ({ cookies }) => {
                     />
                   </div>
                   <div>
-                    <GradHist
+                    <GradPie
                       data={mid}
                       snum={numberOfStudents}
                       w={500}
                       h={100}
-                      grid={15}
                     />
                   </div>
 
@@ -156,12 +151,11 @@ const courseReport = ({ cookies }) => {
                     />
                   </div>
                   <div>
-                    <GradHist
+                    <GradPie
                       data={final}
                       snum={numberOfStudents}
                       w={500}
                       h={100}
-                      grid={15}
                     />
                   </div>
                 </div>
