@@ -65,17 +65,18 @@ const CompetenciesQ = (props) => {
               },
             },
             y: {
+              display: true,
               beginAtZero: true,
               title: {
                 display: true,
                 text: `Number of ${props.title || "Questions"}`,
-                color: '#999',
-              font: {
-                family: 'Times',
-                size: 20,
-                style: 'normal',
-                lineHeight: 1.2
-              },
+                color: '#000',
+                font: {
+                  family: 'Times',
+                  size: 20,
+                  style: 'normal',
+                  lineHeight: 1.2
+                },
               padding: {top: 30, left: 0, right: 0, bottom: 0}
               },
             },

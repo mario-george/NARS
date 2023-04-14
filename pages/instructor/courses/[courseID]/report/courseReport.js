@@ -93,7 +93,7 @@ const courseReport = ({ cookies }) => {
                 learningOutcomes={courseLearningOutcomes}
               />
               <div className="flex flex-col justify-center items-center">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%]">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20">
                   {/* <p className="grad-title">
                     <span className="md:col-span-2">Quiz Grad</span>
                   </p>
@@ -191,13 +191,13 @@ const courseReport = ({ cookies }) => {
                     />
                   </div> */}
 
-                  <div className="md:col-span-3">
+                  {/* <div className="md:col-span-3">
                     <CompetenciesStatisticsTable
                       qs={questionsGrades}
                       cmap={competenciesMap}
                       snum={numberOfStudents}
                     />
-                  </div>
+                  </div> */}
 
                   {/* <p className="grad-asm">
               <span className="md:col-span-3">
