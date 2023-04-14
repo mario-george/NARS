@@ -5,15 +5,15 @@ import { Pie } from 'react-chartjs-2';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const GradPie = (props) => {
-  const labels = ['90-100', '80-90', '60-80', '50-60', '0-50'];
+  const labels = ['Success', 'Fail'];
   const dataValue = new Array(labels.length).fill(0);
 
   props.data.forEach(elm => {
-    if(elm >= 90){dataValue[0] += 1;}
-    else if(elm < 80 && elm >= 80){dataValue[1] += 1;}
-    else if(elm < 80 && elm >= 60){dataValue[2] += 1;}
-    else if(elm < 60 && elm >= 50){dataValue[3] += 1;}
-    else{dataValue[4] += 1;}
+    if(elm >= 50){dataValue[0] += 1;}
+    // else if(elm < 80 && elm >= 80){dataValue[1] += 1;}
+    // else if(elm < 80 && elm >= 60){dataValue[2] += 1;}
+    // else if(elm < 60 && elm >= 50){dataValue[3] += 1;}
+    else{dataValue[1] += 1;}
   });
 
   const data = {
@@ -23,18 +23,18 @@ const GradPie = (props) => {
         label: props.title || 'Grads',
         data: dataValue,
         backgroundColor: [
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
+          'rgba(119, 221, 119, 0.2)',
+          // 'rgba(126, 96, 153, 0.2)',
+          // 'rgba(156, 96, 123, 0.2)',
+          // 'rgba(186, 96, 93, 0.2)',
+          'rgba(255, 105, 97, 0.2)',
         ],
         borderColor: [
-          'rgba(153, 102, 255, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(255, 99, 132, 1)',
+          'rgba(119, 221, 119, 1)',
+          // 'rgba(126, 96, 153, 1)',
+          // 'rgba(156, 96, 123, 1)',
+          // 'rgba(186, 96, 93, 1)',
+          'rgba(255, 105, 97, 1)',
         ],
         borderWidth: 1,
       },
