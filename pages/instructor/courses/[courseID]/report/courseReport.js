@@ -133,6 +133,7 @@ const courseReport = ({ cookies }) => {
                       snum={numberOfStudents}
                       w={500}
                       h={100}
+                      title="Midterm"
                     />
                   </div>
 
@@ -154,6 +155,7 @@ const courseReport = ({ cookies }) => {
                       snum={numberOfStudents}
                       w={500}
                       h={100}
+                      title="Final"
                     />
                   </div>
                 </div>
