@@ -94,7 +94,6 @@ const CLOBar = (props) => {
         data: dataValue,
         backgroundColor: backGround,
         borderWidth: 1,
-        yAxisID: "comb",
         maxBarThickness: 80
       }
     ]
@@ -105,13 +104,35 @@ const CLOBar = (props) => {
         option = {{
           maintainAspectRatio: false,
           scales: {
-            comb: {
-              type: "linear",
-              beginAtZero: false,
-              max:50,
-              min: 0,
-              position: 'right'
-            }
+            x: {
+              title: {
+                display: true,
+                text: 'Competencies',
+                color: '#999',
+              font: {
+                family: 'Times',
+                size: 20,
+                style: 'normal',
+                lineHeight: 1.2
+              },
+              padding: {top: 20, left: 0, right: 0, bottom: 0}
+              },
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: `Achieved Percentage`,
+                color: '#999',
+              font: {
+                family: 'Times',
+                size: 20,
+                style: 'normal',
+                lineHeight: 1.2
+              },
+              padding: {top: 30, left: 0, right: 0, bottom: 0}
+              },
+            },
       }
         }}
   />
