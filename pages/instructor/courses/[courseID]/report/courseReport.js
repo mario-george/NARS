@@ -171,25 +171,27 @@ const courseReport = ({ cookies }) => {
                       Competencies Exam Assessment
                     </span>
                   </p>
-                  <div>
-                    <CompetenciesQ cmap={competenciesMap} w={60} h={60} />
+                  <div className="md:col-span-3">
+                    <CompetenciesQ cmap={competenciesMap} w={20} h={20} />
                   </div>
-                  <div>
+                  <div className="md:col-span-3">
                     <CompetenciesBar
                       cmap={avgValues}
                       snum={numberOfStudents}
-                      w={60}
-                      h={60}
+                      w={20}
+                      h={20}
                       grid={10}
                     />
                   </div>
-                  <CompetenciesBoxPlot
-                    qs={questionsGrades}
-                    cmap={competenciesMap}
-                    snum={numberOfStudents}
-                    w={60}
-                    h={60}
-                  />
+                  <div className="md:col-span-3">
+                    <CompetenciesBoxPlot
+                      qs={questionsGrades}
+                      cmap={competenciesMap}
+                      snum={numberOfStudents}
+                      w={60}
+                      h={60}
+                    />
+                  </div>
 
                   <div className="md:col-span-3">
                     <CompetenciesStatisticsTable
@@ -215,10 +217,10 @@ const courseReport = ({ cookies }) => {
                   <p className="grad-asm">
                     <span className="md:col-span-3">LOs Exam Assessment</span>
                   </p>
-                  <div>
+                  <div className="md:col-span-3">
                     <CLOQ cmap={competenciesMap} clomap={learningOutcomes} />
                   </div>
-                  <div>
+                  <div className="md:col-span-3">
                     <CLOBar
                       cmap={avgValues}
                       snum={numberOfStudents}
