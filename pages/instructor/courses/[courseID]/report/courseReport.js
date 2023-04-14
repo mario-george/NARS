@@ -33,14 +33,13 @@ const courseReport = ({ cookies }) => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const { courseID } = router.query;
 
-  //dh mmkn t7dagh
-  // const getAvg = (avgs) => {
-  //   return avgs.map((elm) => {
-  //     let out = {};
-  //     out[elm.code.toUpperCase()] = elm.avg;
-  //     return out;
-  //   });
-  // };
+  const getAvg = (avgs) => {
+    return avgs.map((elm) => {
+      let out = {};
+      out[elm.code.toUpperCase()] = elm.avg;
+      return out;
+    });
+  };
 
   useEffect(() => {
     getCourse();
