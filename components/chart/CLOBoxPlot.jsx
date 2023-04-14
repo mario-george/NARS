@@ -64,36 +64,41 @@ const CLOBoxPlot = (props) => {
 
   
   const whenLoaded = (e) => {
-    if(ref.current){
-      new BoxPlotChart(
-        ref.current,{
-          data: {
-                labels,
-                datasets: [{
-                  label: `LO Assessment by ${props.title || "Grad"}`,
-                  data: dataValue,
-                  backgroundColor: 'rgba(213, 108, 108, .5)',
-                  boarderColor: 'rgb(213, 108, 108)',
-                  borderWidth: 1,
-                  maxBarThickness: 80
-                }
-              ]
-            },
-            height: props.h || 20,
-            width: props.w  || 60,
-            options: {
-              responsive: true,
-              legend: {
-                position: 'top',
+    try{
+      if(ref.current){
+        new BoxPlotChart(
+          ref.current,{
+            data: {
+                  labels,
+                  datasets: [{
+                    label: `LO Assessment by ${props.title || "Grad"}`,
+                    data: dataValue,
+                    backgroundColor: 'rgba(213, 108, 108, .5)',
+                    boarderColor: 'rgb(213, 108, 108)',
+                    borderWidth: 1,
+                    maxBarThickness: 80
+                  }
+                ]
               },
-              title: {
-                display: true,
-                text: `Competencies`
-              }
+              height: props.h || 20,
+              width: props.w  || 60,
+              options: {
+                responsive: true,
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: `Competencies`
+                }
+            }
           }
-        }
-      )
+        )
+      }
+    }catch(e){
+
     }
+
   }
 
   setTimeout(whenLoaded, 100);
