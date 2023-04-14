@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar/Navbar";
-// import Attainment from "@/components/chart/Attainment";
+import Attainment from "@/components/chart/Attainment";
 import Grad2Litter from "@/components/chart/Grad2Litter";
 // import CompetenciesBoxPlot from "@/components/chart/CompetenciesBoxPlot";
 import CompetenciesQ from "@/components/chart/CompetenciesQ";
@@ -272,6 +272,11 @@ const courseReport = ({ cookies }) => {
                 clomap={learningOutcomes}
                 cmap={avgValues}
                 snum={numberOfStudents}
+                w={20}
+                h={10}
+              />
+              <Attainment
+                cAvg={avgValues}
                 w={20}
                 h={10}
               />
