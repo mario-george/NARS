@@ -50,7 +50,6 @@ const courseReport = ({ cookies }) => {
 
   const getCourse = async () => {
     try {
-      console.log("GETTIN COURSES", courseID);
       const resp = await fetch(
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
@@ -60,11 +59,10 @@ const courseReport = ({ cookies }) => {
         }
       );
       const jsonData = await resp.json();
-      console.log("DATA IS ", jsonData.data);
       const learningOutcomes = jsonData.data.courseSpecs.courseLearningOutcomes;
       setCourseLearningOutcomes(learningOutcomes);
       const mappedLearningOutcomes = {};
-      learningOutcomes.forEach((learningOutcomeDomain, index) => {
+      learningOutcomes.forEach((learningOutcomeDomain) => {
         learningOutcomeDomain.learningOutcomes.forEach((learningOutcome) => {
           mappedLearningOutcomes[learningOutcome.code] =
             learningOutcome.mappedCompetence;
@@ -73,15 +71,6 @@ const courseReport = ({ cookies }) => {
       setLearningOutcomes(mappedLearningOutcomes);
       const { competences, examGrades, questionsGrades, numOfStudents } =
         getData(jsonData.data.report.questions);
-      console.log("DATA COMPETENCES", JSON.stringify(competences));
-      console.log("DATA EXAMS", JSON.stringify(examGrades));
-      console.log("DATA QUESTIONS GRADES", JSON.stringify(questionsGrades));
-      console.log("DATA NUMBER OF STUDENT", JSON.stringify(numOfStudents));
-      console.log(
-        "DATA COURSE COMPETENCES",
-        JSON.stringify(jsonData.data.course.competences)
-      );
-      console.log("DATA LEARNING OUTCOMES", JSON.stringify(learningOutcomes));
       setCourseCompetences(jsonData.data.course.competences);
       setNumberOfStudents(numOfStudents);
       setAvgValues(getAvg(jsonData.data.report.avgCompetences));
@@ -104,12 +93,12 @@ const courseReport = ({ cookies }) => {
           <div className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none">
             <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
               <CompetencesTable
-                className="flex justify-center items-center w-500"
+                className="flex justify-center items-center m-20"
                 courseCompetences={courseCompetences}
                 learningOutcomes={courseLearningOutcomes}
               />
               <div className="flex flex-col justify-center items-center">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-80">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%]">
                   <p className="grad-title">
                     <span className="md:col-span-2">Quiz Grad</span>
                   </p>
@@ -180,7 +169,7 @@ const courseReport = ({ cookies }) => {
                   <br></br>
                 </div>
                 {/* Competencies & LOs*/}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[70%] mt-96">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[70%] mt-20">
                   <p className="grad-asm">
                     <span className="md:col-span-3">
                       Competencies Exam Assessment
@@ -267,13 +256,7 @@ const courseReport = ({ cookies }) => {
                     />
                   </div>
                   {/* <div className="flex flex-col "> */}
-                  <CLOAttainment
-                    clomap={learningOutcomes}
-                    cmap={avgValues}
-                    snum={numberOfStudents}
-                    w={20}
-                    h={10}
-                  />
+
                   {/* </div> */}
 
                   {/* <p className="grad-asm">
@@ -291,6 +274,13 @@ const courseReport = ({ cookies }) => {
             <CLOAttainment clomap={CLO} cmap={avgValues} snum={sNum} w={20} h={10} /> */}
                 </div>
               </div>
+              <CLOAttainment
+                clomap={learningOutcomes}
+                cmap={avgValues}
+                snum={numberOfStudents}
+                w={20}
+                h={10}
+              />
             </div>
           </div>
         </div>

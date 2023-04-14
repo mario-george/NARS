@@ -122,6 +122,7 @@ const CLOAttainment = (props) => {
     }
   ,}
     out.push(<Bar
+            className=' mt-10'
             data = {data}
             height = {props.h || 20 }
             width = {props.w  || 60}
@@ -130,9 +131,9 @@ const CLOAttainment = (props) => {
       />)
   })
   
-  return <>
+  return <div className='flex flex-col justify-center items-center m-20 mt-10'>
   {out.map(elm => elm)}
-  </>
+  </div>
 
 
 
