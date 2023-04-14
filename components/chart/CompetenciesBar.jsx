@@ -22,8 +22,8 @@ ChartJS.register(
 
 const CompetenciesBar = (props) => {
 
-  const labels = Object.keys(props.cmap);
-  const dataValue = new Array(labels.length).fill(0);
+  const labels = [];
+  const dataValue = new Array(props.cmap.length).fill(0);
 
   // //question name
   // const qstemp = Object.keys(props.qs);
@@ -42,11 +42,12 @@ const CompetenciesBar = (props) => {
   
   
   
-  labels.forEach((elm, i) => {
+  props.cmap.forEach((elm, i) => {
     //question for competencies
-    const cqs = props.cmap[elm];
+    let temp = Object.keys(elm)[0];
+    labels.push(temp)
     
-    dataValue[i] = cqs;
+    dataValue[i] = elm[temp];
   });
   
 

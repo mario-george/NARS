@@ -24,10 +24,16 @@ ChartJS.register(
 const CLOAttainment = (props) => {
 
   const comps = Object.keys(props.clomap);
+  // console.log("clo", props.clomap);
   const labels = ["Above Target", "At Target", "Below Target"];
   const dataValue = new Array(comps.length).fill(new Array(labels.length).fill(0));
   const target = props.target || new Array(comps.length).fill([50, 80]);
   const out = [];
+  const cmap = {};
+  props.cmap.forEach(elm => {
+    let temp = Object.keys(elm)[0];    
+    cmap[temp] = elm[temp];
+  })
 
   const value2percentage = (a) =>{
     let sumIt = ss.sum(a)
@@ -42,9 +48,9 @@ const CLOAttainment = (props) => {
     let cqs = props.clomap[elm];
     
     cqs.forEach(elm => {
-      if(props.cmap[elm] > target[i][1]){dataValue[i][0] += 1;}
-      else if(props.cmap[elm]<= target[i][1] && props.cmap[elm] >= target[i][0]){dataValue[i][1] += 1;}
-      else if(props.cmap[elm] < target[i][0]){dataValue[i][2] += 1;}
+      if(cmap[elm] > target[i][1]){dataValue[i][0] += 1;}
+      else if(cmap[elm]<= target[i][1] && cmap[elm] >= target[i][0]){dataValue[i][1] += 1;}
+      else if(cmap[elm] < target[i][0]){dataValue[i][2] += 1;}
     });
     value2percentage(dataValue[i]);
   } 

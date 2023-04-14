@@ -23,7 +23,13 @@ ChartJS.register(
 const CLOBar = (props) => {
 
   const labels = Object.keys(props.clomap);
-  const competencies = Object.keys(props.cmap);
+  const cmap = {};
+  props.cmap.forEach(elm => {
+    let temp = Object.keys(elm)[0];    
+    cmap[temp] = elm[temp];
+  })
+
+
   const dataValue = new Array(labels.length).fill(0);
   const tempValue = {}
 
@@ -61,7 +67,7 @@ const CLOBar = (props) => {
     let cqstemp = 0;
     
     comps.forEach(elm => {
-      cqstemp += props.cmap[elm];
+      cqstemp += cmap[elm];
     });
     cqstemp /= comps.length;
     

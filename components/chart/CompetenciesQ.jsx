@@ -30,6 +30,7 @@ const CompetenciesQ = (props) => {
     dataValue.push(comqs.length)
   });
 
+
   return (
     <Bar
         data = {{
