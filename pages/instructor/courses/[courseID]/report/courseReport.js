@@ -33,11 +33,17 @@ const courseReport = ({ cookies }) => {
   const { courseID } = router.query;
 
   const getAvg = (avgs) => {
-    return avgs.map((elm) => {
+    const cAvg = {};
+    let tempAvg = avgs.map((elm) => {
       let out = {};
       out[elm.code.toUpperCase()] = elm.avg;
       return out;
     });
+    tempAvg.forEach(elm => {
+      let temp = Object.keys(elm)[0];    
+      cAvg[temp] = elm[temp];
+    })
+    return cAvg;
   };
 
   useEffect(() => {
@@ -174,7 +180,7 @@ const courseReport = ({ cookies }) => {
                   </div>
                   <div className="md:col-span-3">
                     <CompetenciesBar
-                      cmap={avgValues}
+                      cAvg={avgValues}
                       snum={numberOfStudents}
                       w={20}
                       h={20}
@@ -220,7 +226,7 @@ const courseReport = ({ cookies }) => {
                   </div>
                   <div className="md:col-span-3">
                     <CLOBar
-                      cmap={avgValues}
+                      cAvg={avgValues}
                       snum={numberOfStudents}
                       w={20}
                       h={10}
@@ -239,7 +245,7 @@ const courseReport = ({ cookies }) => {
                     />
                   </div> */}
 
-                  <div className="md:col-span-3">
+                  {/* <div className="md:col-span-3">
                     <CLOStatisticsTable
                       clomap={learningOutcomes}
                       qs={questionsGrades}
@@ -248,7 +254,7 @@ const courseReport = ({ cookies }) => {
                       w={20}
                       h={10}
                     />
-                  </div>
+                  </div> */}
                   {/* <div className="flex flex-col "> */}
 
                   {/* </div> */}
@@ -268,13 +274,13 @@ const courseReport = ({ cookies }) => {
             <CLOAttainment clomap={CLO} cmap={avgValues} snum={sNum} w={20} h={10} /> */}
                 </div>
               </div>
-              <CLOAttainment
+              {/* <CLOAttainment
                 clomap={learningOutcomes}
                 cmap={avgValues}
                 snum={numberOfStudents}
                 w={20}
                 h={10}
-              />
+              /> */}
               <Attainment
                 cAvg={avgValues}
                 w={20}

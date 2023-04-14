@@ -23,7 +23,7 @@ ChartJS.register(
 const CompetenciesBar = (props) => {
 
   const labels = [];
-  const dataValue = new Array(props.cmap.length).fill(0);
+  // const dataValue = new Array(props.cmap.length).fill(0);
 
   // //question name
   // const qstemp = Object.keys(props.qs);
@@ -42,13 +42,13 @@ const CompetenciesBar = (props) => {
   
   
   
-  props.cmap.forEach((elm, i) => {
-    //question for competencies
-    let temp = Object.keys(elm)[0];
-    labels.push(temp)
+  // props.cmap.forEach((elm, i) => {
+  //   //question for competencies
+  //   let temp = Object.keys(elm)[0];
+  //   labels.push(temp)
     
-    dataValue[i] = elm[temp];
-  });
+  //   dataValue[i] = elm[temp];
+  // });
   
 
   const rb = [66, 213]
@@ -67,7 +67,7 @@ const CompetenciesBar = (props) => {
       labels,
       datasets: [{
         label: `Competence Assessment by ${props.title || "Grad"}`,
-        data: dataValue,
+        data: props.cAvg,
         backgroundColor: backGround,
         borderWidth: 1,
         maxBarThickness: 80,

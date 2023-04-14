@@ -25,11 +25,11 @@ const Attainment = (props) => {
   const labels = ["Above Target", "At Target", "Below Target"];
   const dataValue = new Array(labels.length).fill(0);
   const target = [70, 30]
-  const cAvg = {};
-  props.cAvg.forEach(elm => {
-    let temp = Object.keys(elm)[0];    
-    cAvg[temp] = elm[temp];
-  })
+  // const cAvg = {};
+  // props.cAvg.forEach(elm => {
+  //   let temp = Object.keys(elm)[0];    
+  //   cAvg[temp] = elm[temp];
+  // })
 
   // const value2percentage = (a) =>{
   //   let sumit = a.reduce((a, b) => (a+b), 0)
@@ -39,10 +39,10 @@ const Attainment = (props) => {
   //   }
   // };
 
-  Object.keys(cAvg).forEach(elm => {
-    if(cAvg[elm] > target[1]){dataValue[0] += 1;}
-    else if(cAvg[elm ]<= target[1] && cAvg[elm] >= target[0]){dataValue[1] += 1;}
-    else if(cAvg[elm] < target[0]){dataValue[2] += 1;}
+  Object.keys(props.cAvg).forEach(elm => {
+    if(props.cAvg[elm] > target[1]){dataValue[0] += 1;}
+    else if(props.cAvg[elm ]<= target[1] && props.cAvg[elm] >= target[0]){dataValue[1] += 1;}
+    else if(props.cAvg[elm] < target[0]){dataValue[2] += 1;}
   });
 
 
