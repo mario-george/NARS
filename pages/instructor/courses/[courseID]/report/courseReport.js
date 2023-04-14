@@ -5,14 +5,14 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar/Navbar";
 // import Attainment from "@/components/chart/Attainment";
 import Grad2Litter from "@/components/chart/Grad2Litter";
-import CompetenciesBoxPlot from "@/components/chart/CompetenciesBoxPlot";
+// import CompetenciesBoxPlot from "@/components/chart/CompetenciesBoxPlot";
 import CompetenciesQ from "@/components/chart/CompetenciesQ";
 import CompetenciesStatisticsTable from "@/components/chart/CompetenciesStatisticsTable";
 import CompetenciesBar from "@/components/chart/CompetenciesBar";
 import CLOBar from "@/components/chart/CLOBar";
 import CLOAttainment from "@/components/chart/CLOAttainment";
 import CLOStatisticsTable from "@/components/chart/CLOStatisticsTable";
-import CLOBoxPlot from "@/components/chart/CLOBoxPlot";
+// import CLOBoxPlot from "@/components/chart/CLOBoxPlot";
 import CLOQ from "@/components/chart/CLOQ";
 import GradPie from "@/components/chart/GradPie";
 import getData from "@/components/chart/getData";
@@ -33,13 +33,14 @@ const courseReport = ({ cookies }) => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const { courseID } = router.query;
 
-  const getAvg = (avgs) => {
-    return avgs.map((elm) => {
-      let out = {};
-      out[elm.code.toUpperCase()] = elm.avg;
-      return out;
-    });
-  };
+  //dh mmkn t7dagh
+  // const getAvg = (avgs) => {
+  //   return avgs.map((elm) => {
+  //     let out = {};
+  //     out[elm.code.toUpperCase()] = elm.avg;
+  //     return out;
+  //   });
+  // };
 
   useEffect(() => {
     getCourse();
@@ -181,7 +182,7 @@ const courseReport = ({ cookies }) => {
                       grid={10}
                     />
                   </div>
-                  <div className="md:col-span-3">
+                  {/* <div className="md:col-span-3">
                     <CompetenciesBoxPlot
                       qs={questionsGrades}
                       cmap={competenciesMap}
@@ -189,7 +190,7 @@ const courseReport = ({ cookies }) => {
                       w={60}
                       h={60}
                     />
-                  </div>
+                  </div> */}
 
                   <div className="md:col-span-3">
                     <CompetenciesStatisticsTable
@@ -228,7 +229,7 @@ const courseReport = ({ cookies }) => {
                       clomap={learningOutcomes}
                     />
                   </div>
-                  <div>
+                  {/* <div>
                     <CLOBoxPlot
                       qs={questionsGrades}
                       cmap={competenciesMap}
@@ -237,7 +238,7 @@ const courseReport = ({ cookies }) => {
                       h={10}
                       clomap={learningOutcomes}
                     />
-                  </div>
+                  </div> */}
 
                   <div className="md:col-span-3">
                     <CLOStatisticsTable
