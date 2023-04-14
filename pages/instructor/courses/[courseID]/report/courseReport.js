@@ -19,12 +19,15 @@ import CLOTable from "@/components/chart/CLOTable";
 import CLOQ from "@/components/chart/CLOQ";
 import GradHist from "@/components/chart/GradHist";
 import getData from "@/components/chart/getData";
+import CompetencesTable from "./competencesTable";
 
 const courseReport = ({ cookies }) => {
   const router = useRouter();
   const [competenciesMap, setCompetenciesMap] = useState({});
+  const [courseCompetences, setCourseCompetences] = useState([]);
   const [avgValues, setAvgValues] = useState({});
   const [learningOutcomes, setLearningOutcomes] = useState({});
+  const [courseLearningOutcomes, setCourseLearningOutcomes] = useState({});
   const [questionsGrades, setQuestionsGrades] = useState({});
   const [quiz, setQuiz] = useState([]);
   const [mid, setMid] = useState([]);
@@ -59,6 +62,7 @@ const courseReport = ({ cookies }) => {
       const jsonData = await resp.json();
       console.log("DATA IS ", jsonData.data);
       const learningOutcomes = jsonData.data.courseSpecs.courseLearningOutcomes;
+      setCourseLearningOutcomes(learningOutcomes);
       const mappedLearningOutcomes = {};
       learningOutcomes.forEach((learningOutcomeDomain, index) => {
         learningOutcomeDomain.learningOutcomes.forEach((learningOutcome) => {
@@ -73,6 +77,12 @@ const courseReport = ({ cookies }) => {
       console.log("DATA EXAMS", JSON.stringify(examGrades));
       console.log("DATA QUESTIONS GRADES", JSON.stringify(questionsGrades));
       console.log("DATA NUMBER OF STUDENT", JSON.stringify(numOfStudents));
+      console.log(
+        "DATA COURSE COMPETENCES",
+        JSON.stringify(jsonData.data.course.competences)
+      );
+      console.log("DATA LEARNING OUTCOMES", JSON.stringify(learningOutcomes));
+      setCourseCompetences(jsonData.data.course.competences);
       setNumberOfStudents(numOfStudents);
       setAvgValues(getAvg(jsonData.data.report.avgCompetences));
       const { final, midterm, quiz } = examGrades;
@@ -93,6 +103,11 @@ const courseReport = ({ cookies }) => {
         <div className="flex flex-row w-screen h-screen mt-2">
           <div className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none">
             <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
+              <CompetencesTable
+                className="flex justify-center items-center w-500"
+                courseCompetences={courseCompetences}
+                learningOutcomes={courseLearningOutcomes}
+              />
               <div className="flex flex-col justify-center items-center">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-80">
                   <p className="grad-title">
