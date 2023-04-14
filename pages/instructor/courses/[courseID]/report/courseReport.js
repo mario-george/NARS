@@ -26,7 +26,6 @@ const courseReport = ({ cookies }) => {
   const [learningOutcomes, setLearningOutcomes] = useState({});
   const [courseLearningOutcomes, setCourseLearningOutcomes] = useState({});
   const [questionsGrades, setQuestionsGrades] = useState({});
-  const [quiz, setQuiz] = useState([]);
   const [mid, setMid] = useState([]);
   const [final, setFinal] = useState([]);
   const [numberOfStudents, setNumberOfStudents] = useState(0);
@@ -71,10 +70,9 @@ const courseReport = ({ cookies }) => {
       setCourseCompetences(jsonData.data.course.competences);
       setNumberOfStudents(numOfStudents);
       setAvgValues(getAvg(jsonData.data.report.avgCompetences));
-      const { final, midterm, quiz } = examGrades;
+      const { final, midterm} = examGrades;
       setCompetenciesMap(competences);
       setQuestionsGrades(questionsGrades);
-      setQuiz(quiz);
       setMid(midterm);
       setFinal(final);
       setDataLoaded(true);
