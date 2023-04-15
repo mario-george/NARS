@@ -58,7 +58,8 @@ const CLOQ = (props) => {
         width = {props.w  || 60}
 
         options = {{
-          maintainAspectRatio: false,
+          aspectRatio: 1,
+          maintainAspectRatio: true,
           scales: {
             x: {
               title: {
@@ -73,6 +74,7 @@ const CLOQ = (props) => {
               },
               padding: {top: 20, left: 0, right: 0, bottom: 0}
               },
+              
             },
             y: {
               beginAtZero: true,

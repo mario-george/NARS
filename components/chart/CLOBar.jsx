@@ -66,9 +66,9 @@ const CLOBar = (props) => {
     }}
         height = {props.h || 20 }
         width = {props.w  || 60}
-
         options = {{
-          maintainAspectRatio: false,
+          aspectRatio: 1,
+          maintainAspectRatio: true,
           scales: {
             x: {
               title: {
