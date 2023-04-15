@@ -67,7 +67,7 @@ const AttainmentPie = (props) => {
         beginAtZero: true,
         title: {
           display: true,
-          text: `Percentage of Achieved Competencies`,
+          text: `Percentage of Achieved Competencies by ${props.title || 'Grad'}`,
           color: '#777',
         font: {
           family: 'Times',

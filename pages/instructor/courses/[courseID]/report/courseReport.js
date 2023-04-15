@@ -12,6 +12,8 @@ import AssessmentMethodsTable from "./AssessmentMethodsTable";
 import ExamGrades from "./ExamGrades";
 import { CompetencesLosAchievement } from "./CompetencesLosAchievement";
 import { CompetencesLosGrades } from "./CompetencesLosGrades";
+import { CompetencesLosAchievementSurvey } from "./CompetencesLosAchievementSurvey";
+import { CompetencesLosSurvey } from "./CompetencesLosSurvey";
 
 const courseReport = ({ cookies }) => {
   const router = useRouter();
@@ -19,6 +21,7 @@ const courseReport = ({ cookies }) => {
   const [competenciesMap, setCompetenciesMap] = useState({});
   const [courseCompetences, setCourseCompetences] = useState([]);
   const [avgValues, setAvgValues] = useState({});
+  const [avgValuesSurvey, setAvgValuesSurvey] = useState({});
   const [learningOutcomes, setLearningOutcomes] = useState({});
   const [courseLearningOutcomes, setCourseLearningOutcomes] = useState({});
   const [questionsGrades, setQuestionsGrades] = useState({});
@@ -77,6 +80,7 @@ const courseReport = ({ cookies }) => {
       setCourseCompetences(jsonData.data.course.competences);
       setNumberOfStudents(numOfStudents);
       setAvgValues(getAvg(jsonData.data.report.avgCompetences));
+      setAvgValuesSurvey(getAvg(jsonData.data.report.avgCompetences));
       const { final, midterm } = examGrades;
       setCompetenciesMap(competences);
       setQuestionsGrades(questionsGrades);
@@ -132,6 +136,17 @@ const courseReport = ({ cookies }) => {
                   numberOfStudents={numberOfStudents}
                   avgValues={avgValues}
                   competenciesMap={competenciesMap}
+                  learningOutcomes={learningOutcomes}
+                />
+                <CompetencesLosAchievementSurvey
+                  competenciesMap={competenciesMap}
+                  avgValues={avgValuesSurvey}
+                  numberOfStudents={numberOfStudents}
+                  learningOutcomes={learningOutcomes}
+                />
+                <CompetencesLosSurvey
+                  numberOfStudents={numberOfStudents}
+                  avgValues={avgValuesSurvey}
                   learningOutcomes={learningOutcomes}
                 />
               </div>

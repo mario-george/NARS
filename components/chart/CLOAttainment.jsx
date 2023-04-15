@@ -80,7 +80,7 @@ const CLOAttainment = (props) => {
         beginAtZero: true,
         title: {
           display: true,
-          text: `Number of Achieved LOs`,
+          text: `Number of Achieved LOs by ${props.title || 'Grad'}`,
           color: '#777',
         font: {
           family: 'Times',
