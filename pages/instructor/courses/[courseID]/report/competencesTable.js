@@ -7,7 +7,11 @@ const competencesTable = ({ courseCompetences, learningOutcomes }) => {
 
   return (
     <div>
-      <div className="flex">
+      <div className="flex flex-col">
+        <h2 className="font-bold text-xl mb-2">
+          Achievement of Course Learning Outcomes and Competences
+        </h2>
+        <div className="h-0.5 w-full bg-gray-300 mb-2" />
         <table className="table table-striped mt-6">
           <thead>
             <tr>
@@ -41,12 +45,13 @@ const competencesTable = ({ courseCompetences, learningOutcomes }) => {
                         <label className="inline-flex items-center justify-center">
                           <input
                             type="checkbox"
-                            className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox items-center justify-center"
+                            className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
                             checked={cognitiveLearningOutcomes[
                               rowIndex
                             ].mappedCompetence.includes(
                               courseCompetences[colIndex].code
                             )}
+                            readOnly={true}
                           />
                         </label>
                       </td>
@@ -82,6 +87,7 @@ const competencesTable = ({ courseCompetences, learningOutcomes }) => {
                             ].mappedCompetence.includes(
                               courseCompetences[colIndex].code
                             )}
+                            readOnly={true}
                           />
                         </label>
                       </td>
@@ -117,6 +123,7 @@ const competencesTable = ({ courseCompetences, learningOutcomes }) => {
                             ].mappedCompetence.includes(
                               courseCompetences[colIndex].code
                             )}
+                            readOnly={true}
                           />
                         </label>
                       </td>

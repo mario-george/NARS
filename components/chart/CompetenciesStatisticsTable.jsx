@@ -90,7 +90,7 @@ const CompetenciesStatisticsTable = (props) => {
 
 
   return (
-    <JsonToTable json={dataValue} tableClassName="some"/>
+    <JsonToTable json={dataValue} tableClassName="some" />
   )
 }
 

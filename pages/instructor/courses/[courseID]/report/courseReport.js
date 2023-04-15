@@ -20,20 +20,27 @@ import CLOQ from "@/components/chart/CLOQ";
 import GradHist from "@/components/chart/GradHist";
 import getData from "@/components/chart/getData";
 import CompetencesTable from "./competencesTable";
+import CourseData from "./courseData";
+import TopicsTable from "./TopicsTable";
+import AssessmentMethodsTable from "./AssessmentMethodsTable";
 
 const courseReport = ({ cookies }) => {
   const router = useRouter();
+  //TODO: Most of those states can be just regular variables or useRef (change them at the end)
   const [competenciesMap, setCompetenciesMap] = useState({});
   const [courseCompetences, setCourseCompetences] = useState([]);
   const [avgValues, setAvgValues] = useState({});
   const [learningOutcomes, setLearningOutcomes] = useState({});
   const [courseLearningOutcomes, setCourseLearningOutcomes] = useState({});
   const [questionsGrades, setQuestionsGrades] = useState({});
+  const [questions, setQuestions] = useState([]);
   const [quiz, setQuiz] = useState([]);
   const [mid, setMid] = useState([]);
   const [final, setFinal] = useState([]);
   const [numberOfStudents, setNumberOfStudents] = useState(0);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [studentAssessments, setStudentAssessments] = useState([]);
+  const [lectureTopics, setLectureTopics] = useState([]);
   const { courseID } = router.query;
 
   const getAvg = (avgs) => {
@@ -77,9 +84,14 @@ const courseReport = ({ cookies }) => {
       const { final, midterm, quiz } = examGrades;
       setCompetenciesMap(competences);
       setQuestionsGrades(questionsGrades);
+      setQuestions(jsonData.data.report.questions);
       setQuiz(quiz);
       setMid(midterm);
       setFinal(final);
+      setStudentAssessments(
+        jsonData.data.courseSpecs.studentAssessment.assessmentSchedulesWeight
+      );
+      setLectureTopics(jsonData.data.courseSpecs.lecturePlan.topics);
       setDataLoaded(true);
     } catch (e) {
       console.log("ERROR", e);
@@ -92,10 +104,23 @@ const courseReport = ({ cookies }) => {
         <div className="flex flex-row w-screen h-screen mt-2">
           <div className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none">
             <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
+              <CourseData />
+              <AssessmentMethodsTable
+                questions={questions}
+                competences={courseCompetences}
+                studentAssessments={studentAssessments}
+              />
+              {/* <TopicsTable /> */}
               <CompetencesTable
                 className="flex justify-center items-center m-20"
                 courseCompetences={courseCompetences}
                 learningOutcomes={courseLearningOutcomes}
+              />
+              <TopicsTable
+                lectureTopics={lectureTopics}
+                learningOutcomes={courseLearningOutcomes}
+                courseID={courseID}
+                token={cookies.token}
               />
               <div className="flex flex-col justify-center items-center">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%]">
