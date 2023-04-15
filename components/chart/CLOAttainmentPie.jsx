@@ -8,7 +8,7 @@ import {
   Legend,
   Tooltip,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 import * as ss from 'simple-statistics';
 
 ChartJS.register(
@@ -21,7 +21,7 @@ ChartJS.register(
   Tooltip
 );
 
-const CLOAttainment = (props) => {
+const CLOAttainmentPie = (props) => {
 
   const comps = Object.keys(props.clomap);
   const labels = ["Above Target", "At Target", "Below Target"];
@@ -53,44 +53,28 @@ const CLOAttainment = (props) => {
   const data = {
       labels,
       datasets: [{
-        label: 'LOs Attainment',
+        type: 'pie',
+        label: 'Competencies Attainment',
         data: dataValue,
-        backgroundColor: bg,
+        backgroundColor: [
+          'rgba(119, 221, 119, 0.2)',
+          'rgba(108, 160, 220, 0.2)',
+          'rgba(255, 105, 97, 0.2)',
+        ],
+        borderColor: [
+          'rgba(119, 221, 119, 1)',
+          'rgba(108, 160, 220, 1)',
+          'rgba(255, 105, 97, 1)',
+        ],
         borderWidth: 1,
-        maxBarThickness: 80
       },
     ]
   }
 
-  const option4bar = {
-      indexAxis: 'y',
-    // Elements options apply to all of the options unless overridden in a dataset
-    // In this case, we are setting the border of each horizontal bar to be 2px wide
-    elements: {
-      bar: {
-        borderWidth: 2,
-      }
-    },
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'right',
-      },
-      title: {
-        display: true,
-        text: 'Attainment'
-      }
-    }
-  ,}
-
-  return <Bar
+  return <Pie
         data = {data}
-        height = {props.h || 20 }
-        width = {props.w  || 60}
-
-        option = {option4bar}
 />
 
 }
 
-export default CLOAttainment;
+export default CLOAttainmentPie;

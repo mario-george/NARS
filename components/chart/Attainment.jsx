@@ -8,7 +8,7 @@ import {
   Legend,
   Tooltip,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Chart } from 'react-chartjs-2';
 
 ChartJS.register(
   LinearScale,
@@ -25,56 +25,12 @@ const Attainment = (props) => {
   const labels = ["Above Target", "At Target", "Below Target"];
   const dataValue = new Array(labels.length).fill(0);
   const target = [36, 70]
-  // const cAvg = {};
-  // props.cAvg.forEach(elm => {
-  //   let temp = Object.keys(elm)[0];    
-  //   cAvg[temp] = elm[temp];
-  // })
-
-  // const value2percentage = (a) =>{
-  //   let sumit = a.reduce((a, b) => (a+b), 0)
-  //   for (let i = 0; i < a.length; i++) {
-  //     a[i] = a[i] / sumit * 100;
-      
-  //   }
-  // };
 
   Object.keys(props.cAvg).forEach(elm => {
     if(props.cAvg[elm] > target[1]){dataValue[0] += 1;}
     else if(props.cAvg[elm ]<= target[1] && props.cAvg[elm] >= target[0]){dataValue[1] += 1;}
     else if(props.cAvg[elm] < target[0]){dataValue[2] += 1;}
   });
-
-
-  // value2percentage(dataValue);
-
-  // const backGround = dataValue.map((elm, i) => {
-
-  //   if(i !== 2){if(elm <= 50){
-  //       const b = 208 - (Math.round(elm / 10)) * 40;
-  //       const out = `rgb(215, 48, ${b})`;
-
-  //       return out
-  //     }
-  //     else{
-  //       const r = 208 - (Math.round(elm / 10) - 5) * 40;
-  //       const out = `rgb(${r}, 48, 215)`;
-
-  //       return out
-  //     }}
-  //     else{if(elm <= 50){
-  //       const r = 208 - (Math.round(elm / 10)) * 40;
-  //       const out = `rgb(${r}, 48, 215)`;
-
-  //       return out
-  //     }
-  //     else{
-  //       const b = 208 - (Math.round(elm / 10) - 5) * 40;
-  //       const out = `rgb(215, 48, ${b})`;
-
-  //       return out
-  //     }}
-  // });
 
   const bg  = [
     'rgba(119, 221, 119, 1)',
@@ -93,6 +49,35 @@ const Attainment = (props) => {
       },
     ]
   }
+
+  const dataChart = {
+    labels,
+    datasets: [{
+      type: 'bar',
+      label: 'Competencies Attainment',
+      data: dataValue,
+      backgroundColor: bg,
+      borderWidth: 1,
+      maxBarThickness: 80
+    },
+    {
+      type: 'pie',
+      label: 'Competencies Attainment',
+      data: dataValue,
+      backgroundColor: [
+        'rgba(255, 105, 97, 0.2)',
+        'rgba(108, 160, 220, 0.2)',
+        'rgba(119, 221, 119, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 105, 97, 1)',
+        'rgba(108, 160, 220, 1)',
+        'rgba(119, 221, 119, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ]
+}
 
   const option4bar = {
       indexAxis: 'y',
@@ -123,6 +108,7 @@ const Attainment = (props) => {
         option = {option4bar}
   />
 
+  // return <Chart type='bar' data={dataChart} />
 
 
 }

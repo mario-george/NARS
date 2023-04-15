@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar/Navbar";
 import Attainment from "@/components/chart/Attainment";
+import AttainmentPie from "@/components/chart/AttainmentPie";
 import Grad2Litter from "@/components/chart/Grad2Litter";
 // import CompetenciesBoxPlot from "@/components/chart/CompetenciesBoxPlot";
 import CompetenciesQ from "@/components/chart/CompetenciesQ";
@@ -11,6 +12,7 @@ import CompetenciesStatisticsTable from "@/components/chart/CompetenciesStatisti
 import CompetenciesBar from "@/components/chart/CompetenciesBar";
 import CLOBar from "@/components/chart/CLOBar";
 import CLOAttainment from "@/components/chart/CLOAttainment";
+import CLOAttainmentPie from "@/components/chart/CLOAttainmentPie";
 import CLOStatisticsTable from "@/components/chart/CLOStatisticsTable";
 // import CLOBoxPlot from "@/components/chart/CLOBoxPlot";
 import CLOQ from "@/components/chart/CLOQ";
@@ -279,12 +281,18 @@ const courseReport = ({ cookies }) => {
                 w={20}
                 h={10}
               />
+              <AttainmentPie
+                cAvg={avgValues}
+              />
               <CLOAttainment
                 clomap={learningOutcomes}
                 cAvg={avgValues}
-                snum={numberOfStudents}
                 w={20}
                 h={10}
+              />
+              <CLOAttainmentPie
+                clomap={learningOutcomes}
+                cAvg={avgValues}
               />
             </div>
           </div>

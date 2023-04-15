@@ -23,41 +23,7 @@ ChartJS.register(
 const CLOBar = (props) => {
 
   const labels = Object.keys(props.clomap);
-  // const cmap = {};
-  // props.cmap.forEach(elm => {
-  //   let temp = Object.keys(elm)[0];    
-  //   cmap[temp] = elm[temp];
-  // })
-
-
   const dataValue = new Array(labels.length).fill(0);
-  const tempValue = {}
-
-  // //question name
-  // const qstemp = Object.keys(props.qs);
-  // //question average
-  // const temp = qstemp.map(elm => (props.qs[elm].reduce((a, b) => a + b, 0)) / props.snum);
-  // const qs = {};
-  // //{name: average}
-  // qstemp.forEach((element, index) => {
-  //   qs[element] = temp[index]
-  // });
-  
-  
-  
-  // competencies.forEach((elm) => {
-  //   //question for competencies
-  //   const cqs = props.cmap[elm];
-  //   //competencies value
-  //   let cqstemp = 0;
-    
-  //   cqs.forEach(elm => {
-  //     cqstemp += qs[elm];
-  //   });
-  //   cqstemp /= cqs.length;
-    
-  //   tempValue[elm] = cqstemp;
-  // });
 
   
   labels.forEach((elm, i) => {
