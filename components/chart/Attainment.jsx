@@ -8,7 +8,7 @@ import {
   Legend,
   Tooltip,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Chart } from 'react-chartjs-2';
 
 ChartJS.register(
   LinearScale,
@@ -24,137 +24,77 @@ const Attainment = (props) => {
 
   const labels = ["Above Target", "At Target", "Below Target"];
   const dataValue = new Array(labels.length).fill(0);
-  const lastDataValue = new Array(labels.length).fill(0);
+  const target = [36, 70]
 
-  const value2percentage = (a) =>{
-    let sumit = a.reduce((a, b) => (a+b), 0)
-    for (let i = 0; i < a.length; i++) {
-      a[i] = a[i] / sumit * 100;
-      
-    }
-  };
-
-  Object.keys(props.nowd).forEach(elm => {
-    if(props.nowd[elm] > props.target[1]){dataValue[0] += 1;}
-    else if(props.nowd[elm ]<= props.target[1] && props.nowd[elm] >= props.target[0]){dataValue[1] += 1;}
-    else if(props.nowd[elm] < props.target[0]){dataValue[2] += 1;}
+  Object.keys(props.cAvg).forEach(elm => {
+    if(props.cAvg[elm] > target[1]){dataValue[0] += 1;}
+    else if(props.cAvg[elm ]<= target[1] && props.cAvg[elm] >= target[0]){dataValue[1] += 1;}
+    else if(props.cAvg[elm] < target[0]){dataValue[2] += 1;}
   });
 
-  Object.keys(props.lastd).forEach(elm => {
-    if(props.lastd[elm] > props.target[1]){lastDataValue[0] += 1;}
-    else if(props.lastd[elm] <= props.target[1] && props.lastd[elm] >= props.target[0]){lastDataValue[1] += 1;}
-    else if(props.lastd[elm] < props.target[0]){lastDataValue[2] += 1;}
-  });
-
-  value2percentage(dataValue);
-  value2percentage(lastDataValue);
-
-  const backGround = dataValue.map((elm, i) => {
-
-    if(i !== 2){if(elm <= 50){
-        const b = 208 - (Math.round(elm / 10)) * 40;
-        const out = `rgb(215, 48, ${b})`;
-
-        return out
-      }
-      else{
-        const r = 208 - (Math.round(elm / 10) - 5) * 40;
-        const out = `rgb(${r}, 48, 215)`;
-
-        return out
-      }}
-      else{if(elm <= 50){
-        const r = 208 - (Math.round(elm / 10)) * 40;
-        const out = `rgb(${r}, 48, 215)`;
-
-        return out
-      }
-      else{
-        const b = 208 - (Math.round(elm / 10) - 5) * 40;
-        const out = `rgb(215, 48, ${b})`;
-
-        return out
-      }}
-  });
-
-  const lastBackGround = lastDataValue.map((elm, i) => {
-
-      if(i !== 2){if(elm <= 50){
-        const g = 208 - (Math.round(elm / 10)) * 40;
-        const out = `rgb(215, ${g}, 48)`;
-
-        return out
-      }
-      else{
-        const r = 208 - (Math.round(elm / 10) - 5) * 40;
-        const out = `rgb(${r}, 215, 48)`;
-
-        return out
-      }}
-      else{if(elm <= 50){
-        const r = 208 - (Math.round(elm / 10)) * 40;
-        const out = `rgb(${r}, 215, 48)`;
-
-        return out
-      }
-      else{
-        const g = 208 - (Math.round(elm / 10) - 5) * 40;
-        const out = `rgb(215, ${g}, 48)`;
-
-        return out
-      }}
-
-  })
+  const bg  = [
+    'rgba(119, 221, 119, 1)',
+    'rgba(108, 160, 220, 1)',
+    'rgba(255, 105, 97, 1)',
+  ];
 
   const data = {
       labels,
       datasets: [{
-        label: 'This Year',
+        label: 'Competencies Attainment',
         data: dataValue,
-        backgroundColor: backGround,
+        backgroundColor: bg,
         borderWidth: 1,
         maxBarThickness: 80
       },
-      {
-        label: 'Last Year',
-        data: lastDataValue,
-        backgroundColor: lastBackGround,
-        borderWidth: 1,
-        maxBarThickness: 80
-      }
     ]
   }
 
   const option4bar = {
-      indexAxis: 'y',
-    // Elements options apply to all of the options unless overridden in a dataset
-    // In this case, we are setting the border of each horizontal bar to be 2px wide
-    elements: {
-      bar: {
-        borderWidth: 2,
-      }
+    indexAxis: 'y',
+  // Elements options apply to all of the options unless overridden in a dataset
+  // In this case, we are setting the border of each horizontal bar to be 2px wide
+  elements: {
+    bar: {
+      borderWidth: 2,
+    }
+  },
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
     },
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'right',
-      },
+    title: {
+      display: true,
+      text: 'Attainment'
+    }
+  },
+  scales: {
+    
+    x: {
+      beginAtZero: true,
       title: {
         display: true,
-        text: 'Attainment'
-      }
-    }
-  ,}
+        text: `Number of Achieved Competencies`,
+        color: '#777',
+      font: {
+        family: 'Times',
+        size: 20,
+        style: 'normal',
+        lineHeight: 1.2
+      },
+      padding: {top: 30, left: 0, right: 0, bottom: 0}
+      },
+    },}
+}
   
   return <Bar
         data = {data}
         height = {props.h || 20 }
         width = {props.w  || 60}
 
-        option = {option4bar}
+        options = {option4bar}
   />
-
-
 
 }
 

@@ -4,32 +4,34 @@ const getData = (questions) => {
   const examGrades = {
     final: new Array(numOfStudents).fill(0),
     midterm: new Array(numOfStudents).fill(0),
-    quiz: new Array(numOfStudents).fill(0),
+    // quiz: new Array(numOfStudents).fill(0),
   };
   const examQGrad = {
     final: 0,
     midterm: 0,
-    quiz: 0,
+    // quiz: 0,
   };
   const questionsGrades = {};
 
   questions.forEach((elm, i) => {
     const fm = elm.fullMarks;
     const elmType = elm.type;
-    examQGrad[elmType] += fm;
-    elm.grades.forEach((grade, i) => {
-      examGrades[elmType][i] += grade; //(elm / fm) * 100;
-    });
-    const q = `${elm.type}${i}`;
-    questionsGrades[q] = elm.grades;
-    elm.competences.forEach((elm, i) => {
-      if (!competenciesMap[elm]) {
-        competenciesMap[elm] = new Set();
-        competenciesMap[elm].add(q);
-      } else {
-        competenciesMap[elm].add(q);
-      }
-    });
+    if (examGrades[elmType]){
+      examQGrad[elmType] += fm;
+      elm.grades.forEach((grade, i) => {
+        examGrades[elmType][i] += grade; //(elm / fm) * 100;
+      });
+      const q = `${elm.type}${i}`;
+      questionsGrades[q] = elm.grades;
+      elm.competences.forEach((elm, i) => {
+        if (!competenciesMap[elm]) {
+          competenciesMap[elm] = new Set();
+          competenciesMap[elm].add(q);
+        } else {
+          competenciesMap[elm].add(q);
+        }
+      });
+    }
   });
 
   Object.keys(competenciesMap).forEach((elm) => {

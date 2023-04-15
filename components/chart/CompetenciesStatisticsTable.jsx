@@ -20,52 +20,52 @@ const CompetenciesStatisticsTable = (props) => {
     wantedDataValue[i] = cqstemp;
   });
   
+  //dh at3blh comment 34an dh m3d4 leh l2zma
+  // const getSkewness = (a) => {
+  //   let temp = ss.sampleSkewness(a);
 
-  const getSkewness = (a) => {
-    let temp = ss.sampleSkewness(a);
-
-    let normal = props.normal || .1;
+  //   let normal = props.normal || .1;
     
-    if (temp > normal){return "Right Skewness";}
-    else if(temp < - normal){return "Left Skewness";}
-    else{return "Almost Normal";}
+  //   if (temp > normal){return "Right Skewness";}
+  //   else if(temp < - normal){return "Left Skewness";}
+  //   else{return "Almost Normal";}
     
     
-  }
+  // }
 
-  const countAtTarget = (a) => {
-    let tempo = 0;
-    let target = props.target || [50, 80]
-    let below = target[0];
-    let above = target[1];
-    a.forEach(elm => {
-      if(elm >= below && elm <= above){tempo++}
-    })
+  // const countAtTarget = (a) => {
+  //   let tempo = 0;
+  //   let target = props.target || [50, 80]
+  //   let below = target[0];
+  //   let above = target[1];
+  //   a.forEach(elm => {
+  //     if(elm >= below && elm <= above){tempo++}
+  //   })
 
-    return tempo;
-  }
+  //   return tempo;
+  // }
 
-  const countAboveTarget = (a) => {
-    let tempo = 0;
-    let target = props.target || [50, 80]
-    let above = target[1];
-    a.forEach(elm => {
-      if(elm > above){tempo++}
-    })
+  // const countAboveTarget = (a) => {
+  //   let tempo = 0;
+  //   let target = props.target || [50, 80]
+  //   let above = target[1];
+  //   a.forEach(elm => {
+  //     if(elm > above){tempo++}
+  //   })
 
-    return tempo;
-  }
+  //   return tempo;
+  // }
 
-  const countBelowTarget = (a) => {
-    let tempo = 0;
-    let target = props.target || [50, 80]
-    let below = target[0];
-    a.forEach(elm => {
-      if(elm < below){tempo++}
-    })
+  // const countBelowTarget = (a) => {
+  //   let tempo = 0;
+  //   let target = props.target || [50, 80]
+  //   let below = target[0];
+  //   a.forEach(elm => {
+  //     if(elm < below){tempo++}
+  //   })
 
-    return tempo;
-  }
+  //   return tempo;
+  // }
 
   labels.forEach((elm, i) => {
     const willAdded = {
@@ -82,7 +82,7 @@ const CompetenciesStatisticsTable = (props) => {
       // Q2: ss.quantile(wantedDataValue[i], .5).toFixed(2),
       // Q3: ss.quantile(wantedDataValue[i], .75).toFixed(2),
       // mode: ss.mode(wantedDataValue[i]).toFixed(2),
-      skewness: getSkewness(wantedDataValue[i]),
+      // skewness: getSkewness(wantedDataValue[i]),
       // stv: ss.sampleStandardDeviation(wantedDataValue[i]).toFixed(2),
     }
     dataValue.push(willAdded);

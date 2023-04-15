@@ -23,33 +23,6 @@ ChartJS.register(
 const CompetenciesBar = (props) => {
 
   const labels = [];
-  const dataValue = new Array(props.cmap.length).fill(0);
-
-  // //question name
-  // const qstemp = Object.keys(props.qs);
-  // //question average
-  // const temp = []
-  // for (let i = 0; i < qstemp.length; i++) {
-  //   const elm = qstemp[i];
-  //   temp.push(props.qs[elm].reduce((a, b) => a + b, 0));
-  //   temp[i] = temp[i] / props.snum;
-  // }
-  // const qs = {};
-  // //{name: average}
-  // qstemp.forEach((element, index) => {
-  //   qs[element] = temp[index]
-  // });
-  
-  
-  
-  props.cmap.forEach((elm, i) => {
-    //question for competencies
-    let temp = Object.keys(elm)[0];
-    labels.push(temp)
-    
-    dataValue[i] = elm[temp];
-  });
-  
 
   const rb = [66, 213]
   
@@ -67,27 +40,49 @@ const CompetenciesBar = (props) => {
       labels,
       datasets: [{
         label: `Competence Assessment by ${props.title || "Grad"}`,
-        data: dataValue,
+        data: props.cAvg,
         backgroundColor: backGround,
         borderWidth: 1,
-        yAxisID: "comb",
-        maxBarThickness: 80
+        maxBarThickness: 80,
       }
     ]
     }}
         height = {props.h || 20 }
         width = {props.w  || 60}
 
-        option = {{
-          maintainAspectRatio: false,
+        options = {{
+          aspectRatio: 1,
+          maintainAspectRatio: true,
           scales: {
-            comb: {
-              type: "linear",
-              beginAtZero: false,
-              max:50,
-              min: 0,
-              position: 'right'
-            }
+            x: {
+              title: {
+                display: true,
+                text: 'Competencies',
+                color: '#777',
+              font: {
+                family: 'Times',
+                size: 20,
+                style: 'normal',
+                lineHeight: 1.2
+              },
+              padding: {top: 20, left: 0, right: 0, bottom: 0}
+              },
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: `Achieved Percentage`,
+                color: '#777',
+              font: {
+                family: 'Times',
+                size: 20,
+                style: 'normal',
+                lineHeight: 1.2
+              },
+              padding: {top: 30, left: 0, right: 0, bottom: 0}
+              },
+            },
       }
         }}
   />

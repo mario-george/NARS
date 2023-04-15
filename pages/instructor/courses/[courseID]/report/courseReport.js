@@ -4,20 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar/Navbar";
 import Attainment from "@/components/chart/Attainment";
+import AttainmentPie from "@/components/chart/AttainmentPie";
 import Grad2Litter from "@/components/chart/Grad2Litter";
-import StudentScatter from "@/components/chart/StudentScatter";
-import CompetenciesBoxPlot from "@/components/chart/CompetenciesBoxPlot";
+// import CompetenciesBoxPlot from "@/components/chart/CompetenciesBoxPlot";
 import CompetenciesQ from "@/components/chart/CompetenciesQ";
-import CompetenciesAttainment from "@/components/chart/CompetenciesAttainment";
 import CompetenciesStatisticsTable from "@/components/chart/CompetenciesStatisticsTable";
 import CompetenciesBar from "@/components/chart/CompetenciesBar";
 import CLOBar from "@/components/chart/CLOBar";
 import CLOAttainment from "@/components/chart/CLOAttainment";
+import CLOAttainmentPie from "@/components/chart/CLOAttainmentPie";
 import CLOStatisticsTable from "@/components/chart/CLOStatisticsTable";
-import CLOBoxPlot from "@/components/chart/CLOBoxPlot";
-import CLOTable from "@/components/chart/CLOTable";
+// import CLOBoxPlot from "@/components/chart/CLOBoxPlot";
 import CLOQ from "@/components/chart/CLOQ";
-import GradHist from "@/components/chart/GradHist";
+import GradPie from "@/components/chart/GradPie";
 import getData from "@/components/chart/getData";
 import CompetencesTable from "./competencesTable";
 import CourseData from "./courseData";
@@ -34,7 +33,6 @@ const courseReport = ({ cookies }) => {
   const [courseLearningOutcomes, setCourseLearningOutcomes] = useState({});
   const [questionsGrades, setQuestionsGrades] = useState({});
   const [questions, setQuestions] = useState([]);
-  const [quiz, setQuiz] = useState([]);
   const [mid, setMid] = useState([]);
   const [final, setFinal] = useState([]);
   const [numberOfStudents, setNumberOfStudents] = useState(0);
@@ -44,11 +42,17 @@ const courseReport = ({ cookies }) => {
   const { courseID } = router.query;
 
   const getAvg = (avgs) => {
-    return avgs.map((elm) => {
+    const cAvg = {};
+    let tempAvg = avgs.map((elm) => {
       let out = {};
       out[elm.code.toUpperCase()] = elm.avg;
       return out;
     });
+    tempAvg.forEach((elm) => {
+      let temp = Object.keys(elm)[0];
+      cAvg[temp] = elm[temp];
+    });
+    return cAvg;
   };
 
   useEffect(() => {
@@ -81,11 +85,10 @@ const courseReport = ({ cookies }) => {
       setCourseCompetences(jsonData.data.course.competences);
       setNumberOfStudents(numOfStudents);
       setAvgValues(getAvg(jsonData.data.report.avgCompetences));
-      const { final, midterm, quiz } = examGrades;
+      const { final, midterm } = examGrades;
       setCompetenciesMap(competences);
       setQuestionsGrades(questionsGrades);
       setQuestions(jsonData.data.report.questions);
-      setQuiz(quiz);
       setMid(midterm);
       setFinal(final);
       setStudentAssessments(
@@ -123,29 +126,7 @@ const courseReport = ({ cookies }) => {
                 token={cookies.token}
               />
               <div className="flex flex-col justify-center items-center">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%]">
-                  <p className="grad-title">
-                    <span className="md:col-span-2">Quiz Grad</span>
-                  </p>
-                  <div>
-                    <Grad2Litter
-                      data={quiz}
-                      w={100}
-                      h={100}
-                      grid={15}
-                      title="Quiz"
-                    />
-                  </div>
-                  <div>
-                    <GradHist
-                      data={quiz}
-                      snum={numberOfStudents}
-                      w={500}
-                      h={100}
-                      grid={15}
-                    />
-                  </div>
-
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20">
                   <p className="grad-title">
                     <span className="md:col-span-2">Midterm Grad</span>
                   </p>
@@ -159,12 +140,12 @@ const courseReport = ({ cookies }) => {
                     />
                   </div>
                   <div>
-                    <GradHist
+                    <GradPie
                       data={mid}
                       snum={numberOfStudents}
                       w={500}
                       h={100}
-                      grid={15}
+                      title="Midterm"
                     />
                   </div>
 
@@ -181,12 +162,73 @@ const courseReport = ({ cookies }) => {
                     />
                   </div>
                   <div>
-                    <GradHist
+                    <GradPie
                       data={final}
                       snum={numberOfStudents}
                       w={500}
                       h={100}
-                      grid={15}
+                      title="Final"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20">
+                  <p className="grad-title">
+                    <span className="md:col-span-2">
+                      Competencies Exam Assessment
+                    </span>
+                  </p>
+                  <div>
+                    <CompetenciesQ cmap={competenciesMap} w={20} h={20} />
+                  </div>
+                  <div>
+                    <CompetenciesBar
+                      cAvg={avgValues}
+                      snum={numberOfStudents}
+                      w={20}
+                      h={20}
+                      grid={10}
+                    />
+                  </div>
+                  <br></br>
+                  <div>
+                    <Attainment cAvg={avgValues} w={20} h={20} />
+                  </div>
+                  <div>
+                    <AttainmentPie cAvg={avgValues} />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20">
+                  <p className="grad-title">
+                    <span className="md:col-span-2">LOs Exam Assessment</span>
+                  </p>
+                  <div>
+                    <CLOQ cmap={competenciesMap} clomap={learningOutcomes} />
+                  </div>
+                  <div>
+                    <CLOBar
+                      cAvg={avgValues}
+                      snum={numberOfStudents}
+                      w={20}
+                      h={20}
+                      grid={10}
+                      clomap={learningOutcomes}
+                    />
+                  </div>
+                  <br></br>
+                  <div>
+                    <CLOAttainment
+                      clomap={learningOutcomes}
+                      cAvg={avgValues}
+                      w={20}
+                      h={20}
+                    />
+                  </div>
+                  <div>
+                    <CLOAttainmentPie
+                      clomap={learningOutcomes}
+                      cAvg={avgValues}
                     />
                   </div>
                 </div>
@@ -194,118 +236,7 @@ const courseReport = ({ cookies }) => {
                   <br></br>
                 </div>
                 {/* Competencies & LOs*/}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[70%] mt-20">
-                  <p className="grad-asm">
-                    <span className="md:col-span-3">
-                      Competencies Exam Assessment
-                    </span>
-                  </p>
-                  <div className="md:col-span-3">
-                    <CompetenciesQ cmap={competenciesMap} w={20} h={20} />
-                  </div>
-                  <div className="md:col-span-3">
-                    <CompetenciesBar
-                      cmap={avgValues}
-                      snum={numberOfStudents}
-                      w={20}
-                      h={20}
-                      grid={10}
-                    />
-                  </div>
-                  <div className="md:col-span-3">
-                    <CompetenciesBoxPlot
-                      qs={questionsGrades}
-                      cmap={competenciesMap}
-                      snum={numberOfStudents}
-                      w={60}
-                      h={60}
-                    />
-                  </div>
-
-                  <div className="md:col-span-3">
-                    <CompetenciesStatisticsTable
-                      qs={questionsGrades}
-                      cmap={competenciesMap}
-                      snum={numberOfStudents}
-                    />
-                  </div>
-
-                  {/* <p className="grad-asm">
-              <span className="md:col-span-3">
-                Competencies Survey Assessment
-              </span>
-            </p>
-            <CompetenciesQ cmap={competenciesMap} w={60} h={60} title="Survey" />
-            <CompetenciesBar cmap={avgValues} snum={sNum} w={60} h={60} grid={10} title="Survey" />
-            <CompetenciesBoxPlot qs={qs} cmap={competenciesMap} snum={sNum} w={60} h={60} title="Survey" />
-
-            <div className="md:col-span-3">
-              <CompetenciesStatisticsTable qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} title="Survey" />
-            </div> */}
-
-                  <p className="grad-asm">
-                    <span className="md:col-span-3">LOs Exam Assessment</span>
-                  </p>
-                  <div className="md:col-span-3">
-                    <CLOQ cmap={competenciesMap} clomap={learningOutcomes} />
-                  </div>
-                  <div className="md:col-span-3">
-                    <CLOBar
-                      cmap={avgValues}
-                      snum={numberOfStudents}
-                      w={20}
-                      h={10}
-                      grid={10}
-                      clomap={learningOutcomes}
-                    />
-                  </div>
-                  <div>
-                    <CLOBoxPlot
-                      qs={questionsGrades}
-                      cmap={competenciesMap}
-                      snum={numberOfStudents}
-                      w={20}
-                      h={10}
-                      clomap={learningOutcomes}
-                    />
-                  </div>
-
-                  <div className="md:col-span-3">
-                    <CLOStatisticsTable
-                      clomap={learningOutcomes}
-                      qs={questionsGrades}
-                      cmap={competenciesMap}
-                      snum={numberOfStudents}
-                      w={20}
-                      h={10}
-                    />
-                  </div>
-                  {/* <div className="flex flex-col "> */}
-
-                  {/* </div> */}
-
-                  {/* <p className="grad-asm">
-              <span className="md:col-span-3">
-                LOs Survey Assessment
-              </span>
-            </p>
-            <CLOQ cmap={competenciesMap} clomap={CLO} />
-            <CLOBar cmap={avgValues} snum={sNum} w={20} h={10} grid={10} clomap={CLO} />
-            <CLOBoxPlot qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} clomap={CLO} />
-
-            <div className="md:col-span-3">
-              <CLOStatisticsTable clomap={CLO} qs={qs} cmap={competenciesMap} snum={sNum} w={20} h={10} />
-            </div>
-            <CLOAttainment clomap={CLO} cmap={avgValues} snum={sNum} w={20} h={10} /> */}
-                </div>
               </div>
-              <CLOAttainment
-                clomap={learningOutcomes}
-                cmap={avgValues}
-                snum={numberOfStudents}
-                w={20}
-                h={10}
-              />
             </div>
           </div>
         </div>
