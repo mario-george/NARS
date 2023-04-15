@@ -26,14 +26,14 @@ const CompetenciesBar = (props) => {
 
   const rb = [66, 213]
   
-  const backGround = labels.map((elm, i) => {
-    const grid = props.grid || 20;
-    const r = rb[0] - Math.round(dataValue[i] / 10) * grid * (1 + 3 * (dataValue[i] < 50));
-    const b = rb[0] + Math.round(dataValue[i] / 10) * grid * (1 + 3 * (dataValue[i] > 50));
-    const out = `rgb(${r}, 10, ${b})`;
+  // const backGround = labels.map((elm, i) => {
+  //   const grid = props.grid || 20;
+  //   const r = rb[0] - Math.round(dataValue[i] / 10) * grid * (1 + 3 * (dataValue[i] < 50));
+  //   const b = rb[0] + Math.round(dataValue[i] / 10) * grid * (1 + 3 * (dataValue[i] > 50));
+  //   const out = `rgb(${r}, 10, ${b})`;
     
-    return out
-  })
+  //   return out
+  // })
   
   return <Bar
         data = {{
@@ -41,7 +41,7 @@ const CompetenciesBar = (props) => {
       datasets: [{
         label: `Competence Assessment by ${props.title || "Grad"}`,
         data: props.cAvg,
-        backgroundColor: backGround,
+        backgroundColor: 'rgba(119, 221, 119, 1)',
         borderWidth: 1,
         maxBarThickness: 80,
       }

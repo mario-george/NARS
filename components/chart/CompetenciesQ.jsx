@@ -39,7 +39,7 @@ const CompetenciesQ = (props) => {
       datasets: [{
         label: `Number of ${props.title || "Questions"} for each Competence`,
         data: dataValue,
-        backgroundColor: 'rgb(20, 20, 150)',
+        backgroundColor: 'rgba(108, 160, 220, 1)',
         borderWidth: 1,
         maxBarThickness: 80
       }

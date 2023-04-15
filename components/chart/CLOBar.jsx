@@ -43,14 +43,14 @@ const CLOBar = (props) => {
 
   const rb = [66, 213]
   
-  const backGround = labels.map((elm, i) => {
-    const grid = props.grid || 20;
-    const r = rb[0] - Math.round(dataValue[i] / 10) * grid * (1 + 10 * (dataValue[i] < 50));
-    const b = rb[1] + Math.round(dataValue[i] / 10) * grid * (1 + 10 * (dataValue[i] > 50));
-    const out = `rgb(${r}, 10, ${b})`;
+  // const backGround = labels.map((elm, i) => {
+  //   const grid = props.grid || 20;
+  //   const r = rb[0] - Math.round(dataValue[i] / 10) * grid * (1 + 10 * (dataValue[i] < 50));
+  //   const b = rb[1] + Math.round(dataValue[i] / 10) * grid * (1 + 10 * (dataValue[i] > 50));
+  //   const out = `rgb(${r}, 10, ${b})`;
     
-    return out
-  })
+  //   return out
+  // })
   
   return <Bar
         data = {{
@@ -58,7 +58,7 @@ const CLOBar = (props) => {
       datasets: [{
         label: `LO Assessment by ${props.title || "Grad"}`,
         data: dataValue,
-        backgroundColor: backGround,
+        backgroundColor: 'rgba(119, 221, 119, 1)',
         borderWidth: 1,
         maxBarThickness: 80
       }
