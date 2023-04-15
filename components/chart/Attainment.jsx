@@ -24,7 +24,7 @@ const Attainment = (props) => {
 
   const labels = ["Above Target", "At Target", "Below Target"];
   const dataValue = new Array(labels.length).fill(0);
-  const target = [70, 30]
+  const target = [36, 70]
   // const cAvg = {};
   // props.cAvg.forEach(elm => {
   //   let temp = Object.keys(elm)[0];    
@@ -48,41 +48,39 @@ const Attainment = (props) => {
 
   // value2percentage(dataValue);
 
-  const backGround = dataValue.map((elm, i) => {
+  // const backGround = dataValue.map((elm, i) => {
 
-    if(i !== 2){if(elm <= 50){
-        const b = 208 - (Math.round(elm / 10)) * 40;
-        const out = `rgb(215, 48, ${b})`;
+  //   if(i !== 2){if(elm <= 50){
+  //       const b = 208 - (Math.round(elm / 10)) * 40;
+  //       const out = `rgb(215, 48, ${b})`;
 
-        return out
-      }
-      else{
-        const r = 208 - (Math.round(elm / 10) - 5) * 40;
-        const out = `rgb(${r}, 48, 215)`;
+  //       return out
+  //     }
+  //     else{
+  //       const r = 208 - (Math.round(elm / 10) - 5) * 40;
+  //       const out = `rgb(${r}, 48, 215)`;
 
-        return out
-      }}
-      else{if(elm <= 50){
-        const r = 208 - (Math.round(elm / 10)) * 40;
-        const out = `rgb(${r}, 48, 215)`;
+  //       return out
+  //     }}
+  //     else{if(elm <= 50){
+  //       const r = 208 - (Math.round(elm / 10)) * 40;
+  //       const out = `rgb(${r}, 48, 215)`;
 
-        return out
-      }
-      else{
-        const b = 208 - (Math.round(elm / 10) - 5) * 40;
-        const out = `rgb(215, 48, ${b})`;
+  //       return out
+  //     }
+  //     else{
+  //       const b = 208 - (Math.round(elm / 10) - 5) * 40;
+  //       const out = `rgb(215, 48, ${b})`;
 
-        return out
-      }}
-  });
+  //       return out
+  //     }}
+  // });
 
   const bg  = [
     'rgba(119, 221, 119, 1)',
     'rgba(108, 160, 220, 1)',
-    // 'rgba(156, 96, 123, 1)',
-    // 'rgba(186, 96, 93, 1)',
     'rgba(255, 105, 97, 1)',
-  ]
+  ];
 
   const data = {
       labels,

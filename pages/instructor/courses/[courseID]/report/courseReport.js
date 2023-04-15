@@ -274,15 +274,15 @@ const courseReport = ({ cookies }) => {
             <CLOAttainment clomap={CLO} cmap={avgValues} snum={sNum} w={20} h={10} /> */}
                 </div>
               </div>
-              {/* <CLOAttainment
-                clomap={learningOutcomes}
-                cmap={avgValues}
-                snum={numberOfStudents}
-                w={20}
-                h={10}
-              /> */}
               <Attainment
                 cAvg={avgValues}
+                w={20}
+                h={10}
+              />
+              <CLOAttainment
+                clomap={learningOutcomes}
+                cAvg={avgValues}
+                snum={numberOfStudents}
                 w={20}
                 h={10}
               />
