@@ -101,7 +101,7 @@ const courseReport = ({ cookies }) => {
                 learningOutcomes={courseLearningOutcomes}
               />
               <div className="flex flex-col justify-center items-center">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[50%] mb-20">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20">
                   <p className="grad-title">
                     <span className="md:col-span-2">Midterm Grad</span>
                   </p>
@@ -145,7 +145,9 @@ const courseReport = ({ cookies }) => {
                       title="Final"
                     />
                   </div>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20">
                   <p className="grad-title">
                     <span className="md:col-span-2">
                       Competencies Exam Assessment
@@ -176,7 +178,9 @@ const courseReport = ({ cookies }) => {
                       cAvg={avgValues}
                     />
                   </div>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20">
                   <p className="grad-title">
                     <span className="md:col-span-2">LOs Exam Assessment</span>
                   </p>
