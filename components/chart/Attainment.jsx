@@ -85,7 +85,7 @@ const Attainment = (props) => {
   const data = {
       labels,
       datasets: [{
-        label: 'Achieved competencies',
+        label: 'Competencies Attainment',
         data: dataValue,
         backgroundColor: bg,
         borderWidth: 1,

@@ -155,7 +155,7 @@ const CLOAttainment = (props) => {
   const data = {
       labels,
       datasets: [{
-        label: 'Achieved LOs',
+        label: 'LOs Attainment',
         data: dataValue,
         backgroundColor: bg,
         borderWidth: 1,
