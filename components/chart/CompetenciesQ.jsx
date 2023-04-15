@@ -49,7 +49,8 @@ const CompetenciesQ = (props) => {
         width = {props.w  || 60}
 
         options = {{
-          maintainAspectRatio: false,
+          aspectRatio: 1,
+          maintainAspectRatio: true,
           scales: {
             x: {
               title: {

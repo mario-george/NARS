@@ -153,7 +153,7 @@ const courseReport = ({ cookies }) => {
                       Competencies Exam Assessment
                     </span>
                   </p>
-                  <div className="my-16">
+                  <div>
                     <CompetenciesQ cmap={competenciesMap} w={20} h={20} />
                   </div>
                   <div>
