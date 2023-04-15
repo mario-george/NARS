@@ -3,19 +3,6 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar/Navbar";
-import Attainment from "@/components/chart/Attainment";
-import AttainmentPie from "@/components/chart/AttainmentPie";
-import Grad2Litter from "@/components/chart/Grad2Litter";
-// import CompetenciesBoxPlot from "@/components/chart/CompetenciesBoxPlot";
-import CompetenciesQ from "@/components/chart/CompetenciesQ";
-import CompetenciesStatisticsTable from "@/components/chart/CompetenciesStatisticsTable";
-import CompetenciesBar from "@/components/chart/CompetenciesBar";
-import CLOBar from "@/components/chart/CLOBar";
-import CLOAttainment from "@/components/chart/CLOAttainment";
-import CLOAttainmentPie from "@/components/chart/CLOAttainmentPie";
-import CLOStatisticsTable from "@/components/chart/CLOStatisticsTable";
-// import CLOBoxPlot from "@/components/chart/CLOBoxPlot";
-import CLOQ from "@/components/chart/CLOQ";
 import GradPie from "@/components/chart/GradPie";
 import getData from "@/components/chart/getData";
 import CompetencesTable from "./competencesTable";
@@ -23,8 +10,8 @@ import CourseData from "./courseData";
 import TopicsTable from "./TopicsTable";
 import AssessmentMethodsTable from "./AssessmentMethodsTable";
 import ExamGrades from "./ExamGrades";
-import { CompetencesExamAssessment } from "./CompetencesExamAssessment";
-import { LoExamAssessment } from "./LoExamAssessment";
+import { CompetencesLosAchievement } from "./CompetencesLosAchievement";
+import { CompetencesLosGrades } from "./CompetencesLosGrades";
 
 const courseReport = ({ cookies }) => {
   const router = useRouter();
@@ -118,7 +105,6 @@ const courseReport = ({ cookies }) => {
                 competences={courseCompetences}
                 studentAssessments={studentAssessments}
               />
-              {/* <TopicsTable /> */}
               <CompetencesTable
                 className="flex justify-center items-center m-20"
                 courseCompetences={courseCompetences}
@@ -136,12 +122,13 @@ const courseReport = ({ cookies }) => {
                   final={final}
                   numberOfStudents={numberOfStudents}
                 />
-                <CompetencesExamAssessment
+                <CompetencesLosAchievement
                   competenciesMap={competenciesMap}
                   avgValues={avgValues}
                   numberOfStudents={numberOfStudents}
+                  learningOutcomes={learningOutcomes}
                 />
-                <LoExamAssessment
+                <CompetencesLosGrades
                   numberOfStudents={numberOfStudents}
                   avgValues={avgValues}
                   competenciesMap={competenciesMap}

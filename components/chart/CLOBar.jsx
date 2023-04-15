@@ -73,7 +73,7 @@ const CLOBar = (props) => {
             x: {
               title: {
                 display: true,
-                text: 'Competencies',
+                text: 'LOs',
                 color: '#777',
               font: {
                 family: 'Times',
