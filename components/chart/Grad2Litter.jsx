@@ -67,14 +67,14 @@ const Grad2Litter = (props) => {
         height = {props.h || 20 }
         width = {props.w  || 60}
 
-        option = {{
+        options = {{
           maintainAspectRatio: false,
           scales: {
             x: {
               title: {
                 display: true,
                 text: 'Grad Category',
-                color: '#999',
+                color: '#777',
               font: {
                 family: 'Times',
                 size: 20,
@@ -89,7 +89,7 @@ const Grad2Litter = (props) => {
               title: {
                 display: true,
                 text: 'Number of Student',
-                color: '#999',
+                color: '#777',
               font: {
                 family: 'Times',
                 size: 20,

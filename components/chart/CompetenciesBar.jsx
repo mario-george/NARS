@@ -23,33 +23,6 @@ ChartJS.register(
 const CompetenciesBar = (props) => {
 
   const labels = [];
-  // const dataValue = new Array(props.cmap.length).fill(0);
-
-  // //question name
-  // const qstemp = Object.keys(props.qs);
-  // //question average
-  // const temp = []
-  // for (let i = 0; i < qstemp.length; i++) {
-  //   const elm = qstemp[i];
-  //   temp.push(props.qs[elm].reduce((a, b) => a + b, 0));
-  //   temp[i] = temp[i] / props.snum;
-  // }
-  // const qs = {};
-  // //{name: average}
-  // qstemp.forEach((element, index) => {
-  //   qs[element] = temp[index]
-  // });
-  
-  
-  
-  // props.cmap.forEach((elm, i) => {
-  //   //question for competencies
-  //   let temp = Object.keys(elm)[0];
-  //   labels.push(temp)
-    
-  //   dataValue[i] = elm[temp];
-  // });
-  
 
   const rb = [66, 213]
   
@@ -77,14 +50,14 @@ const CompetenciesBar = (props) => {
         height = {props.h || 20 }
         width = {props.w  || 60}
 
-        option = {{
+        options = {{
           maintainAspectRatio: false,
           scales: {
             x: {
               title: {
                 display: true,
                 text: 'Competencies',
-                color: '#999',
+                color: '#777',
               font: {
                 family: 'Times',
                 size: 20,
@@ -99,7 +72,7 @@ const CompetenciesBar = (props) => {
               title: {
                 display: true,
                 text: `Achieved Percentage`,
-                color: '#999',
+                color: '#777',
               font: {
                 family: 'Times',
                 size: 20,

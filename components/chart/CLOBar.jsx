@@ -67,14 +67,14 @@ const CLOBar = (props) => {
         height = {props.h || 20 }
         width = {props.w  || 60}
 
-        option = {{
+        options = {{
           maintainAspectRatio: false,
           scales: {
             x: {
               title: {
                 display: true,
                 text: 'Competencies',
-                color: '#999',
+                color: '#777',
               font: {
                 family: 'Times',
                 size: 20,
@@ -89,7 +89,7 @@ const CLOBar = (props) => {
               title: {
                 display: true,
                 text: `Achieved Percentage`,
-                color: '#999',
+                color: '#777',
               font: {
                 family: 'Times',
                 size: 20,

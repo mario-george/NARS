@@ -50,66 +50,51 @@ const Attainment = (props) => {
     ]
   }
 
-  const dataChart = {
-    labels,
-    datasets: [{
-      type: 'bar',
-      label: 'Competencies Attainment',
-      data: dataValue,
-      backgroundColor: bg,
-      borderWidth: 1,
-      maxBarThickness: 80
-    },
-    {
-      type: 'pie',
-      label: 'Competencies Attainment',
-      data: dataValue,
-      backgroundColor: [
-        'rgba(255, 105, 97, 0.2)',
-        'rgba(108, 160, 220, 0.2)',
-        'rgba(119, 221, 119, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 105, 97, 1)',
-        'rgba(108, 160, 220, 1)',
-        'rgba(119, 221, 119, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ]
-}
-
   const option4bar = {
-      indexAxis: 'y',
-    // Elements options apply to all of the options unless overridden in a dataset
-    // In this case, we are setting the border of each horizontal bar to be 2px wide
-    elements: {
-      bar: {
-        borderWidth: 2,
-      }
+    indexAxis: 'y',
+  // Elements options apply to all of the options unless overridden in a dataset
+  // In this case, we are setting the border of each horizontal bar to be 2px wide
+  elements: {
+    bar: {
+      borderWidth: 2,
+    }
+  },
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
     },
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'right',
-      },
+    title: {
+      display: true,
+      text: 'Attainment'
+    }
+  },
+  scales: {
+    
+    x: {
+      beginAtZero: true,
       title: {
         display: true,
-        text: 'Attainment'
-      }
-    }
-  ,}
+        text: `Number of Achieved Competencies`,
+        color: '#777',
+      font: {
+        family: 'Times',
+        size: 20,
+        style: 'normal',
+        lineHeight: 1.2
+      },
+      padding: {top: 30, left: 0, right: 0, bottom: 0}
+      },
+    },}
+}
   
   return <Bar
         data = {data}
         height = {props.h || 20 }
         width = {props.w  || 60}
 
-        option = {option4bar}
+        options = {option4bar}
   />
-
-  // return <Chart type='bar' data={dataChart} />
-
 
 }
 

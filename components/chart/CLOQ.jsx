@@ -57,14 +57,14 @@ const CLOQ = (props) => {
         height = {props.h || 20 }
         width = {props.w  || 60}
 
-        option = {{
+        options = {{
           maintainAspectRatio: false,
           scales: {
             x: {
               title: {
                 display: true,
                 text: 'LOs',
-                color: '#999',
+                color: '#777',
               font: {
                 family: 'Times',
                 size: 20,
@@ -79,7 +79,7 @@ const CLOQ = (props) => {
               title: {
                 display: true,
                 text: `Number of ${props.title || "Questions"}`,
-                color: '#999',
+                color: '#777',
               font: {
                 family: 'Times',
                 size: 20,
