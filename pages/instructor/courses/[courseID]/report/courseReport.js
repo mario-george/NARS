@@ -17,7 +17,6 @@ import { CompetencesLosSurvey } from "./CompetencesLosSurvey";
 
 const courseReport = ({ cookies }) => {
   const router = useRouter();
-  //TODO: Most of those states can be just regular variables or useRef (change them at the end)
   const [competenciesMap, setCompetenciesMap] = useState({});
   const [courseCompetences, setCourseCompetences] = useState([]);
   const [avgValues, setAvgValues] = useState({});
