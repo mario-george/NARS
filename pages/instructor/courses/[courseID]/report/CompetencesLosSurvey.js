@@ -13,7 +13,7 @@ export const CompetencesLosSurvey = ({
   return (
     <div className="flex flex-col w-full items-start">
       <h2 className="font-bold text-xl mb-2">
-        Indirect Assessment Percentages
+        Learning Outcomes & Competences Indirect Assessment
       </h2>
       <div className="h-0.5 w-full bg-gray-300 mb-2" />
       <div className="flex flex-col w-full items-center">

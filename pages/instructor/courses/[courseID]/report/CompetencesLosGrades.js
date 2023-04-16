@@ -13,7 +13,7 @@ export const CompetencesLosGrades = ({
   return (
     <div className="flex flex-col w-full items-start">
       <h2 className="font-bold text-xl mb-2">
-        Learning Outcomes & Competences Grades Percentage
+        Learning Outcomes & Competences Direct Assessment
       </h2>
       <div className="h-0.5 w-full bg-gray-300 mb-2" />
       <div className="flex flex-col w-full items-center">
