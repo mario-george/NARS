@@ -39,6 +39,7 @@ const courseReport = ({ cookies }) => {
     const cAvg = {};
     let tempAvg = avgs.map((elm) => {
       let out = {};
+      console.log("CODE IS ", elm.code);
       out[elm.code.toUpperCase()] = elm.avg;
       return out;
     });

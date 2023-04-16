@@ -25,7 +25,6 @@ const CLOBar = (props) => {
   const labels = Object.keys(props.clomap);
   const dataValue = new Array(labels.length).fill(0);
 
-  
   labels.forEach((elm, i) => {
     //question for competencies
     const comps = props.clomap[elm];
