@@ -6,6 +6,7 @@ import AttainmentPie from "@/components/chart/AttainmentPie";
 
 export const CompetencesLosAchievementOVerall = ({
   avgValues,
+  avgLOS,
   avgValuesSurvey,
   learningOutcomes,
 }) => {
@@ -23,10 +24,10 @@ export const CompetencesLosAchievementOVerall = ({
         <label className="mt-12">Competences Achievement</label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%]">
           <div>
-            <Attainment cAvg={avgValues} w={20} h={20} title={"All Assessment"} />
+            <Attainment cAvg={avgAvg} w={20} h={20} title={"All Assessment"} />
           </div>
           <div>
-            <AttainmentPie cAvg={avgValues} title={"All Assessment"} />
+            <AttainmentPie cAvg={avgAvg} title={"All Assessment"} />
           </div>
         </div>
         <label className="mt-12">Learning Outcomes Achievement</label>
@@ -34,17 +35,19 @@ export const CompetencesLosAchievementOVerall = ({
           <div>
             <CLOAttainment
               clomap={learningOutcomes}
-              cAvg={avgValues}
+              cAvg={avgAvg}
               title={"All Assessment"}
               w={20}
               h={20}
+              avgLOS={avgLOS}
             />
           </div>
           <div>
             <CLOAttainmentPie
               clomap={learningOutcomes}
-              cAvg={avgValues}
+              cAvg={avgAvg}
               title={"All Assessment"}
+              avgLOS={avgLOS}
             />
           </div>
         </div>

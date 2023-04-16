@@ -6,6 +6,7 @@ import CompetenciesBar from "@/components/chart/CompetenciesBar";
 
 export const CompetencesLosSurvey = ({
   competenciesMap,
+  avgLOS,
   learningOutcomes,
   numberOfStudents,
   avgValues,
@@ -38,6 +39,7 @@ export const CompetencesLosSurvey = ({
               grid={10}
               clomap={learningOutcomes}
               title={"Survey"}
+              avgLOS={avgLOS}
             />
           </div>
         </div>

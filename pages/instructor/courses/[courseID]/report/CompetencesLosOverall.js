@@ -10,6 +10,7 @@ export const CompetencesLosOverall = ({
   numberOfStudents,
   avgValues,
   avgValuesSurvey,
+  avgLOS,
 }) => {
   const avgAvg = {}
   Object.keys(avgValues).forEach(elm => {
@@ -26,7 +27,7 @@ export const CompetencesLosOverall = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20">
           <div>
             <CompetenciesBar
-              cAvg={avgValues}
+              cAvg={avgAvg}
               snum={numberOfStudents}
               title={"All Assessment"}
               w={20}
@@ -36,13 +37,14 @@ export const CompetencesLosOverall = ({
           </div>
           <div>
             <CLOBar
-              cAvg={avgValues}
+              cAvg={avgAvg}
               snum={numberOfStudents}
               w={20}
               h={20}
               grid={10}
               clomap={learningOutcomes}
               title={"All Assessment"}
+              avgLOS={avgLOS}
             />
           </div>
         </div>

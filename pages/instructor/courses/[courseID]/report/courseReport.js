@@ -23,6 +23,7 @@ const courseReport = ({ cookies }) => {
   const [courseCompetences, setCourseCompetences] = useState([]);
   const [avgValues, setAvgValues] = useState({});
   const [avgValuesSurvey, setAvgValuesSurvey] = useState({});
+  const [avgValuesLOs, setAvgValuesLOs] = useState({});
   const [learningOutcomes, setLearningOutcomes] = useState({});
   const [courseLearningOutcomes, setCourseLearningOutcomes] = useState({});
   const [questionsGrades, setQuestionsGrades] = useState({});
@@ -40,8 +41,21 @@ const courseReport = ({ cookies }) => {
     const cAvg = {};
     let tempAvg = avgs.map((elm) => {
       let out = {};
-      console.log("CODE IS ", elm.code);
       out[elm.code.toUpperCase()] = elm.avg;
+      return out;
+    });
+    tempAvg.forEach((elm) => {
+      let temp = Object.keys(elm)[0];
+      cAvg[temp] = elm[temp];
+    });
+    return cAvg;
+  };
+
+  const getAvgLOs = (avgs) => {
+    const cAvg = {};
+    let tempAvg = avgs.map((elm) => {
+      let out = {};
+      out[elm.LO.toUpperCase()] = elm.avg;
       return out;
     });
     tempAvg.forEach((elm) => {
@@ -83,6 +97,7 @@ const courseReport = ({ cookies }) => {
       setNumberOfStudents(numOfStudents);
       setAvgValues(getAvg(jsonData.data.report.avgCompetences));
       setAvgValuesSurvey(getAvg(jsonData.data.report.avgCompetencesInDirect));
+      setAvgValuesLOs(getAvgLOs(jsonData.data.report.avgLOSInDirect));
       const { final, midterm } = examGrades;
       setCompetenciesMap(competences);
       setQuestionsGrades(questionsGrades);
@@ -143,16 +158,19 @@ const courseReport = ({ cookies }) => {
                 <CompetencesLosAchievementSurvey
                   competenciesMap={competenciesMap}
                   avgValues={avgValuesSurvey}
+                  avgLOS={avgValuesLOs}
                   numberOfStudents={numberOfStudents}
                   learningOutcomes={learningOutcomes}
                 />
                 <CompetencesLosSurvey
                   numberOfStudents={numberOfStudents}
+                  avgLOS={avgValuesLOs}
                   avgValues={avgValuesSurvey}
                   learningOutcomes={learningOutcomes}
                 />
                 <CompetencesLosAchievementOVerall
                   competenciesMap={competenciesMap}
+                  avgLOS={avgValuesLOs}
                   avgValues={avgValues}
                   avgValuesSurvey={avgValuesSurvey}
                   numberOfStudents={numberOfStudents}
@@ -160,6 +178,7 @@ const courseReport = ({ cookies }) => {
                 />
                 <CompetencesLosOverall
                   numberOfStudents={numberOfStudents}
+                  avgLOS={avgValuesLOs}
                   avgValues={avgValues}
                   avgValuesSurvey={avgValuesSurvey}
                   learningOutcomes={learningOutcomes}
