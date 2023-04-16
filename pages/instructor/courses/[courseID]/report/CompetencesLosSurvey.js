@@ -18,7 +18,7 @@ export const CompetencesLosSurvey = ({
       <div className="h-0.5 w-full bg-gray-300 mb-2" />
       <div className="flex flex-col w-full items-center">
         <label className="mt-6">Competences</label>
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20">
           {/* <div>
             <CompetenciesQ
             cmap={competenciesMap}
@@ -39,7 +39,7 @@ export const CompetencesLosSurvey = ({
           </div>
         </div>
         <label className="mt-6">Learning Outcomes</label>
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] h-[30%] mb-20">
           {/* <div>
             <CLOQ
             cmap={competenciesMap}
