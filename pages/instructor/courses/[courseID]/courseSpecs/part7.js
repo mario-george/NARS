@@ -287,7 +287,7 @@ const part8 = ({ cookies }) => {
   const tableData33 = [
     [
       "face-to-face-lecture",
-      "online-leacture",
+      "online-lecture",
       "tutorial-exercise",
       "group-discussions",
       "laboratory",

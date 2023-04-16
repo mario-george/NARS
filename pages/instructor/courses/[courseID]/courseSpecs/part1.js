@@ -85,20 +85,22 @@ const part1 = ({ cookies }) => {
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
       // code.current.value=data.courseSpecs.courseData.courseCode
       // year.current.value=data.courseSpecs.courseData.year
-      // practical.current.value=data.courseSpecs.courseData.practical
-      if (lecture.current &&special.current &&hours.current ) {
+      // practice.current.value=data.courseSpecs.courseData.practice
+      if (lecture.current &&special.current &&hours.current&&semester.current&&practice.current ) {
         lecture.current.value = data.data.courseSpecs.courseData.lectures;
-        hours.current.value = data.data.courseSpecs.courseData.contactHourse;
+        hours.current.value = data.data.courseSpecs.courseData.contactHours;
         special.current.value = data.data.courseSpecs.courseData.specialization;
+        semester.current.value = data.data.courseSpecs.courseData.semester;
+        practice.current.value = data.data.courseSpecs.courseData.practice;
       }
       // body: JSON.stringify({
       //   courseSpecs: {
       //     courseData: {
       //       courseCode: code.current.value,
       //       year: year.current.value,
-      //       practical: practical.current.value,
+      //       practice: practice.current.value,
       //       lectures: lecture.current.value,
-      //       contactHourse: hours.current.value,
+      //       contactHours: hours.current.value,
       //       specialization: special.current.value,
       //     },
       //   },
@@ -121,11 +123,11 @@ const part1 = ({ cookies }) => {
   const buttonRef = useRef(null);
 
   const code = useRef("");
-  const year = useRef("");
+  const semester = useRef("");
   const special = useRef("");
   const hours = useRef("");
   const lecture = useRef("");
-  const practical = useRef("");
+  const practice = useRef("");
   function ChildComponent({ toPdf }) {
     const handleClick = async () => {
       try {
@@ -179,10 +181,10 @@ const part1 = ({ cookies }) => {
           courseSpecs: {
             courseData: {
               courseCode: code.current.value,
-              year: year.current.value,
-              practical: practical.current.value,
+              semester: semester.current.value,
+              practice: practice.current.value,
               lectures: lecture.current.value,
-              contactHourse: hours.current.value,
+              contactHours: hours.current.value,
               specialization: special.current.value,
             },
           },
@@ -295,7 +297,7 @@ const part1 = ({ cookies }) => {
                   type="text"
                   name="year"
                   className="input-form  w-full"
-                  ref={year}
+                  ref={semester}
                 />
               </div>
             </div>
@@ -335,9 +337,9 @@ const part1 = ({ cookies }) => {
                 <div> Practical/Practice: </div>
                 <input
                   type="number"
-                  name="practical"
+                  name="practice"
                   className="input-form  w-full"
-                  ref={practical}
+                  ref={practice}
                 />
               </div>
             </div>

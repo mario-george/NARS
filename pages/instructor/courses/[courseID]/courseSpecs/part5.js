@@ -187,7 +187,7 @@ const part69 = ({ cookies }) => {
         method: "PATCH",
         body: JSON.stringify({
           courseSpecs: {
-            leacturePlan: lecturePlan,
+            lecturePlan: lecturePlan,
           },
         }),
         headers: {

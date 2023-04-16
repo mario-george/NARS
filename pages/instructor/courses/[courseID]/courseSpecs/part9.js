@@ -28,7 +28,7 @@ const part2 = ({ cookies }) => {
       const references=courseSpecs.references
       notes.current.value=references.courseNotes
 websites.current.value=references.courseWebsites
-books.current.value=references.bookes
+books.current.value=references.books
 Rbooks.current.value=references.recommendedBooks
 
     }
@@ -95,7 +95,7 @@ Rbooks.current.value=references.recommendedBooks
           courseSpecs: {
             references: {
               courseNotes: notes.current.value,
-              bookes: books.current.value,
+              books: books.current.value,
               recommendedBooks: Rbooks.current.value,
               courseWebsites: websites.current.value,
             },
