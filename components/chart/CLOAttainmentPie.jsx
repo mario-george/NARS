@@ -81,7 +81,7 @@ const CLOAttainmentPie = (props) => {
         },
         title: {
           display: true,
-          text: `Percentage of Achieved LOs`,
+          text: `Percentage of Achieved LOs by ${props.title || 'Grad'}`,
           color: '#777',
         font: {
           family: 'Times',

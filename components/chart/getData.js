@@ -17,7 +17,7 @@ const getData = (questions) => {
     if (examGrades[elmType]) {
       examQGrad[elmType] += fm;
       elm.grades.forEach((grade, i) => {
-        examGrades[elmType][i] += grade; //(elm / fm) * 100;
+        examGrades[elmType][i] += grade;
       });
       const q = `${elm.type}${i}`;
       questionsGrades[q] = elm.grades;
@@ -40,14 +40,13 @@ const getData = (questions) => {
   Object.keys(examQGrad).forEach((elm) => {
     // const elmType = elm;
     if (examQGrad[elm]) {
-      for (let i = 0; i < examGrades[elm].length; i++) {
+      for (let i = 0; i < numOfStudents; i++) {
         let temp = (examGrades[elm][i] / examQGrad[elm]) * 100;
         examGrades[elm][i] = temp;
       }
     }
-    // let temp = exam[elm] / examQNum[elm];
-    // exam[elm] = temp;
-  });
+  });  
+  
 
   return {
     competences: competenciesMap,

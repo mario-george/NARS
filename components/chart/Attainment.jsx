@@ -68,7 +68,7 @@ const Attainment = (props) => {
       beginAtZero: true,
       title: {
         display: true,
-        text: `Number of Achieved Competencies`,
+        text: `Number of Achieved Competencies by ${props.title || 'Grad'}`,
         color: '#777',
       font: {
         family: 'Times',
