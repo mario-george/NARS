@@ -14,6 +14,8 @@ import { CompetencesLosAchievement } from "./CompetencesLosAchievement";
 import { CompetencesLosGrades } from "./CompetencesLosGrades";
 import { CompetencesLosAchievementSurvey } from "./CompetencesLosAchievementSurvey";
 import { CompetencesLosSurvey } from "./CompetencesLosSurvey";
+import { CompetencesLosAchievementOVerall } from "./CompetencesLosAchievementOverall";
+import { CompetencesLosOverall } from "./CompetencesLosOverall";
 
 const courseReport = ({ cookies }) => {
   const router = useRouter();
@@ -147,6 +149,19 @@ const courseReport = ({ cookies }) => {
                 <CompetencesLosSurvey
                   numberOfStudents={numberOfStudents}
                   avgValues={avgValuesSurvey}
+                  learningOutcomes={learningOutcomes}
+                />
+                <CompetencesLosAchievementOVerall
+                  competenciesMap={competenciesMap}
+                  avgValues={avgValues}
+                  avgValuesSurvey={avgValuesSurvey}
+                  numberOfStudents={numberOfStudents}
+                  learningOutcomes={learningOutcomes}
+                />
+                <CompetencesLosOverall
+                  numberOfStudents={numberOfStudents}
+                  avgValues={avgValues}
+                  avgValuesSurvey={avgValuesSurvey}
                   learningOutcomes={learningOutcomes}
                 />
               </div>
