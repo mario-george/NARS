@@ -24,7 +24,7 @@ const CompetenciesBar = (props) => {
 
   const labels = [];
 
-  const rb = [66, 213]
+  // const rb = [66, 213]
   
   // const backGround = labels.map((elm, i) => {
   //   const grid = props.grid || 20;

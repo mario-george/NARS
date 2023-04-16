@@ -80,7 +80,7 @@ const courseReport = ({ cookies }) => {
       setCourseCompetences(jsonData.data.course.competences);
       setNumberOfStudents(numOfStudents);
       setAvgValues(getAvg(jsonData.data.report.avgCompetences));
-      setAvgValuesSurvey(getAvg(jsonData.data.report.avgCompetences));
+      setAvgValuesSurvey(getAvg(jsonData.data.report.avgCompetencesInDirect));
       const { final, midterm } = examGrades;
       setCompetenciesMap(competences);
       setQuestionsGrades(questionsGrades);
