@@ -32,7 +32,6 @@ export const CompetencesLosSurvey = ({
           </div>
           <div>
             <CLOBar
-              cAvg={avgValues}
               snum={numberOfStudents}
               w={20}
               h={20}

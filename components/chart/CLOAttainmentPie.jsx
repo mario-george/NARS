@@ -28,27 +28,51 @@ const CLOAttainmentPie = (props) => {
   const dataValue = new Array(labels.length).fill(0);
   const target = [30, 70]
 
-  const CLOAvg = {}
-  comps.forEach(clo => {
-    let temp = props.clomap[clo];
-    CLOAvg[clo] = 0;
-    temp.forEach(elm => {
-      CLOAvg[clo] += props.cAvg[elm];
+  if(props.cAvg && props.avgLOS){
+    const CLOAvg = {}
+    comps.forEach(clo => {
+      let temp = props.clomap[clo];
+      CLOAvg[clo] = 0;
+      temp.forEach(elm => {
+        CLOAvg[clo] += props.cAvg[elm];
+      });
+
+      CLOAvg[clo] += props.avgLOS[clo];
+
+      CLOAvg[clo] /= 2
+    })
+
+
+    comps.forEach(elm => {
+      if(CLOAvg[elm] > target[1]){dataValue[0] += 1;}
+      else if(CLOAvg[elm ]<= target[1] && CLOAvg[elm] >= target[0]){dataValue[1] += 1;}
+      else if(CLOAvg[elm] < target[0]){dataValue[2] += 1;}
     });
-  })
+  }
+  else if(props.avgLOS){
+    comps.forEach(elm => {
+      if(props.avgLOS[elm] > target[1]){dataValue[0] += 1;}
+      else if(props.avgLOS[elm ]<= target[1] && props.avgLOS[elm] >= target[0]){dataValue[1] += 1;}
+      else if(props.avgLOS[elm] < target[0]){dataValue[2] += 1;}
+    });
+  }
+  else if(props.cAvg){
+    const CLOAvg = {}
+    comps.forEach(clo => {
+      let temp = props.clomap[clo];
+      CLOAvg[clo] = 0;
+      temp.forEach(elm => {
+        CLOAvg[clo] += props.cAvg[elm];
+      });
+    })
 
 
-  comps.forEach(elm => {
-    if(CLOAvg[elm] > target[1]){dataValue[0] += 1;}
-    else if(CLOAvg[elm ]<= target[1] && CLOAvg[elm] >= target[0]){dataValue[1] += 1;}
-    else if(CLOAvg[elm] < target[0]){dataValue[2] += 1;}
-  });
-
-  const bg  = [
-    'rgba(119, 221, 119, 1)',
-    'rgba(108, 160, 220, 1)',
-    'rgba(255, 105, 97, 1)',
-  ];
+    comps.forEach(elm => {
+      if(CLOAvg[elm] > target[1]){dataValue[0] += 1;}
+      else if(CLOAvg[elm ]<= target[1] && CLOAvg[elm] >= target[0]){dataValue[1] += 1;}
+      else if(CLOAvg[elm] < target[0]){dataValue[2] += 1;}
+    });
+  }
 
   const data = {
       labels,

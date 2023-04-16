@@ -25,22 +25,48 @@ const CLOBar = (props) => {
   const labels = Object.keys(props.clomap);
   const dataValue = new Array(labels.length).fill(0);
 
-  labels.forEach((elm, i) => {
-    //question for competencies
-    const comps = props.clomap[elm];
-    //competencies value
-    let cqstemp = 0;
-    
-    comps.forEach(elm => {
-      cqstemp += props.cAvg[elm];
+  if(props.cAvg && props.avgLOS){
+    labels.forEach((elm, i) => {
+      //question for competencies
+      const comps = props.clomap[elm];
+      //competencies value
+      let cqstemp = 0;
+      
+      comps.forEach(elm => {
+        cqstemp += props.cAvg[elm];
+      });
+      cqstemp /= comps.length;
+      
+      dataValue[i] = cqstemp;
     });
-    cqstemp /= comps.length;
-    
-    dataValue[i] = cqstemp;
-  });
+
+    labels.forEach((elm, i) => {
+      dataValue[i] = (props.avgLOS[elm] + dataValue[i]) / 2;
+    });
+  }
+  else if(props.avgLOS){
+    labels.forEach((elm, i) => {
+      dataValue[i] = props.avgLOS[elm];
+    });
+  }
+  else if(props.cAvg){
+    labels.forEach((elm, i) => {
+      //question for competencies
+      const comps = props.clomap[elm];
+      //competencies value
+      let cqstemp = 0;
+      
+      comps.forEach(elm => {
+        cqstemp += props.cAvg[elm];
+      });
+      cqstemp /= comps.length;
+      
+      dataValue[i] = cqstemp;
+    });
+  }
   
 
-  const rb = [66, 213]
+  // const rb = [66, 213]
   
   // const backGround = labels.map((elm, i) => {
   //   const grid = props.grid || 20;
