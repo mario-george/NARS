@@ -126,13 +126,16 @@ const courseReport = ({ cookies }) => {
       tempIt.push();
       let myTemp = [jsonData.data.report.questions];
       if (Object.keys(tempIt[0]).length && !tempIt[4][0]) {
-        myTemp.push("Direct Assessment isn't given");
+        myTemp.push("Direct Assessment isn't Completed yet");
       }
       if (!tempIt[3][0]) {
         myTemp.push("Target isn't given");
       }
       if (!Object.keys(tempIt[1]).length && !Object.keys(tempIt[2]).length) {
-        myTemp.push("Indirect Assessment isn't given");
+        myTemp.push("Indirect Assessment isn't Completed yet");
+      }
+      if (jsonData.data.courseSpecsCompleted) {
+        myTemp.push("Course Specs isn't Completed yet");
       }
       setWantedData(myTemp);
     } catch (e) {
