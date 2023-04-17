@@ -49,7 +49,6 @@ const CLOAttainment = (props) => {
       });
       CLOAvg[clo] /= temp.length;
 
-      console.log(CLOAvg[clo]);
       CLOAvg[clo] += props.avgLOS[clo];
       CLOAvg[clo] /= 2
     })

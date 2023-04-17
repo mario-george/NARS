@@ -117,11 +117,11 @@ const courseReport = ({ cookies }) => {
       );
       setLectureTopics(jsonData.data.courseSpecs.lecturePlan.topics);
       setDataLoaded(true);
-      tempIt.push()
-      let myTemp = [jsonData.data.report.questions];
-      if(Object.keys(tempIt[0]).length && !tempIt[4][0]){myTemp.push('Direct Assessment isn\'t given')}
-      if(!tempIt[3][0]){myTemp.push('Target isn\'t given')}
-      if(!(Object.keys(tempIt[1]).length) && !(Object.keys(tempIt[2]).length))
+      tempIt.push(jsonData.data.report.questions)
+      let myTemp = [];
+      if(typeof(tempIt[0]) === 'undefined' || typeof(tempIt[4]) === 'undefined'){myTemp.push('Direct Assessment isn\'t given')}
+      if(typeof(tempIt[3]) === 'undefined'){myTemp.push('Target isn\'t given')}
+      if(typeof(tempIt[1]) === 'undefined' || typeof(tempIt[2]) === 'undefined')
         {myTemp.push('Indirect Assessment isn\'t given')}
       setWantedData(myTemp);
     } catch (e) {
