@@ -9,6 +9,7 @@ export const CompetencesLosAchievementOVerall = ({
   avgLOS,
   avgValuesSurvey,
   learningOutcomes,
+  target
 }) => {
   const avgAvg = {}
   Object.keys(avgValues).forEach(elm => {
@@ -24,16 +25,23 @@ export const CompetencesLosAchievementOVerall = ({
         <label className="mt-12">Competences Achievement</label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%]">
           <div>
-            <Attainment cAvg={avgAvg} w={20} h={20} title={"All Assessment"} />
+            <Attainment
+            target={target}
+            cAvg={avgAvg}
+            w={20}
+            h={20}
+            title={"All Assessment"}
+            />
           </div>
           <div>
-            <AttainmentPie cAvg={avgAvg} title={"All Assessment"} />
+            <AttainmentPie target={target} cAvg={avgAvg} title={"All Assessment"} />
           </div>
         </div>
         <label className="mt-12">Learning Outcomes Achievement</label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] mb-10">
           <div>
             <CLOAttainment
+              target={target}
               clomap={learningOutcomes}
               cAvg={avgValues}
               title={"All Assessment"}
@@ -44,6 +52,7 @@ export const CompetencesLosAchievementOVerall = ({
           </div>
           <div>
             <CLOAttainmentPie
+              target={target}
               clomap={learningOutcomes}
               cAvg={avgValues}
               title={"All Assessment"}

@@ -5,6 +5,7 @@ import Attainment from "@/components/chart/Attainment";
 import AttainmentPie from "@/components/chart/AttainmentPie";
 
 export const CompetencesLosAchievementSurvey = ({
+  target,
   avgValues,
   avgLOS,
   learningOutcomes,
@@ -19,7 +20,8 @@ export const CompetencesLosAchievementSurvey = ({
         <label className="mt-12">Competences Achievement</label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%]">
           <div>
-            <Attainment 
+            <Attainment
+              target={target}
               cAvg={avgValues}
               w={20}
               h={20}
@@ -27,13 +29,14 @@ export const CompetencesLosAchievementSurvey = ({
               />
           </div>
           <div>
-            <AttainmentPie cAvg={avgValues} title={"Survey"} />
+            <AttainmentPie target={target} cAvg={avgValues} title={"Survey"} />
           </div>
         </div>
         <label className="mt-12">Learning Outcomes Achievement</label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] mb-10">
           <div>
             <CLOAttainment
+              target={target}
               clomap={learningOutcomes}
               title={"Survey"}
               w={20}
@@ -43,6 +46,7 @@ export const CompetencesLosAchievementSurvey = ({
           </div>
           <div>
             <CLOAttainmentPie
+              target={target}
               clomap={learningOutcomes}
               title={"Survey"}
               avgLOS={avgLOS}

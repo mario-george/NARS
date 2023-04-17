@@ -24,7 +24,7 @@ const AttainmentPie = (props) => {
 
   const labels = ["Above Target", "At Target", "Below Target"];
   const dataValue = new Array(labels.length).fill(0);
-  const target = [36, 70]
+  const target = props.target;
 
   Object.keys(props.cAvg).forEach(elm => {
     if(props.cAvg[elm] > target[1]){dataValue[0] += 1;}
@@ -77,7 +77,24 @@ const AttainmentPie = (props) => {
         },
         padding: {top: 30, left: 0, right: 0, bottom: 0}
         },
-      },}
+      },},
+      plugins: {
+        tooltips: {
+          enabled: false
+      },
+        datalabels: {
+            formatter: (value, ctx) => {
+                let sum = 0;
+                let dataArr = ctx.chart.data.datasets[0].data;
+                dataArr.map(data => {
+                    sum += data;
+                });
+                let percentage = (value*100 / sum).toFixed(2)+"%";
+                return percentage;
+            },
+            color: '#fff',
+        }
+    }
   }
 
   return <Pie 

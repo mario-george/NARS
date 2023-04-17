@@ -24,7 +24,7 @@ const Attainment = (props) => {
 
   const labels = ["Above Target", "At Target", "Below Target"];
   const dataValue = new Array(labels.length).fill(0);
-  const target = [36, 70]
+  const target = props.target;
 
   Object.keys(props.cAvg).forEach(elm => {
     if(props.cAvg[elm] > target[1]){dataValue[0] += 1;}

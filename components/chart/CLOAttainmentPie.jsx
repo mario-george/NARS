@@ -26,7 +26,7 @@ const CLOAttainmentPie = (props) => {
   const comps = Object.keys(props.clomap);
   const labels = ["Above Target", "At Target", "Below Target"];
   const dataValue = new Array(labels.length).fill(0);
-  const target = [30, 70]
+  const target = props.target;
 
   if(props.cAvg && props.avgLOS){
     const CLOAvg = {}
