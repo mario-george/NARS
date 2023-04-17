@@ -34,6 +34,7 @@ const courseReport = ({ cookies }) => {
   const [final, setFinal] = useState([]);
   const [numberOfStudents, setNumberOfStudents] = useState(0);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [wantedData, setWantedData] = useState([])
   const [studentAssessments, setStudentAssessments] = useState([]);
   const [lectureTopics, setLectureTopics] = useState([]);
   const { courseID } = router.query;
@@ -90,15 +91,20 @@ const courseReport = ({ cookies }) => {
             learningOutcome.mappedCompetence;
         });
       });
+      let tempIt = [];
       setCourseData(jsonData.data);
       setLearningOutcomes(mappedLearningOutcomes);
       const { competences, examGrades, questionsGrades, numOfStudents } =
         getData(jsonData.data.report.questions);
       setCourseCompetences(jsonData.data.course.competences);
       setNumberOfStudents(numOfStudents);
+      tempIt.push(getAvg(jsonData.data.report.avgCompetences))
       setAvgValues(getAvg(jsonData.data.report.avgCompetences));
+      tempIt.push(getAvg(jsonData.data.report.avgCompetencesInDirect))
       setAvgValuesSurvey(getAvg(jsonData.data.report.avgCompetencesInDirect));
+      tempIt.push(getAvgLOs(jsonData.data.report.avgLOSInDirect))
       setAvgValuesLOs(getAvgLOs(jsonData.data.report.avgLOSInDirect));
+      tempIt.push([50, 70])
       setTarget([50, 70]);
       const { final, midterm } = examGrades;
       setCompetenciesMap(competences);
@@ -111,6 +117,13 @@ const courseReport = ({ cookies }) => {
       );
       setLectureTopics(jsonData.data.courseSpecs.lecturePlan.topics);
       setDataLoaded(true);
+      tempIt.push()
+      let myTemp = [jsonData.data.report.questions];
+      if(Object.keys(tempIt[0]).length && !tempIt[4][0]){myTemp.push('Direct Assessment isn\'t given')}
+      if(!tempIt[3][0]){myTemp.push('Target isn\'t given')}
+      if(!(Object.keys(tempIt[1]).length) && !(Object.keys(tempIt[2]).length))
+        {myTemp.push('Indirect Assessment isn\'t given')}
+      setWantedData(myTemp);
     } catch (e) {
       console.log("ERROR", e);
     }
@@ -118,6 +131,9 @@ const courseReport = ({ cookies }) => {
 
   return (
     <>
+      {wantedData[0] ? <div className='items-center text-center'>
+      {wantedData.map(elm => <h1 className='text-red'>{elm}</h1>)}
+      </div> : <>
       {dataLoaded && (
         <div className="flex flex-row w-screen h-screen mt-2">
           <div className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none">
@@ -193,6 +209,7 @@ const courseReport = ({ cookies }) => {
           </div>
         </div>
       )}
+      </>}
     </>
   );
 };
