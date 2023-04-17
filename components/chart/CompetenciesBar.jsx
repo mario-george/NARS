@@ -83,6 +83,16 @@ const CompetenciesBar = (props) => {
               padding: {top: 30, left: 0, right: 0, bottom: 0}
               },
             },
+            yAxes: [{
+              display: true,
+              ticks: {
+                  suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                  // OR //
+                  suggestedMax: 100,
+                  max: 100,
+                  beginAtZero: true   // minimum value will be 0.
+              }
+          }],
       }
         }}
   />

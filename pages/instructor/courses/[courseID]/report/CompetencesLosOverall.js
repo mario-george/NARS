@@ -37,7 +37,7 @@ export const CompetencesLosOverall = ({
           </div>
           <div>
             <CLOBar
-              cAvg={avgAvg}
+              cAvg={avgValues}
               snum={numberOfStudents}
               w={20}
               h={20}

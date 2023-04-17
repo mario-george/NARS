@@ -35,7 +35,7 @@ export const CompetencesLosAchievementOVerall = ({
           <div>
             <CLOAttainment
               clomap={learningOutcomes}
-              cAvg={avgAvg}
+              cAvg={avgValues}
               title={"All Assessment"}
               w={20}
               h={20}
@@ -45,7 +45,7 @@ export const CompetencesLosAchievementOVerall = ({
           <div>
             <CLOAttainmentPie
               clomap={learningOutcomes}
-              cAvg={avgAvg}
+              cAvg={avgValues}
               title={"All Assessment"}
               avgLOS={avgLOS}
             />
