@@ -111,6 +111,7 @@ const CLOBar = (props) => {
             },
             y: {
               beginAtZero: true,
+              max: 100,
               title: {
                 display: true,
                 text: `Achieved Percentage`,
