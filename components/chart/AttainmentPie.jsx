@@ -9,6 +9,8 @@ import {
   Tooltip,
 } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-labels';
+// import "chartjs-plugin-datalabels";
 
 ChartJS.register(
   LinearScale,
@@ -17,7 +19,8 @@ ChartJS.register(
   PointElement,
   LineElement,
   Legend,
-  Tooltip
+  Tooltip,
+  ChartDataLabels
 );
 
 const AttainmentPie = (props) => {
@@ -81,7 +84,7 @@ const AttainmentPie = (props) => {
       plugins: {
         tooltips: {
           enabled: false
-      },
+        },
         datalabels: {
             formatter: (value, ctx) => {
                 let sum = 0;
@@ -92,7 +95,7 @@ const AttainmentPie = (props) => {
                 let percentage = (value*100 / sum).toFixed(2)+"%";
                 return percentage;
             },
-            color: '#fff',
+            color: '#000',
         }
     }
   }
@@ -100,6 +103,7 @@ const AttainmentPie = (props) => {
   return <Pie 
     data={data}
     options={option}
+    plugins={[ChartDataLabels]}
     />
 
 

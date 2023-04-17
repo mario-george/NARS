@@ -25,6 +25,12 @@ const Attainment = (props) => {
   const labels = ["Above Target", "At Target", "Below Target"];
   const dataValue = new Array(labels.length).fill(0);
   const target = props.target;
+  let data = {};
+  const bg  = [
+    'rgba(119, 221, 119, 1)',
+    'rgba(108, 160, 220, 1)',
+    'rgba(255, 105, 97, 1)',
+  ];
 
   Object.keys(props.cAvg).forEach(elm => {
     if(props.cAvg[elm] > target[1]){dataValue[0] += 1;}
@@ -32,13 +38,51 @@ const Attainment = (props) => {
     else if(props.cAvg[elm] < target[0]){dataValue[2] += 1;}
   });
 
-  const bg  = [
-    'rgba(119, 221, 119, 1)',
-    'rgba(108, 160, 220, 1)',
-    'rgba(255, 105, 97, 1)',
-  ];
+  if(props.avgS){
+    const dataValues = [
+      new Array(labels.length).fill(0),
+      new Array(labels.length).fill(0),
+    ];
 
-  const data = {
+    Object.keys(props.avgS[0]).forEach(elm => {
+      if(props.avgS[0][elm] > target[1]){dataValues[0][0] += 1;}
+      else if(props.avgS[0][elm ]<= target[1] && props.avgS[0][elm] >= target[0]){dataValues[0][1] += 1;}
+      else if(props.avgS[0][elm] < target[0]){dataValues[0][2] += 1;}
+    });
+    Object.keys(props.avgS[1]).forEach(elm => {
+      if(props.avgS[1][elm] > target[1]){dataValues[1][0] += 1;}
+      else if(props.avgS[1][elm ]<= target[1] && props.avgS[1][elm] >= target[0]){dataValues[1][1] += 1;}
+      else if(props.avgS[1][elm] < target[0]){dataValues[1][2] += 1;}
+    });
+    data = {
+      labels,
+      datasets: [
+      {
+        label: 'Direct Attainment',
+        data: dataValues[0],
+        backgroundColor: bg,
+        borderWidth: 1,
+        maxBarThickness: 80
+      },
+      {
+        label: 'Indirect Attainment',
+        data: dataValues[1],
+        backgroundColor: bg,
+        borderWidth: 1,
+        maxBarThickness: 80
+      },
+      {
+        label: 'Overall Attainment',
+        data: dataValue,
+        backgroundColor: bg,
+        borderWidth: 1,
+        maxBarThickness: 80
+      },
+    ]
+  }
+  }
+  else{
+    data = {
       labels,
       datasets: [{
         label: 'Competencies Attainment',
@@ -48,6 +92,7 @@ const Attainment = (props) => {
         maxBarThickness: 80
       },
     ]
+  }
   }
 
   const option4bar = {

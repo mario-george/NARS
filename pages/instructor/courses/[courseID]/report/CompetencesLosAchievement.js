@@ -7,7 +7,7 @@ import AttainmentPie from "@/components/chart/AttainmentPie";
 export const CompetencesLosAchievement = ({ avgValues, learningOutcomes, target }) => {
   return (
     <div className="flex flex-col w-full items-start">
-      <h2 className="font-bold text-xl mb-2">Direct Assessment Percentage</h2>
+      <h2 className="font-bold text-xl mb-2">Learning Outcomes & Competences Direct Achievement</h2>
       <div className="h-0.5 w-full bg-gray-300 mb-2" />
       <div className="flex flex-col w-full items-center">
         <label className="mt-12">Competences Achievement</label>

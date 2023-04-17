@@ -161,6 +161,12 @@ const courseReport = ({ cookies }) => {
                   final={final}
                   numberOfStudents={numberOfStudents}
                 />
+                <CompetencesLosGrades
+                  numberOfStudents={numberOfStudents}
+                  avgValues={avgValues}
+                  competenciesMap={competenciesMap}
+                  learningOutcomes={learningOutcomes}
+                />
                 <CompetencesLosAchievement
                   target={target}
                   competenciesMap={competenciesMap}
@@ -168,10 +174,10 @@ const courseReport = ({ cookies }) => {
                   numberOfStudents={numberOfStudents}
                   learningOutcomes={learningOutcomes}
                 />
-                <CompetencesLosGrades
+                <CompetencesLosSurvey
                   numberOfStudents={numberOfStudents}
-                  avgValues={avgValues}
-                  competenciesMap={competenciesMap}
+                  avgLOS={avgValuesLOs}
+                  avgValues={avgValuesSurvey}
                   learningOutcomes={learningOutcomes}
                 />
                 <CompetencesLosAchievementSurvey
@@ -182,10 +188,11 @@ const courseReport = ({ cookies }) => {
                   numberOfStudents={numberOfStudents}
                   learningOutcomes={learningOutcomes}
                 />
-                <CompetencesLosSurvey
+                <CompetencesLosOverall
                   numberOfStudents={numberOfStudents}
                   avgLOS={avgValuesLOs}
-                  avgValues={avgValuesSurvey}
+                  avgValues={avgValues}
+                  avgValuesSurvey={avgValuesSurvey}
                   learningOutcomes={learningOutcomes}
                 />
                 <CompetencesLosAchievementOVerall
@@ -195,13 +202,6 @@ const courseReport = ({ cookies }) => {
                   avgValues={avgValues}
                   avgValuesSurvey={avgValuesSurvey}
                   numberOfStudents={numberOfStudents}
-                  learningOutcomes={learningOutcomes}
-                />
-                <CompetencesLosOverall
-                  numberOfStudents={numberOfStudents}
-                  avgLOS={avgValuesLOs}
-                  avgValues={avgValues}
-                  avgValuesSurvey={avgValuesSurvey}
                   learningOutcomes={learningOutcomes}
                 />
               </div>

@@ -27,60 +27,114 @@ const CLOAttainment = (props) => {
   const labels = ["Above Target", "At Target", "Below Target"];
   const dataValue = new Array(labels.length).fill(0);
   const target = props.target;
-
-  if(props.cAvg && props.avgLOS){
-    const CLOAvg = {}
-    comps.forEach(clo => {
-      let temp = props.clomap[clo];
-      CLOAvg[clo] = 0;
-      temp.forEach(elm => {
-        CLOAvg[clo] += props.cAvg[elm];
-      });
-
-      CLOAvg[clo] += props.avgLOS[clo];
-
-      CLOAvg[clo] /= 2
-    })
-
-
-    comps.forEach(elm => {
-      if(CLOAvg[elm] > target[1]){dataValue[0] += 1;}
-      else if(CLOAvg[elm ]<= target[1] && CLOAvg[elm] >= target[0]){dataValue[1] += 1;}
-      else if(CLOAvg[elm] < target[0]){dataValue[2] += 1;}
-    });
-  }
-  else if(props.avgLOS){
-    comps.forEach(elm => {
-      if(props.avgLOS[elm] > target[1]){dataValue[0] += 1;}
-      else if(props.avgLOS[elm ]<= target[1] && props.avgLOS[elm] >= target[0]){dataValue[1] += 1;}
-      else if(props.avgLOS[elm] < target[0]){dataValue[2] += 1;}
-    });
-  }
-  else if(props.cAvg){
-    const CLOAvg = {}
-    comps.forEach(clo => {
-      let temp = props.clomap[clo];
-      CLOAvg[clo] = 0;
-      temp.forEach(elm => {
-        CLOAvg[clo] += props.cAvg[elm];
-      });
-    })
-
-
-    comps.forEach(elm => {
-      if(CLOAvg[elm] > target[1]){dataValue[0] += 1;}
-      else if(CLOAvg[elm ]<= target[1] && CLOAvg[elm] >= target[0]){dataValue[1] += 1;}
-      else if(CLOAvg[elm] < target[0]){dataValue[2] += 1;}
-    });
-  }
-
+  let data = {};
   const bg  = [
     'rgba(119, 221, 119, 1)',
     'rgba(108, 160, 220, 1)',
     'rgba(255, 105, 97, 1)',
   ];
 
-  const data = {
+  if(props.avgS){
+    const dataValues = [
+      new Array(labels.length).fill(0),
+      new Array(labels.length).fill(0),
+    ];
+
+    let CLOAvg = {}
+    comps.forEach(clo => {
+      let temp = props.clomap[clo];
+      CLOAvg[clo] = 0;
+      temp.forEach(elm => {
+        CLOAvg[clo] += props.cAvg[elm];
+      });
+      CLOAvg[clo] /= temp.length;
+
+      console.log(CLOAvg[clo]);
+      CLOAvg[clo] += props.avgLOS[clo];
+      CLOAvg[clo] /= 2
+    })
+
+    comps.forEach(elm => {
+      if(CLOAvg[elm] > target[1]){dataValue[0] += 1;}
+      else if(CLOAvg[elm ]<= target[1] && CLOAvg[elm] >= target[0]){dataValue[1] += 1;}
+      else if(CLOAvg[elm] < target[0]){dataValue[2] += 1;}
+    });
+
+    CLOAvg = {};
+      comps.forEach(clo => {
+        let temp = props.clomap[clo];
+        CLOAvg[clo] = 0;
+        temp.forEach(elm => {
+          CLOAvg[clo] += props.avgS[elm];
+        });
+        CLOAvg[clo] /= temp.length;
+      })
+  
+      comps.forEach(elm => {
+        if(CLOAvg[elm] > target[1]){dataValues[0][0] += 1;}
+        else if(CLOAvg[elm]<= target[1] && CLOAvg[elm] >= target[0]){dataValues[0][1] += 1;}
+        else if(CLOAvg[elm] < target[0]){dataValues[0][2] += 1;}
+      });
+
+    comps.forEach(elm => {
+      if(props.avgLOS[elm] > target[1]){dataValues[1][0] += 1;}
+      else if(props.avgLOS[elm]<= target[1] && props.avgLOS[elm] >= target[0]){dataValues[1][1] += 1;}
+      else if(props.avgLOS[elm] < target[0]){dataValues[1][2] += 1;}
+    });
+
+    data = {
+      labels,
+      datasets: [
+      {
+        label: 'Direct Attainment',
+        data: dataValues[0],
+        backgroundColor: bg,
+        borderWidth: 1,
+        maxBarThickness: 80
+      },
+      {
+        label: 'Indirect Attainment',
+        data: dataValues[1],
+        backgroundColor: bg,
+        borderWidth: 1,
+        maxBarThickness: 80
+      },
+      {
+        label: 'Overall Attainment',
+        data: dataValue,
+        backgroundColor: bg,
+        borderWidth: 1,
+        maxBarThickness: 80
+      },
+    ]
+  }
+  }else{
+    if(props.avgLOS){
+      comps.forEach(elm => {
+        if(props.avgLOS[elm] > target[1]){dataValue[0] += 1;}
+        else if(props.avgLOS[elm ]<= target[1] && props.avgLOS[elm] >= target[0]){dataValue[1] += 1;}
+        else if(props.avgLOS[elm] < target[0]){dataValue[2] += 1;}
+      });
+    }
+    else if(props.cAvg){
+      const CLOAvg = {};
+      comps.forEach(clo => {
+        let temp = props.clomap[clo];
+        CLOAvg[clo] = 0;
+        temp.forEach(elm => {
+          CLOAvg[clo] += props.cAvg[elm];
+        });
+        CLOAvg[clo] /= temp.length;
+      })
+  
+      comps.forEach(elm => {
+        if(CLOAvg[elm] > target[1]){dataValue[0] += 1;}
+        else if(CLOAvg[elm ]<= target[1] && CLOAvg[elm] >= target[0]){dataValue[1] += 1;}
+        else if(CLOAvg[elm] < target[0]){dataValue[2] += 1;}
+      });
+    }
+
+    data = {
       labels,
       datasets: [{
         label: 'LOs Attainment',
@@ -90,6 +144,7 @@ const CLOAttainment = (props) => {
         maxBarThickness: 80
       },
     ]
+  }
   }
 
   const option4bar = {
