@@ -125,6 +125,7 @@ const profile = ({ cookies }) => {
       setFacadmin(true);
     }, []);
   } else if (cookies.role === "quality coordinator") {
+    console.log("HEEEEEEEEEEEEEEEEEERE");
     useEffect(() => {
       setQualityCoo(true);
     }, []);
