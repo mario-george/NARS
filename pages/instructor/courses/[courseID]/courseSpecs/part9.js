@@ -25,10 +25,11 @@ const part2 = ({ cookies }) => {
       );
       const data = await r.json();
       console.log(data)
-      const references=courseSpecs.references
+      const references=data.data.courseSpecs.references
       notes.current.value=references.courseNotes
 websites.current.value=references.courseWebsites
-books.current.value=references.books
+console.log(references)
+books.current.value=references.books[0]
 Rbooks.current.value=references.recommendedBooks
 
     }

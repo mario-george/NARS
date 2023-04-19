@@ -50,7 +50,42 @@ const part1 = ({ cookies }) => {
   }
 
   useEffect(() => {
-    // {{URL}}
+    const getData = async function () {
+  
+
+ 
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data);
+      console.log(data.data.courseSpecs);
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
+
+      if (
+        lecture.current &&
+        special.current &&
+        hours.current &&
+        semester.current &&
+        practice.current
+      ) {
+        lecture.current.value = data.data.courseSpecs.courseData.lectures;
+        hours.current.value = data.data.courseSpecs.courseData.contactHours;
+        special.current.value = data.data.courseSpecs.courseData.specialization;
+        semester.current.value = data.data.courseSpecs.courseData.semester;
+        practice.current.value = data.data.courseSpecs.courseData.practice;
+      }
+
+
+      console.log(data);
+    };
     const getNameCode = async function () {
       const getNameCodeReq = await fetch(
         `${process.env.url}api/v1/courses/created-courses/?_id=${courseID}`,
@@ -74,7 +109,8 @@ const part1 = ({ cookies }) => {
     };
 
     getNameCode();
-  }, []);
+    getData();
+  }, [blobIsFound]);
 
   useEffect(() => {
     const getData = async function () {

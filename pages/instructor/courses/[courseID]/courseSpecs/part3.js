@@ -313,14 +313,14 @@ const part3 = ({ cookies }) => {
       </CustomReactToPdf>
       <form
         onSubmit={submitHandler}
-        className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none overflow-auto"
+        className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1  overflow-auto"
       >
         <div
-          className="contentAddUserFlexible flex flex-col"
+          className="mt-[12rem] contentAddUserFlexible flex flex-col"
           ref={refToImgBlob}
         >
           <div className="flex gap-20 ">
-            <div className="flex flex-col space-y-[2rem] mb-[5rem] w-full">
+            <div className="flex flex-col space-y-[2rem] mt-[10rem] w-full">
               <label class="label-form md:text-2xl  my-10">
                 Learning Outcomes
               </label>
