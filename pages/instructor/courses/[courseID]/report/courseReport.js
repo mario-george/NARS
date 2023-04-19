@@ -109,8 +109,8 @@ const courseReport = ({ cookies }) => {
         jsonData.data.course.target.maxTarget,
       ]);
       setTarget([
-        jsonData.data.course.target.min,
-        jsonData.data.course.target.max,
+        jsonData.data.course.target.minTarget,
+        jsonData.data.course.target.maxTarget,
       ]);
       const { final, midterm } = examGrades;
       setCompetenciesMap(competences);
@@ -125,13 +125,19 @@ const courseReport = ({ cookies }) => {
       setDataLoaded(true);
       tempIt.push();
       let myTemp = [jsonData.data.report.questions];
-      if (Object.keys(tempIt[1]) == 'undefined' || Object.keys(tempIt[4]) == 'undefined') {
+      if (
+        Object.keys(tempIt[1]) == "undefined" ||
+        Object.keys(tempIt[4]) == "undefined"
+      ) {
         myTemp.push("Direct Assessment isn't Completed yet");
       }
       if (!tempIt[3][0]) {
         myTemp.push("Target isn't given");
       }
-      if (Object.keys(tempIt[1]) == 'undefined' || Object.keys(tempIt[2]) == 'undefined') {
+      if (
+        Object.keys(tempIt[1]) == "undefined" ||
+        Object.keys(tempIt[2]) == "undefined"
+      ) {
         myTemp.push("Indirect Assessment isn't Completed yet");
       }
       if (jsonData.data.courseSpecsCompleted) {
