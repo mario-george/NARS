@@ -26,11 +26,15 @@ export const CompetencesLosAchievementOVerall = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%]">
           <div>
             <Attainment
-            target={target}
-            cAvg={avgAvg}
-            w={20}
-            h={20}
-            title={"All Assessment"}
+              target={target}
+              cAvg={avgAvg}
+              avgS={[
+                avgValues,
+                avgValuesSurvey,
+              ]}
+              w={20}
+              h={20}
+              title={"All Assessment"}
             />
           </div>
           <div>
@@ -43,7 +47,8 @@ export const CompetencesLosAchievementOVerall = ({
             <CLOAttainment
               target={target}
               clomap={learningOutcomes}
-              cAvg={avgValues}
+              cAvg={avgAvg}
+              avgS={avgValues}
               title={"All Assessment"}
               w={20}
               h={20}
@@ -54,7 +59,7 @@ export const CompetencesLosAchievementOVerall = ({
             <CLOAttainmentPie
               target={target}
               clomap={learningOutcomes}
-              cAvg={avgValues}
+              cAvg={avgAvg}
               title={"All Assessment"}
               avgLOS={avgLOS}
             />
