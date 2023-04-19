@@ -156,9 +156,10 @@ const part4 = ({ cookies }) => {
   };
   const [competences, setComp] = useState([]);
 
-  let cognitive = Cookies.get("cognitive");
-  let affective = Cookies.get("affective");
-  let psychomotor = Cookies.get("psychomotor");
+  let cognitive = cookies.courseLearningOutcomes[0].learningOutcomes;
+  let affective = cookies.courseLearningOutcomes[2].learningOutcomes;
+  let psychomotor = cookies.courseLearningOutcomes[1].learningOutcomes;
+  console.log(cognitive);
   const [arrays, setArrays] = useState({
     LO: [],
     LO2: [],
@@ -176,10 +177,10 @@ const part4 = ({ cookies }) => {
     getComp();
     if (cognitive && affective && psychomotor) {
       try {
-        congitiveParsed = JSON.parse(cognitive);
-        psychomotorParsed = JSON.parse(psychomotor);
-        affectiveParsed = JSON.parse(affective);
-        courseLearningOutcomes = JSON.parse(cookies.courseLearningOutcomes);
+        congitiveParsed = cognitive;
+        psychomotorParsed = psychomotor;
+        affectiveParsed = affective;
+        courseLearningOutcomes = cookies.courseLearningOutcomes;
         console.log(congitiveParsed);
         console.log(psychomotorParsed);
         console.log(affectiveParsed);
@@ -317,18 +318,13 @@ const part4 = ({ cookies }) => {
         //         console.log(l1P.length);
         // console.log(l1P)
 
-        if (courseLearningOutcomesParsed[0].title == "cognitive") {
+        if (cookies.courseLearningOutcomes[0].title == "cognitive") {
           cp2[0].learningOutcomes = l1P.map((e, i) => {
             console.log(e);
             return {
               ...e,
               mappedCompetence: competences.filter((e, k) => {
                 return checkboxRefs.current[i][k];
-                // if (checkboxRefs.current[i][k]) {
-                //   return;
-                // } else {
-                //   return competences[k];
-                // }
               }),
             };
           });
@@ -349,7 +345,7 @@ const part4 = ({ cookies }) => {
             };
           });
         }
-        if (courseLearningOutcomesParsed[2].title == "affective") {
+        if (cookies.courseLearningOutcomes[2].title == "affective") {
           cp2[2].learningOutcomes = l3P.map((e, i) => {
             // console.log(e);
             return {
@@ -455,6 +451,7 @@ const part4 = ({ cookies }) => {
     e.preventDefault();
     handleSubmit();
     // window.location.href="/instructor/coursespecs/part5"
+    
   };
   // affective ? (a = Object.entries(JSON.parse(affective))) : null;
   // affective ? (console.log(Object.entries(JSON.parse(affective)))) : null;

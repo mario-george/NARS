@@ -15,6 +15,107 @@ const part69 = ({ cookies }) => {
   const token = userState.token;
   const refToImgBlob = useRef();
   const buttonRef = useRef(null);
+  const [t, setT] = useState(true);
+  useEffect(() => {
+    const getData = async function () {
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data);
+      // console.log(data.data.courseSpecs.lecturePlan.topics.length)
+
+      try {
+        setAddWeek(data.data.courseSpecs.lecturePlan.topics.length);
+        if (t) {
+          checkboxRefs.current = Array.from(
+            { length: data.data.courseSpecs.lecturePlan.topics.length },
+            () => Array.from({ length: a.length }, () => false)
+          );
+          setTableData([...checkboxRefs.current]);
+          setT(false);
+        }
+
+        for (
+          let i = 0;
+          i < data.data.courseSpecs.lecturePlan.topics.length;
+          i++
+        ) {
+          topicsRefs.current[i] =
+            data.data.courseSpecs.lecturePlan.topics[i].topics[0];
+          HoursRefs.current[i] =
+            data.data.courseSpecs.lecturePlan.topics[i].plannedHours;
+
+          for (
+            let j = 0;
+            j <
+            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
+            j++
+          ) {
+            if (
+              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
+                j
+              ] != null
+            ) {
+              checkboxRefs.current[i][j] = true;
+            }
+          }
+        }
+        console.log(checkboxRefs.current[0]);
+        // console.log(
+        //   data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes
+        // );
+
+        // setInputs3(
+        //   data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes.map(
+        //     (e) => {
+        //       return {
+        //         ref: createRef(),
+        //         code: e.code,
+        //         name: e.code,
+        //         description: e.description,
+        //       };
+        //     }
+        //   )
+        // );
+        // setInputs(
+        //   data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes.map(
+        //     (e) => {
+        //       return {
+        //         ref: createRef(),
+        //         code: e.code,
+        //         name: e.code,
+        //         description: e.description,
+        //       };
+        //     }
+        //   )
+        // );
+        // setInputs2(
+        //   data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes.map(
+        //     (e) => {
+        //       return {
+        //         ref: createRef(),
+        //         code: e.code,
+        //         name: e.code,
+        //         description: e.description,
+        //       };
+        //     }
+        //   )
+        // );
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getData();
+  }, []);
   function ChildComponent({ toPdf }) {
     const handleClick = async () => {
       try {
@@ -64,9 +165,9 @@ const part69 = ({ cookies }) => {
     setAddWeek(addWeek + 1);
   };
   // const outcomes = ['LO1', 'LO2', 'LO3', 'LO4', 'LO5', 'LO6']
-  let cognitive = Cookies.get("cognitive");
-  let affective = Cookies.get("affective");
-  let psychomotor = Cookies.get("psychomotor");
+  let cognitive = cookies.courseLearningOutcomes[0].learningOutcomes;
+  let affective = cookies.courseLearningOutcomes[2].learningOutcomes;
+  let psychomotor = cookies.courseLearningOutcomes[1].learningOutcomes;
   let numCols = outcomes.length;
   let numRows = addWeek;
   const router = useRouter();
@@ -89,6 +190,7 @@ const part69 = ({ cookies }) => {
   const handleCheckboxChange = (rowIndex, colIndex) => {
     checkboxRefs.current[rowIndex][colIndex] =
       !checkboxRefs.current[rowIndex][colIndex];
+    setTableData([...checkboxRefs.current]);
   };
   const handleHoursChange = (rowIndex, e) => {
     const { value } = e.target;
@@ -106,10 +208,10 @@ const part69 = ({ cookies }) => {
   useEffect(() => {
     if (cognitive && affective && psychomotor) {
       try {
-        congitiveParsed = JSON.parse(cognitive);
-        psychomotorParsed = JSON.parse(psychomotor);
-        affectiveParsed = JSON.parse(affective);
-        courseLearningOutcomes = JSON.parse(cookies.courseLearningOutcomes);
+        congitiveParsed = cognitive;
+        psychomotorParsed = psychomotor;
+        affectiveParsed = affective;
+        courseLearningOutcomes = cookies.courseLearningOutcomes;
         console.log(congitiveParsed);
         console.log(psychomotorParsed);
         console.log(affectiveParsed);
@@ -252,6 +354,7 @@ const part69 = ({ cookies }) => {
                         name="topic"
                         className="w-full"
                         onChange={(e) => handleTopicChange(rowIndex, e)}
+                        defaultValue={topicsRefs.current[rowIndex]}
                       />
                     </td>
                     <td className="border-2 px-4 py-2 ">
@@ -260,6 +363,7 @@ const part69 = ({ cookies }) => {
                         type="number"
                         className="w-full"
                         onChange={(e) => handleHoursChange(rowIndex, e)}
+                        defaultValue={HoursRefs.current[rowIndex]}
                       />
                     </td>
                     {Array.from({ length: numCols }).map((_, colIndex) => (
@@ -270,6 +374,10 @@ const part69 = ({ cookies }) => {
                             className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
                             onChange={() =>
                               handleCheckboxChange(rowIndex, colIndex)
+                            }
+                            checked={
+                              checkboxRefs.current[rowIndex]?.[colIndex] ===
+                              true
                             }
                           />
                         </label>

@@ -12,6 +12,45 @@ const part8 = ({ cookies }) => {
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+  useEffect(() => {
+    const getData = async function () {
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data);
+      // console.log(data.data.courseSpecs.lecturePlan.topics.length)
+
+      try {
+        console.log(
+          data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes
+        );
+
+        setAddWeek(data.data.courseSpecs.lecturePlan.topics.length);
+        if (t) {
+          checkboxRefs.current = Array.from(
+            { length: data.data.courseSpecs.lecturePlan.topics.length },
+            () => Array.from({ length: a.length }, () => false)
+          );
+          setTableData([...checkboxRefs.current]);
+          setT(false);
+        }
+
+        console.log(checkboxRefs.current[0]);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getData();
+  }, []);
   const token = userState.token;
   useEffect(() => {
     document.querySelector("body").classList.add("scrollbar-none");
@@ -54,9 +93,9 @@ const part8 = ({ cookies }) => {
   const router = useRouter();
   const { courseID } = router.query;
   const numCols = 10;
-  let cognitive = Cookies.get("cognitive");
-  let affective = Cookies.get("affective");
-  let psychomotor = Cookies.get("psychomotor");
+  let cognitive = cookies.courseLearningOutcomes[0].learningOutcomes;
+  let affective = cookies.courseLearningOutcomes[2].learningOutcomes;
+  let psychomotor = cookies.courseLearningOutcomes[1].learningOutcomes;
   const [arrays, setArrays] = useState({
     LO: [],
     LO2: [],
@@ -65,10 +104,10 @@ const part8 = ({ cookies }) => {
   useEffect(() => {
     if (cognitive && affective && psychomotor) {
       try {
-        congitiveParsed = JSON.parse(cognitive);
-        psychomotorParsed = JSON.parse(psychomotor);
-        affectiveParsed = JSON.parse(affective);
-        courseLearningOutcomes = JSON.parse(cookies.courseLearningOutcomes);
+        congitiveParsed = cognitive;
+        psychomotorParsed = psychomotor;
+        affectiveParsed = affective;
+        courseLearningOutcomes = cookies.courseLearningOutcomes;
         console.log(congitiveParsed);
         console.log(psychomotorParsed);
         console.log(affectiveParsed);
@@ -153,9 +192,8 @@ const part8 = ({ cookies }) => {
     let courseLearningOutcomes = Cookies.get("courseLearningOutcomes");
     if (courseLearningOutcomes) {
       try {
-        let courseLearningOutcomesParsed = JSON.parse(
-          cookies.courseLearningOutcomes
-        );
+        let courseLearningOutcomesParsed = cookies.courseLearningOutcomes;
+
         console.log(courseLearningOutcomesParsed);
         console.log(typeof courseLearningOutcomesParsed);
 
@@ -216,11 +254,6 @@ const part8 = ({ cookies }) => {
               ...e,
               learningTeachingMethods: [...tableData33[0]].filter((e, k) => {
                 return checkboxRefs3.current[i][k];
-                // if (checkboxRefs.current[i][k]) {
-                //   return;
-                // } else {
-                //   return competences[k];
-                // }
               }),
             };
           });
@@ -265,7 +298,7 @@ const part8 = ({ cookies }) => {
     // window.location.href="/instructor/coursespecs/part8"
     setTimeout(() => {
       // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part8`;
-      router.push(`/instructor/courses/${courseID}/courseSpecs/part8`);
+      // router.push(`/instructor/courses/${courseID}/courseSpecs/part8`);
     }, 1000);
   };
   const tableData22 = [

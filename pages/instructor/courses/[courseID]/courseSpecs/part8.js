@@ -11,6 +11,66 @@ const part69 = ({ cookies }) => {
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+
+  useEffect(() => {
+    const getData = async function () {
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data);
+
+      try {
+        week0.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[0].week;
+        week1.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[1].week;
+        week2.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[2].week;
+        week3.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[3].week;
+        week4.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[4].week;
+        week5.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[5].week;
+        assesment0.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[0].assessment;
+        assesment1.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[1].assessment;
+        assesment2.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[2].assessment;
+        assesment3.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[3].assessment;
+        assesment4.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[4].assessment;
+        assesment5.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[5].assessment;
+        weight0.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[0].weight;
+        weight1.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[1].weight;
+        weight2.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[2].weight;
+        weight3.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[3].weight;
+        weight4.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[4].weight;
+        weight5.current.value =
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[5].weight;
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getData();
+  }, []);
   const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
 
