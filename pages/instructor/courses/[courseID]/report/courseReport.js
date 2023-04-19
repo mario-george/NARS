@@ -105,8 +105,8 @@ const courseReport = ({ cookies }) => {
       tempIt.push(getAvgLOs(jsonData.data.report.avgLOSInDirect));
       setAvgValuesLOs(getAvgLOs(jsonData.data.report.avgLOSInDirect));
       tempIt.push([
-        jsonData.data.course.target.min,
-        jsonData.data.course.target.max,
+        jsonData.data.course.target.minTarget,
+        jsonData.data.course.target.maxTarget,
       ]);
       setTarget([
         jsonData.data.course.target.min,
