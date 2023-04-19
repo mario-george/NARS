@@ -71,6 +71,16 @@
   transition-property: background-color;
 }
 
+.grad-title {
+  @apply text-2xl font-extrabold col-span-2 grid gap-4 
+      grid-cols-2 md:col-span-3 md:text-3xl md:grid-cols-3 lg:text-4xl;
+}
+
+.grad-asm {
+  @apply text-2xl font-extrabold col-span-3 grid gap-4 
+      grid-cols-2 md:col-span-3 md:text-3xl md:grid-cols-3 lg:text-4xl;
+}
+
 .bg-gray-800 {
   background-color: #2d3748;
 }
