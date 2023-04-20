@@ -52,6 +52,9 @@ const userSlice = createSlice({
       s.jwt = "null";
       s.token = "null";
       s.name = "null";
+      s.instance_id="null";
+      s.original_id="null";
+      s.program="null";
     },
     toggleNav: (s) => {
       s.navStatus = !s.navStatus;

@@ -1,16 +1,12 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../store/userSlice";
-import { MdOutlineLogin } from "react-icons/md";
-import { AiOutlineUsergroupAdd } from "react-icons/ai";
-import Image from "next/image";
+import { useSelector } from "react-redux";
 import InstructorDashboard from "../InstructorDashboard";
 import ProgramAdminDashboard from "../ProgramAdminDashboard";
 import FacultyAdminDashboard from "../FacultyAdminDashboard";
 import AdminDashboard from "../AdminDashBoard";
-import QualityCoordinatorDashboard from "@/components/QualityCoordinatorDashboard"
+import QualityCoordinatorDashboard from "@/components/QualityCoordinatorDashboard";
+import StudentDashboard from "../StudentDashoard";
+import ProgramCoordinatorDashboard from "../ProgramCoordinatorDashboard";
 
 
 import React from "react";
@@ -19,11 +15,12 @@ function SideDashboard() {
   const globalState = useSelector((s) => s.user);
 
   const [instructor, setInstructor] = useState(false);
+  const [student, setStudent] = useState(false);
   const [admin, setAdmin] = useState(false);
   const [programAdmin, setProgramAdmin] = useState(false);
   const [facultyAdmin, setFacultyAdmin] = useState(false);
   const[qualityCoo,setQualityCoo]=useState(false);
-
+  const[programCoo,setProgramCoo]=useState(false);
 
   useEffect(() => {
     if (globalState.role === "system admin") {
@@ -36,6 +33,11 @@ function SideDashboard() {
       setFacultyAdmin(true);
     }else if (globalState.role === "quality coordinator") {
       setQualityCoo(true);
+    }else if(globalState.role==="student") {
+      setStudent(true);
+    }
+    else if(globalState.role==="program coordinator") {
+      setProgramCoo(true);
     }
   }, []);
 
@@ -46,6 +48,8 @@ function SideDashboard() {
       {instructor && <InstructorDashboard />}
       {programAdmin && <ProgramAdminDashboard />}
       {qualityCoo && <QualityCoordinatorDashboard/>}
+      {student && <StudentDashboard/>}
+      {programCoo && <ProgramCoordinatorDashboard/>}
     </div>
   );
 }

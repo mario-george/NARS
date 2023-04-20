@@ -2,22 +2,24 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 const Home = ({ cookies }) => {
-  const r=useRouter()
+  const r = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  if (cookies.role) {
+  if (cookies.role!=="null") {
     useEffect(() => {
       setIsLoggedIn(true);
     }, [])
   }
   setTimeout(() => {
     {
-      isLoggedIn ?
-      r.push("/profile")
-        // window.location.href = "/profile"
-        :
-      r.push("/login")
-
-        // window.location.href = "/login"
+      if(isLoggedIn===false){
+        r.push("/login");
+      }
+      else if (isLoggedIn && cookies.role === "student") {
+        r.push("/studentProfile");
+      }
+      else if (isLoggedIn && cookies.role !== "student") {
+        r.push("/profile");
+      }
     }
   }, 0);
   return (<>

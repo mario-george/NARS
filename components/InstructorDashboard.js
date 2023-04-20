@@ -19,12 +19,7 @@ export default function InstructorDashboard({ cookies }) {
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
-    //window.location.href = "/logout";
-     r.push('/logout')
-  };
-  const handel_set_cookies = (e) => {
-    Cookies.set("instance_id", e);
-    //window.location.href=`/instructor/courses/${e}/courseSpecs/part1`
+    r.push('/logout')
   };
 
   useEffect(() => {
@@ -63,9 +58,8 @@ export default function InstructorDashboard({ cookies }) {
 
   return (
     <nav
-      className={`nav2 transition-all duration-300 transform ${
-        navStatus ? ` -translate-x-full` : `translate-x-0 `
-      }`}
+      className={`nav2 transition-all duration-300 transform ${navStatus ? ` -translate-x-full` : `translate-x-0 `
+        }`}
     >
       <Link className="link2 focus:text-green-400 " href="/profile">
         <span>

@@ -1,9 +1,12 @@
 import React from "react";
 import Link from "next/link";
-
 import InsertDriveFileRounded from "@mui/icons-material/InsertDriveFileRounded";
 
-const AssignFileItem = ({ name, id, dueTo }) => {
+
+const AssignFileItem = ({ name, id, dueTo, possibleMarks }) => {
+  const d = new Date();
+  let date = d.toJSON();
+  if (dueTo > date) console.log("valid");
   return (
     <div className="fileItem ">
       <Link
@@ -15,7 +18,10 @@ const AssignFileItem = ({ name, id, dueTo }) => {
           <InsertDriveFileRounded />
           <p>{name}</p>
         </div>
-        <div className="fileItem--right">
+        <div className="fileItem--right absolute right-80">
+          <p>{possibleMarks}</p>
+        </div>
+        <div className="fileItem--right ">
           <p>{dueTo}</p>
         </div>
       </Link>
