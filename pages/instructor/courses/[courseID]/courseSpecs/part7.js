@@ -474,9 +474,10 @@ const part8 = ({ cookies }) => {
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative overflow-auto "
+          className="bg-sky-50 h-screen w-[81%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative overflow-auto "
         >
-          <div className="contentAddUserFlexible flex flex-col gap-1 my-18 py-20 mt-[17rem] scrollbar-none ">
+          <div className="contentAddUserFlexible mt-[14rem] ">
+          <div className=" flex flex-col  ">
             <div ref={refToImgBlob}>
               <table className="table-fixed border-collapse mb-[5rem]">
                 <thead>
@@ -502,13 +503,13 @@ const part8 = ({ cookies }) => {
                       </th>
                     ))}
                   </tr>
-                  <tr className="border px-4 py-2"></tr>
+                  <tr className="border px-1 py-2"></tr>
                   {tableData22.map((row, rowIndex) => (
                     <tr key={rowIndex}>
                       {row.map((cell, cellIndex) => (
                         <td
                           key={cellIndex}
-                          className={`border border-gray-500 p-2 transistion-all  py-8 px-3${
+                          className={`border border-gray-500 p-1 transistion-all  py-3 px-1${
                             cellIndex === 0
                               ? `text-right text-red-500 text-xl`
                               : ``
@@ -646,6 +647,7 @@ const part8 = ({ cookies }) => {
               </table>
             </div>
 
+          </div>
             <div className="flex w-full justify-end ">
               <button
                 onClick={submitHandler}

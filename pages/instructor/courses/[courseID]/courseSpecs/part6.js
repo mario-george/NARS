@@ -456,7 +456,7 @@ const part7 = ({ cookies }) => {
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className={`bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative overflow-auto  `}
+          className={`bg-sky-50 h-screen w-[81%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative overflow-auto  `}
         >
           <div className={`contentAddUserFlexible mt-[14rem]   `}>
             <div className="flex flex-col " ref={refToImgBlob}>
@@ -490,9 +490,9 @@ const part7 = ({ cookies }) => {
                       {row.map((cell, cellIndex) => (
                         <td
                           key={cellIndex}
-                          className={`border border-gray-500 p-2 transistion-all  py-8 px-3${
+                          className={`border border-gray-500 p-1 transistion-all  py-3 px-1${
                             cellIndex === 0
-                              ? `text-right text-red-500 text-xl`
+                              ? `text-right text-red-500 text-xl  py-12  `
                               : ``
                           }`}
                           // className={cn({

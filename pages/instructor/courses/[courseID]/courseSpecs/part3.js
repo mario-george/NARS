@@ -198,6 +198,8 @@ const part3 = ({ cookies }) => {
     ]);
   };
   const handleSubmit = async (e) => {
+    console.log(inputs);
+    console.log("inp ref");
     const cognitive = inputs.map((input) => {
       return {
         description: input.ref.current.value,
@@ -315,12 +317,13 @@ const part3 = ({ cookies }) => {
         onSubmit={submitHandler}
         className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1  overflow-auto"
       >
+        <div className="mt-[8rem] contentAddUserFlexible">
         <div
-          className="mt-[12rem] contentAddUserFlexible flex flex-col"
+          className=" flex flex-col"
           ref={refToImgBlob}
         >
           <div className="flex gap-20 ">
-            <div className="flex flex-col space-y-[2rem] mt-[10rem] w-full">
+            <div className="flex flex-col mt-[5rem] w-full">
               <label class="label-form md:text-2xl  my-10">
                 Learning Outcomes
               </label>
@@ -335,8 +338,9 @@ const part3 = ({ cookies }) => {
                   </button>
                 )}
               </div>
-              <div className="space-y-[.5rem] ">
+              <div className=" ">
                 {inputs.map((input, index) => {
+                  console.log(input);
                   return (
                     <div className="flex items-center  space-x-8 relative">
                       <div>{input.code}</div>
@@ -347,13 +351,14 @@ const part3 = ({ cookies }) => {
                         ref={input.ref}
                         className="input-form w-1/2"
                       /> */}
-                      <div className="space-y-[.5rem] w-full ">
+                      <div className=" w-full ">
                         <BloomTaxonomyInput
-                          className="input-form  space-y-[.5rem]"
+                          className="input-form  "
                           ref={input.ref}
                           key={index}
                           bloomVerbs={cognitiveDomainVerbs}
                           v={input.description}
+                          v2={"asdsadasda sd asdas "}
                           placeholder={`LO ${input.counter}`}
                         />
                       </div>
@@ -385,7 +390,7 @@ const part3 = ({ cookies }) => {
                   );
                 })}
               </div>
-              <div class="flex items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <div class="flex items-center space-y-[1rem]  justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <div>Psychomotor Domain</div>
                 {isRunning && (
                   <button
@@ -396,7 +401,7 @@ const part3 = ({ cookies }) => {
                   </button>
                 )}
               </div>
-              <div className="space-y-[.5rem]">
+              <div className="">
                 {inputs2.map((input, index) => {
                   {
                     console.log(input.description);
@@ -413,7 +418,7 @@ const part3 = ({ cookies }) => {
                         className="input-form w-1/2"
                       /> */}
                       <BloomTaxonomyInput
-                        className="input-form  space-y-[.5rem]"
+                        className="input-form  "
                         ref={input.ref}
                         key={index}
                         bloomVerbs={PsychomotorDomainVerbs}
@@ -460,7 +465,7 @@ const part3 = ({ cookies }) => {
                   </button>
                 )}
               </div>
-              <div className="space-y-[.5rem]">
+              <div className="">
                 {inputs3.map((input, index) => {
                   return (
                     <div className="flex items-center  space-x-8 relative">
@@ -473,7 +478,8 @@ const part3 = ({ cookies }) => {
                         className="input-form w-1/2"
                       /> */}
                       <BloomTaxonomyInput
-                        className="input-form  space-y-[.5rem]"
+                        className="input-form  
+                        "
                         ref={input.ref}
                         key={index}
                         v={input.description}
@@ -511,6 +517,7 @@ const part3 = ({ cookies }) => {
               </div>
             </div>
           </div>
+        </div>
           <div className="flex justify-end ">
             <button
               type="submit"
