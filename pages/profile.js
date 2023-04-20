@@ -2,11 +2,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useRef, useState, useEffect } from "react";
-import InstructorDashboard from "@/components/InstructorDashboard";
-import AdminDashBoard from "@/components/AdminDashBoard";
-import ProgramAdminDashboard from "@/components/ProgramAdminDashboard";
-import FacultyAdminDashboard from "@/components/FacultyAdminDashboard";
-import QualityCoordinatorDashboard from "@/components/QualityCoordinatorDashboard";
 import Cookies from "js-cookie";
 import Modal from "@/components/Modal";
 
@@ -93,12 +88,7 @@ const profile = ({ cookies }) => {
     }
   };
   const [errorMsg, setErrormsg] = useState("");
-  const [instructor, setInstructor] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [admin, setAdmin] = useState(false);
-  const [progadmin, setProgadmin] = useState(false);
-  const [facadmin, setFacadmin] = useState(false);
-  const [qualityCoo, setQualityCoo] = useState(false);
   const name = useRef();
   const oldPassowrd = useRef();
   const newPassowrd = useRef();
@@ -108,27 +98,7 @@ const profile = ({ cookies }) => {
     setMsg("");
   };
 
-  if (cookies.role === "system admin") {
-    useEffect(() => {
-      setAdmin(true);
-    }, []);
-  } else if (cookies.role === "instructor") {
-    useEffect(() => {
-      setInstructor(true);
-    }, []);
-  } else if (cookies.role === "program admin") {
-    useEffect(() => {
-      setProgadmin(true);
-    }, []);
-  } else if (cookies.role === "faculty admin") {
-    useEffect(() => {
-      setFacadmin(true);
-    }, []);
-  } else if (cookies.role === "quality coordinator") {
-    useEffect(() => {
-      setQualityCoo(true);
-    }, []);
-  }
+
   let fail = (
     <div
       id="alert-border-2"
@@ -205,11 +175,6 @@ const profile = ({ cookies }) => {
 
   return (
     <>
-      {/* {admin && <AdminDashBoard />}
-                {facadmin && <FacultyAdminDashboard />}
-                {instructor && <InstructorDashboard />}
-                {progadmin && <ProgramAdminDashboard />}
-    {qualityCoo && <QualityCoordinatorDashboard/>}*/}
 
       <form
         onSubmit={submitHandler}
@@ -306,7 +271,7 @@ const profile = ({ cookies }) => {
                 name="oldPassowrd"
                 id="oldPassowrd"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
-                                        rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
                 required
                 ref={oldPassowrd}
               />
@@ -340,7 +305,7 @@ const profile = ({ cookies }) => {
                 name="cnfrmPassowrd"
                 id="cnfrmPassowrd"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
-                                            rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
                 required
                 ref={cnfrmPassowrd}
               />
@@ -348,8 +313,8 @@ const profile = ({ cookies }) => {
             <button
               type="submit"
               className="w-full text-white bg-blue-700 hover:bg-blue-800
-                                    focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium
-                                    rounded-lg text-sm px-5 py-2.5 text-center"
+              focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium
+              rounded-lg text-sm px-5 py-2.5 text-center"
             >
               Update your password
             </button>

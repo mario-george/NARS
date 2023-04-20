@@ -22,7 +22,7 @@ const addassignment = ({ cookies }) => {
 
   const token = cookies.token;
   const name = useRef();
-  const desc = useRef();
+  const mark = useRef();
   const router = useRouter();
   const { courseID } = router.query;
   const [id, setId] = useState("");
@@ -62,6 +62,7 @@ const addassignment = ({ cookies }) => {
     data.append("name", name.current.value);
     data.append("course", courseID);
     data.append("deuTO", date.current.value);
+    data.append("possibleMarks",mark.current.value);
 
     try {
       const r = await fetch(`${process.env.url}api/v1/courses/assignment`, {
@@ -190,6 +191,16 @@ const addassignment = ({ cookies }) => {
               </div>
             </div>
             <div className="flex gap-20 ">
+              <div className="flex flex-col gap-5 w-1/3">
+                {/*final quiz midterm*/}
+                <div>Possible marks:</div>
+                <input
+                  type="number"
+                  name="name"
+                  className="input-form w-full"
+                  ref={mark}
+                />
+              </div>
               <div className="flex flex-col gap-5 w-2/5">
                 <div> Select file:</div>
                 <input

@@ -58,7 +58,7 @@
   @apply text-green-400 link22 translate-x-3 font-bold;
 }
 .normalLinkDashboard2 {
-  @apply duration-200  link22 translate-x-3;
+  @apply duration-200  link22 translate-x-3 hover:text-green-400;
 }
 .contentAddUser2 {
   @apply w-[90%] h-[90%] rounded-3xl p-12  bg-white  font-Roboto  text-lg md:text-lg shadow-lg border-2;
@@ -224,6 +224,7 @@ td {
 
 .fileView__titles > div > * {
   margin: 5px;
+  position: relative;
 }
 
 .fileView__titles--left {
@@ -267,6 +268,7 @@ td {
   border-bottom: 1px solid rgb(219, 219, 219);
   border-top: 1px solid rgb(219, 219, 219);
   width: 100%;
+  position: relative;
 }
 
 .fileItem > a {
@@ -274,6 +276,31 @@ td {
   display: flex;
   text-decoration: none;
   color: rgb(85, 78, 78);
+}
+
+.fileItem > span {
+  height: 100%;
+  display: flex;
+  text-decoration: none;
+  color: rgb(85, 78, 78);
+}
+
+.fileItem > span > div {
+  display: flex;
+  align-items: center;
+}
+
+.fileItem > span > a {
+  display: flex;
+  align-items: center;
+}
+
+.fileItem > span > a > * {
+  margin: 10px;
+}
+
+.fileItem > span > div > * {
+  margin: 10px;
 }
 
 .fileItem > a > div {
@@ -291,4 +318,8 @@ td {
 img {
   max-width: 100%;
   height: 40px;
+}
+
+#myFileInput {
+  display:none;
 }
