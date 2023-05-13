@@ -13,12 +13,39 @@ const addStaff = ({ cookies }) => {
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+  const [faculyTitles, setFacultyTitles] = useState([]);
+
   useEffect(() => {
     document.querySelector("body").classList.add("scrollbar-none");
   });
   const [exportModalIsOpen, setExportModalIsOpen] = useState(false);
   const [data, setData] = useState([]);
+  useEffect(() => {
+    async function getFacultyNames() {
+      const d = await fetch(`${process.env.url}api/v1/faculty/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + cookies.token,
+        },
+      });
 
+      const data = await d.json();
+      let a = data.data.map((e) => {
+        return { name: e.name, id: e._id };
+      });
+
+      console.log(data);
+      console.log(a);
+      // const newArr = data.data.filter((e) => {e
+      //   return coursesParsed.map((id) => {
+      //     id === e._id;
+      //   });
+      // });
+      setFacultyTitles(a);
+    }
+    getFacultyNames();
+  }, []);
   function handleFile(event) {
     const files = event.target.files;
     const f = files[0];
@@ -234,7 +261,7 @@ const addStaff = ({ cookies }) => {
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
-          >
+        >
           <div className="contentAddUser2 flex flex-col gap-10">
             <p>Add Staff</p>
             <div className="flex gap-10 ">
@@ -278,9 +305,17 @@ const addStaff = ({ cookies }) => {
                   <option value="department admin">Department Admin</option>
                 </select>
               </div>
-              <div className="flex flex-col gap-5  w-1/2 ">
+              <div className="flex flex-col space-y-5  w-1/2 ">
                 <div> Faculty </div>
-                <input type="text" className="inputAddUser2  w-full " />
+                <select className=" choose-form w-[100%]">
+                  <option selected>
+                    Choose a Faculty
+                  </option>
+                  {faculyTitles.map((e) => {
+                    return <option value={e.id}>{e.name}</option>;
+                  })}
+                </select>
+                {/* <input type="text" className="inputAddUser2  w-full " /> */}
               </div>
             </div>
             <div className="flex gap-10 flex-1 -mt-24 ">

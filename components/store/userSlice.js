@@ -17,6 +17,7 @@ let initialState = {
   original_id: "undefined",
   instance_id: "",
   courseLearningOutcomes: {},
+  cp2: {},
   program: "",
   courseSpecs: {},
 };

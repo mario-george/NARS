@@ -182,7 +182,7 @@ courseContent.current.value=data.data.courseSpecs.courseContent
           </div> */}
         </div>
       </form>
-      <div className="flex justify-end absolute bottom-12 right-24">
+      <div className="flex justify-end absolute bottom-8 right-24">
         <button
           onClick={submitHandler}
           type="submit"

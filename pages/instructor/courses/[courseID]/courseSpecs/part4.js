@@ -6,11 +6,147 @@ import Cookies from "js-cookie";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part4 = ({ cookies }) => {
+  const [competences, setComp] = useState([]);
+
   const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+
+  useEffect(() => {
+    const getData = async function () {
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data);
+      console.log(cookies.courseLearningOutcomes[0].learningOutcomes.length);
+      console.log(cookies.courseLearningOutcomes[1].learningOutcomes.length);
+      console.log(cookies.courseLearningOutcomes[2].learningOutcomes.length);
+      console.log(competences.length);
+      console.log(competences);
+      const length1 = cookies.courseLearningOutcomes[0].learningOutcomes.length;
+      const length2 = cookies.courseLearningOutcomes[1].learningOutcomes.length;
+      const length3 = cookies.courseLearningOutcomes[2].learningOutcomes.length;
+
+      try {
+        checkboxRefs.current = Array.from({ length: length1 }, () =>
+          Array.from({ length: competences.length }, () => false)
+        );
+        checkboxRefs2.current = Array.from({ length: length2 }, () =>
+          Array.from({ length: competences.length }, () => false)
+        );
+        checkboxRefs3.current = Array.from({ length: length3 }, () =>
+          Array.from({ length: competences.length }, () => false)
+        );
+        setTableData([...checkboxRefs.current]);
+
+        setTableData2([...checkboxRefs2.current]);
+
+        setTableData3([...checkboxRefs3.current]);
+
+   
+        console.log(
+          data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[0]
+            .mappedCompetence
+        );
+        for (let i = 0; i < length1; i++) {
+          const mc =
+            data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[i]
+              .mappedCompetence;
+          console.log(
+            data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[i]
+              .mappedCompetence
+          );
+          for (let j = 0; j < mc.length; j++) {
+            const ind = competences.indexOf(mc[j]);
+            checkboxRefs.current[i][ind] = !checkboxRefs.current[i][ind];
+            setTableData([...checkboxRefs.current]);
+
+          }
+          for (
+            let j = 0;
+            j <
+            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
+            j++
+          ) {
+            if (
+              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
+                j
+              ] != null
+            ) {
+              checkboxRefs.current[i][j] = true;
+            }
+          }
+        }
+        for (let i = 0; i < length2; i++) {
+          const mc =
+            data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes[i]
+              .mappedCompetence;
+       
+          for (let j = 0; j < mc.length; j++) {
+            const ind = competences.indexOf(mc[j]);
+            checkboxRefs2.current[i][ind] = !checkboxRefs2.current[i][ind];
+            setTableData2([...checkboxRefs2.current]);
+
+          }
+          for (
+            let j = 0;
+            j <
+            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
+            j++
+          ) {
+            if (
+              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
+                j
+              ] != null
+            ) {
+              checkboxRefs.current[i][j] = true;
+            }
+          }
+        }
+        for (let i = 0; i < length3; i++) {
+          const mc =
+            data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes[i]
+              .mappedCompetence;
+        
+          for (let j = 0; j < mc.length; j++) {
+            const ind = competences.indexOf(mc[j]);
+            checkboxRefs3.current[i][ind] = !checkboxRefs3.current[i][ind];
+            setTableData3([...checkboxRefs3.current]);
+
+          }
+          for (
+            let j = 0;
+            j <
+            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
+            j++
+          ) {
+            if (
+              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
+                j
+              ] != null
+            ) {
+              checkboxRefs.current[i][j] = true;
+            }
+          }
+        }
+        console.log(checkboxRefs.current[0]);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getData();
+  }, [competences]);
   const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
   const refToImgBlob = useRef();
@@ -154,11 +290,11 @@ const part4 = ({ cookies }) => {
     console.log(competences.length);
     return comp;
   };
-  const [competences, setComp] = useState([]);
 
-  let cognitive = Cookies.get("cognitive");
-  let affective = Cookies.get("affective");
-  let psychomotor = Cookies.get("psychomotor");
+  let cognitive = cookies.courseLearningOutcomes[0].learningOutcomes;
+  let affective = cookies.courseLearningOutcomes[2].learningOutcomes;
+  let psychomotor = cookies.courseLearningOutcomes[1].learningOutcomes;
+  console.log(cognitive);
   const [arrays, setArrays] = useState({
     LO: [],
     LO2: [],
@@ -176,10 +312,10 @@ const part4 = ({ cookies }) => {
     getComp();
     if (cognitive && affective && psychomotor) {
       try {
-        congitiveParsed = JSON.parse(cognitive);
-        psychomotorParsed = JSON.parse(psychomotor);
-        affectiveParsed = JSON.parse(affective);
-        courseLearningOutcomes = JSON.parse(cookies.courseLearningOutcomes);
+        congitiveParsed = cognitive;
+        psychomotorParsed = psychomotor;
+        affectiveParsed = affective;
+        courseLearningOutcomes = cookies.courseLearningOutcomes;
         console.log(congitiveParsed);
         console.log(psychomotorParsed);
         console.log(affectiveParsed);
@@ -271,14 +407,17 @@ const part4 = ({ cookies }) => {
   const handleCheckboxChange = (rowIndex, colIndex) => {
     checkboxRefs.current[rowIndex][colIndex] =
       !checkboxRefs.current[rowIndex][colIndex];
+    setTableData([...checkboxRefs.current]);
   };
   const handleCheckboxChange2 = (rowIndex, colIndex) => {
     checkboxRefs2.current[rowIndex][colIndex] =
       !checkboxRefs2.current[rowIndex][colIndex];
+    setTableData2([...checkboxRefs2.current]);
   };
   const handleCheckboxChange3 = (rowIndex, colIndex) => {
     checkboxRefs3.current[rowIndex][colIndex] =
       !checkboxRefs3.current[rowIndex][colIndex];
+    setTableData3([...checkboxRefs3.current]);
   };
 
   const handleSubmit = async () => {
@@ -290,45 +429,34 @@ const part4 = ({ cookies }) => {
     let cp2;
     if (courseLearningOutcomes) {
       try {
-        let courseLearningOutcomesParsed = JSON.parse(
-          cookies.courseLearningOutcomes
-        );
+        let courseLearningOutcomesParsed = cookies.courseLearningOutcomes;
         console.log(courseLearningOutcomesParsed);
         console.log(typeof courseLearningOutcomesParsed);
 
         console.log(courseLearningOutcomesParsed[0].title);
 
-        let l1 = JSON.stringify(arrays.LO);
-        let l2 = JSON.stringify(arrays.LO2);
-        let l3 = JSON.stringify(arrays.LO3);
-
-        let l1P = JSON.parse(l1);
-        let l2P = JSON.parse(l2);
-        let l3P = JSON.parse(l3);
+        let l1P = cookies.courseLearningOutcomes[0].learningOutcomes;
+        let l2P = cookies.courseLearningOutcomes[1].learningOutcomes;
+        let l3P = cookies.courseLearningOutcomes[2].learningOutcomes;
         // console.log(l1P);
         // console.log(typeof l1P);
         l1P.map((e, k) => {
           console.log("dfhgsdfhswftreyhewarhgeg");
         });
         // courseLearningOutcomes[0].learningOutcomes =[]
-        cp2 = JSON.parse(courseLearningOutcomes);
+        cp2 = JSON.parse(JSON.stringify(courseLearningOutcomes));
         //         console.log(Array.isArray(cp2));
         //         console.log(Array.isArray(l1P));
         //         console.log(l1P.length);
         // console.log(l1P)
 
-        if (courseLearningOutcomesParsed[0].title == "cognitive") {
+        if (cookies.courseLearningOutcomes[0].title == "cognitive") {
           cp2[0].learningOutcomes = l1P.map((e, i) => {
             console.log(e);
             return {
               ...e,
               mappedCompetence: competences.filter((e, k) => {
                 return checkboxRefs.current[i][k];
-                // if (checkboxRefs.current[i][k]) {
-                //   return;
-                // } else {
-                //   return competences[k];
-                // }
               }),
             };
           });
@@ -349,7 +477,7 @@ const part4 = ({ cookies }) => {
             };
           });
         }
-        if (courseLearningOutcomesParsed[2].title == "affective") {
+        if (cookies.courseLearningOutcomes[2].title == "affective") {
           cp2[2].learningOutcomes = l3P.map((e, i) => {
             // console.log(e);
             return {
@@ -369,9 +497,6 @@ const part4 = ({ cookies }) => {
         console.log(cp2[1]);
         console.log(cp2[2]);
         console.log(cp2);
-        const cp2Stringified = JSON.stringify(cp2);
-
-        Cookies.set("courseLearningOutcomes", cp2Stringified);
 
         combined = [];
         console.log(cp2[2].learningOutcomes);
@@ -479,8 +604,9 @@ const part4 = ({ cookies }) => {
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
         >
-          <div className="contentAddUser2 flex flex-col" ref={refToImgBlob}>
-            <table className="table-auto my-24">
+          <div className="contentAddUser2">
+          <div className=" flex flex-col" ref={refToImgBlob}>
+            <table className="table-auto my-8">
               <thead>
                 <tr>
                   <th className="border-2 px-4 py-2">LO/Competences</th>
@@ -515,6 +641,10 @@ const part4 = ({ cookies }) => {
                             onChange={() =>
                               handleCheckboxChange(rowIndex, colIndex)
                             }
+                            checked={
+                              checkboxRefs.current[rowIndex]?.[colIndex] ===
+                              true
+                            }
                           />
                         </label>
                       </td>
@@ -543,6 +673,10 @@ const part4 = ({ cookies }) => {
                             className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
                             onChange={() =>
                               handleCheckboxChange2(rowIndex, colIndex)
+                            }
+                            checked={
+                              checkboxRefs2.current[rowIndex]?.[colIndex] ===
+                              true
                             }
                           />
                         </label>
@@ -573,6 +707,10 @@ const part4 = ({ cookies }) => {
                             onChange={() =>
                               handleCheckboxChange3(rowIndex, colIndex)
                             }
+                            checked={
+                              checkboxRefs3.current[rowIndex]?.[colIndex] ===
+                              true
+                            }
                           />
                         </label>
                       </td>
@@ -582,7 +720,7 @@ const part4 = ({ cookies }) => {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-between absolute bottom-44 right-24">
+          <div className="flex justify-between">
             <div>{msg}</div>
             <div className="flex justify-end">
               <button
@@ -591,6 +729,7 @@ const part4 = ({ cookies }) => {
               >
                 Next
               </button>
+            </div>
             </div>
           </div>
         </form>
