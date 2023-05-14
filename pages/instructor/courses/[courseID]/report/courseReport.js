@@ -52,6 +52,7 @@ const courseReport = ({ cookies }) => {
     });
     return cAvg;
   };
+  
 
   const getAvgLOs = (avgs) => {
     const cAvg = {};

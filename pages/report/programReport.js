@@ -3,6 +3,19 @@ import CoursesCompetences from "./components/CoursesCompetences";
 import LosDescriptionTable from "./components/LosDescriptionTable";
 
 const programReport = ({ cookies }) => {
+  const getAvg = (avgs) => {
+    const cAvg = {};
+    let tempAvg = avgs.map((elm) => {
+      let out = {};
+      out[elm.code.toUpperCase()] = elm.avg;
+      return out;
+    });
+    tempAvg.forEach((elm) => {
+      let temp = Object.keys(elm)[0];
+      cAvg[temp] = elm[temp];
+    });
+    return cAvg;
+  };
   return (
     <div>
       <div className="flex flex-row w-screen h-screen mt-2">
