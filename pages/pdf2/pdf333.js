@@ -22,8 +22,6 @@ class CustomReactToPdf extends ReactToPdf {
         const resizedCanvas = document.createElement("canvas");
         const resizedContext = resizedCanvas.getContext("2d");
 
-
-
         const maxWidth = 1200;
         const maxHeight = 1200;
         let newWidth = canvas.width;
@@ -49,9 +47,13 @@ class CustomReactToPdf extends ReactToPdf {
         }
 
         const resizedBlob = new Promise((resolve) => {
-          resizedCanvas.toBlob((blob) => {
-            resolve(blob);
-          }, "image/jpeg", 1); //   adjust jgp quality here
+          resizedCanvas.toBlob(
+            (blob) => {
+              resolve(blob);
+            },
+            "image/jpeg",
+            0.9
+          ); //   adjust jgp quality here
         });
 
         return resizedBlob;
@@ -61,7 +63,7 @@ class CustomReactToPdf extends ReactToPdf {
           onComplete();
         }
 
-        //   Blob 
+        //   Blob
         return blob;
       });
   }
