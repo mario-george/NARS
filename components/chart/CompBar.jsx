@@ -41,7 +41,7 @@ const CompBar = (props) => {
   labels.forEach((elm, i) => {
     dataValues[0][i] = props.comp[elm]['direct'];
     dataValues[1][i] = props.comp[elm]['indirect'];
-    dataValues[2][i] = props.comp[elm]['all'];
+    dataValues[2][i] = props.comp[elm]['avg'];
   });
   
   return <Bar

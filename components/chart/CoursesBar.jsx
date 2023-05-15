@@ -40,7 +40,7 @@ const CoursesBar = (props) => {
   labels.forEach((elm, i) => {
     dataValues[0][i] = props.courses[elm]['direct'];
     dataValues[1][i] = props.courses[elm]['indirect'];
-    dataValues[2][i] = props.courses[elm]['all'];
+    dataValues[2][i] = props.courses[elm]['avg'];
   });
   
   return <Bar

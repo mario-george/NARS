@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect, useRef, useState } from "react";
-import Attainment from "@/components/chart/Attainment";
 import CoursesAttainment from "@/components/chart/CoursesAttainment";
 import CoursesBar from "@/components/chart/CoursesBar";
 import CompBar from "@/components/chart/CompBar";
@@ -10,6 +9,7 @@ const CoursesCompetences = ({ cookies }) => {
   const [courses, setCourses] = useState([]);
   const [comp, setComp] = useState({});
   const [coursesAvg, setCoursesAvg] = useState({});
+  const [target, setTarget] = useState([0, 0]);
   const [numSpecs, setNumSpecs] = useState([0, 0]); // [fill, not]
   const [numReport, setNumReport] = useState([0, 0]);
   const checkboxRefs = useRef([[]]);
@@ -99,6 +99,7 @@ const CoursesCompetences = ({ cookies }) => {
     })
     setNumReport([3, 2])
     setNumSpecs([2, 3])
+    setTarget([30, 70])
   }, []);
 
   // //to check the boxes for the given competences of courses
@@ -112,10 +113,11 @@ const CoursesCompetences = ({ cookies }) => {
   //     });
   //   });
   // });
+  console.log('ll')
 
   return (
     <>
-      {courses.length > 0 && comp.length > 0 && (
+      {1 && (
         <div className="flex flex-col w-full items-start">
         <h2 className="font-bold text-xl mb-2">
           Learning Outcomes & Competences Overall Achievement
@@ -161,17 +163,17 @@ const CoursesCompetences = ({ cookies }) => {
           </div>
         </div>
         <label className="mt-12">Courses Attainment</label>
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%]"> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%]">
           <div>
             <CoursesAttainment
               target={target}
-              cAvg={avgValues}
+              courses={coursesAvg}
               w={20}
               h={20}
               title={"Survey"}
               />
           </div>
-        {/* </div> */}
+        </div>
         
       </div>
     </div>
