@@ -117,7 +117,12 @@ export default function InstructorDashboard({ cookies }) {
       </Link>
       <Link
         className="link2 focus:text-green-400 "
-        href="/indirectAssessment/surveys"
+        href={{
+          pathname: `/indirectAssessment/surveys`,
+          query: {
+            role: "isInstructor",
+          },
+        }}
       >
         <span>
           <GrOrderedList

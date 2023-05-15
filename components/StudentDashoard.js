@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
 import { BsBook } from "react-icons/bs";
+import { GrAddCircle, GrOrderedList } from "react-icons/gr";
 import HeaderElementStudent from "./HeaderElementStudent.js";
 
 export default function StudentDashboard({ cookies }) {
@@ -84,7 +85,7 @@ export default function StudentDashboard({ cookies }) {
                   <HeaderElementStudent
                     className={``}
                     key={courseInstance.course._id}
-                    id={courseInstance.course._id}
+                    id={courseInstance._id}
                     originalId={courseInstance.course._id}
                     name={courseInstance.course.name}
                     createdAt={courseInstance.createdAt.split("T")[0]}
@@ -97,7 +98,22 @@ export default function StudentDashboard({ cookies }) {
           ),
         ]
       )}
-
+      <Link
+        className="link2 focus:text-green-400 "
+        href={{
+          pathname: "/indirectAssessment/surveys",
+          query: {
+            role: "isStudent",
+          },
+        }}
+      >
+        <span>
+          <GrOrderedList
+            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
+          />
+        </span>
+        <span className="ml-2">Surveys</span>
+      </Link>
       <button
         className="link2 focus:text-green-400 text-left"
         onClick={logoutHandler}

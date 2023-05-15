@@ -6,37 +6,61 @@ import ViewSurveys from "./components/ViewSurveys";
 const Surveys = ({ cookies }) => {
   const [courses, setCourses] = useState([]);
   const [allSurveys, setAllSurveys] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [studentSubmissions, setStudentSubmissions] = useState([]);
 
   const currentDate = Date.now();
+
+  const router = useRouter();
+  const { role } = router.query;
 
   useEffect(() => {
     getCreatedCoursesForInstructor();
   }, []);
 
+  //when the courses are ready, get the surveys
   useEffect(() => {
     if (courses.length > 0) {
       getSurveys();
     }
   }, [courses]);
 
+  //when we get the surveys, we then get the student submissions
+  useEffect(() => {
+    if (allSurveys.length > 0) {
+      if (role === "isStudent") {
+        getStudentSubmissions(allSurveys);
+      } else {
+        //this means, there's nothing else to load
+        setDataLoaded(true);
+      }
+    }
+  }, [allSurveys]);
+
   async function getCreatedCoursesForInstructor() {
+    const url = `${
+      role === "isStudent"
+        ? `${process.env.url}api/v1/users/students/getCourses/${cookies._id}`
+        : `${process.env.url}api/v1/courses/created-courses?instructor=${cookies._id}`
+    }`;
     try {
-      const data = await fetch(
-        `${process.env.url}api/v1/courses/created-courses?instructor=${cookies._id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: "Bearer " + cookies.token,
-          },
-        }
-      );
+      const data = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + cookies.token,
+        },
+      });
 
       const resp = await data.json();
 
-      setCourses(resp.data);
-      console.log("JUST SET COURSES AGAIN");
+      if (role === "isStudent") {
+        const courses = resp.courses.map((item) => item.course);
+        setCourses(courses);
+      } else {
+        setCourses(resp.data);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -44,7 +68,6 @@ const Surveys = ({ cookies }) => {
 
   async function getSurveys() {
     const requests = courses.map((course) => {
-      console.log("GETTING A SURVEY");
       return fetch(
         `${process.env.url}api/v1/surveys/?courseInstance=${course._id}`,
         {
@@ -74,6 +97,42 @@ const Surveys = ({ cookies }) => {
       });
   }
 
+  async function getStudentSubmissions(surveys) {
+    const url = `${process.env.url}api/v1/surveys/student-submissions?studentId=${cookies._id}`;
+    try {
+      const data = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + cookies.token,
+        },
+      });
+
+      const resp = await data.json();
+      const submissions = resp.data;
+
+      surveys.map((survey) => {
+        if (submissions.map((sub) => sub.survey._id).includes(survey._id)) {
+          survey.submitted = true;
+        } else {
+          survey.submitted = false;
+        }
+      });
+      surveys.sort(function (a, b) {
+        return new Date(b.dueTo) - new Date(a.dueTo);
+      });
+
+      setStudentSubmissions(resp.data);
+      setAllSurveys(surveys);
+      // setTimeout(() => {
+      setDataLoaded(true);
+      // }, 3000);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
     <div>
       <div className="flex flex-row w-screen h-screen mt-2">
@@ -81,15 +140,22 @@ const Surveys = ({ cookies }) => {
           <div className="contentAddUser2 flex flex-col gap-10 overflow-auto">
             {courses.length > 0 && (
               <>
-                <CreateSurvey
-                  courses={courses}
-                  token={cookies.token}
-                  onSurveyAdded={(data) => {
-                    getSurveys();
-                  }}
-                />
-                {allSurveys.length > 0 && (
-                  <ViewSurveys surveys={allSurveys} token={cookies.token} />
+                {role !== "isStudent" && (
+                  <CreateSurvey
+                    courses={courses}
+                    token={cookies.token}
+                    onSurveyAdded={(data) => {
+                      getSurveys();
+                    }}
+                  />
+                )}
+                {dataLoaded && (
+                  <ViewSurveys
+                    surveys={allSurveys}
+                    token={cookies.token}
+                    role={role}
+                    submissions={studentSubmissions}
+                  />
                 )}
               </>
             )}
