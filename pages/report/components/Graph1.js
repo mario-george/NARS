@@ -68,8 +68,8 @@ const CoursesCompetences = ({ cookies }) => {
     };
     get_comp();
     
-    setNumReport([3, 2])
-    setNumSpecs([2, 3])
+    // setNumReport([3, 2])
+    // setNumSpecs([2, 3])
     setTarget([30, 70])
   }, []);
 
