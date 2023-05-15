@@ -6,56 +6,20 @@ import CompBar from "@/components/chart/CompBar";
 import FillPie from "@/components/chart/FillPie";
 
 const CoursesCompetences = ({ cookies }) => {
-  const [courses, setCourses] = useState([]);
   const [comp, setComp] = useState({});
   const [coursesAvg, setCoursesAvg] = useState({});
   const [target, setTarget] = useState([0, 0]);
   const [numSpecs, setNumSpecs] = useState([0, 0]); // [fill, not]
   const [numReport, setNumReport] = useState([0, 0]);
-  const checkboxRefs = useRef([[]]);
-
-
-  checkboxRefs.current = Array.from({ length: courses.length }, () =>
-    Array.from({ length: comp.length }, () => false)
-  );
 
   useEffect(() => {
-    const get_courses = async (e) => {
-      if (e) {
-        e.preventDefault();
-      }
-      try {
-        const resp = await fetch(
-          `${process.env.url}api/v1/courses/original-courses?program=${cookies.program}`,
-          {
-            headers: {
-              Authorization: "Bearer " + cookies.token,
-            },
-          }
-        );
-        const data = await resp.json();
-        let arr = data.data;
-        arr = arr.map((e) => {
-          return {
-            id: e._id,
-            name: e.name,
-            code: e.code,
-            competences: e.competences,
-          };
-        });
-        setCourses(arr);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
     const get_comp = async (e) => {
       if (e) {
         e.preventDefault();
       }
       try {
         const resp2 = await fetch(
-          `${process.env.url}api/v1/programs/viewComp/${cookies.program}`,
+          `${process.env.url}api/v1/programs/getProgramSummary/${"641c402494aa301ff9781823"}`,
           {
             headers: {
               Authorization: "Bearer " + cookies.token,
@@ -63,64 +27,58 @@ const CoursesCompetences = ({ cookies }) => {
           }
         );
         const data2 = await resp2.json();
-        let arr2 = data2.facultyComp;
-        let arr3 = data2.departmentComp;
-        let arr4 = data2.programComp;
-        setComp([...arr2, ...arr3, ...arr4]);
+        console.log('gh', cookies.program);
+        console.log("f", data2);
+        let comp1 = data2.data.report.programCompAvgs;
+        let courses = data2.data.report.courseAvgDirect;
+        let compTemp = {};
+        let coursesTemp = {};
+        comp1.forEach(elm => {
+          compTemp[elm.code] = {
+            "direct" : elm.avg,
+          }
+        });
+        courses.forEach(elm => {
+          coursesTemp[elm.name] = {
+            "direct" : elm.avg,
+          }
+        });
+        //indirect
+        comp1 = data2.data.report.programCompAvgsIndirect;
+        courses = data2.data.report.courseAvgIndirect;
+        comp1.forEach(elm => {
+          compTemp[elm.code]["indirect"] = elm.avg;
+          compTemp[elm.code]['avg'] = (elm.avg + compTemp[elm.code]["indirect"]) / 2;
+        });
+        courses.forEach(elm => {
+          coursesTemp[elm.name]["indirect"] = elm.avg;
+          coursesTemp[elm.name]['avg'] = (elm.avg + coursesTemp[elm.name]["indirect"]) / 2;
+        });
+        console.log(courses, coursesTemp, comp1, compTemp);
+        setComp(compTemp);
+        setCoursesAvg(coursesTemp);
+
+        let specs = math.round(data2.data.report.percentageOfFillingSpecs * 100);
+        let report = math.round(data2.data.report.percentageOfFillingSpecs * 100);
+        setNumSpecs([specs, 100 - specs]);
+        setNumReport([report, 100 - report]);
       } catch (e) {
-        console.log(e);
+        console.log("rr", e);
       }
     };
-    // get_comp();
-    // get_courses();
-    setComp({
-      "A1" : {
-        "direct" : 40,
-        "indirect" : 60,
-        "avg" : 50
-      },
-      "B2" : {
-        "direct" : 70,
-        "indirect" : 80,
-        "avg" : 75
-      }
-    })
-    setCoursesAvg({
-      "Pro" : {
-        "direct" : 40,
-        "indirect" : 60,
-        "avg" : 50
-      },
-      "Lite" : {
-        "direct" : 70,
-        "indirect" : 80,
-        "avg" : 75
-      }
-    })
+    get_comp();
+    
     setNumReport([3, 2])
     setNumSpecs([2, 3])
     setTarget([30, 70])
   }, []);
-
-  // //to check the boxes for the given competences of courses
-  // courses.map((course, i) => {
-  //   let comps = course.competences;
-  //   checkboxRefs.current[i].forEach((isChecked, index) => {
-  //     comps.map((e) => {
-  //       if (e.code === comp[index].code) {
-  //         checkboxRefs.current[i][index] = true;
-  //       }
-  //     });
-  //   });
-  // });
-  console.log('ll')
 
   return (
     <>
       {1 && (
         <div className="flex flex-col w-full items-start">
         <h2 className="font-bold text-xl mb-2">
-          Learning Outcomes & Competences Overall Achievement
+          Courses & Competences Review
         </h2>
         <div className="h-0.5 w-full bg-gray-300 mb-2" />
         <div className="flex flex-col w-full items-center">
@@ -139,7 +97,7 @@ const CoursesCompetences = ({ cookies }) => {
             <FillPie
               title={"Filed Course Report"}
               title2={"Course Report"}
-              num={numSpecs}
+              num={numReport}
               w={60}
               h={60}
             />

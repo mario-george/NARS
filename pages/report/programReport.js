@@ -27,7 +27,7 @@ const programReport = ({ cookies }) => {
             </label>
             <CoursesCompetences cookies={cookies} />
             <LosDescriptionTable />
-            <Graph1/>
+            <Graph1 cookies={cookies}/>
           </div>
         </form>
       </div>
