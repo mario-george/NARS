@@ -25,6 +25,8 @@ const TopicsTable = ({ lectureTopics, learningOutcomes, courseID, token }) => {
         achieved: lectureTopic.achieved,
       });
     });
+    console.log(learningOutcomes)
+
 
     setTopics(currentTopics);
   }

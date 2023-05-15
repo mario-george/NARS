@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRef, useEffect } from "react";
 import Cookies from "js-cookie";
 import Checkbox from "@/components/checkbox/checkbox";
@@ -14,15 +14,18 @@ import { saveAs } from "file-saver";
 import { PDFDocument } from "pdf-lib";
 import { Worker } from "pdfjs-dist/legacy/build/pdf.worker.entry";
 import * as pdfjs from "pdfjs-dist";
-import LZString from 'lz-string';
-import resizeBlobs from '../getPdf/resizeBlob'
+import LZString from "lz-string";
+import resizeBlobs from "../getPdf/resizeBlob";
+import { updateField } from "@/components/store/userSlice";
 // Compress PDF Blob using lz-string
 const compressBlob = (pdfBlob) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       const compressedData = LZString.compressToUint8Array(event.target.result);
-      const compressedBlob = new Blob([compressedData], { type: 'application/pdf' });
+      const compressedBlob = new Blob([compressedData], {
+        type: "application/pdf",
+      });
       resolve(compressedBlob);
     };
     reader.onerror = reject;
@@ -30,22 +33,37 @@ const compressBlob = (pdfBlob) => {
   });
 };
 
-// Decompress 
-
+// Decompress
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const part10 = ({ cookies }) => {
-  const courseSpecs=cookies.courseSpecs
-  useEffect(()=>{
- 
-    const getData = async function (){
-    
+  const courseSpecs = cookies.courseSpecs;
+  const d = useDispatch();
+  const [t, setT] = useState(true);
+  const refArray = [
+    "Classroom",
+    "Smart Board",
+    "Lecture Hall",
+    "White Board",
+    "Sound and Microphone",
+    "Data Show",
+    "Computer with software",
+    "MIS system",
+    "Internet Access",
+  ];
+  const checkboxRefs = useRef(
+    Array.from({ length: refArray.length }, () => false)
+  );
+  const checkboxRefs2 = useRef(false);
+  const [tableData, setTableData] = useState(checkboxRefs.current);
+  const [tableData2, setTableData2] = useState(checkboxRefs2.current);
+
+  useEffect(() => {
+    const getData = async function () {
       const r = await fetch(
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
-    
-    
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
@@ -54,23 +72,105 @@ const part10 = ({ cookies }) => {
         }
       );
       const data = await r.json();
-      console.log(data)
+      console.log(data);
 
+      const length1 = cookies.courseLearningOutcomes[0].learningOutcomes.length;
 
-    }
-    getData()
-    },[])
+      try {
+        if (t) {
+          let splicedArr = data.data.courseSpecs.facilities;
+          const mc = data.data.courseSpecs.facilities;
+          console.log(checkboxRefs.current);
+          let d = false;
+          for (let j = 0; j < mc.length; j++) {
+            const ind = refArray.indexOf(mc[j]);
+            if (ind >= 0) {
+              checkboxRefs.current[ind] = true;
+            } else {
+              other.current.value = mc[j];
+              splicedArr = mc.filter((element) => element !== mc[j]);
+              setHandler(true);
+            }
+            setTableData([...checkboxRefs.current]);
+          }
+          setTableData([...checkboxRefs.current]);
+          setSelectedItems(splicedArr);
+          setT(false);
+        }
+
+        console.log(checkboxRefs.current);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getData();
+  }, []);
+  useEffect(() => {
+    const getData = async function () {
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data);
+      console.log(data.data.courseSpecs);
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
+
+      // if (
+      //   lecture.current &&
+      //   special.current &&
+      //   hours.current &&
+      //   semester.current &&
+      //   practice.current
+      // ) {
+      //   lecture.current.value = data.data.courseSpecs.courseData.lectures;
+      //   hours.current.value = data.data.courseSpecs.courseData.contactHours;
+      //   special.current.value = data.data.courseSpecs.courseData.specialization;
+      //   semester.current.value = data.data.courseSpecs.courseData.semester;
+      //   practice.current.value = data.data.courseSpecs.courseData.practice;
+      // }
+
+      console.log(data);
+    };
+
+    getData();
+  }, []);
+  useEffect(() => {
+    const getData = async function () {
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await r.json();
+      console.log(data);
+    };
+    getData();
+  }, []);
   const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const sendPdfBlob=async(blob)=>{
+  const sendPdfBlob = async (blob) => {
     const formData = new FormData();
 
     formData.append("courseInstance", courseID);
     formData.append("courseSpcs", blob, "mypdf.pdf");
-    const r = await fetch(`${process.env.url}api/v1/courses/specsPdf/`, {
+    try{
+      const r = await fetch(`${process.env.url}api/v1/courses/specsPdf/`, {
         method: "POST",
         body: formData,
         headers: {
@@ -78,10 +178,14 @@ const part10 = ({ cookies }) => {
           Authorization: "Bearer " + token,
         },
       });
-
+  
       const resp = await r.json();
       console.log(resp);
-  }
+    }catch(e){
+      console.log(e)
+    }
+  
+  };
   const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
   const downloadMergedPDF = async () => {
@@ -177,13 +281,13 @@ const part10 = ({ cookies }) => {
       blob6,
       blob7,
       blob8,
-      blob9,  
+      blob9,
       blob10,
     ];
     const mergedBlob = await mergeTest(ImgBlobs);
     // const compressedBlob = await compressBlob(mergedBlob);
-// console.log(compressedBlob)
-sendPdfBlob(mergedBlob)
+    // console.log(compressedBlob)
+    sendPdfBlob(mergedBlob);
     saveAs(mergedBlob, "CourseSpecs.pdf");
     console.log("asdsadsad");
     console.log(mergedBlob);
@@ -307,11 +411,16 @@ sendPdfBlob(mergedBlob)
     setHandler(!handler);
   };
   const other = useRef();
-  const handleCheckboxChange = (value, isChecked) => {
-    if (isChecked) {
-      setSelectedItems([...selectedItems, value]);
+  const handleCheckboxChange = (value, isChecked, index) => {
+    console.log(checkboxRefs.current);
+    checkboxRefs.current[index] = !checkboxRefs.current[index];
+    setTableData([...checkboxRefs.current]);
+    let removeItem = refArray[index];
+    if (checkboxRefs.current[index]) {
+      setSelectedItems([...selectedItems, refArray[index]]);
     } else {
-      setSelectedItems(selectedItems.filter((item) => item !== value));
+      let newArray = selectedItems.filter((item) => item !== removeItem);
+      setSelectedItems(newArray);
     }
   };
   /*if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
@@ -330,8 +439,15 @@ sendPdfBlob(mergedBlob)
   ];
 
   const submitHandler = async (e) => {
+    console.log(selectedItems);
+    console.log(checkboxRefs);
     buttonRef.current.click();
-
+    let sentArr = [];
+    if (handler) {
+      sentArr = selectedItems.concat([other.current.value]);
+    } else {
+      sentArr = selectedItems;
+    }
     e.preventDefault();
     const r = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${courseID}`,
@@ -339,7 +455,7 @@ sendPdfBlob(mergedBlob)
         method: "PATCH",
         body: JSON.stringify({
           courseSpecs: {
-            facilities: selectedItems.concat([other.current.value]),
+            facilities: sentArr,
           },
         }),
         headers: {
@@ -383,12 +499,14 @@ sendPdfBlob(mergedBlob)
             </p>
             <div className="">
               <div className="grid grid-cols-3 gap-4">
-                {items.map((item) => (
+                {items.map((item, index) => (
                   <Checkbox
                     key={item}
                     label={item}
                     value={item}
+                    index={index}
                     onChange={handleCheckboxChange}
+                    checkboxRefs={checkboxRefs}
                   />
                 ))}
                 <div className="flex items-center  space-x-3">
@@ -396,6 +514,7 @@ sendPdfBlob(mergedBlob)
                     type="checkbox"
                     className="w-6 h-6"
                     onChange={addOtherHander}
+                    checked={handler === true}
                   />
                   <input
                     type="text"
