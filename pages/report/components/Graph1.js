@@ -1,11 +1,15 @@
 import React from "react";
 import { useEffect, useRef, useState } from "react";
 import Attainment from "@/components/chart/Attainment";
+import CoursesAttainment from "@/components/chart/CoursesAttainment";
+import CoursesBar from "@/components/chart/CoursesBar";
+import CompBar from "@/components/chart/CompBar";
+import FillPie from "@/components/chart/FillPie";
 
 const CoursesCompetences = ({ cookies }) => {
   const [courses, setCourses] = useState([]);
   const [comp, setComp] = useState({});
-  const [coursesAvg, setCourseAvg] = useState({});
+  const [coursesAvg, setCoursesAvg] = useState({});
   const [numSpecs, setNumSpecs] = useState([0, 0]); // [fill, not]
   const [numReport, setNumReport] = useState([0, 0]);
   const checkboxRefs = useRef([[]]);
@@ -81,7 +85,7 @@ const CoursesCompetences = ({ cookies }) => {
         "avg" : 75
       }
     })
-    setCourses({
+    setCoursesAvg({
       "Pro" : {
         "direct" : 40,
         "indirect" : 60,
@@ -118,10 +122,48 @@ const CoursesCompetences = ({ cookies }) => {
         </h2>
         <div className="h-0.5 w-full bg-gray-300 mb-2" />
         <div className="flex flex-col w-full items-center">
-        <label className="mt-12">Competences Achievement</label>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%]">
+        <label className="mt-12">Courses Specs and Report Filled</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] mb-10">
           <div>
-            <Attainment
+            <FillPie
+              title={"Filed Course Specs"}
+              title2={"Course Specs"}
+              num={numSpecs}
+              w={60}
+              h={60}
+            />
+          </div>
+          <div>
+            <FillPie
+              title={"Filed Course Report"}
+              title2={"Course Report"}
+              num={numSpecs}
+              w={60}
+              h={60}
+            />
+          </div>
+        </div>
+        <label className="mt-12">Courses and Competences Achievement</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] mb-10">
+          <div>
+            <CoursesBar
+              courses={coursesAvg}
+              w={60}
+              h={60}
+            />
+          </div>
+          <div>
+            <CompBar
+              comp={comp}
+              w={60}
+              h={60}
+            />
+          </div>
+        </div>
+        <label className="mt-12">Courses Attainment</label>
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%]"> */}
+          <div>
+            <CoursesAttainment
               target={target}
               cAvg={avgValues}
               w={20}
@@ -129,31 +171,8 @@ const CoursesCompetences = ({ cookies }) => {
               title={"Survey"}
               />
           </div>
-          <div>
-            <AttainmentPie target={target} cAvg={avgValues} title={"Survey"} />
-          </div>
-        </div>
-        <label className="mt-12">Learning Outcomes Achievement</label>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] mb-10">
-          <div>
-            <CLOAttainment
-              target={target}
-              clomap={learningOutcomes}
-              title={"Survey"}
-              w={20}
-              h={20}
-              avgLOS={avgLOS}
-            />
-          </div>
-          <div>
-            <CLOAttainmentPie
-              target={target}
-              clomap={learningOutcomes}
-              title={"Survey"}
-              avgLOS={avgLOS}
-            />
-          </div>
-        </div>
+        {/* </div> */}
+        
       </div>
     </div>
       )}

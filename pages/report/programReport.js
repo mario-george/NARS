@@ -1,6 +1,7 @@
 import React from "react";
 import CoursesCompetences from "./components/CoursesCompetences";
 import LosDescriptionTable from "./components/LosDescriptionTable";
+import Graph1 from './components/Graph1';
 
 const programReport = ({ cookies }) => {
   const getAvg = (avgs) => {
@@ -26,6 +27,7 @@ const programReport = ({ cookies }) => {
             </label>
             <CoursesCompetences cookies={cookies} />
             <LosDescriptionTable />
+            <Graph1/>
           </div>
         </form>
       </div>

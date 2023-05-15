@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 const CoursesBar = (props) => {
-  // target, courses, w, h
+  // courses, w, h
 
   const labels = Object.keys(props.courses);
 
@@ -31,7 +31,6 @@ const CoursesBar = (props) => {
     new Array(labels.length).fill(0),
   ];
 
-  const target = props.target;
   const bg  = [
     'rgba(119, 221, 119, 1)',
     'rgba(108, 160, 220, 1)',
