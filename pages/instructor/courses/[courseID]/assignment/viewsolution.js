@@ -15,8 +15,9 @@ const viwesolution = ({ cookies }) => {
         document.querySelector("body").classList.add("scrollbar-none");
     });
     const router = useRouter();
-    const { courseID } = router.query;
     const [solution, setSolution] = useState([]);
+    const {assignmentID,possibleMarks} = router.query;
+    console.log("id hereeeeeeee",assignmentID);
     // const cookies = useSelector((s) => s.cookies);
     console.log(cookies.token);
     useEffect(() => {
@@ -30,7 +31,7 @@ const viwesolution = ({ cookies }) => {
         }
         try {
             const resp = await fetch(
-                `${process.env.url}api/v1/courses/assignmentSolution`,
+                `${process.env.url}api/v1/courses/assignmentSolution?Assignment=${assignmentID}`,
                 {
                     headers: {
                         Authorization: "Bearer " + cookies.token,
@@ -46,7 +47,7 @@ const viwesolution = ({ cookies }) => {
                     id: e._id,
                     name: e.name,
                     Assignment: e.Assignment,
-                    Mark:e.Mark
+                    Mark: e.Mark
                 };
             });
             setSolution(arr);
@@ -109,7 +110,7 @@ const viwesolution = ({ cookies }) => {
                                 </div>
                             </div>
                             {solution.map((e) => (
-                                <SolutionFileItem id={e.id} name={e.name} Assignment={e.Assignment} cookies={cookies} Mark={e.Mark}/>
+                                <SolutionFileItem id={e.id} name={e.name} possibleMarks={possibleMarks} cookies={cookies} Mark={e.Mark}  />
                             ))}
                         </div>
                     </div>

@@ -14,16 +14,14 @@ export default function AdminDashBoard() {
   const navStatus = useSelector((s) => s.user.navStatus);
   const dispatch = useDispatch();
   const logoutHandler = () => {
-    dispatch(userActions.logOut());
-     router.push('/logout')
+    router.push('/logout')
 
     //window.location.href = "/logout";
   };
   return (
     <nav
-      className={`nav2 transition-all duration-300 transform ${
-        navStatus ? ` -translate-x-full` : `translate-x-0 `
-      }`}
+      className={`nav2 transition-all duration-300 transform ${navStatus ? ` -translate-x-full` : `translate-x-0 `
+        }`}
     >
       <Link className="link2 focus:text-green-400 " href="/profile">
         <span>
@@ -121,6 +119,26 @@ export default function AdminDashBoard() {
             href="/admin/staff/search-staff"
           >
             Search staff
+          </Link>,
+          <Link
+            className={
+              router.pathname === "/admin/staff/staffroles"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/admin/staff/staffroles"
+          >
+            Add roles
+          </Link>,
+          <Link
+            className={
+              router.pathname === "/admin/staff/removeroles"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/admin/staff/removeroles"
+          >
+            Remove roles
           </Link>,
         ]
       )}

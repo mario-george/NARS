@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRef } from "react";
 import React from "react";
-const assigninstrctor = ({ cookies }) => {
+const deleteFaculty = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
   if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
@@ -179,4 +179,4 @@ const assigninstrctor = ({ cookies }) => {
     </>
   );
 };
-export default assigninstrctor;
+export default deleteFaculty;

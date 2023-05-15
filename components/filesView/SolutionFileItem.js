@@ -4,7 +4,7 @@ import { useRef } from "react";
 import InsertDriveFileRounded from "@mui/icons-material/InsertDriveFileRounded";
 
 
-const solutionFileItem = ({ name, id, Assignment, cookies, Mark }) => {
+const solutionFileItem = ({ name, id, possibleMarks, cookies, Mark }) => {
     const mark = useRef();
     async function updateGrades() {
         const r = await fetch(`${process.env.url}api/v1/courses/assignmentSolution/${id}`, {
@@ -25,12 +25,8 @@ const solutionFileItem = ({ name, id, Assignment, cookies, Mark }) => {
     }
     return (
         <div className="fileItem ">
-            <span
-                href={`${process.env.url}api/v1/courses/assignment/${id}`}
-                target="_blank"
-                download
-            >
-                <Link className="fileItem--left" title="Click here to dowload the file" href={`${process.env.url}api/v1/courses/assignment/${id}`}
+            <span>
+                <Link className="fileItem--left" title="Click here to dowload the file" href={`${process.env.url}api/v1/courses/assignmentSolution/${id}`}
                     target="_blank"
                     download>
                     <InsertDriveFileRounded />
@@ -48,7 +44,7 @@ const solutionFileItem = ({ name, id, Assignment, cookies, Mark }) => {
                     <input
                         type="number"
                         className="w-10"
-                        value={30}
+                        value={possibleMarks}
                         disabled
                     />
                 </div>

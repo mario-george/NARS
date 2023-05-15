@@ -47,6 +47,7 @@ const viewassignments = ({ cookies }) => {
           name: e.name,
           course: e.course,
           deuTO: e.deuTO.split("T")[0],
+          possibleMarks:e.possibleMarks
         };
       });
       setExam(arr);
@@ -55,7 +56,7 @@ const viewassignments = ({ cookies }) => {
       console.log(e);
     }
   };
-
+console.log(exam);
   if (exam.length === 0) {
     return (
      
@@ -109,7 +110,7 @@ const viewassignments = ({ cookies }) => {
                   </div>
                 </div>
                 {exam.map((e) => (
-                  <AssignFileItem id={e.id} name={e.name} dueTo={e.deuTO} />
+                  <AssignFileItem id={e.id} name={e.name} dueTo={e.deuTO} courseID={courseID} possibleMarks={e.possibleMarks}/>
                 ))}
               </div>
             </div>
