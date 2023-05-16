@@ -7,6 +7,9 @@ import Cookies from "js-cookie";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
 import { VscChecklist } from "react-icons/vsc";
+import { CgProfile } from "react-icons/cg";
+import { CgLogOut } from "react-icons/cg";
+import { VscChecklist } from "react-icons/vsc";
 
 export default function QualityCoordinatorDashboard() {
   const router = useRouter();
@@ -45,16 +48,26 @@ export default function QualityCoordinatorDashboard() {
 
       <Link
         className="link2 focus:text-green-400 "
-        href="/report/programReport"
+        href="/qualitycoordinator/coursecomp"
       >
         <span>
           <VscChecklist
             style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
           />
         </span>
-        <span className="ml-2">Program Report</span>
+        <span className="ml-2">Assign courses competences</span>
       </Link>
-
+      <Link
+        className="link2 focus:text-green-400 "
+        href="/qualitycoordinator/downloadSpecs"
+      >
+        <span>
+          <VscChecklist
+            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
+          />
+        </span>
+        <span className="ml-2">Download courses Specs</span>
+      </Link>
       <button
         className="link2 focus:text-green-400 text-left"
         onClick={logoutHandler}

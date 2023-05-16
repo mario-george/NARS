@@ -25,10 +25,11 @@ const part2 = ({ cookies }) => {
       );
       const data = await r.json();
       console.log(data)
-      const references=courseSpecs.references
+      const references=data.data.courseSpecs.references
       notes.current.value=references.courseNotes
 websites.current.value=references.courseWebsites
-books.current.value=references.bookes
+console.log(references)
+books.current.value=references.books[0]
 Rbooks.current.value=references.recommendedBooks
 
     }
@@ -95,7 +96,7 @@ Rbooks.current.value=references.recommendedBooks
           courseSpecs: {
             references: {
               courseNotes: notes.current.value,
-              bookes: books.current.value,
+              books: books.current.value,
               recommendedBooks: Rbooks.current.value,
               courseWebsites: websites.current.value,
             },
@@ -175,7 +176,7 @@ Rbooks.current.value=references.recommendedBooks
               </div>
             </div>
           </div>
-          <div className="flex justify-end absolute bottom-[10rem] right-[7rem]">
+          <div className="flex justify-end absolute bottom-[8rem] right-[7rem]">
             <button
               type="submit"
               class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
