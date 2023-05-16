@@ -12,10 +12,10 @@ const TopicsTable = ({ lectureTopics, learningOutcomes, courseID, token }) => {
   }, []);
 
   function mapTopics(lectureTopics) {
-    console.log("ORIGINAL COURSES", lectureTopics);
     const currentTopics = [];
     lectureTopics.forEach((lectureTopic) => {
       const learningOutcomes = lectureTopic.learningOutcomes
+        .filter((lo) => lo != null)
         .filter((lo) => lo.selected)
         .map((lo) => lo.code);
       currentTopics.push({
@@ -25,6 +25,7 @@ const TopicsTable = ({ lectureTopics, learningOutcomes, courseID, token }) => {
         achieved: lectureTopic.achieved,
       });
     });
+    console.log(learningOutcomes);
 
     setTopics(currentTopics);
   }

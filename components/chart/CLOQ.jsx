@@ -24,14 +24,18 @@ const CLOQ = (props) => {
   const labels = Object.keys(props.clomap);
   const dataValue = [];
 
+  console.log("ELEMENTS",labels);
   labels.forEach((elm) => {
     //question for CLO
     const cloqs = new Set();
     //competencies for CLO
+    console.log("LOS HEREEEEEE",props.clomap);
+    console.log("COMPETENCE HEREEEEEE",props.cmap);
     const clocmp = props.clomap[elm];
 
     clocmp.forEach(elm => {
       //question for competencies
+    console.log("COMPETENCE ELEMENT",props.cmap[elm]);
       const cqs = props.cmap[elm];
       
       cqs.forEach(elm => {

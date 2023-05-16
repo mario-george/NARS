@@ -9,7 +9,7 @@ import { useEffect, useState, useRef } from "react";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
 import { BsBook } from "react-icons/bs";
-import { GrAddCircle } from "react-icons/gr";
+import { GrAddCircle, GrOrderedList } from "react-icons/gr";
 
 export default function InstructorDashboard({ cookies }) {
   const [c, sC] = useState([]);
@@ -19,12 +19,7 @@ export default function InstructorDashboard({ cookies }) {
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
-    //window.location.href = "/logout";
-     r.push('/logout')
-  };
-  const handel_set_cookies = (e) => {
-    Cookies.set("instance_id", e);
-    //window.location.href=`/instructor/courses/${e}/courseSpecs/part1`
+    r.push("/logout");
   };
 
   useEffect(() => {
@@ -119,6 +114,22 @@ export default function InstructorDashboard({ cookies }) {
           />
         </span>
         <span className="ml-2">Create course </span>
+      </Link>
+      <Link
+        className="link2 focus:text-green-400 "
+        href={{
+          pathname: `/indirectAssessment/surveys`,
+          query: {
+            role: "isInstructor",
+          },
+        }}
+      >
+        <span>
+          <GrOrderedList
+            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
+          />
+        </span>
+        <span className="ml-2">Surveys</span>
       </Link>
       <button
         className="link2 focus:text-green-400 text-left"

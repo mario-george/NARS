@@ -5,11 +5,11 @@ const nextConfig = {
     url: "http://localhost:80/",
   },
   images: {
-    domains: ['localhost'],
+    domains: ["localhost"],
   },
   devIndicators: {
-    buildActivity: false
-}
+    buildActivity: false,
+  },
 };
 
 module.exports = nextConfig;

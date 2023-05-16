@@ -1,15 +1,17 @@
-import Textarea from "@/components/Textarea/Textarea";
-import React, { useState, useRef, forwardRef } from "react";
+import Textarea from "@/components/Textarea/textAreaLOS";
+import React, { useState, useRef, forwardRef, v2, useEffect } from "react";
 import Autocomplete from "react-autocomplete";
 
-const BloomTaxonomyInput = forwardRef((props,ref) => {
-  const  bloomVerbs = props.bloomVerbs;
-  const  v = props.v;
-  const [selectedSentence, setSelectedSentence] = useState("");
+const BloomTaxonomyInput = forwardRef((props, ref) => {
+  const bloomVerbs = props.bloomVerbs;
+  let v = props.v;
+  const [selectedSentence, setSelectedSentence] = useState(props.v || "");
+
   const handleSentenceChange = (event) => {
     const newValue = event.target.value;
     if (newValue !== selectedSentence) {
       setSelectedSentence(newValue);
+      ref.current.value = newValue;
     }
   };
 
@@ -28,6 +30,7 @@ const BloomTaxonomyInput = forwardRef((props,ref) => {
       const last = words[words.length - 1];
       setSelectedSentence(mergedWords + " " + item.key);
     };
+
     return (
       <div className="relative">
         <div
@@ -63,7 +66,14 @@ const BloomTaxonomyInput = forwardRef((props,ref) => {
   });
 
   return (
-    <Textarea v={v} ref={ref} small={true} rows={0}  className="w-full  mb-[2.5rem] mr-[5rem] items-center  ">
+    <div
+      v={v}
+      ref={ref}
+      small={true}
+      key={v}
+      rows={0}
+      className="w-full pb-[4rem] mr-[5rem] items-center  "
+    >
       <Autocomplete
         ref={ref}
         getItemValue={(item) => item}
@@ -85,12 +95,14 @@ const BloomTaxonomyInput = forwardRef((props,ref) => {
         renderMenu={renderMenu}
         inputProps={{
           id: "sentence",
-          className: `relative border-gray-300 border-2 rounded-md py-2 px-3 input-form w-[300%]   `,
+          className: `relative border-gray-300 border-2 rounded-md py-2 px-3 input-form px-[1rem] transform translate-y-4  `,
+          style: { width: "300%" },
+          defaultValue: "asd", // add this line
         }}
         wrapperProps={{ className: `absolute  ` }}
         menuStyle={{ position: `absolute  `, zIndex: "10" }}
       />
-    </Textarea>
+    </div>
   );
 });
 
