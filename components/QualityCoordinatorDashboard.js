@@ -33,19 +33,6 @@ export default function QualityCoordinatorDashboard() {
         </span>
         <span className="ml-2">Profile</span>
       </Link>
-
-      <Link
-        className="link2 focus:text-green-400 "
-        href="/qualitycoordinator/coursecomp"
-      >
-        <span>
-          <VscChecklist
-            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
-          />
-        </span>
-        <span className="ml-2">Assign courses competences</span>
-      </Link>
-
       <Link
         className="link2 focus:text-green-400 "
         href="/qualitycoordinator/coursecomp"
