@@ -57,7 +57,8 @@ const uploadsolution = ({ cookies }) => {
         data.append("solutionPath", selectedFile);
         data.append("Assignment", name.current.value);
         data.append("course", courseID);
-        data.append("name", solution.current.value)
+        data.append("name", solution.current.value);
+        data.append("student",cookies._id);
 
         try {
             const r = await fetch(`${process.env.url}api/v1/courses/assignmentSolution`, {
