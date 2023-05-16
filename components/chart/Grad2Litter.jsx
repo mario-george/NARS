@@ -36,6 +36,7 @@ const Grad2Litter = (props) => {
     return out
   })
 
+  console.log("DATAAAAAAAAAAAAAAAAAAa",JSON.stringify(props.data));
   
   props.data.forEach(elm => {
     if(elm >= 94){dataValue[0] += 1;}

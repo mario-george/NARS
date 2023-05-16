@@ -128,7 +128,7 @@ const courseReport = ({ cookies }) => {
       blob7,
       blob8,
       // blob9,
-      
+
       // blob10,
     ];
     const mergedBlob = await mergeTest(ImgBlobs);
@@ -452,6 +452,8 @@ const courseReport = ({ cookies }) => {
       let temp = Object.keys(elm)[0];
       cAvg[temp] = elm[temp];
     });
+    console.log("ORIGINAL AVG VALUES", JSON.stringify(avgs));
+    console.log("CALCULATED AVG VALUES", JSON.stringify(cAvg));
     return cAvg;
   };
 
@@ -507,14 +509,16 @@ const courseReport = ({ cookies }) => {
       tempIt.push(getAvgLOs(jsonData.data.report.avgLOSInDirect));
       setAvgValuesLOs(getAvgLOs(jsonData.data.report.avgLOSInDirect));
       tempIt.push([
-        jsonData.data.course.target.minTarget,
-        jsonData.data.course.target.maxTarget,
+        jsonData.data.course.minTarget,
+        jsonData.data.course.maxTarget,
       ]);
       setTarget([
-        jsonData.data.course.target.minTarget,
-        jsonData.data.course.target.maxTarget,
+        jsonData.data.course.minTarget,
+        jsonData.data.course.maxTarget,
       ]);
       const { final, midterm } = examGrades;
+      console.log("final ", JSON.stringify(final));
+      console.log("midterm ", JSON.stringify(midterm));
       setCompetenciesMap(competences);
       setQuestionsGrades(questionsGrades);
       setQuestions(jsonData.data.report.questions);
@@ -606,12 +610,12 @@ const courseReport = ({ cookies }) => {
                         courseCompetences={courseCompetences}
                         learningOutcomes={courseLearningOutcomes}
                       />
-                        <TopicsTable
-                          lectureTopics={lectureTopics}
-                          learningOutcomes={courseLearningOutcomes}
-                          courseID={courseID}
-                          token={cookies.token}
-                        />
+                      <TopicsTable
+                        lectureTopics={lectureTopics}
+                        learningOutcomes={courseLearningOutcomes}
+                        courseID={courseID}
+                        token={cookies.token}
+                      />
                     </div>
 
                     <div className="flex flex-col justify-center items-center">
@@ -620,6 +624,14 @@ const courseReport = ({ cookies }) => {
                           mid={mid}
                           final={final}
                           numberOfStudents={numberOfStudents}
+                        />
+                      </div>
+                      <div className="w-full" ref={refToImgBlob4}>
+                        <CompetencesLosGrades
+                          numberOfStudents={numberOfStudents}
+                          avgValues={avgValues}
+                          competenciesMap={competenciesMap}
+                          learningOutcomes={learningOutcomes}
                         />
                       </div>
                       <div className="w-full" ref={refToImgBlob3}>
@@ -631,11 +643,11 @@ const courseReport = ({ cookies }) => {
                           learningOutcomes={learningOutcomes}
                         />
                       </div>
-                      <div className="w-full" ref={refToImgBlob4}>
-                        <CompetencesLosGrades
+                      <div className="w-full" ref={refToImgBlob6}>
+                        <CompetencesLosSurvey
                           numberOfStudents={numberOfStudents}
-                          avgValues={avgValues}
-                          competenciesMap={competenciesMap}
+                          avgLOS={avgValuesLOs}
+                          avgValues={avgValuesSurvey}
                           learningOutcomes={learningOutcomes}
                         />
                       </div>
@@ -649,11 +661,12 @@ const courseReport = ({ cookies }) => {
                           learningOutcomes={learningOutcomes}
                         />
                       </div>
-                      <div className="w-full" ref={refToImgBlob6}>
-                        <CompetencesLosSurvey
+                      <div className="w-full" ref={refToImgBlob8}>
+                        <CompetencesLosOverall
                           numberOfStudents={numberOfStudents}
                           avgLOS={avgValuesLOs}
-                          avgValues={avgValuesSurvey}
+                          avgValues={avgValues}
+                          avgValuesSurvey={avgValuesSurvey}
                           learningOutcomes={learningOutcomes}
                         />
                       </div>
@@ -665,15 +678,6 @@ const courseReport = ({ cookies }) => {
                           avgValues={avgValues}
                           avgValuesSurvey={avgValuesSurvey}
                           numberOfStudents={numberOfStudents}
-                          learningOutcomes={learningOutcomes}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob8}>
-                        <CompetencesLosOverall
-                          numberOfStudents={numberOfStudents}
-                          avgLOS={avgValuesLOs}
-                          avgValues={avgValues}
-                          avgValuesSurvey={avgValuesSurvey}
                           learningOutcomes={learningOutcomes}
                         />
                       </div>
