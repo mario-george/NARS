@@ -456,6 +456,7 @@ const courseReport = ({ cookies }) => {
     console.log("CALCULATED AVG VALUES", JSON.stringify(cAvg));
     return cAvg;
   };
+  
 
   const getAvgLOs = (avgs) => {
     const cAvg = {};
@@ -532,17 +533,17 @@ const courseReport = ({ cookies }) => {
       tempIt.push(jsonData.data.report.questions);
       let myTemp = [];
       if (
-        Object.keys(tempIt[1]) == "undefined" ||
-        Object.keys(tempIt[4]) == "undefined"
+        typeof(tempIt[1]) == "undefined" ||
+        typeof(tempIt[4]) == "undefined"
       ) {
         myTemp.push("Direct Assessment isn't Completed yet");
       }
-      if (!tempIt[3][0]) {
+      if (!tempIt[3][1]) {
         myTemp.push("Target isn't given");
       }
       if (
-        Object.keys(tempIt[1]) == "undefined" ||
-        Object.keys(tempIt[2]) == "undefined"
+        typeof(tempIt[1]) == "undefined" ||
+        typeof(tempIt[2]) == "undefined"
       ) {
         myTemp.push("Indirect Assessment isn't Completed yet");
       }
@@ -550,6 +551,7 @@ const courseReport = ({ cookies }) => {
         myTemp.push("Course Specs isn't Completed yet");
       }
       setWantedData(myTemp);
+      console.log(jsonData.data)
     } catch (e) {
       console.log("ERROR", e);
     }
