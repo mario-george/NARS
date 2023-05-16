@@ -19,7 +19,7 @@ const CoursesCompetences = ({ cookies }) => {
       }
       try {
         const resp2 = await fetch(
-          `${process.env.url}api/v1/programs/getProgramSummary/${"641c402494aa301ff9781823"}`,
+          `${process.env.url}api/v1/programs/getProgramSummary/${cookies.program}`,
           {
             headers: {
               Authorization: "Bearer " + cookies.token,
@@ -27,7 +27,7 @@ const CoursesCompetences = ({ cookies }) => {
           }
         );
         const data2 = await resp2.json();
-        console.log('gh', cookies.program);
+        // console.log('gh', cookies.program);
         let comp1 = data2.data.report.programCompAvgs;
         let courses = data2.data.report.courseAvgDirect;
         let compTemp = {};
@@ -56,20 +56,20 @@ const CoursesCompetences = ({ cookies }) => {
         setComp(compTemp);
         setCoursesAvg(coursesTemp);
 
-        //const resp3 = await fetch(
-        //   `${process.env.url}api/v1/programs/getProgramSummary/${"641c402494aa301ff9781823"}`,
-        //   {
-        //     headers: {
-        //       Authorization: "Bearer " + cookies.token,
-        //     },
-        //   }
-        // );
-        // const data3 = await resp3.json();
-        //let specs = Math.round(data3.data.percentageOfFillingSpecs * 100);
-        // let report = Math.round(data3.data.percentageOfFillingReport * 100);
+        const resp3 = await fetch(
+          `${process.env.url}api/v1/programs/getProgramSummary/${cookies.program}/percentageSpecsAndReports`,
+          {
+            headers: {
+              Authorization: "Bearer " + cookies.token,
+            },
+          }
+        );
+        const data3 = await resp3.json();
+        let specs = Math.round(data3.data.percentageOfFillingSpecs * 100);
+        let report = Math.round(data3.data.percentageOfFillingReport * 100);
         
-        let specs = Math.round(data2.data.report.percentageOfFillingSpecs * 100);
-        let report = Math.round(data2.data.report.percentageOfFillingReport * 100);
+        // let specs = Math.round(data2.data.report.percentageOfFillingSpecs * 100);
+        // let report = Math.round(data2.data.report.percentageOfFillingReport * 100);
         console.log(specs, report);
         setNumSpecs([specs, 100 - specs]);
         setNumReport([report, 100 - report]);
