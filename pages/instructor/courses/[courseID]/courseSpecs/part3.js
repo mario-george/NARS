@@ -300,10 +300,8 @@ const part3 = ({ cookies }) => {
     e.preventDefault();
     handleSubmit();
 
-    // window.location.href="/instructor/coursespecs/part4"
     setTimeout(() => {
       console.log("capturing");
-      // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part4`;
       router.push(`/instructor/courses/${courseID}/courseSpecs/part4`);
     }, 1000);
   };
@@ -315,19 +313,19 @@ const part3 = ({ cookies }) => {
       </CustomReactToPdf>
       <form
         onSubmit={submitHandler}
-        className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1  overflow-auto"
+        className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1  overflow-auto"
       >
-        <div className="mt-[8rem] contentAddUserFlexible">
+        <div className="contentAddUserFlexible2 flex flex-col gap-10 ">
         <div
           className=" flex flex-col"
           ref={refToImgBlob}
         >
           <div className="flex gap-20 ">
-            <div className="flex flex-col mt-[5rem] w-full">
+            <div className="flex flex-col mb-[8rem] pb-[7rem] w-full ">
               <label class="label-form md:text-2xl  my-10">
                 Learning Outcomes
               </label>
-              <div class="flex space-y-[1rem] items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
+              <div class="flex  items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
                 <div>Cognitive Domain</div>
                 {isRunning && (
                   <button
@@ -353,12 +351,11 @@ const part3 = ({ cookies }) => {
                       /> */}
                       <div className=" w-full ">
                         <BloomTaxonomyInput
-                          className="input-form  "
+                          className="BloomTax "
                           ref={input.ref}
                           key={index}
                           bloomVerbs={cognitiveDomainVerbs}
                           v={input.description}
-                          v2={"asdsadasda sd asdas "}
                           placeholder={`LO ${input.counter}`}
                         />
                       </div>
@@ -366,7 +363,7 @@ const part3 = ({ cookies }) => {
                         <button
                           type="button"
                           onClick={(e) => removeLO1(e, input)}
-                          className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                          className="ml-auto -mx-1.5 -mb-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
                           data-dismiss-target="#alert-border-2"
                           aria-label="Close"
                         >
@@ -390,7 +387,7 @@ const part3 = ({ cookies }) => {
                   );
                 })}
               </div>
-              <div class="flex items-center space-y-[1rem]  justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <div class="flex items-center   justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
                 <div>Psychomotor Domain</div>
                 {isRunning && (
                   <button
@@ -408,7 +405,7 @@ const part3 = ({ cookies }) => {
                   }
 
                   return (
-                    <div className="flex items-center  space-x-8 relative">
+                    <div className="flex items-center  space-x-8 relative ">
                       <div>{input.code}</div>
                       {/* <input
                         key={index}
@@ -454,7 +451,7 @@ const part3 = ({ cookies }) => {
                   );
                 })}
               </div>
-              <div class="flex items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <div class="flex items-center  justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
                 <div>Affective Domain</div>
                 {isRunning && (
                   <button

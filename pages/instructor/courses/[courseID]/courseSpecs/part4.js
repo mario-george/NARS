@@ -53,93 +53,46 @@ const part4 = ({ cookies }) => {
 
         setTableData3([...checkboxRefs3.current]);
 
-   
-        console.log(
-          data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[0]
-            .mappedCompetence
-        );
         for (let i = 0; i < length1; i++) {
           const mc =
             data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[i]
               .mappedCompetence;
-          console.log(
-            data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[i]
-              .mappedCompetence
-          );
-          for (let j = 0; j < mc.length; j++) {
-            const ind = competences.indexOf(mc[j]);
-            checkboxRefs.current[i][ind] = !checkboxRefs.current[i][ind];
-            setTableData([...checkboxRefs.current]);
-
-          }
-          for (
-            let j = 0;
-            j <
-            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
-            j++
-          ) {
-            if (
-              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
-                j
-              ] != null
-            ) {
-              checkboxRefs.current[i][j] = true;
-            }
-          }
+          competences.forEach((c,j) => {
+            mc.forEach((e) => {
+              if (c == e) {
+                checkboxRefs.current[i][j] = true;
+                setTableData([...checkboxRefs.current]);
+              }
+            });
+          });
         }
-        for (let i = 0; i < length2; i++) {
+
+  for (let i = 0; i < length2; i++) {
           const mc =
             data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes[i]
               .mappedCompetence;
-       
-          for (let j = 0; j < mc.length; j++) {
-            const ind = competences.indexOf(mc[j]);
-            checkboxRefs2.current[i][ind] = !checkboxRefs2.current[i][ind];
-            setTableData2([...checkboxRefs2.current]);
-
-          }
-          for (
-            let j = 0;
-            j <
-            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
-            j++
-          ) {
-            if (
-              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
-                j
-              ] != null
-            ) {
-              checkboxRefs.current[i][j] = true;
-            }
-          }
+          competences.forEach((c,j) => {
+            mc.forEach((e) => {
+              if (c == e) {
+                checkboxRefs2.current[i][j] = true;
+                setTableData2([...checkboxRefs2.current]);
+              }
+            });
+          });
         }
         for (let i = 0; i < length3; i++) {
           const mc =
             data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes[i]
               .mappedCompetence;
-        
-          for (let j = 0; j < mc.length; j++) {
-            const ind = competences.indexOf(mc[j]);
-            checkboxRefs3.current[i][ind] = !checkboxRefs3.current[i][ind];
-            setTableData3([...checkboxRefs3.current]);
-
-          }
-          for (
-            let j = 0;
-            j <
-            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
-            j++
-          ) {
-            if (
-              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
-                j
-              ] != null
-            ) {
-              checkboxRefs.current[i][j] = true;
-            }
-          }
+          competences.forEach((c,j) => {
+            mc.forEach((e) => {
+              if (c == e) {
+                checkboxRefs3.current[i][j] = true;
+                setTableData3([...checkboxRefs3.current]);
+              }
+            });
+          });
         }
-        console.log(checkboxRefs.current[0]);
       } catch (e) {
         console.log(e);
       }
@@ -605,131 +558,131 @@ const part4 = ({ cookies }) => {
           className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
         >
           <div className="contentAddUser2">
-          <div className=" flex flex-col" ref={refToImgBlob}>
-            <table className="table-auto my-8">
-              <thead>
-                <tr>
-                  <th className="border-2 px-4 py-2">LO/Competences</th>
-                  {competences.map((e, i) => (
-                    <th key={i} className="border-2 px-4 py-2">
-                      {e}
+            <div className=" flex flex-col" ref={refToImgBlob}>
+              <table className="table-auto my-8">
+                <thead>
+                  <tr>
+                    <th className="border-2 px-4 py-2">LO/Competences</th>
+                    {competences.map((e, i) => (
+                      <th key={i} className="border-2 px-4 py-2">
+                        {e}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="w-full bg-sky-50">
+                    <th className="border-l px-4 py-2 text-left ">
+                      Cognitive domain
                     </th>
+                    <th className=" bg-sky-50"></th>
+                    <th className=" "></th>
+                    <th className=" border-r"></th>
+                  </tr>
+                  {Array.from({ length: numRows }).map((_, rowIndex) => (
+                    <tr key={rowIndex}>
+                      <td className="border-2 px-4 py-2">
+                        {" "}
+                        {arrays.LO[rowIndex].name}
+                      </td>
+                      {Array.from({ length: numCols }).map((_, colIndex) => (
+                        <td className="border-2 px-4 py-2" key={colIndex}>
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
+                              onChange={() =>
+                                handleCheckboxChange(rowIndex, colIndex)
+                              }
+                              checked={
+                                checkboxRefs.current[rowIndex]?.[colIndex] ===
+                                true
+                              }
+                            />
+                          </label>
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="w-full bg-sky-50">
-                  <th className="border-l px-4 py-2 text-left ">
-                    Cognitive domain
-                  </th>
-                  <th className=" bg-sky-50"></th>
-                  <th className=" "></th>
-                  <th className=" border-r"></th>
-                </tr>
-                {Array.from({ length: numRows }).map((_, rowIndex) => (
-                  <tr key={rowIndex}>
-                    <td className="border-2 px-4 py-2">
-                      {" "}
-                      {arrays.LO[rowIndex].name}
-                    </td>
-                    {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border-2 px-4 py-2" key={colIndex}>
-                        <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
-                            onChange={() =>
-                              handleCheckboxChange(rowIndex, colIndex)
-                            }
-                            checked={
-                              checkboxRefs.current[rowIndex]?.[colIndex] ===
-                              true
-                            }
-                          />
-                        </label>
-                      </td>
-                    ))}
+                  <tr className="w-full bg-sky-50">
+                    <th className="border-l px-4 py-2 text-left ">
+                      Psychomotor domain
+                    </th>
+                    <th className=" bg-sky-50"></th>
+                    <th className=" "></th>
+                    <th className=" border-r"></th>
                   </tr>
-                ))}
-                <tr className="w-full bg-sky-50">
-                  <th className="border-l px-4 py-2 text-left ">
-                    Psychomotor domain
-                  </th>
-                  <th className=" bg-sky-50"></th>
-                  <th className=" "></th>
-                  <th className=" border-r"></th>
-                </tr>
-                {Array.from({ length: numRows2 }).map((_, rowIndex) => (
-                  <tr key={rowIndex}>
-                    <td className="border-2 px-4 py-2">
-                      {" "}
-                      {arrays.LO2[rowIndex].name}
-                    </td>
-                    {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border-2 px-4 py-2" key={colIndex}>
-                        <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
-                            onChange={() =>
-                              handleCheckboxChange2(rowIndex, colIndex)
-                            }
-                            checked={
-                              checkboxRefs2.current[rowIndex]?.[colIndex] ===
-                              true
-                            }
-                          />
-                        </label>
+                  {Array.from({ length: numRows2 }).map((_, rowIndex) => (
+                    <tr key={rowIndex}>
+                      <td className="border-2 px-4 py-2">
+                        {" "}
+                        {arrays.LO2[rowIndex].name}
                       </td>
-                    ))}
+                      {Array.from({ length: numCols }).map((_, colIndex) => (
+                        <td className="border-2 px-4 py-2" key={colIndex}>
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
+                              onChange={() =>
+                                handleCheckboxChange2(rowIndex, colIndex)
+                              }
+                              checked={
+                                checkboxRefs2.current[rowIndex]?.[colIndex] ===
+                                true
+                              }
+                            />
+                          </label>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                  <tr className="w-full bg-sky-50">
+                    <th className="border-l px-4 py-2 text-left ">
+                      Affective domain
+                    </th>
+                    <th className=" bg-sky-50"></th>
+                    <th className=" "></th>
+                    <th className=" border-r"></th>
                   </tr>
-                ))}
-                <tr className="w-full bg-sky-50">
-                  <th className="border-l px-4 py-2 text-left ">
-                    Affective domain
-                  </th>
-                  <th className=" bg-sky-50"></th>
-                  <th className=" "></th>
-                  <th className=" border-r"></th>
-                </tr>
-                {Array.from({ length: numRows3 }).map((_, rowIndex) => (
-                  <tr key={rowIndex}>
-                    <td className="border-2 px-4 py-2">
-                      {" "}
-                      {arrays.LO3[rowIndex].name}
-                    </td>
-                    {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border-2 px-4 py-2" key={colIndex}>
-                        <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
-                            onChange={() =>
-                              handleCheckboxChange3(rowIndex, colIndex)
-                            }
-                            checked={
-                              checkboxRefs3.current[rowIndex]?.[colIndex] ===
-                              true
-                            }
-                          />
-                        </label>
+                  {Array.from({ length: numRows3 }).map((_, rowIndex) => (
+                    <tr key={rowIndex}>
+                      <td className="border-2 px-4 py-2">
+                        {" "}
+                        {arrays.LO3[rowIndex].name}
                       </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex justify-between">
-            <div>{msg}</div>
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Next
-              </button>
+                      {Array.from({ length: numCols }).map((_, colIndex) => (
+                        <td className="border-2 px-4 py-2" key={colIndex}>
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
+                              onChange={() =>
+                                handleCheckboxChange3(rowIndex, colIndex)
+                              }
+                              checked={
+                                checkboxRefs3.current[rowIndex]?.[colIndex] ===
+                                true
+                              }
+                            />
+                          </label>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
+            <div className="flex justify-between">
+              <div>{msg}</div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         </form>

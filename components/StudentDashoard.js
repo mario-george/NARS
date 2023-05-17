@@ -40,7 +40,7 @@ export default function StudentDashboard({ cookies }) {
     );
 
     const resp = await data.json();
-    // console.log("COURSES ARE ", JSON.stringify(resp.courses));
+    console.log("COURSES ARE ", resp);
     let courses = [];
     resp.courses.forEach((item) => {
       if (item.course) {

@@ -65,84 +65,124 @@ const part7 = ({ cookies }) => {
 
         setTableData3([...checkboxRefs3.current]);
 
+        // for (let i = 0; i < length1; i++) {
+        //   const mc =
+        //     data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[i]
+        //       .studentAssessmentMethods;
+        //   console.log(
+        //     data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[i]
+        //       .studentAssessmentMethods
+        //   );
+        //   for (let j = 0; j < mc.length; j++) {
+        //     const ind = refArray.indexOf(mc[j]);
+        //     checkboxRefs.current[i][ind] = !checkboxRefs.current[i][ind];
+        //     console.log(ind);
+        //     setTableData([...checkboxRefs.current]);
+        //   }
+        //   for (
+        //     let j = 0;
+        //     j <
+        //     data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
+        //     j++
+        //   ) {
+        //     if (
+        //       data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
+        //         j
+        //       ] != null
+        //     ) {
+        //       checkboxRefs.current[i][j] = true;
+        //     }
+        //   }
+        // }
+        // for (let i = 0; i < length2; i++) {
+        //   const mc =
+        //     data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes[i]
+        //       .studentAssessmentMethods;
+
+        //   for (let j = 0; j < mc.length; j++) {
+        //     const ind = refArray.indexOf(mc[j]);
+        //     checkboxRefs2.current[i][ind] = !checkboxRefs2.current[i][ind];
+        //     setTableData2([...checkboxRefs2.current]);
+        //   }
+        //   for (
+        //     let j = 0;
+        //     j <
+        //     data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
+        //     j++
+        //   ) {
+        //     if (
+        //       data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
+        //         j
+        //       ] != null
+        //     ) {
+        //       checkboxRefs.current[i][j] = true;
+        //     }
+        //   }
+        // }
+        // for (let i = 0; i < length3; i++) {
+        //   const mc =
+        //     data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes[i]
+        //       .studentAssessmentMethods;
+
+        //   for (let j = 0; j < mc.length; j++) {
+        //     const ind = refArray.indexOf(mc[j]);
+        //     checkboxRefs3.current[i][ind] = !checkboxRefs3.current[i][ind];
+        //     setTableData3([...checkboxRefs3.current]);
+        //   }
+        //   for (
+        //     let j = 0;
+        //     j <
+        //     data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
+        //     j++
+        //   ) {
+        //     if (
+        //       data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
+        //         j
+        //       ] != null
+        //     ) {
+        //       checkboxRefs.current[i][j] = true;
+        //     }
+        //   }
+        // }
         for (let i = 0; i < length1; i++) {
           const mc =
             data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[i]
               .studentAssessmentMethods;
-          console.log(
-            data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[i]
-              .studentAssessmentMethods
-          );
-          for (let j = 0; j < mc.length; j++) {
-            const ind = refArray.indexOf(mc[j]);
-            checkboxRefs.current[i][ind] = !checkboxRefs.current[i][ind];
-            console.log(ind);
-            setTableData([...checkboxRefs.current]);
-          }
-          for (
-            let j = 0;
-            j <
-            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
-            j++
-          ) {
-            if (
-              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
-                j
-              ] != null
-            ) {
-              checkboxRefs.current[i][j] = true;
-            }
-          }
+          refArray.forEach((c, j) => {
+            mc.forEach((e) => {
+              if (c == e) {
+                checkboxRefs.current[i][j] = true;
+                setTableData([...checkboxRefs.current]);
+              }
+            });
+          });
         }
+
         for (let i = 0; i < length2; i++) {
           const mc =
             data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes[i]
               .studentAssessmentMethods;
-
-          for (let j = 0; j < mc.length; j++) {
-            const ind = refArray.indexOf(mc[j]);
-            checkboxRefs2.current[i][ind] = !checkboxRefs2.current[i][ind];
-            setTableData2([...checkboxRefs2.current]);
-          }
-          for (
-            let j = 0;
-            j <
-            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
-            j++
-          ) {
-            if (
-              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
-                j
-              ] != null
-            ) {
-              checkboxRefs.current[i][j] = true;
-            }
-          }
+          refArray.forEach((c, j) => {
+            mc.forEach((e) => {
+              if (c == e) {
+                checkboxRefs2.current[i][j] = true;
+                setTableData2([...checkboxRefs2.current]);
+              }
+            });
+          });
         }
         for (let i = 0; i < length3; i++) {
           const mc =
             data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes[i]
               .studentAssessmentMethods;
-
-          for (let j = 0; j < mc.length; j++) {
-            const ind = refArray.indexOf(mc[j]);
-            checkboxRefs3.current[i][ind] = !checkboxRefs3.current[i][ind];
-            setTableData3([...checkboxRefs3.current]);
-          }
-          for (
-            let j = 0;
-            j <
-            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
-            j++
-          ) {
-            if (
-              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
-                j
-              ] != null
-            ) {
-              checkboxRefs.current[i][j] = true;
-            }
-          }
+              refArray.forEach((c, j) => {
+            mc.forEach((e) => {
+              if (c == e) {
+                checkboxRefs3.current[i][j] = true;
+                setTableData3([...checkboxRefs3.current]);
+              }
+            });
+          });
         }
         console.log(checkboxRefs.current[0]);
       } catch (e) {
