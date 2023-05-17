@@ -6,16 +6,12 @@ import CustomReactToPdf from "@/pages/pdf2/pdf333";
 
 const part2 = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
-  const courseSpecs=cookies.courseSpecs
-  useEffect(()=>{
- 
-    const getData = async function (){
-    
+  const courseSpecs = cookies.courseSpecs;
+  useEffect(() => {
+    const getData = async function () {
       const r = await fetch(
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
-    
-    
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
@@ -24,17 +20,24 @@ const part2 = ({ cookies }) => {
         }
       );
       const data = await r.json();
-      console.log(data)
-      const references=data.data.courseSpecs.references
-      notes.current.value=references.courseNotes
-websites.current.value=references.courseWebsites
-console.log(references)
-books.current.value=references.books[0]
-Rbooks.current.value=references.recommendedBooks
-
-    }
-    getData()
-    },[])
+      console.log(data);
+      const references = data.data.courseSpecs.references;
+      if (references.courseNotes) {
+        notes.current.value = references.courseNotes;
+      }
+      if (references.courseWebsites) {
+        websites.current.value = references.courseWebsites;
+      }
+      console.log(references);
+      if (references.books[0]) {
+        books.current.value = references.books[0];
+      }
+      if (references.recommendedBooks) {
+        Rbooks.current.value = references.recommendedBooks;
+      }
+    };
+    getData();
+  }, []);
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
