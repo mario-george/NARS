@@ -30,21 +30,18 @@ const courseReport = ({ cookies }) => {
   const buttonRef6 = useRef(null);
   const buttonRef7 = useRef(null);
   const buttonRef8 = useRef(null);
-  const buttonRef9 = useRef(null);
-  const buttonRef10 = useRef(null);
 
   const buttonRef = useRef(null);
   const downloadMergedPDF = async () => {
-    const pdfBase64 = localStorage.getItem("pdf1");
-    const pdfBase64_2 = localStorage.getItem("pdf2");
-    const pdfBase64_22 = localStorage.getItem("pdf3");
-    const pdfBase64_222 = localStorage.getItem("pdf4");
-    const pdfBase64_33 = localStorage.getItem("pdf5");
-    const pdfBase64_233 = localStorage.getItem("pdf6");
-    const pdfBase64_244 = localStorage.getItem("pdf7");
-    const pdfBase64_2444 = localStorage.getItem("pdf8");
-    const pdfBase64_255 = localStorage.getItem("pdf9");
-    const pdfBase64_2555 = localStorage.getItem("pdf10");
+    const pdfBase64 = localStorage.getItem("courseReport1");
+    const pdfBase64_2 = localStorage.getItem("courseReport2");
+    const pdfBase64_22 = localStorage.getItem("courseReport3");
+    const pdfBase64_222 = localStorage.getItem("courseReport4");
+    const pdfBase64_33 = localStorage.getItem("courseReport5");
+    const pdfBase64_233 = localStorage.getItem("courseReport6");
+    const pdfBase64_244 = localStorage.getItem("courseReport7");
+    const pdfBase64_2444 = localStorage.getItem("courseReport8");
+
     const binaryData = atob(pdfBase64);
     const binaryData2 = atob(pdfBase64_2);
     const binaryData3 = atob(pdfBase64_22);
@@ -53,8 +50,7 @@ const courseReport = ({ cookies }) => {
     const binaryData6 = atob(pdfBase64_233);
     const binaryData7 = atob(pdfBase64_244);
     const binaryData8 = atob(pdfBase64_2444);
-    const binaryData9 = atob(pdfBase64_255);
-    const binaryData10 = atob(pdfBase64_2555);
+
     const array = new Uint8Array(binaryData.length);
     for (let i = 0; i < binaryData.length; i++) {
       array[i] = binaryData.charCodeAt(i);
@@ -91,14 +87,6 @@ const courseReport = ({ cookies }) => {
     for (let i = 0; i < binaryData8.length; i++) {
       array8[i] = binaryData8.charCodeAt(i);
     }
-    const array9 = new Uint8Array(binaryData9.length);
-    for (let i = 0; i < binaryData9.length; i++) {
-      array9[i] = binaryData9.charCodeAt(i);
-    }
-    const array10 = new Uint8Array(binaryData10.length);
-    for (let i = 0; i < binaryData10.length; i++) {
-      array10[i] = binaryData10.charCodeAt(i);
-    }
 
     const blob = new Blob([array], { type: "image/jpeg" });
     const blob2 = new Blob([array2], { type: "image/jpeg" });
@@ -108,16 +96,13 @@ const courseReport = ({ cookies }) => {
     const blob6 = new Blob([array6], { type: "image/jpeg" });
     const blob7 = new Blob([array7], { type: "image/jpeg" });
     const blob8 = new Blob([array8], { type: "image/jpeg" });
-    const blob9 = new Blob([array9], { type: "image/jpeg" });
-    const blob10 = new Blob([array10], { type: "image/jpeg" });
 
     const mergedPdf1 = await mergeTest([blob, blob2]);
     const mergedPdf2 = await mergeTest([blob3, blob4]);
     const mergedPdf3 = await mergeTest([blob5, blob6]);
     const mergedPdf4 = await mergeTest([blob7, blob8]);
-    const mergedPdf5 = await mergeTest([blob9, blob10]);
 
-    const blobs = [mergedPdf1, mergedPdf2, mergedPdf3, mergedPdf4, mergedPdf5];
+    const blobs = [mergedPdf1, mergedPdf2, mergedPdf3, mergedPdf4];
     const ImgBlobs = [
       blob,
       blob2,
@@ -127,19 +112,11 @@ const courseReport = ({ cookies }) => {
       blob6,
       blob7,
       blob8,
-      // blob9,
-      
-      // blob10,
+
     ];
     const mergedBlob = await mergeTest(ImgBlobs);
-    // const compressedBlob = await compressBlob(mergedBlob);
-    // console.log(compressedBlob)
-    // send to back
-    // sendPdfBlob(mergedBlob);
 
-    // saveAs(mergedBlob, "CourseReport.pdf");
     saveAs(mergedBlob, "CourseReport.pdf");
-    // console.log(mergedBlob);
   };
   const refToImgBlob = useRef();
   const refToImgBlob2 = useRef();
@@ -149,7 +126,7 @@ const courseReport = ({ cookies }) => {
   const refToImgBlob6 = useRef();
   const refToImgBlob7 = useRef();
   const refToImgBlob8 = useRef();
-  const refToImgBlob9 = useRef();
+
   const [competenciesMap, setCompetenciesMap] = useState({});
   const [courseCompetences, setCourseCompetences] = useState([]);
   const [avgValues, setAvgValues] = useState({});
@@ -179,7 +156,7 @@ const courseReport = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf1", pdfBase64);
+          localStorage.setItem("courseReport1", pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -207,7 +184,7 @@ const courseReport = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf2", pdfBase64);
+          localStorage.setItem("courseReport2", pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -235,7 +212,7 @@ const courseReport = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf3", pdfBase64);
+          localStorage.setItem("courseReport3", pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -263,7 +240,7 @@ const courseReport = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf4", pdfBase64);
+          localStorage.setItem("courseReport4", pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -291,7 +268,7 @@ const courseReport = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf5", pdfBase64);
+          localStorage.setItem("courseReport5", pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -319,7 +296,7 @@ const courseReport = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf6", pdfBase64);
+          localStorage.setItem("courseReport6", pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -347,7 +324,7 @@ const courseReport = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf7", pdfBase64);
+          localStorage.setItem("courseReport7", pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -375,7 +352,7 @@ const courseReport = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf8", pdfBase64);
+          localStorage.setItem("courseReport8", pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -393,45 +370,16 @@ const courseReport = ({ cookies }) => {
       </>
     );
   }
-  function ChildComponent9({ toPdf }) {
-    const handleClick = async () => {
-      try {
-        console.log(toPdf);
-        const pdfBlob = await toPdf();
-        const reader = new FileReader();
-        reader.readAsDataURL(pdfBlob);
 
-        reader.onload = () => {
-          const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf9", pdfBase64);
-        };
-        // do something with pdfBlob
-      } catch (error) {
-        console.error("Failed to capture PDF:", error);
-      }
-      setTimeout(() => {}, 300);
-    };
-
-    return (
-      <>
-        {" "}
-        <button ref={buttonRef9} onClick={handleClick} hidden>
-          Capture as PDF
-        </button>
-      </>
-    );
-  }
   const submitHandler = async (e) => {
-    buttonRef.current.click();
-    buttonRef22.current.click();
-    buttonRef3.current.click();
-    buttonRef4.current.click();
-    buttonRef5.current.click();
-    buttonRef6.current.click();
-    buttonRef7.current.click();
-    buttonRef8.current.click();
-    buttonRef9.current.click();
-    // buttonRef10.current.click();
+    await  buttonRef.current.click();
+    await buttonRef22.current.click();
+    await buttonRef3.current.click();
+    await buttonRef4.current.click();
+    await buttonRef5.current.click();
+    await buttonRef6.current.click();
+    await buttonRef7.current.click();
+    await buttonRef8.current.click();
 
     e.preventDefault();
 
@@ -587,9 +535,7 @@ const courseReport = ({ cookies }) => {
               <CustomReactToPdf targetRef={refToImgBlob8} filename="part8.pdf">
                 {({ toPdf }) => <ChildComponent8 toPdf={toPdf} />}
               </CustomReactToPdf>{" "}
-              <CustomReactToPdf targetRef={refToImgBlob9} filename="part9.pdf">
-                {({ toPdf }) => <ChildComponent9 toPdf={toPdf} />}
-              </CustomReactToPdf>
+
               <div className="flex flex-row w-auto h-auto ">
                 <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 ">
                   <div className="contentAddUserFlexible2 flex flex-col gap-10  ">
