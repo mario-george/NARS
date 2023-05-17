@@ -5,8 +5,13 @@ import Autocomplete from "react-autocomplete";
 const BloomTaxonomyInput = forwardRef((props, ref) => {
   const bloomVerbs = props.bloomVerbs;
   let v = props.v;
-  const [selectedSentence, setSelectedSentence] = useState(props.v || "");
-
+  !props.v ? (v = "") : null;
+  const [selectedSentence, setSelectedSentence] = useState(v);
+  useEffect(() => {
+    if (ref.current && selectedSentence) {
+      ref.current.value = selectedSentence;
+    }
+  }, [ref, selectedSentence]);
   const handleSentenceChange = (event) => {
     const newValue = event.target.value;
     if (newValue !== selectedSentence) {
@@ -29,6 +34,7 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
       const mergedWords = words.slice(0, -1).join(" ");
       const last = words[words.length - 1];
       setSelectedSentence(mergedWords + " " + item.key);
+      ref.current.value = mergedWords + " " + item.key;
     };
 
     return (
