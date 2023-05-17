@@ -537,7 +537,7 @@ const courseReport = ({ cookies }) => {
               </CustomReactToPdf>{" "}
 
               <div className="flex flex-row w-auto h-auto ">
-                <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 ">
+                <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none ">
                   <div className="contentAddUserFlexible2 flex flex-col gap-10  ">
                     <div ref={refToImgBlob}>
                       <CourseData createdCourse={courseData} />

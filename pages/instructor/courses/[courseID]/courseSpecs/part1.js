@@ -74,7 +74,7 @@ const part1 = ({ cookies }) => {
         special.current &&
         hours.current &&
         semester.current &&
-        practice.current
+        practice.current&&data.data.courseSpecs.courseData
       ) {
         lecture.current.value = data.data.courseSpecs.courseData.lectures;
         hours.current.value = data.data.courseSpecs.courseData.contactHours;
@@ -155,7 +155,7 @@ const part1 = ({ cookies }) => {
         special.current &&
         hours.current &&
         semester.current &&
-        practice.current
+        practice.current&&data.data.courseSpecs.courseData
       ) {
         lecture.current.value = data.data.courseSpecs.courseData.lectures;
         hours.current.value = data.data.courseSpecs.courseData.contactHours;
