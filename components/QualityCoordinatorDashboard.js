@@ -7,9 +7,6 @@ import Cookies from "js-cookie";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
 import { VscChecklist } from "react-icons/vsc";
-import { CgProfile } from "react-icons/cg";
-import { CgLogOut } from "react-icons/cg";
-import { VscChecklist } from "react-icons/vsc";
 
 export default function QualityCoordinatorDashboard() {
   const router = useRouter();

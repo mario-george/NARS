@@ -98,28 +98,7 @@ const profile = ({ cookies }) => {
     setMsg("");
   };
 
-  if (cookies.role === "system admin") {
-    useEffect(() => {
-      setAdmin(true);
-    }, []);
-  } else if (cookies.role === "instructor") {
-    useEffect(() => {
-      setInstructor(true);
-    }, []);
-  } else if (cookies.role === "program admin") {
-    useEffect(() => {
-      setProgadmin(true);
-    }, []);
-  } else if (cookies.role === "faculty admin") {
-    useEffect(() => {
-      setFacadmin(true);
-    }, []);
-  } else if (cookies.role === "quality coordinator") {
-    console.log("HEEEEEEEEEEEEEEEEEERE");
-    useEffect(() => {
-      setQualityCoo(true);
-    }, []);
-  }
+ 
   let fail = (
     <div
       id="alert-border-2"
