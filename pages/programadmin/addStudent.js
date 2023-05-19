@@ -112,7 +112,7 @@ const addStudent = () => {
   //{"name":"jfdjdj","code":2324,"email":"jds@lxsdxksd.com","faculty":"ss","academicYear":1}
 
   return (
-    <>
+    <div className="z-30">
     <div className="z-30">{alerts.map(e=><div>{e}</div>)}</div>
       <div className="flex flex-col ml-96 px-10">
         <div className="items-center flex flex-col gap-5 gap-10 ml-10 mt-28">
@@ -155,7 +155,7 @@ const addStudent = () => {
           {/* </form> */}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default addStudent;
