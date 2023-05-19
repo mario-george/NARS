@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-import successFailMsg from "@/components/successFail/success-fail";
+import MassageAlert from "@/components/MassageAlert";
 import { useSelector } from "react-redux";
 import { read, utils } from "xlsx";
 
@@ -33,17 +33,22 @@ const addStudent = () => {
       const firstSheet = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[firstSheet];
       const sheetData = utils.sheet_to_json(worksheet);
-      let codes = sheetData.map(s => s.code)
-      console.log("DATA IS " + JSON.stringify(sheetData), JSON.stringify(codes));
+      let codes = sheetData.map(s => {
+        if(s.code){
+          return s.code
+        }
+      });
+      console.log("DATA IS " + JSON.stringify(sheetData) + '\n' + JSON.stringify(codes));
       setStudentData(sheetData);
-      if (!codes.length){
+      if (codes.length){
+        console.log('dd');
         setAlerts([...alerts, <MassageAlert 
           fail="Wrong Format"
           status="fail"
           key={Math.random()} 
       />])
       }
-      setCodes(codes)
+      setCodes(codes);
     };
     reader.readAsArrayBuffer(f);
   };
@@ -62,23 +67,23 @@ const addStudent = () => {
     });
     const data = await resp.json();
     console.log(data);
-    if(data.state == 'success'){
+    if(data.status == 'success'){
       setAlerts([...alerts, <MassageAlert 
         success="Student added to Current Program successfully"
         status="success"
         key={Math.random()} 
     />])
-    }else if(data.state == 'error'){
+    }else if(data.status == 'error'){
       setAlerts([...alerts, <MassageAlert 
         fail="Some Student Codes aren't Exist"
         status="fail"
         key={Math.random()} 
     />])
     }
-    else if(data.state == 'fail'){
+    else if(data.status == 'fail'){
       setAlerts([...alerts, <MassageAlert 
         fail="Failed to add Student to Current Program"
-        status="success"
+        status="fail"
         key={Math.random()} 
     />])
     }
@@ -108,7 +113,7 @@ const addStudent = () => {
 
   return (
     <>
-    <div>{alerts.map(e=><div>{e}</div>)}</div>
+    <div className="z-30">{alerts.map(e=><div>{e}</div>)}</div>
       <div className="flex flex-col ml-96 px-10">
         <div className="items-center flex flex-col gap-5 gap-10 ml-10 mt-28">
           {/* <form> */}
