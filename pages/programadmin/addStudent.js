@@ -9,9 +9,9 @@ import { read, utils } from "xlsx";
 
 const addStudent = () => {
   const userState = useSelector((s) => s.user);
-  // if (userState.role != "system admin" || userState.loggedInStatus != "true") {
-  //   return <div className="error">404 could not found</div>;
-  // }
+  if (userState.role != "program admin" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
   
   useEffect(() => {
     
