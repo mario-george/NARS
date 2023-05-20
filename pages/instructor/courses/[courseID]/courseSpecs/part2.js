@@ -25,8 +25,14 @@ const part2 = ({ cookies }) => {
       );
       const data = await r.json();
       console.log(data)
-courseAims.current.value=data.data.courseSpecs.courseAims
-courseContent.current.value=data.data.courseSpecs.courseContent
+      if(data.data.courseSpecs.courseAims){
+
+        courseAims.current.value=data.data.courseSpecs.courseAims
+      }
+      if(data.data.courseSpecs.courseContent){
+
+        courseContent.current.value=data.data.courseSpecs.courseContent
+      }
 
     }
     getData()

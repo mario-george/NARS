@@ -48,10 +48,22 @@ const part69 = ({ cookies }) => {
           i < data.data.courseSpecs.lecturePlan.topics.length;
           i++
         ) {
-          topicsRefs.current[i] =
-            data.data.courseSpecs.lecturePlan.topics[i].topics[0];
-          HoursRefs.current[i] =
-            data.data.courseSpecs.lecturePlan.topics[i].plannedHours;
+          console.log(data.data.courseSpecs.lecturePlan.topics[i].topics[0])
+          if (
+            data.data.courseSpecs.lecturePlan.topics[i].topics[0]
+          ) {
+            topicsRefs.current[i] =
+            data.data.courseSpecs.lecturePlan.topics[i].topics[0];          }
+          if (
+            data.data.courseSpecs.lecturePlan.topics[i].plannedHours != 0
+          ) {
+            HoursRefs.current[i] =
+            data.data.courseSpecs.lecturePlan.topics[i].plannedHours;    
+                }
+          // topicsRefs.current[i] =
+          //   data.data.courseSpecs.lecturePlan.topics[i].topics[0];
+          // HoursRefs.current[i] =
+          //   data.data.courseSpecs.lecturePlan.topics[i].plannedHours;
 
           for (
             let j = 0;
@@ -69,46 +81,7 @@ const part69 = ({ cookies }) => {
           }
         }
         console.log(checkboxRefs.current[0]);
-        // console.log(
-        //   data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes
-        // );
 
-        // setInputs3(
-        //   data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes.map(
-        //     (e) => {
-        //       return {
-        //         ref: createRef(),
-        //         code: e.code,
-        //         name: e.code,
-        //         description: e.description,
-        //       };
-        //     }
-        //   )
-        // );
-        // setInputs(
-        //   data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes.map(
-        //     (e) => {
-        //       return {
-        //         ref: createRef(),
-        //         code: e.code,
-        //         name: e.code,
-        //         description: e.description,
-        //       };
-        //     }
-        //   )
-        // );
-        // setInputs2(
-        //   data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes.map(
-        //     (e) => {
-        //       return {
-        //         ref: createRef(),
-        //         code: e.code,
-        //         name: e.code,
-        //         description: e.description,
-        //       };
-        //     }
-        //   )
-        // );
       } catch (e) {
         console.log(e);
       }
@@ -150,21 +123,19 @@ const part69 = ({ cookies }) => {
   const [outcomes, setoutcomes] = useState([]);
   let a = [];
   const [addWeek, setAddWeek] = useState(1);
-  useEffect(() => {
-    console.log(checkboxRefs);
 
-    checkboxRefs.current = Array.from({ length: addWeek }, () =>
-      Array.from({ length: a.length }, () => false)
-    );
+  useEffect(() => {
+
+checkboxRefs.current = [
+  ...checkboxRefs.current,
+  Array.from({ length: a.length }, () => false)
+];
   }, [addWeek]);
   const addRowWeek = (e) => {
     e.preventDefault();
-    // checkboxRefs.current = Array.from({ length: addWeek }, () =>
-    // Array.from({ length: a.length }, () => false)
-    // );
+
     setAddWeek(addWeek + 1);
   };
-  // const outcomes = ['LO1', 'LO2', 'LO3', 'LO4', 'LO5', 'LO6']
   let cognitive = cookies.courseLearningOutcomes[0].learningOutcomes;
   let affective = cookies.courseLearningOutcomes[2].learningOutcomes;
   let psychomotor = cookies.courseLearningOutcomes[1].learningOutcomes;
