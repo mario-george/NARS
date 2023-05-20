@@ -60,8 +60,9 @@ const addDepartment = () => {
   const objective = useRef();
   const choosen = useRef();
 
-  const emailCheck = async(email) => {
-    try {
+  const emailCheck = async() => {
+    if(email.current.value){try {
+      let pattern = ''
       const r = await fetch(`${process.env.url}api/v1/users/staff?email=${email.current.value}`, {
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +84,7 @@ const addDepartment = () => {
       setHeaderRole(resp.data[0].roles);
     } catch (e) {
       console.log(e);
-    }
+    }}
   };
 
   const submitHandler = async (e) => {
@@ -204,6 +205,7 @@ const addDepartment = () => {
                   name="year"
                   className="input-form  w-full"
                   ref={email}
+                  onChange={emailCheck}
                 />
               </div>
             </div>
@@ -299,7 +301,7 @@ const addDepartment = () => {
               </div>
             </div>
             <div className="flex gap-20 ">
-              {<div className="w-1/2 mt-10">{msg}</div>}
+              {<div className="w-1/2 mt-10">{alerts.map(s => s)}</div>}
             </div>
 
             <div className="flex justify-end">
