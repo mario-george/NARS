@@ -29,6 +29,7 @@ const CLOAttainmentPie = (props) => {
   const target = props.target;
 
   if(props.cAvg && props.avgLOS){
+
     const CLOAvg = {}
     comps.forEach(clo => {
       let temp = props.clomap[clo];
@@ -36,6 +37,7 @@ const CLOAttainmentPie = (props) => {
       temp.forEach(elm => {
         CLOAvg[clo] += props.cAvg[elm];
       });
+      CLOAvg[clo] /= temp.length;
 
       CLOAvg[clo] += props.avgLOS[clo];
 
@@ -64,6 +66,7 @@ const CLOAttainmentPie = (props) => {
       temp.forEach(elm => {
         CLOAvg[clo] += props.cAvg[elm];
       });
+    CLOAvg[clo] /= temp.length;
     })
 
 

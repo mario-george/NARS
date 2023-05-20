@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CLOAttainment from "@/components/chart/CLOAttainment";
 import CLOAttainmentPie from "@/components/chart/CLOAttainmentPie";
 import Attainment from "@/components/chart/Attainment";
 import AttainmentPie from "@/components/chart/AttainmentPie";
 
-export const CompetencesLosAchievement = ({ avgValues, learningOutcomes, target }) => {
+export const CompetencesLosAchievement = ({
+  avgValues,
+  learningOutcomes,
+  target,
+}) => {
+  useEffect(() => {
+    console.log("HEEEREEE", JSON.stringify(avgValues));
+    console.log("HEEEREEE", JSON.stringify(learningOutcomes));
+  }, []);
+
   return (
     <div className="flex flex-col w-full items-start">
-      <h2 className="font-bold text-xl mb-2">Learning Outcomes & Competences Direct Achievement</h2>
+      <h2 className="font-bold text-xl mb-2">
+        Learning Outcomes & Competences Direct Achievement
+      </h2>
       <div className="h-0.5 w-full bg-gray-300 mb-2" />
       <div className="flex flex-col w-full items-center">
         <label className="mt-12">Competences Achievement</label>
@@ -31,7 +42,11 @@ export const CompetencesLosAchievement = ({ avgValues, learningOutcomes, target 
             />
           </div>
           <div>
-            <CLOAttainmentPie target={target} clomap={learningOutcomes} cAvg={avgValues} />
+            <CLOAttainmentPie
+              target={target}
+              clomap={learningOutcomes}
+              cAvg={avgValues}
+            />
           </div>
         </div>
       </div>

@@ -98,7 +98,7 @@ const profile = ({ cookies }) => {
     setMsg("");
   };
 
-
+ 
   let fail = (
     <div
       id="alert-border-2"
@@ -175,7 +175,6 @@ const profile = ({ cookies }) => {
 
   return (
     <>
-
       <form
         onSubmit={submitHandler}
         className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"

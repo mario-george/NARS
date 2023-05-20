@@ -37,7 +37,9 @@ const part1 = ({ cookies }) => {
 
     const downloadLink = document.createElement("a");
     downloadLink.href = url;
-    downloadLink.download = "file.pdf";
+    let replacedIns=instanceName
+    replacedIns = replacedIns.replace(/\n$/, '');
+    downloadLink.download = replacedIns+".pdf";
 
     document.body.appendChild(downloadLink);
     downloadLink.click();
@@ -48,6 +50,7 @@ const part1 = ({ cookies }) => {
   async function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
   }
+  const [instanceName, setInstanceName] = useState("Course Specs");
 
   useEffect(() => {
     const getData = async function () {
@@ -99,8 +102,12 @@ const part1 = ({ cookies }) => {
       );
       const dataGetNameCodeReq = await getNameCodeReq.json();
       console.log(dataGetNameCodeReq.data[0].course.code);
-      const s = dataGetNameCodeReq.data[0].course.code + " ";
-      dataGetNameCodeReq.data[0].course.name;
+      const s =
+        dataGetNameCodeReq.data[0].course.name +
+        " " +
+        dataGetNameCodeReq.data[0].course.code;
+setInstanceName(dataGetNameCodeReq.data[0].course.name)
+
       try {
         code.current.value = s;
       } catch (e) {
@@ -298,8 +305,8 @@ const part1 = ({ cookies }) => {
             <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none py-[10rem] m-10 ">
               <div className="mt-[6rem]"></div>
               <PdfFileCard
-                name={"Course Specs"}
-                id={"CourseSpecs"}
+                name={instanceName}
+                id={courseID}
                 cookies={cookies}
                 setBlobIsFound={setBlobIsFound}
                 downloadPdf={downloadPdf}

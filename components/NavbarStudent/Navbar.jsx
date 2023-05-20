@@ -19,6 +19,11 @@ const Navbar = ({cookies,id}) => {
               Course details
             </Link>
           </li>
+          <li>
+            <Link href={`/student/${cookies.instance_id}/specsPdfDownload`} className="py-7 px-3 inline-block  hover:opacity-25">
+              Course specs
+            </Link>
+          </li>
           <NavLinks cookies={cookies} id={cookies.instance_id}/>
           <li>
             <Link href={ `/student/${cookies.instance_id}/viewmaterials`} className="py-7 px-3 inline-block  hover:opacity-25">

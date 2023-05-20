@@ -30,7 +30,6 @@ export default function QualityCoordinatorDashboard() {
         </span>
         <span className="ml-2">Profile</span>
       </Link>
-
       <Link
         className="link2 focus:text-green-400 "
         href="/qualitycoordinator/coursecomp"
