@@ -119,9 +119,7 @@ const part69 = ({ cookies }) => {
       </>
     );
   }
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+
   const [hoursValue, setHoursValue] = useState("");
   const [outcomes, setoutcomes] = useState([]);
   let a = [];
@@ -191,14 +189,14 @@ checkboxRefs.current = [
         console.log(affectiveParsed);
         a = [];
         congitiveParsed.map((e) => {
-          a.push(e.name);
+          a.push(e.code);
         });
 
         psychomotorParsed.map((e) => {
-          a.push(e.name);
+          a.push(e.code);
         });
         affectiveParsed.map((e) => {
-          a.push(e.name);
+          a.push(e.code);
         });
         console.log(a);
         console.log(Array.isArray(congitiveParsed));
@@ -291,15 +289,15 @@ checkboxRefs.current = [
   };
   return (
     <>
-      <div className="flex flex-row w-screen h-auto  mt-2">
+      <div className="flex flex-row w-auto h-auto  space-x-0">
         <CustomReactToPdf targetRef={refToImgBlob} filename="part5.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none "
+          className="bg-sky-50 h-auto w-auto translate-x-[21%] flex flex-col justify-center items-center text-black "
         >
-          <div className="contentAddUserFlexible2 flex flex-col gap-10">
+          <div className="contentAddUserFlexible3  flex flex-col gap-10">
           <div
             
             ref={refToImgBlob}
