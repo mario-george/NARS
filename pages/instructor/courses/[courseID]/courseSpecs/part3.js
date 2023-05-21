@@ -34,6 +34,8 @@ const part3 = ({ cookies }) => {
       );
       const data = await r.json();
       console.log(data);
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
+
       try {
         // console.log(
         //   data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes
@@ -228,7 +230,7 @@ const part3 = ({ cookies }) => {
         name: input.name,
       };
     });
-    const courseLearningOutcomes = [
+    let courseLearningOutcomes = [
       {
         title: "cognitive",
         learningOutcomes: cognitive,
@@ -248,9 +250,53 @@ const part3 = ({ cookies }) => {
         value: courseLearningOutcomes,
       })
     );
-    const stringifiedCourseLearningOutcomes = JSON.stringify(
-      courseLearningOutcomes
+    function compareLearningOutcomes(outcomes1, outcomes2) {
+      if (outcomes1.length !== outcomes2.length) {
+        return false;
+      }
+
+      for (let i = 0; i < outcomes1.length; i++) {
+        const outcome1 = outcomes1[i];
+        const outcome2 = outcomes2[i];
+
+        if (outcome1.title !== outcome2.title) {
+          return false;
+        }
+
+        const learningOutcomes1 = outcome1.learningOutcomes;
+        const learningOutcomes2 = outcome2.learningOutcomes;
+        if (learningOutcomes1.length !== learningOutcomes2.length) {
+          return false;
+        }
+
+        for (let j = 0; j < learningOutcomes1.length; j++) {
+          const learningOutcome1 = learningOutcomes1[j];
+          const learningOutcome2 = learningOutcomes2[j];
+
+          if (
+            learningOutcome1.description !== learningOutcome2.description ||
+            learningOutcome1.code !== learningOutcome2.code
+          ) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+
+    function checkLearningOutcomesEquality(outcomes1, outcomes2) {
+      return compareLearningOutcomes(outcomes1, outcomes2);
+    }
+
+    const identicalOrNot = checkLearningOutcomesEquality(
+      courseLearningOutcomes,
+      cookies.courseSpecs.courseLearningOutcomes
     );
+    console.log(identicalOrNot);
+    if (identicalOrNot) {
+      courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
+    }
     const r = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${courseID}`,
       {
@@ -316,205 +362,202 @@ const part3 = ({ cookies }) => {
         className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1  overflow-auto"
       >
         <div className="contentAddUserFlexible2 flex flex-col gap-10 ">
-        <div
-          className=" flex flex-col"
-          ref={refToImgBlob}
-        >
-          <div className="flex gap-20 ">
-            <div className="flex flex-col mb-[8rem] pb-[7rem] w-full ">
-              <label class="label-form md:text-2xl  my-10">
-                Learning Outcomes
-              </label>
-              <div class="flex  items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
-                <div>Cognitive Domain</div>
-                {isRunning && (
-                  <button
-                    onClick={handleAddInput}
-                    className="bg-blue-500 text-white py-2 px-4 rounded-md"
-                  >
-                    Add
-                  </button>
-                )}
-              </div>
-              <div className=" ">
-                {inputs.map((input, index) => {
-                  console.log(input);
-                  return (
-                    <div className="flex items-center  space-x-8 relative">
-                      <div>{input.code}</div>
-                      {/* <input
+          <div className=" flex flex-col" ref={refToImgBlob}>
+            <div className="flex gap-20 ">
+              <div className="flex flex-col mb-[8rem] pb-[7rem] w-full ">
+                <label class="label-form md:text-2xl  my-10">
+                  Learning Outcomes
+                </label>
+                <div class="flex  items-center justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
+                  <div>Cognitive Domain</div>
+                  {isRunning && (
+                    <button
+                      onClick={handleAddInput}
+                      className="bg-blue-500 text-white py-2 px-4 rounded-md"
+                    >
+                      Add
+                    </button>
+                  )}
+                </div>
+                <div className=" ">
+                  {inputs.map((input, index) => {
+                    console.log(input);
+                    return (
+                      <div className="flex items-center  space-x-8 relative">
+                        <div>{input.code}</div>
+                        {/* <input
                         key={index}
                         type="text"
                         placeholder={`LO ${input.counter}`}
                         ref={input.ref}
                         className="input-form w-1/2"
                       /> */}
-                      <div className=" w-full ">
+                        <div className=" w-full ">
+                          <BloomTaxonomyInput
+                            className="BloomTax "
+                            ref={input.ref}
+                            key={index}
+                            bloomVerbs={cognitiveDomainVerbs}
+                            v={input.description}
+                            placeholder={`LO ${input.counter}`}
+                          />
+                        </div>
+                        {isRunning && (
+                          <button
+                            type="button"
+                            onClick={(e) => removeLO1(e, input)}
+                            className="ml-auto -mx-1.5 -mb-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                            data-dismiss-target="#alert-border-2"
+                            aria-label="Close"
+                          >
+                            <span className="sr-only">Dismiss</span>
+                            <svg
+                              aria-hidden="true"
+                              className="w-5 h-5"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                              ></path>
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div class="flex items-center   justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
+                  <div>Psychomotor Domain</div>
+                  {isRunning && (
+                    <button
+                      onClick={handleAddInput2}
+                      className="bg-blue-500 text-white py-2 px-4 rounded-md"
+                    >
+                      Add
+                    </button>
+                  )}
+                </div>
+                <div className="">
+                  {inputs2.map((input, index) => {
+                    {
+                      console.log(input.description);
+                    }
+
+                    return (
+                      <div className="flex items-center  space-x-8 relative ">
+                        <div>{input.code}</div>
+                        {/* <input
+                        key={index}
+                        type="text"
+                        placeholder={`LO ${input.counter}`}
+                        ref={input.ref}
+                        className="input-form w-1/2"
+                      /> */}
                         <BloomTaxonomyInput
-                          className="BloomTax "
+                          className="input-form  "
                           ref={input.ref}
                           key={index}
-                          bloomVerbs={cognitiveDomainVerbs}
+                          bloomVerbs={PsychomotorDomainVerbs}
                           v={input.description}
                           placeholder={`LO ${input.counter}`}
                         />
+
+                        {isRunning && (
+                          <button
+                            type="button"
+                            onClick={(e) => removeLO2(e, input)}
+                            className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                            data-dismiss-target="#alert-border-2"
+                            aria-label="Close"
+                          >
+                            <span className="sr-only">Dismiss</span>
+                            <svg
+                              aria-hidden="true"
+                              className="w-5 h-5"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                              ></path>
+                            </svg>
+                          </button>
+                        )}
                       </div>
-                      {isRunning && (
-                        <button
-                          type="button"
-                          onClick={(e) => removeLO1(e, input)}
-                          className="ml-auto -mx-1.5 -mb-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                          data-dismiss-target="#alert-border-2"
-                          aria-label="Close"
-                        >
-                          <span className="sr-only">Dismiss</span>
-                          <svg
-                            aria-hidden="true"
-                            className="w-5 h-5"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                              clipRule="evenodd"
-                            ></path>
-                          </svg>
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <div class="flex items-center   justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
-                <div>Psychomotor Domain</div>
-                {isRunning && (
-                  <button
-                    onClick={handleAddInput2}
-                    className="bg-blue-500 text-white py-2 px-4 rounded-md"
-                  >
-                    Add
-                  </button>
-                )}
-              </div>
-              <div className="">
-                {inputs2.map((input, index) => {
-                  {
-                    console.log(input.description);
-                  }
-
-                  return (
-                    <div className="flex items-center  space-x-8 relative ">
-                      <div>{input.code}</div>
-                      {/* <input
+                    );
+                  })}
+                </div>
+                <div class="flex items-center  justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
+                  <div>Affective Domain</div>
+                  {isRunning && (
+                    <button
+                      onClick={handleAddInput3}
+                      className="bg-blue-500 text-white py-2 px-4 rounded-md"
+                    >
+                      Add
+                    </button>
+                  )}
+                </div>
+                <div className="">
+                  {inputs3.map((input, index) => {
+                    return (
+                      <div className="flex items-center  space-x-8 relative">
+                        <div>{input.code}</div>
+                        {/* <input
                         key={index}
                         type="text"
                         placeholder={`LO ${input.counter}`}
                         ref={input.ref}
                         className="input-form w-1/2"
                       /> */}
-                      <BloomTaxonomyInput
-                        className="input-form  "
-                        ref={input.ref}
-                        key={index}
-                        bloomVerbs={PsychomotorDomainVerbs}
-                        v={input.description}
-                        placeholder={`LO ${input.counter}`}
-                      />
-
-                      {isRunning && (
-                        <button
-                          type="button"
-                          onClick={(e) => removeLO2(e, input)}
-                          className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                          data-dismiss-target="#alert-border-2"
-                          aria-label="Close"
-                        >
-                          <span className="sr-only">Dismiss</span>
-                          <svg
-                            aria-hidden="true"
-                            className="w-5 h-5"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                              clipRule="evenodd"
-                            ></path>
-                          </svg>
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <div class="flex items-center  justify-between text-lg text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400 my-10">
-                <div>Affective Domain</div>
-                {isRunning && (
-                  <button
-                    onClick={handleAddInput3}
-                    className="bg-blue-500 text-white py-2 px-4 rounded-md"
-                  >
-                    Add
-                  </button>
-                )}
-              </div>
-              <div className="">
-                {inputs3.map((input, index) => {
-                  return (
-                    <div className="flex items-center  space-x-8 relative">
-                      <div>{input.code}</div>
-                      {/* <input
-                        key={index}
-                        type="text"
-                        placeholder={`LO ${input.counter}`}
-                        ref={input.ref}
-                        className="input-form w-1/2"
-                      /> */}
-                      <BloomTaxonomyInput
-                        className="input-form  
+                        <BloomTaxonomyInput
+                          className="input-form  
                         "
-                        ref={input.ref}
-                        key={index}
-                        v={input.description}
-                        bloomVerbs={AffectiveDomainVerbs}
-                        placeholder={`LO ${input.counter}`}
-                      />
+                          ref={input.ref}
+                          key={index}
+                          v={input.description}
+                          bloomVerbs={AffectiveDomainVerbs}
+                          placeholder={`LO ${input.counter}`}
+                        />
 
-                      {isRunning && (
-                        <button
-                          type="button"
-                          onClick={(e) => removeLO3(e, input)}
-                          className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                          data-dismiss-target="#alert-border-2"
-                          aria-label="Close"
-                        >
-                          <span className="sr-only">Dismiss</span>
-                          <svg
-                            aria-hidden="true"
-                            className="w-5 h-5"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
+                        {isRunning && (
+                          <button
+                            type="button"
+                            onClick={(e) => removeLO3(e, input)}
+                            className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                            data-dismiss-target="#alert-border-2"
+                            aria-label="Close"
                           >
-                            <path
-                              fillRule="evenodd"
-                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                              clipRule="evenodd"
-                            ></path>
-                          </svg>
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
+                            <span className="sr-only">Dismiss</span>
+                            <svg
+                              aria-hidden="true"
+                              className="w-5 h-5"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                              ></path>
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
-        </div>
           <div className="flex justify-end ">
             <button
               type="submit"

@@ -1,4 +1,4 @@
-import Textarea from "@/components/Textarea/textAreaLOS";
+import Textarea from "@/components/Textarea/Textarea";
 import React, { useState, useRef, forwardRef, v2, useEffect } from "react";
 import Autocomplete from "react-autocomplete";
 
@@ -72,7 +72,7 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
   });
 
   return (
-    <div
+    <Textarea
       v={v}
       ref={ref}
       small={true}
@@ -108,7 +108,7 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
         wrapperProps={{ className: `absolute  ` }}
         menuStyle={{ position: `absolute  `, zIndex: "10" }}
       />
-    </div>
+    </Textarea>
   );
 });
 
