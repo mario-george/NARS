@@ -8,16 +8,13 @@ import Cookies from "js-cookie";
 import Checkbox from "@/components/checkbox/checkbox";
 import MassageAlert from "@/components/MassageAlert";
 
-const updateDepartment = () => {
+const deleteDepartment = () => {
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
   const [departmentArr, setDepartmentArr] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [oldHeaderRole, setOldHeaderRole] = useState([]);
-  const [currentHeaderRole, setCurrentHeaderRole] = useState([]);
   const [oldHeaderID, setOldHeaderID] = useState(null);
-  const [currentHeaderID, setCurrentHeaderID] = useState(null);
 
   const userState = useSelector((s) => s.user);
   
@@ -104,13 +101,11 @@ const updateDepartment = () => {
         console.log("r1", resp1);
         if (resp1.status !== "success") {
           setAlerts([...alerts, <MassageAlert 
-            success="Error with Old Department Header"
+            fail="Error with Department Header"
             status="fail"
             key={Math.random()} 
         />])
         }else{
-          setCurrentHeaderID(resp1.data._id);
-          setCurrentHeaderRole(resp1.data.roles);
           setOldHeaderRole(resp1.data.roles);
           email.current.value = resp1.data.email;
         }
@@ -123,35 +118,6 @@ const updateDepartment = () => {
   // if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
   //   return <div className="error">404 could not found</div>;
   // }
-
-  const emailCheck = async() => {
-    if(email.current.value){try {
-      let pattern = ''
-      const r = await fetch(`${process.env.url}api/v1/users/staff?email=${email.current.value}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      
-
-      const resp = await r.json();
-      // console.log(resp);
-      if (resp.status !== "success") {
-        setAlerts([...alerts, <MassageAlert 
-          fail="Email have Problem"
-          status="fail"
-          key={Math.random()} 
-      />])
-      }else{
-        setCurrentHeaderID(resp.data[0]._id);
-        setCurrentHeaderRole(resp.data[0].roles);
-      }
-    } catch (e) {
-      console.log(e);
-    }}
-  };
   
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -177,15 +143,7 @@ const updateDepartment = () => {
       const r = await fetch(
         `${process.env.url}api/v1/department/${department.current.value}`,
         {
-          method: "PATCH",
-          body: JSON.stringify({
-            name: name.current.value,
-            departmentHead: email.current.value,
-            about: about.current.value,
-            competences: competences,
-            faculty: Cookies.get('faculty'),
-            objectives: objectives.current.value,
-          }),
+          method: "Delete",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
@@ -197,7 +155,7 @@ const updateDepartment = () => {
       console.log(resp);
       if (resp.status == "success") {
         setAlerts([...alerts, <MassageAlert 
-          success="Department added Successfully"
+          success="Department deleted Successfully"
           status="success"
           key={Math.random()} 
       />]);
@@ -234,7 +192,7 @@ const updateDepartment = () => {
       console.log("r1", resp1);
       if (resp1.status !== "success") {
         setAlerts([...alerts, <MassageAlert 
-          success="Error with Old Department Header"
+          fail="Error with Old Department Header"
           status="fail"
           key={Math.random()} 
       />])
@@ -242,69 +200,6 @@ const updateDepartment = () => {
     } catch (e) {
       console.log(e);
     }
-    // update Current Header Role
-    try {
-      const r2 = await fetch(`${process.env.url}api/v1/users/staff/${currentHeaderID}`, {
-        method: "POST",
-
-        body: JSON.stringify({
-          "roles":[
-            ...currentHeaderRole,
-            "department admin"
-          ],
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      const resp2 = await r2.json();
-      console.log("r2", resp2);
-      if (resp1.status !== "success") {
-        setAlerts([...alerts, <MassageAlert 
-          success="Error with Department Header Email"
-          status="fail"
-          key={Math.random()} 
-      />])
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const handleAddInput = (e) => {
-    e.preventDefault();
-    
-
-    setInputs([
-      ...inputs,
-      {
-        ref: createRef(),
-      },
-    ]);
-
-    setInputs2([
-      ...inputs2,
-      {
-        ref: createRef(),
-      },
-    ]);
-  };
-
-  const removeLO1 = (e, input2, input) => {
-    e.preventDefault();
-    setInputs2(
-      inputs2.filter((e) => {
-        return e != input2;
-      })
-    );
-    setInputs(
-      inputs.filter((e) => {
-        return e != input;
-      })
-    );
   };
 
   return (
@@ -341,6 +236,7 @@ const updateDepartment = () => {
                   name="name"
                   className="input-form w-full"
                   ref={name}
+                  readOnly
                 />
               </div>
               <div className="flex flex-col gap-5  w-2/5">
@@ -350,7 +246,8 @@ const updateDepartment = () => {
                   name="year"
                   className="input-form  w-full"
                   ref={email}
-                  onChange={emailCheck}
+                  contentEditable={false}
+                  readOnly
                 />
               </div>
             </div>
@@ -363,6 +260,7 @@ const updateDepartment = () => {
                   name="about"
                   className="w-full input-form"
                   ref={about}
+                  readOnly
                 />
               </div>
               <div className="flex flex-col gap-5 w-1/3">
@@ -372,6 +270,7 @@ const updateDepartment = () => {
                   name="about"
                   className="w-full input-form"
                   ref={objectives}
+                  readOnly
                 />
               </div>
             </div>
@@ -379,14 +278,6 @@ const updateDepartment = () => {
             <div className="flex gap-20 ">
               <div className="flex flex-col space-y-1 w-full">
                 <p className=" mb-0 ">Competences:</p>
-                <div class="flex items-center justify-end mr-6 text-lg text-gray-700 capitalize ">
-                  <button
-                    onClick={handleAddInput}
-                    className="bg-blue-500 text-white py-2 px-4 rounded-md"
-                  >
-                    Add
-                  </button>
-                </div>
 
                 <div className="grid grid-cols-2 ">
                   <div className="">
@@ -401,6 +292,7 @@ const updateDepartment = () => {
                           defaultValue={input.value ? input.value : ''}
                           ref={input.ref}
                           className="input-form w-1/6"
+                          readOnly
                         />
                       );
                     })}
@@ -417,29 +309,8 @@ const updateDepartment = () => {
                             defaultValue={input2.value ? input2.value : ''}
                             ref={input2.ref}
                             className="input-form w-3/6"
+                            readOnly
                           />
-                          <button
-                            type="button"
-                            onClick={(e) => removeLO1(e, input2, input)}
-                            className="ml-100 absolute bottom-2 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                            data-dismiss-target="#alert-border-2 "
-                            aria-label="Close"
-                          >
-                            <span className="sr-only ">Dismiss</span>
-                            <svg
-                              aria-hidden="true"
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              ></path>
-                            </svg>
-                          </button>
                         </div>
                       );
                     })}
@@ -456,7 +327,7 @@ const updateDepartment = () => {
                 type="submit"
                 class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
-                Update
+                Delete
               </button>
             </div>
           </div>
@@ -465,4 +336,4 @@ const updateDepartment = () => {
     </>
   );
 };
-export default updateDepartment;
+export default deleteDepartment;
