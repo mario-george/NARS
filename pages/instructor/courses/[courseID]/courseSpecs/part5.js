@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import { updateField } from "@/components/store/userSlice";
 
 const part69 = ({ cookies }) => {
   const [isRunning, setIsRunning] = useState(true);
   const userState = useSelector((s) => s.user);
+  const d = useDispatch();
+
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
@@ -30,7 +33,7 @@ const part69 = ({ cookies }) => {
       );
       const data = await r.json();
       console.log(data);
-      // console.log(data.data.courseSpecs.lecturePlan.topics.length)
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
 
       try {
         setAddWeek(data.data.courseSpecs.lecturePlan.topics.length);
@@ -136,9 +139,9 @@ checkboxRefs.current = [
 
     setAddWeek(addWeek + 1);
   };
-  let cognitive = cookies.courseLearningOutcomes[0].learningOutcomes;
-  let affective = cookies.courseLearningOutcomes[2].learningOutcomes;
-  let psychomotor = cookies.courseLearningOutcomes[1].learningOutcomes;
+  let cognitive = cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+  let affective = cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
+  let psychomotor = cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
   let numCols = outcomes.length;
   let numRows = addWeek;
   const router = useRouter();
@@ -182,7 +185,7 @@ checkboxRefs.current = [
         congitiveParsed = cognitive;
         psychomotorParsed = psychomotor;
         affectiveParsed = affective;
-        courseLearningOutcomes = cookies.courseLearningOutcomes;
+        courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
         console.log(congitiveParsed);
         console.log(psychomotorParsed);
         console.log(affectiveParsed);
@@ -294,13 +297,14 @@ checkboxRefs.current = [
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
+          className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none "
         >
+          <div className="contentAddUserFlexible2 flex flex-col gap-10">
           <div
-            className="contentAddUser2 flex flex-col gap-10"
+            
             ref={refToImgBlob}
           >
-            <table className="table-auto mb-[35rem] ">
+            <table className="table-auto mx-auto ">
               <thead>
                 <tr>
                   <th className="border-2 px-4 py-2">Week</th>
@@ -359,7 +363,7 @@ checkboxRefs.current = [
               </tbody>
             </table>
           </div>
-          <div className="flex justify-end absolute  right-24">
+          <div className="flex justify-end ">
             <button
               onClick={addRowWeek}
               class="w-[7rem]  font-Roboto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base  px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -371,7 +375,7 @@ checkboxRefs.current = [
               class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Next
-            </button>
+            </button></div>
           </div>
         </form>
       </div>

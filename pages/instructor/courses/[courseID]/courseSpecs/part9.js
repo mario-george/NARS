@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRef, useState, useEffect } from "react";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import { updateField } from "@/components/store/userSlice";
 
 const part2 = ({ cookies }) => {
+  const d = useDispatch();
+
   const userState = useSelector((s) => s.user);
   const courseSpecs = cookies.courseSpecs;
   useEffect(() => {
@@ -20,6 +23,8 @@ const part2 = ({ cookies }) => {
         }
       );
       const data = await r.json();
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
+
       console.log(data);
       const references = data.data.courseSpecs.references;
       if (references.courseNotes) {

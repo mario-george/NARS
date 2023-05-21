@@ -19,6 +19,7 @@ import resizeBlobs from "../getPdf/resizeBlob";
 import { updateField } from "@/components/store/userSlice";
 // Compress PDF Blob using lz-string
 const compressBlob = (pdfBlob) => {
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -41,6 +42,7 @@ const part10 = ({ cookies }) => {
   const courseSpecs = cookies.courseSpecs;
   const d = useDispatch();
   const [t, setT] = useState(true);
+  
   const refArray = [
     "Classroom",
     "Smart Board",
@@ -73,6 +75,7 @@ const part10 = ({ cookies }) => {
       );
       const data = await r.json();
       console.log(data);
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
 
       const length1 = cookies.courseLearningOutcomes[0].learningOutcomes.length;
 

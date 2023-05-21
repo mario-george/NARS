@@ -41,13 +41,10 @@ const part8 = ({ cookies }) => {
       );
       const data = await r.json();
       console.log(data);
-      console.log(cookies.courseLearningOutcomes[0].learningOutcomes.length);
-      console.log(cookies.courseLearningOutcomes[1].learningOutcomes.length);
-      console.log(cookies.courseLearningOutcomes[2].learningOutcomes.length);
 
-      const length1 = cookies.courseLearningOutcomes[0].learningOutcomes.length;
-      const length2 = cookies.courseLearningOutcomes[1].learningOutcomes.length;
-      const length3 = cookies.courseLearningOutcomes[2].learningOutcomes.length;
+      const length1 = cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes.length;
+      const length2 = cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes.length;
+      const length3 = cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes.length;
 
       try {
         checkboxRefs.current = Array.from({ length: length1 }, () =>
@@ -215,9 +212,9 @@ const part8 = ({ cookies }) => {
   const router = useRouter();
   const { courseID } = router.query;
   const numCols = 10;
-  let cognitive = cookies.courseLearningOutcomes[0].learningOutcomes;
-  let affective = cookies.courseLearningOutcomes[2].learningOutcomes;
-  let psychomotor = cookies.courseLearningOutcomes[1].learningOutcomes;
+  let cognitive = cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+  let affective = cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
+  let psychomotor = cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
   const [arrays, setArrays] = useState({
     LO: [],
     LO2: [],
@@ -229,7 +226,7 @@ const part8 = ({ cookies }) => {
         congitiveParsed = cognitive;
         psychomotorParsed = psychomotor;
         affectiveParsed = affective;
-        courseLearningOutcomes = cookies.courseLearningOutcomes;
+        courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
 
         setArrays((prevState) => ({
           LO: congitiveParsed,
@@ -311,23 +308,17 @@ const part8 = ({ cookies }) => {
     setTableData([...checkboxRefs.current]);
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
-    let courseLearningOutcomes = cookies.courseLearningOutcomes;
-    if (cookies.courseLearningOutcomes) {
+    if (cookies.courseSpecs.courseLearningOutcomes) {
       try {
-        let courseLearningOutcomesParsed = cookies.cp2;
-        console.log(courseLearningOutcomesParsed);
-        console.log(courseLearningOutcomesParsed);
-        console.log(courseLearningOutcomesParsed);
-        console.log(courseLearningOutcomesParsed);
-        console.log(courseLearningOutcomesParsed);
-        let l1P = cookies.cp2[0].learningOutcomes;
-        let l2P = cookies.cp2[1].learningOutcomes;
-        let l3P = cookies.cp2[2].learningOutcomes;
+    
+        let l1P = cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+        let l2P = cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
+        let l3P = cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
 
         // courseLearningOutcomes[0].learningOutcomes =[]
-        cp2 = JSON.parse(JSON.stringify(courseLearningOutcomes));
+        cp2 = JSON.parse(JSON.stringify(cookies.courseSpecs.courseLearningOutcomes));
 
-        if (courseLearningOutcomesParsed[0].title == "cognitive") {
+        if (cp2[0].title == "cognitive") {
           cp2[0].learningOutcomes = l1P.map((e, i) => {
             return {
               ...e,
@@ -337,7 +328,7 @@ const part8 = ({ cookies }) => {
             };
           });
         }
-        if (courseLearningOutcomesParsed[1].title == "psychomotor") {
+        if (cp2[1].title == "psychomotor") {
           cp2[1].learningOutcomes = l2P.map((e, i) => {
             return {
               ...e,
@@ -347,7 +338,7 @@ const part8 = ({ cookies }) => {
             };
           });
         }
-        if (courseLearningOutcomesParsed[2].title == "affective") {
+        if (cp2[2].title == "affective") {
           cp2[2].learningOutcomes = l3P.map((e, i) => {
             return {
               ...e,
@@ -360,7 +351,9 @@ const part8 = ({ cookies }) => {
         console.log(cp2[0]);
         console.log(cp2[1]);
         console.log(cp2[2]);
+        d(updateField({ field: "cp2", value: cp2 }));
         console.log(cp2);
+
       } catch (error) {
         console.error(`Error parsing cookie: ${error}`);
       }
@@ -430,15 +423,15 @@ const part8 = ({ cookies }) => {
   ];
   return (
     <>
-      <div className="flex flex-row w-screen h-auto mt-2">
+      <div className="flex flex-row w-screen h-auto ">
         <CustomReactToPdf targetRef={refToImgBlob} filename="part7.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-[81%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative overflow-auto "
+          className="bg-sky-50 h-auto w-[81%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none  overflow-auto "
         >
-          <div className="contentAddUserFlexible mt-[14rem] ">
+          <div className="contentAddUserFlexible2 flex flex-col gap-10 ">
           <div className=" flex flex-col  ">
             <div ref={refToImgBlob}>
               <table className="table-fixed border-collapse mb-[5rem]">
@@ -471,9 +464,9 @@ const part8 = ({ cookies }) => {
                       {row.map((cell, cellIndex) => (
                         <td
                           key={cellIndex}
-                          className={`border border-gray-500 p-1 transistion-all  py-3 px-1${
+                          className={`border text-xl border-gray-500 transistion-all  py-8 px-4${
                             cellIndex === 0
-                              ? `text-right text-red-500 text-xl`
+                              ? `text-right text-red-500 font-bold text-2xl`
                               : ``
                           }`}
                           // className={cn({
@@ -507,7 +500,7 @@ const part8 = ({ cookies }) => {
                     <tr key={rowIndex}>
                       <td className="border px-4 py-2 border-gray-500">
                         {" "}
-                        {arrays.LO[rowIndex].name}
+                        {arrays.LO[rowIndex].code}
                       </td>
                       {Array.from({ length: numCols }).map((_, colIndex) => (
                         <td
@@ -544,7 +537,7 @@ const part8 = ({ cookies }) => {
                     <tr key={rowIndex}>
                       <td className="border px-4 py-2 border-gray-500">
                         {" "}
-                        {arrays.LO2[rowIndex].name}
+                        {arrays.LO2[rowIndex].code}
                       </td>
                       {Array.from({ length: numCols }).map((_, colIndex) => (
                         <td
@@ -581,7 +574,7 @@ const part8 = ({ cookies }) => {
                     <tr key={rowIndex}>
                       <td className="border px-4 py-2 border-gray-500">
                         {" "}
-                        {arrays.LO3[rowIndex].name}
+                        {arrays.LO3[rowIndex].code}
                       </td>
                       {Array.from({ length: numCols }).map((_, colIndex) => (
                         <td
