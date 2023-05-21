@@ -1,63 +1,56 @@
-import MassageAlert from "@/components/MassageAlert";
-import { createRef } from "react";
-import Cookies from "js-cookie";
-import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useRef, useEffect } from "react";
-import React from "react";
-const addDepartment = () => {
-  const userState = useSelector((s) => s.user);
-  // Cookies.set('faculty', '641c3dfc8ba1dcd2d20388d9')
-  // if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
-  //   return <div className="error">404 could not found</div>;
-  // }
-  
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
-  const [inputs, setInputs] = useState([]);
-  const [inputs2, setInputs2] = useState([]);
+import { useRef } from "react";
+import Cookies from "js-cookie";
+import Checkbox from "@/components/checkbox/checkbox";
+import MassageAlert from "@/components/MassageAlert";
+
+const updateDepartment = () => {
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [departmentArr, setDepartmentArr] = useState([]);
   const [alerts, setAlerts] = useState([]);
-  const [headersRole, setHeaderRole] = useState([]);
-  const [headerID, setHeaderID] = useState(null);
+  const [oldHeadersRole, setOldHeaderRole] = useState([]);
+  const [currentHeadersRole, setCurrentHeaderRole] = useState([]);
+  const [oldHeadersID, setOldHeaderID] = useState(null);
+  const [currentHeadersID, setCurrentHeaderID] = useState(null);
 
-  const handleAddInput = (e) => {
-    e.preventDefault();
-
-    setInputs([
-      ...inputs,
-      {
-        ref: createRef(),
-      },
-    ]);
-
-    setInputs2([
-      ...inputs2,
-      {
-        ref: createRef(),
-      },
-    ]);
-  };
-  const removeLO1 = (e, input2, input) => {
-    e.preventDefault();
-    setInputs2(
-      inputs2.filter((e) => {
-        return e != input2;
-      })
-    );
-    setInputs(
-      inputs.filter((e) => {
-        return e != input;
-      })
-    );
-  };
-
+  const userState = useSelector((s) => s.user);
+  
+  const department = useRef();
   const token = userState.token;
   console.log("t", token)
   const name = useRef();
   const email = useRef();
   const about = useRef();
-  const objectives = useRef();
+  const objective = useRef();
+
+
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
+  useEffect(() => {
+    async function doThis() {
+      const resp = await fetch(`${process.env.url}api/v1/department/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const data = await resp.json();
+      console.log(data);
+      const newData = data.data.map((e) => {
+        return { name: e.name, id: e._id };
+      });
+      setDepartmentArr(newData);
+    }
+    doThis();
+  }, []);
+
+  // if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
+  //   return <div className="error">404 could not found</div>;
+  // }
 
   const emailCheck = async() => {
     if(email.current.value){try {
@@ -87,53 +80,26 @@ const addDepartment = () => {
       console.log(e);
     }}
   };
-
+  
   const submitHandler = async (e) => {
     e.preventDefault();
-    const arr1 = inputs.map((input1) => {
-      return {
-        code: input1.ref.current.value,
-      };
-    });
-    const arr2 = inputs2.map((input2) => {
-      return {
-        value: input2.ref.current.value,
-      };
-    });
-    const competences = arr1.map((a, index) => {
-      const b = arr2[index];
-      return {
-        code: a.code,
-        description: b.value,
-      };
-    });
-
     try {
-      const r = await fetch(`${process.env.url}api/v1/department/`, {
-        method: "POST",
-
-        body: JSON.stringify({
-          name: name.current.value,
-          departmentHead: email.current.value,
-          about: about.current.value,
-          competences: competences,
-          faculty: Cookies.get('faculty'),
-          objectives: objectives.current.value,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      console.log("rrf", Cookies.get('faculty'));
-
+      const r = await fetch(
+        `${process.env.url}api/v1/Department/${department.current.value}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            academicYears: selectedItems,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + `userState.token`,
+          },
+        }
+      );
       const resp = await r.json();
       console.log(resp);
-      console.log(selectedItems);
-      //console.log(arr1);
-      //console.log(arr2);
       if (resp.status == "success") {
         setAlerts([...alerts, <MassageAlert 
           success="Department added Successfully"
@@ -150,48 +116,36 @@ const addDepartment = () => {
     } catch (e) {
       console.log(e);
     }
-
-
-    try {
-      const r1 = await fetch(`${process.env.url}api/v1/users/staff/${headerID}`, {
-        method: "POST",
-
-        body: JSON.stringify({
-          "roles":[
-            ...headersRole,
-            "department admin"
-          ],
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      const resp1 = await r1.json();
-      console.log("r1", resp1);
-      if (resp1.status !== "success") {
-        setAlerts([...alerts, <MassageAlert 
-          success="Error with Department Header Email"
-          status="fail"
-          key={Math.random()} 
-      />])
-      }
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2 scrollbar-none">
+      <div className="flex flex-row w-screen h-screen mt-2">
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
           >
-          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
-            <p className="font-normal">Faculty {">"} Add Department</p>
+          <div className="contentAddUser2 flex flex-col gap-10">
+            <p className="font-normal">Faculty {">"} Update Department</p>
+            <div className="flex gap-20 ">
+              <div className="flex flex-col gap-5 w-1/3">
+                <div>Department:</div>
+                <select
+                  ref={department}
+                  id="small"
+                  class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                >
+                  <option selected>Choose a Department</option>
+                  {departmentArr.map((e) => {
+                    return <option value={e.id}>{e.name}</option>;
+                  })}{" "}
+                </select>
+              </div>
+            </div>
+            <div className="flex gap-20 ">
+            {<div className="w-1/2 mt-10">{alerts.map(s => s)}</div>}
+            </div>
+
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Department Name:</div>
@@ -225,12 +179,12 @@ const addDepartment = () => {
                 />
               </div>
               <div className="flex flex-col gap-5 w-1/3">
-                <div>Objectives:</div>
+                <div>Objective:</div>
                 <input
                   type="text"
                   name="about"
                   className="w-full input-form"
-                  ref={objectives}
+                  ref={objective}
                 />
               </div>
             </div>
@@ -313,7 +267,7 @@ const addDepartment = () => {
                 type="submit"
                 class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
-                Create
+                Update
               </button>
             </div>
           </div>
@@ -322,4 +276,4 @@ const addDepartment = () => {
     </>
   );
 };
-export default addDepartment;
+export default updateDepartment;
