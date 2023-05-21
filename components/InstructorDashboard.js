@@ -58,7 +58,7 @@ export default function InstructorDashboard({ cookies }) {
 
   return (
     <nav
-      className={`nav2 transition-all duration-300 transform ${
+      className={`nav2  transition-all duration-300 transform ${
         navStatus ? ` -translate-x-full` : `translate-x-0 `
       }`}
     >

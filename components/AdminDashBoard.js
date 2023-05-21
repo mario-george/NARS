@@ -8,6 +8,7 @@ import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
 import { GiTeacher } from "react-icons/gi";
 import { FaUniversity } from "react-icons/fa";
+import { TiGroupOutline } from "react-icons/ti";
 
 export default function AdminDashBoard() {
   const router = useRouter();
@@ -79,7 +80,7 @@ export default function AdminDashBoard() {
       )}
       {header(
         <span>
-          <FaUniversity
+          <TiGroupOutline
             style={{
               fontSize: 30,
               display: "inline",
@@ -142,16 +143,62 @@ export default function AdminDashBoard() {
           </Link>,
         ]
       )}
+      {header(
+        <span>
+          <FaUniversity
+            style={{
+              fontSize: 30,
+              display: "inline",
+              marginBottom: 4,
+              marginRight: 9,
+            }}
+          />
+          Faculty
+        </span>,
+        [
+          <Link
+            className={
+              router.pathname === "/admin/faculty/addfaculty"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/admin/faculty/addfaculty"
+          >
+            Add Faculty
+          </Link>,
+          <Link
+            className={
+              router.pathname === "/admin/faculty/updatefaculty"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/admin/faculty/updatefaculty"
+          >
+            Update Faculty
+          </Link>,
+          <Link
+            className={
+              router.pathname === "/admin/faculty/deletefaculty"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/admin/faculty/deletefaculty"
+          >
+            Delete Faculty
+          </Link>,
+          <Link
+            className={
+              router.pathname === "/admin/faculty/viewfaculty"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/admin/faculty/viewfaculty"
+          >
+            View Faculties
+          </Link>,
+        ]
+      )}
 
-      {/* <Link className="link2" href="/admin/profile">
-        Courses
-      </Link>{' '}
-      <Link className="link2" href="/admin/profile">
-        Programs
-      </Link>{' '}
-      <Link className="link2" href="/admin/profile">
-        Add Program
-      </Link>{' '} */}
       <button
         className="link2 focus:text-green-400 text-left"
         onClick={logoutHandler}
