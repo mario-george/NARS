@@ -9,7 +9,7 @@ import { useRef, useEffect } from "react";
 import React from "react";
 const addfaculty = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
-  if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
+  if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
   const [msg, setMsg] = useState("");
@@ -119,7 +119,7 @@ const addfaculty = ({ cookies }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " +  userState.token,
         },
       });
 

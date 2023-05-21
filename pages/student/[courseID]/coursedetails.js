@@ -29,13 +29,14 @@ const coursedetails = ({ cookies }) => {
       console.log("DATA IS ", data);
       console.log(data.data.courseSpecs);
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
-      // code.current.value=data.courseSpecs.courseData.courseCode
-      // year.current.value=data.courseSpecs.courseData.year
-      // practical.current.value=data.courseSpecs.courseData.practical
+
       if (lecture.current && special.current && hours.current) {
         lecture.current.value = data.data.courseSpecs.courseData.lectures;
-        hours.current.value = data.data.courseSpecs.courseData.contactHourse;
+        hours.current.value = data.data.courseSpecs.courseData.contactHours;
         special.current.value = data.data.courseSpecs.courseData.specialization;
+        practical.current.value = data.data.courseSpecs.courseData.practice;
+        year.current.value = data.data.courseSpecs.courseData.semester;
+        code.current.value = data.data.course.code;
       }
     };
     getData();
