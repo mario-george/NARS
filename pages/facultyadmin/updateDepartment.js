@@ -206,7 +206,7 @@ const updateDepartment = () => {
     // update old header
     try {
       const r1 = await fetch(`${process.env.url}api/v1/users/staff/${oldHeaderID}`, {
-        method: "POST",
+        method: "PATCH",
 
         body: JSON.stringify({
           "roles":oldHeaderRole.map(r => {
@@ -237,7 +237,7 @@ const updateDepartment = () => {
     // update Current Header Role
     try {
       const r2 = await fetch(`${process.env.url}api/v1/users/staff/${currentHeaderID}`, {
-        method: "POST",
+        method: "PATCH",
 
         body: JSON.stringify({
           "roles":[

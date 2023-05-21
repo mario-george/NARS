@@ -118,7 +118,7 @@ const viewDepartment = () => {
           className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
           >
           <div className="contentAddUser2 flex flex-col gap-10">
-            <p className="font-normal">Faculty {">"} Update Department</p>
+            <p className="font-normal">Faculty {">"} View Department</p>
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Department:</div>
