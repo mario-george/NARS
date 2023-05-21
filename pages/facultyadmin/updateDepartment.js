@@ -50,14 +50,6 @@ const updateDepartment = () => {
     doThis();
   }, []);
 
-  useEffect(() => {
-    
-    if(department.current.value !== 'Choose a Department'){
-      console.log("rr", department.current.value);
-      doThis();
-    }
-  }, [department.current]);
-
   const getDepartmentData = async () => {
     if(department.current.value !== 'Choose a Department'){
       console.log("rr", department.current.value);
@@ -104,7 +96,7 @@ const updateDepartment = () => {
         console.log("r1", resp1);
         if (resp1.status !== "success") {
           setAlerts([...alerts, <MassageAlert 
-            success="Error with Old Department Header"
+            fail="Error with Old Department Header"
             status="fail"
             key={Math.random()} 
         />])
@@ -234,7 +226,7 @@ const updateDepartment = () => {
       console.log("r1", resp1);
       if (resp1.status !== "success") {
         setAlerts([...alerts, <MassageAlert 
-          success="Error with Old Department Header"
+          fail="Error with Old Department Header"
           status="fail"
           key={Math.random()} 
       />])
@@ -264,7 +256,7 @@ const updateDepartment = () => {
       console.log("r2", resp2);
       if (resp1.status !== "success") {
         setAlerts([...alerts, <MassageAlert 
-          success="Error with Department Header Email"
+          fail="Error with Department Header Email"
           status="fail"
           key={Math.random()} 
       />])

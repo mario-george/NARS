@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import Checkbox from "@/components/checkbox/checkbox";
 import MassageAlert from "@/components/MassageAlert";
 
-const deleteDepartment = () => {
+const viewDepartment = () => {
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
   const [departmentArr, setDepartmentArr] = useState([]);
@@ -110,76 +110,11 @@ const deleteDepartment = () => {
   // if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
   //   return <div className="error">404 could not found</div>;
   // }
-  
-  const submitHandler = async (e) => {
-    try {
-      const r = await fetch(
-        `${process.env.url}api/v1/department/${department.current.value}`,
-        {
-          method: "Delete",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      const resp = await r.json();
-      console.log(resp);
-      if (resp.status == "success") {
-        setAlerts([...alerts, <MassageAlert 
-          success="Department deleted Successfully"
-          status="success"
-          key={Math.random()} 
-      />]);
-      } else {
-        setAlerts([...alerts, <MassageAlert 
-          fail="Problem Happened with Data"
-          status="fail"
-          key={Math.random()} 
-      />]);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    // update old header
-    try {
-      const r1 = await fetch(`${process.env.url}api/v1/users/staff/${oldHeaderID}`, {
-        method: "POST",
-
-        body: JSON.stringify({
-          "roles":oldHeaderRole.map(r => {
-            if(r !== 'department admin'){
-              return r
-            }
-          }),
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      const resp1 = await r1.json();
-      console.log("r1", resp1);
-      if (resp1.status !== "success") {
-        setAlerts([...alerts, <MassageAlert 
-          fail="Error with Old Department Header"
-          status="fail"
-          key={Math.random()} 
-      />])
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
         <form
-          onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
           >
           <div className="contentAddUser2 flex flex-col gap-10">
@@ -294,19 +229,11 @@ const deleteDepartment = () => {
             <div className="flex gap-20 ">
               {<div className="w-1/2 mt-10">{alerts.map(s => s)}</div>}
             </div>
-
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Delete
-              </button>
-            </div>
+            
           </div>
         </form>
       </div>
     </>
   );
 };
-export default deleteDepartment;
+export default viewDepartment;

@@ -7,7 +7,7 @@ import { useRef, useEffect } from "react";
 import React from "react";
 const addDepartment = () => {
   const userState = useSelector((s) => s.user);
-  // Cookies.set('faculty', '641c3dfc8ba1dcd2d20388d9')
+  Cookies.set('faculty', '641c3dfc8ba1dcd2d20388d9')
   // if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
   //   return <div className="error">404 could not found</div>;
   // }
@@ -57,6 +57,7 @@ const addDepartment = () => {
   const email = useRef();
   const about = useRef();
   const objectives = useRef();
+  console.log('f', Cookies.get('faculty'))
 
   const emailCheck = async() => {
     if(email.current.value){try {
@@ -129,6 +130,7 @@ const addDepartment = () => {
       const resp = await r.json();
       console.log(resp);
       console.log(selectedItems);
+      
       //console.log(arr1);
       //console.log(arr2);
       if (resp.status == "success") {
