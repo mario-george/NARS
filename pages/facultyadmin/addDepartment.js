@@ -7,7 +7,7 @@ import { useRef, useEffect } from "react";
 import React from "react";
 const addDepartment = () => {
   const userState = useSelector((s) => s.user);
-  Cookies.set('faculty', '641c3dfc8ba1dcd2d20388d9')
+  // Cookies.set('faculty', '641c3dfc8ba1dcd2d20388d9')
   // if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
   //   return <div className="error">404 could not found</div>;
   // }
@@ -117,7 +117,7 @@ const addDepartment = () => {
           departmentHead: headerID,
           about: about.current.value,
           competences: competences,
-          faculty: Cookies.get('faculty'),
+          faculty: userState.faculty,
           objectives: objectives.current.value,
         }),
         headers: {
@@ -153,7 +153,7 @@ const addDepartment = () => {
 
     try {
       const r1 = await fetch(`${process.env.url}api/v1/users/staff/${headerID}`, {
-        method: "POST",
+        method: "PATCH",
 
         body: JSON.stringify({
           "roles":[

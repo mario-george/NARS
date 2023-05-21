@@ -9,9 +9,9 @@ import { read, utils } from "xlsx";
 
 const addStudent = () => {
   const userState = useSelector((s) => s.user);
-  if (userState.role != "program admin" || userState.loggedInStatus != "true") {
-    return <div className="error">404 could not found</div>;
-  }
+  // if (userState.role != "program admin" || userState.loggedInStatus != "true") {
+  //   return <div className="error">404 could not found</div>;
+  // }
   
   useEffect(() => {
     
@@ -113,7 +113,6 @@ const addStudent = () => {
 
   return (
     <div className="z-30">
-    <div className="z-30">{alerts.map(e=><div>{e}</div>)}</div>
       <div className="flex flex-col ml-96 px-10">
         <div className="items-center flex flex-col gap-5 gap-10 ml-10 mt-28">
           {/* <form> */}
@@ -144,6 +143,11 @@ const addStudent = () => {
                 </tbody>
               </table>
             </div>
+
+            <div className="flex gap-20 ">
+              {<div className="w-1/2 mt-10">{alerts.map(s => s)}</div>}
+            </div>
+
             <div className="flex justify-end">
               <button onClick={submitHandler}
                 className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300

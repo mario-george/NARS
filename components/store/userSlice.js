@@ -20,6 +20,8 @@ let initialState = {
   cp2: {},
   program: "",
   courseSpecs: {},
+  faculty: "",
+  department: ""
 };
 const userSlice = createSlice({
   initialState,
