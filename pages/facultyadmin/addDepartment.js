@@ -53,7 +53,6 @@ const addDepartment = () => {
   };
 
   const token = userState.token;
-  console.log("t", token)
   const name = useRef();
   const email = useRef();
   const about = useRef();
@@ -114,7 +113,7 @@ const addDepartment = () => {
 
         body: JSON.stringify({
           name: name.current.value,
-          departmentHead: email.current.value,
+          departmentHead: headerID,
           about: about.current.value,
           competences: competences,
           faculty: Cookies.get('faculty'),
@@ -126,8 +125,6 @@ const addDepartment = () => {
           Authorization: "Bearer " + token,
         },
       });
-
-      console.log("rrf", Cookies.get('faculty'));
 
       const resp = await r.json();
       console.log(resp);

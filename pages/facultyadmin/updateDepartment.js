@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { createRef } from "react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -8,23 +9,24 @@ import Checkbox from "@/components/checkbox/checkbox";
 import MassageAlert from "@/components/MassageAlert";
 
 const updateDepartment = () => {
+  const [inputs, setInputs] = useState([]);
+  const [inputs2, setInputs2] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [departmentArr, setDepartmentArr] = useState([]);
   const [alerts, setAlerts] = useState([]);
-  const [oldHeadersRole, setOldHeaderRole] = useState([]);
-  const [currentHeadersRole, setCurrentHeaderRole] = useState([]);
-  const [oldHeadersID, setOldHeaderID] = useState(null);
-  const [currentHeadersID, setCurrentHeaderID] = useState(null);
+  const [oldHeaderRole, setOldHeaderRole] = useState([]);
+  const [currentHeaderRole, setCurrentHeaderRole] = useState([]);
+  const [oldHeaderID, setOldHeaderID] = useState(null);
+  const [currentHeaderID, setCurrentHeaderID] = useState(null);
 
   const userState = useSelector((s) => s.user);
   
   const department = useRef();
   const token = userState.token;
-  console.log("t", token)
   const name = useRef();
   const email = useRef();
   const about = useRef();
-  const objective = useRef();
+  const objectives = useRef();
 
 
   useEffect(() => {
@@ -47,6 +49,76 @@ const updateDepartment = () => {
     }
     doThis();
   }, []);
+
+  useEffect(() => {
+    
+    if(department.current.value !== 'Choose a Department'){
+      console.log("rr", department.current.value);
+      doThis();
+    }
+  }, [department.current]);
+
+  const getDepartmentData = async () => {
+    if(department.current.value !== 'Choose a Department'){
+      console.log("rr", department.current.value);
+      const resp = await fetch(`${process.env.url}api/v1/department/${department.current.value}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const data = await resp.json();
+      console.log(data);
+      name.current.value = data.data.name;
+      about.current.value = data.data.about;
+      objectives.current.value = data.data.objectives;
+      let comps = data.data.competences;
+
+      setInputs(comps.map(c => {
+        let out = {
+          ref: createRef(),
+          value: c.code,
+        };
+        return out;
+      }));
+      setInputs2(comps.map(c => {
+        let out = {
+          ref: createRef(),
+          value: c.description,
+        };
+        return out;
+      }));
+
+      setOldHeaderID(data.data.departmentHead);
+
+      try {
+        const r1 = await fetch(`${process.env.url}api/v1/users/staff/${data.data.departmentHead}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+  
+        const resp1 = await r1.json();
+        console.log("r1", resp1);
+        if (resp1.status !== "success") {
+          setAlerts([...alerts, <MassageAlert 
+            success="Error with Old Department Header"
+            status="fail"
+            key={Math.random()} 
+        />])
+        }else{
+          setCurrentHeaderID(resp1.data._id);
+          setCurrentHeaderRole(resp1.data.roles);
+          setOldHeaderRole(resp1.data.roles);
+          email.current.value = resp1.data.email;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
 
   // if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
   //   return <div className="error">404 could not found</div>;
@@ -73,8 +145,8 @@ const updateDepartment = () => {
           key={Math.random()} 
       />])
       }else{
-        setHeaderID(resp.data[0]._id);
-        setHeaderRole(resp.data[0].roles);
+        setCurrentHeaderID(resp.data[0]._id);
+        setCurrentHeaderRole(resp.data[0].roles);
       }
     } catch (e) {
       console.log(e);
@@ -83,18 +155,41 @@ const updateDepartment = () => {
   
   const submitHandler = async (e) => {
     e.preventDefault();
+    const arr1 = inputs.map((input1) => {
+      return {
+        code: input1.ref.current.value,
+      };
+    });
+    const arr2 = inputs2.map((input2) => {
+      return {
+        value: input2.ref.current.value,
+      };
+    });
+    const competences = arr1.map((a, index) => {
+      const b = arr2[index];
+      return {
+        code: a.code,
+        description: b.value,
+      };
+    });
+
     try {
       const r = await fetch(
-        `${process.env.url}api/v1/Department/${department.current.value}`,
+        `${process.env.url}api/v1/department/${department.current.value}`,
         {
           method: "PATCH",
           body: JSON.stringify({
-            academicYears: selectedItems,
+            name: name.current.value,
+            departmentHead: email.current.value,
+            about: about.current.value,
+            competences: competences,
+            faculty: Cookies.get('faculty'),
+            objectives: objectives.current.value,
           }),
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + `userState.token`,
+            Authorization: "Bearer " + token,
           },
         }
       );
@@ -116,6 +211,100 @@ const updateDepartment = () => {
     } catch (e) {
       console.log(e);
     }
+    // update old header
+    try {
+      const r1 = await fetch(`${process.env.url}api/v1/users/staff/${oldHeaderID}`, {
+        method: "POST",
+
+        body: JSON.stringify({
+          "roles":oldHeaderRole.map(r => {
+            if(r !== 'department admin'){
+              return r
+            }
+          }),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      const resp1 = await r1.json();
+      console.log("r1", resp1);
+      if (resp1.status !== "success") {
+        setAlerts([...alerts, <MassageAlert 
+          success="Error with Old Department Header"
+          status="fail"
+          key={Math.random()} 
+      />])
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    // update Current Header Role
+    try {
+      const r2 = await fetch(`${process.env.url}api/v1/users/staff/${currentHeaderID}`, {
+        method: "POST",
+
+        body: JSON.stringify({
+          "roles":[
+            ...currentHeaderRole,
+            "department admin"
+          ],
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      const resp2 = await r2.json();
+      console.log("r2", resp2);
+      if (resp1.status !== "success") {
+        setAlerts([...alerts, <MassageAlert 
+          success="Error with Department Header Email"
+          status="fail"
+          key={Math.random()} 
+      />])
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleAddInput = (e) => {
+    e.preventDefault();
+    
+
+    setInputs([
+      ...inputs,
+      {
+        ref: createRef(),
+      },
+    ]);
+
+    setInputs2([
+      ...inputs2,
+      {
+        ref: createRef(),
+      },
+    ]);
+  };
+
+  const removeLO1 = (e, input2, input) => {
+    e.preventDefault();
+    setInputs2(
+      inputs2.filter((e) => {
+        return e != input2;
+      })
+    );
+    setInputs(
+      inputs.filter((e) => {
+        return e != input;
+      })
+    );
   };
 
   return (
@@ -131,6 +320,7 @@ const updateDepartment = () => {
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Department:</div>
                 <select
+                  onChange={getDepartmentData}
                   ref={department}
                   id="small"
                   class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
@@ -141,9 +331,6 @@ const updateDepartment = () => {
                   })}{" "}
                 </select>
               </div>
-            </div>
-            <div className="flex gap-20 ">
-            {<div className="w-1/2 mt-10">{alerts.map(s => s)}</div>}
             </div>
 
             <div className="flex gap-20 ">
@@ -179,12 +366,12 @@ const updateDepartment = () => {
                 />
               </div>
               <div className="flex flex-col gap-5 w-1/3">
-                <div>Objective:</div>
+                <div>Objectives:</div>
                 <input
                   type="text"
                   name="about"
                   className="w-full input-form"
-                  ref={objective}
+                  ref={objectives}
                 />
               </div>
             </div>
@@ -211,6 +398,7 @@ const updateDepartment = () => {
                         <input
                           key={index}
                           type="text"
+                          defaultValue={input.value ? input.value : ''}
                           ref={input.ref}
                           className="input-form w-1/6"
                         />
@@ -226,6 +414,7 @@ const updateDepartment = () => {
                           <input
                             key={index}
                             type="text"
+                            defaultValue={input2.value ? input2.value : ''}
                             ref={input2.ref}
                             className="input-form w-3/6"
                           />
