@@ -113,11 +113,11 @@ const viewDepartment = () => {
 
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2">
+      <div className="flex flex-row w-screen h-[100%] mt-2">
         <form
-          className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          className="bg-sky-50 h-[100%] w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
           >
-          <div className="contentAddUser2 flex flex-col gap-10">
+          <div className="contentAddUser2 flex flex-col h-[100%] gap-10">
             <p className="font-normal">Faculty {">"} View Department</p>
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">

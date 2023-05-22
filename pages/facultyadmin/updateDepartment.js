@@ -304,12 +304,13 @@ const updateDepartment = () => {
 
   return (
     <>
-      <div className="flex flex-row w-screen h-auto mt-2">
+      <div className="flex flex-row w-screen h-[100%] mt-2">
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          className="bg-sky-50 h-[100%] w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center 
+          text-black ml-1 rounded-2xl"
           >
-          <div className="contentAddUser2 flex flex-col gap-10">
+          <div className="contentAddUser2 flex flex-col gap-10 h-[100%]">
             <p className="font-normal">Faculty {">"} Update Department</p>
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
