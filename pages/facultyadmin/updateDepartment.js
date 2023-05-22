@@ -172,7 +172,7 @@ const updateDepartment = () => {
           method: "PATCH",
           body: JSON.stringify({
             name: name.current.value,
-            departmentHead: email.current.value,
+            departmentHead: currentHeaderID,
             about: about.current.value,
             competences: competences,
             faculty: Cookies.get('faculty'),
@@ -189,7 +189,7 @@ const updateDepartment = () => {
       console.log(resp);
       if (resp.status == "success") {
         setAlerts([...alerts, <MassageAlert 
-          success="Department added Successfully"
+          success="Department updated Successfully"
           status="success"
           key={Math.random()} 
       />]);
@@ -205,15 +205,18 @@ const updateDepartment = () => {
     }
     // update old header
     try {
+      let oldRoles = []
+      oldHeaderRole.forEach(r => {
+        if(r !== 'department admin'){
+          oldRoles.push(r);
+        }
+      });
+      console.log('old roles', oldRoles, oldHeaderRole);
       const r1 = await fetch(`${process.env.url}api/v1/users/staff/${oldHeaderID}`, {
         method: "PATCH",
 
         body: JSON.stringify({
-          "roles":oldHeaderRole.map(r => {
-            if(r !== 'department admin'){
-              return r
-            }
-          }),
+          "roles": oldRoles,
         }),
         headers: {
           "Content-Type": "application/json",

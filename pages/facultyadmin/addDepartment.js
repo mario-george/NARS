@@ -128,9 +128,7 @@ const addDepartment = () => {
       });
 
       const resp = await r.json();
-      console.log(resp);
-      console.log(selectedItems);
-      
+      console.log(resp);      
       //console.log(arr1);
       //console.log(arr2);
       if (resp.status == "success") {
