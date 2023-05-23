@@ -7,17 +7,13 @@ import Textarea from "@/components/Textarea/Textarea";
 import { updateField } from "@/components/store/userSlice";
 
 const part2 = ({ cookies }) => {
-  const courseSpecs=cookies.courseSpecs
-  const d = useDispatch()
-  useEffect(()=>{
- 
-    const getData = async function (){
-    
+  const courseSpecs = cookies.courseSpecs;
+  const d = useDispatch();
+  useEffect(() => {
+    const getData = async function () {
       const r = await fetch(
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
-    
-    
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
@@ -26,22 +22,18 @@ const part2 = ({ cookies }) => {
         }
       );
       const data = await r.json();
-      console.log(data)
-      console.log(data.data.courseSpecs.courseAims)
-      if(data.data.courseSpecs.courseAims){
-
-        courseAims.current.value=data.data.courseSpecs.courseAims
+      console.log(data);
+      console.log(data.data.courseSpecs.courseAims);
+      if (data.data.courseSpecs.courseAims) {
+        courseAims.current.value = data.data.courseSpecs.courseAims;
       }
-      if(data.data.courseSpecs.courseContent){
-
-        courseContent.current.value=data.data.courseSpecs.courseContent
+      if (data.data.courseSpecs.courseContent) {
+        courseContent.current.value = data.data.courseSpecs.courseContent;
       }
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
-
-
-    }
-    getData()
-    },[])
+    };
+    getData();
+  }, []);
   const [isRunning, setIsRunning] = useState(true);
   const refToImgBlob = useRef();
   /* if (cookies.role != 'instructor' || cookies.loggedInStatus != 'true') {
@@ -106,7 +98,6 @@ const part2 = ({ cookies }) => {
           courseSpecs: {
             courseAims: courseAims.current.value,
             courseContent: courseContent.current.value,
-       
           },
         }),
         headers: {
@@ -130,12 +121,11 @@ const part2 = ({ cookies }) => {
         <CustomReactToPdf targetRef={refToImgBlob} filename="part2.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
-        <div className="contentAddUser2 flex flex-col   " ref={refToImgBlob}>
+        <div className="contentAddUser2 flex flex-col   ">
           <div className="flex my-24 ">
             <div className="flex flex-col gap-5 w-full">
               <div>-Course Aims:</div>
-             
-       
+
               <Textarea
                 rows="4"
                 placeholder="Type here the Course Aims"
@@ -146,18 +136,16 @@ const part2 = ({ cookies }) => {
           </div>
           <div className="flex flex-col gap-5  w-full">
             <div> -Course Contents(As indicated in the program):</div>
-       
+
             <Textarea
               rows="4"
               placeholder="Type here the Course Contents"
               ref={courseContent}
               v={courseContent.current?.value}
-
             />
           </div>
-
-    
         </div>
+        
       </form>
       <div className="flex justify-end absolute bottom-8 right-24">
         <button
@@ -168,6 +156,33 @@ const part2 = ({ cookies }) => {
           Next
         </button>
       </div>
+      <div
+          className="contentAddUser2 flex flex-col transform translate-x-[200%]   "
+          ref={refToImgBlob}
+        >
+          <div className="flex my-24 ">
+            <div className="flex flex-col gap-5 w-full">
+              <div>-Course Aims:</div>
+
+              <Textarea
+                rows="4"
+                placeholder="Type here the Course Aims"
+                ref={courseAims}
+                v={courseAims.current?.value}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-5  w-full">
+            <div> -Course Contents(As indicated in the program):</div>
+
+            <Textarea
+              rows="4"
+              placeholder="Type here the Course Contents"
+              ref={courseContent}
+              v={courseContent.current?.value}
+            />
+          </div>
+        </div>
     </>
   );
 };

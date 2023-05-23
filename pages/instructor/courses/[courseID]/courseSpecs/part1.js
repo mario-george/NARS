@@ -3,32 +3,20 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
-import Cookies from "js-cookie";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
-import ReactDOMServer from "react-dom/server";
 import Navbar from "@/components/Navbar/Navbar";
 import { updateField } from "@/components/store/userSlice";
 import PdfFileCard from "@/components/filesView/pdfFileCard";
-import { Document, Page } from "react-pdf";
-import dynamic from "next/dynamic";
+import Textarea from "@/components/Textarea/Textarea";
 
 const part1 = ({ cookies }) => {
   const router = useRouter();
   const { courseID } = router.query;
+  const [hasClass, setHasClass] = useState(true);
 
-  const [client, setClient] = useState(false);
-  const [InvoicePDF, setInvoicePDF] = useState(null);
-  // useEffect(() => {
-  //   const loadInvoicePDF = async () => {
-  //     const pdfModule = await import(`@/components/pdfContinue/pdf.js`);
-  //     setInvoicePDF(pdfModule.default);
-  //   };
-  //   loadInvoicePDF();
-  //   setClient(true);
-  // }, []);
-  const [numPages, setNumPages] = useState(null);
+  const courseAims = useRef("");
+  const courseContent = useRef("");
   const [pdfBlob, setpdfBlob] = useState();
-  const [pageNumber, setPageNumber] = useState(1);
   const [blobIsFound, setBlobIsFound] = useState(false);
   async function downloadPdf(e) {
     e.preventDefault();
@@ -37,9 +25,9 @@ const part1 = ({ cookies }) => {
 
     const downloadLink = document.createElement("a");
     downloadLink.href = url;
-    let replacedIns=instanceName
-    replacedIns = replacedIns.replace(/\n$/, '');
-    downloadLink.download = replacedIns+".pdf";
+    let replacedIns = instanceName;
+    replacedIns = replacedIns.replace(/\n$/, "");
+    downloadLink.download = replacedIns + ".pdf";
 
     document.body.appendChild(downloadLink);
     downloadLink.click();
@@ -47,16 +35,11 @@ const part1 = ({ cookies }) => {
 
     window.URL.revokeObjectURL(url);
   }
-  async function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
+
   const [instanceName, setInstanceName] = useState("Course Specs");
 
   useEffect(() => {
     const getData = async function () {
-  
-
- 
       const r = await fetch(
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
@@ -77,7 +60,8 @@ const part1 = ({ cookies }) => {
         special.current &&
         hours.current &&
         semester.current &&
-        practice.current&&data.data.courseSpecs.courseData
+        practice.current &&
+        data.data.courseSpecs.courseData
       ) {
         lecture.current.value = data.data.courseSpecs.courseData.lectures;
         hours.current.value = data.data.courseSpecs.courseData.contactHours;
@@ -85,7 +69,12 @@ const part1 = ({ cookies }) => {
         semester.current.value = data.data.courseSpecs.courseData.semester;
         practice.current.value = data.data.courseSpecs.courseData.practice;
       }
-
+      if (courseAims.current && data.data.courseSpecs.courseAims) {
+        courseAims.current.value = data.data.courseSpecs.courseAims;
+      }
+      if (courseContent.current && data.data.courseSpecs.courseContent) {
+        courseContent.current.value = data.data.courseSpecs.courseContent;
+      }
 
       console.log(data);
     };
@@ -106,7 +95,7 @@ const part1 = ({ cookies }) => {
         dataGetNameCodeReq.data[0].course.name +
         " " +
         dataGetNameCodeReq.data[0].course.code;
-setInstanceName(dataGetNameCodeReq.data[0].course.name)
+      setInstanceName(dataGetNameCodeReq.data[0].course.name);
 
       try {
         code.current.value = s;
@@ -154,15 +143,14 @@ setInstanceName(dataGetNameCodeReq.data[0].course.name)
       console.log(data);
       console.log(data.data.courseSpecs);
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
-      // code.current.value=data.courseSpecs.courseData.courseCode
-      // year.current.value=data.courseSpecs.courseData.year
-      // practice.current.value=data.courseSpecs.courseData.practice
+
       if (
         lecture.current &&
         special.current &&
         hours.current &&
         semester.current &&
-        practice.current&&data.data.courseSpecs.courseData
+        practice.current &&
+        data.data.courseSpecs.courseData
       ) {
         lecture.current.value = data.data.courseSpecs.courseData.lectures;
         hours.current.value = data.data.courseSpecs.courseData.contactHours;
@@ -170,18 +158,6 @@ setInstanceName(dataGetNameCodeReq.data[0].course.name)
         semester.current.value = data.data.courseSpecs.courseData.semester;
         practice.current.value = data.data.courseSpecs.courseData.practice;
       }
-      // body: JSON.stringify({
-      //   courseSpecs: {
-      //     courseData: {
-      //       courseCode: code.current.value,
-      //       year: year.current.value,
-      //       practice: practice.current.value,
-      //       lectures: lecture.current.value,
-      //       contactHours: hours.current.value,
-      //       specialization: special.current.value,
-      //     },
-      //   },
-      // }),
 
       console.log(data);
     };
@@ -245,7 +221,7 @@ setInstanceName(dataGetNameCodeReq.data[0].course.name)
 
   const submitHandler = async (e) => {
     setIsSubmitting(true);
-
+    setHasClass(false);
     buttonRef.current.click();
 
     e.preventDefault();
@@ -256,6 +232,9 @@ setInstanceName(dataGetNameCodeReq.data[0].course.name)
         method: "PATCH",
         body: JSON.stringify({
           courseSpecs: {
+            courseAims: courseAims.current.value,
+            courseContent: courseContent.current.value,
+
             courseData: {
               courseCode: code.current.value,
               semester: semester.current.value,
@@ -276,25 +255,14 @@ setInstanceName(dataGetNameCodeReq.data[0].course.name)
 
     const resp = await r.json();
     console.log(resp);
-    // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part2`;
-    router.push(`/instructor/courses/${courseID}/courseSpecs/part2`);
-    // window.location.href = `/instructor/courses/${cookies.instance_id}/courseSpecs/part2`;
+    router.push(`/instructor/courses/${courseID}/courseSpecs/part3`);
   };
-  //   function MyPdfViewer(props) {
-  //     const { pdfBlob } = props;
-
-  //     return (
-  // <Document file={{ blob: pdfBlob }} onLoadSuccess={onDocumentLoadSuccess} onError={console.error}>
-  //   <Page pageNumber={1} />
-  // </Document>
-  //     );
-  //   }
 
   if (blobIsFound) {
     console.log(pdfBlob);
     return (
       <>
-        <div className="flex flex-row w-screen h-screen mt-2 scrollbar-none">
+        <div className="flex flex-row w-screen h-auto mt-2 scrollbar-none">
           <form
             onSubmit={downloadPdf}
             className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
@@ -312,20 +280,7 @@ setInstanceName(dataGetNameCodeReq.data[0].course.name)
                 downloadPdf={downloadPdf}
               />
               <div>
-                <div>
-                  {/* {client && InvoicePDF && <InvoicePDF pdfBlob={pdfBlob} variable2="value2" />} */}
-                </div>
-                {/* {pdfBlob ? (
-        <MyPdfViewer pdfBlob={pdfBlob} />
-      ) : (
-        <p>Loading PDF...</p>
-      )} */}
-
-                {/* {numPages !== null ? (
-        <p>
-          Page {pageNumber} of {numPages}
-        </p>
-      ) : null} */}
+                <div></div>
               </div>
             </div>
           </form>
@@ -335,7 +290,7 @@ setInstanceName(dataGetNameCodeReq.data[0].course.name)
   }
   return (
     <>
-      <div className="flex flex-row w-screen h-screen mt-2 scrollbar-none">
+      <div className="flex flex-row w-screen h-screen  scrollbar-none">
         <CustomReactToPdf targetRef={refToImgBlob} filename="part1.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
@@ -343,110 +298,126 @@ setInstanceName(dataGetNameCodeReq.data[0].course.name)
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
         >
-          {/* <div className="absolute top-12 "> */}
-
-          {/* </div> */}
-          <div className="topNav absolute top-14 ">
-            <Navbar cookies={cookies} id={courseID} />
-          </div>
-          <div
-            className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none py-[10rem] m-10"
-            ref={refToImgBlob}
-          >
-            <p className="underline mb-1 pt-[5rem]">-Course Data:</p>
-            <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5 w-1/3">
-                <div>Course Code & Title:</div>
-                <input
-                  type="text"
-                  name="code"
-                  className="input-form w-full"
-                  ref={code}
-                />
+          <div className="contentAddUserFlexible33 flex flex-col   ">
+            <div className="topNav2 ">
+              <Navbar cookies={cookies} id={courseID} />
+            </div>
+            <div ref={refToImgBlob}>
+              <div className="courseDataMainTitle">1-Course Data</div>
+              <div className="flex  ">
+                <div className="flex items-center  gap-5 w-1/2">
+                  <div className="text-red-500 text-xl  font-bold">
+                    Course Code & Title:
+                  </div>
+                  <input
+                    type="text"
+                    name="code"
+                    className={`${hasClass ? "input-form" : ""} w-[60%]`}
+                    ref={code}
+                  />
+                </div>
+                <div className="flex items-center gap-5  w-1/2">
+                  <div className="text-red-500  text-xl font-bold">
+                    {" "}
+                    Semester/Year:
+                  </div>
+                  <input
+                    type="text"
+                    name="year"
+                    className={`${hasClass ? "input-form" : ""} w-[60%]`}
+                    ref={semester}
+                  />
+                </div>
               </div>
-              <div className="flex flex-col gap-5  w-2/5">
-                <div> Semester/Year:</div>
-                <input
-                  type="text"
-                  name="year"
-                  className="input-form  w-full"
-                  ref={semester}
+              <div className="flex  ">
+                <div className="flex items-center  gap-5 w-1/2">
+                  <div className="text-red-500 text-xl  font-bold">
+                    Specialization:
+                  </div>
+                  <input
+                    type="text"
+                    name="special"
+                    className={`${hasClass ? "input-form" : ""} w-[60%]`}
+                    ref={special}
+                  />
+                </div>
+              </div>
+              <div className="flex  ">
+                <div className="flex items-center  gap-5 w-1/2">
+                  <div className="text-red-500 text-xl  font-bold">
+                    Contact Hours:
+                  </div>
+                  <input
+                    type="number"
+                    name="hours"
+                    className={`${hasClass ? "input-form" : ""} w-[60%]`}
+                    ref={hours}
+                  />
+                </div>
+                <div className="flex items-center gap-5  w-1/4">
+                  <div className="text-red-500  text-xl font-bold">
+                    {" "}
+                    Lecture:
+                  </div>
+                  <input
+                    type="number"
+                    name="lecture"
+                    className={`${hasClass ? "input-form" : ""} w-[60%]`}
+                    ref={lecture}
+                  />
+                </div>
+                <div className="flex items-center gap-5  w-1/4">
+                  <div className="text-red-500  text-xl font-bold">
+                    {" "}
+                    Practical/Practice:
+                  </div>
+                  <input
+                    type="number"
+                    name="practice"
+                    className={`${hasClass ? "input-form" : ""} w-[60%]`}
+                    ref={practice}
+                  />
+                </div>
+              </div>
+
+                <div className="flex  flex-col w-full my-0 ">
+                  <div className="text-2xl my-2 bg-yellow-200 ">2-Course Aims:</div>
+
+                  <Textarea
+                    rows="4"
+                    placeholder="Type here the Course Aims"
+                    ref={courseAims}
+                    v={courseAims.current?.value}
+                    hasClass={hasClass}
+                  />
+                </div>
+              <div className="flex flex-col  w-full">
+                <div className="text-2xl my-2 bg-yellow-200">
+                  {" "}
+                  3-Course Contents(As indicated in the program):
+                </div>
+                <Textarea
+                  rows="4"
+                  placeholder="Type here the Course Contents"
+                  ref={courseContent}
+                  v={courseContent.current?.value}
+                  hasClass={hasClass}
                 />
               </div>
             </div>
-
-            <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5 w-1/3">
-                <div>Specialization:</div>
-                <input
-                  type="text"
-                  name="special"
-                  className="input-form w-full"
-                  ref={special}
-                />
-              </div>
-              <div className="flex flex-col gap-5  w-2/5">
-                <div> Contact Hours: </div>
-                <input
-                  type="number"
-                  name="hours"
-                  className="input-form  w-full"
-                  ref={hours}
-                />
-              </div>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              >
+                Next
+              </button>
             </div>
-
-            <div className="flex gap-20 j ">
-              <div className="flex flex-col gap-5 w-1/3">
-                <div>Lecture:</div>
-                <input
-                  type="number"
-                  name="lecture"
-                  className="input-form w-full"
-                  ref={lecture}
-                />
-              </div>
-              <div className="flex flex-col gap-5  w-2/5">
-                <div> Practical/Practice: </div>
-                <input
-                  type="number"
-                  name="practice"
-                  className="input-form  w-full"
-                  ref={practice}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-end absolute bottom-12 right-24">
-            <button
-              type="submit"
-              class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Next
-            </button>
           </div>
         </form>
       </div>
     </>
   );
 };
-// export async function getServerSideProps(context) {
 
-//   const r = await fetch(
-//     `${process.env.url}api/v1/courses/specsPdf/${context.query.courseID}`,
-//     {
-
-//       headers: {
-//         "Content-Type": "application/json",
-//         Accept: "application/json",
-//         Authorization: "Bearer " + appProps.cookies.token,
-//       },
-//     }
-//   );
-//   const data = await r.json();
-//   console.log(data)
-//   const response = await fetch("{{URL}}api/v1/courses/specsPdf/641466ee7036ef196c01ff8e");
-//   const blob = await response.blob();
-//   return { props: { pdfFile: blob } };
-// }
 export default part1;
