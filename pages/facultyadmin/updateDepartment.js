@@ -34,7 +34,7 @@ const updateDepartment = () => {
   // });
   useEffect(() => {
     async function doThis() {
-      const resp = await fetch(`${process.env.url}api/v1/department/`, {
+      const resp = await fetch(`${process.env.url}api/v1/department/?faculty=${userState.faculty}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
