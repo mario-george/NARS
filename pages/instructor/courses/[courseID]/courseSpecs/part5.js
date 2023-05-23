@@ -289,20 +289,20 @@ checkboxRefs.current = [
   };
   return (
     <>
-      <div className="flex flex-row w-auto h-auto  space-x-0">
+      <div className="flex flex-row w-screen h-auto  space-x-0">
         <CustomReactToPdf targetRef={refToImgBlob} filename="part5.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-auto w-auto translate-x-[21%] flex flex-col justify-center items-center text-black "
+          className="bg-sky-50 h-auto w-screen translate-x-[20%] flex flex-col justify-center items-center text-black "
         >
-          <div className="contentAddUserFlexible3  flex flex-col gap-10">
+          <div className="contentAddUserFlexible2  flex flex-col gap-10">
           <div
             
             ref={refToImgBlob}
           >
-            <table className="table-auto mx-auto ">
+            <table className="table-auto  ">
               <thead>
                 <tr>
                   <th className="border-2 px-4 py-2">Week</th>

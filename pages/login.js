@@ -48,6 +48,8 @@ export default function Login({ cookies }) {
       dispatch(updateField({ field: "jwt", value: resp.token }));
       dispatch(updateField({ field: "token", value: resp.token }));
       dispatch(updateField({ field: "name", value: resp.data.user.name }));
+      dispatch(updateField({ field: "faculty", value: resp.data.user.faculty }));
+      dispatch(updateField({ field: "department", value: resp.data.user.department }));
       dispatch(
         updateField({ field: "program", value: resp.data.user.program })
       );

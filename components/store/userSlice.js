@@ -20,6 +20,8 @@ let initialState = {
   cp2: {},
   program: "",
   courseSpecs: {},
+  faculty:"",
+  department:""
 };
 const userSlice = createSlice({
   initialState,
@@ -55,6 +57,8 @@ const userSlice = createSlice({
       s.instance_id="null";
       s.original_id="null";
       s.program="null";
+      s.department="null";
+      s.faculty="null"
     },
     toggleNav: (s) => {
       s.navStatus = !s.navStatus;

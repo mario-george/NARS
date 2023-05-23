@@ -7,7 +7,7 @@ import AdminDashboard from "../AdminDashBoard";
 import QualityCoordinatorDashboard from "@/components/QualityCoordinatorDashboard";
 import StudentDashboard from "../StudentDashoard";
 import ProgramCoordinatorDashboard from "../ProgramCoordinatorDashboard";
-
+import DepartmentAdminDashboard from "../DepartmentAdminDashboard";
 
 import React from "react";
 
@@ -19,8 +19,10 @@ function SideDashboard() {
   const [admin, setAdmin] = useState(false);
   const [programAdmin, setProgramAdmin] = useState(false);
   const [facultyAdmin, setFacultyAdmin] = useState(false);
-  const[qualityCoo,setQualityCoo]=useState(false);
-  const[programCoo,setProgramCoo]=useState(false);
+  const [qualityCoo, setQualityCoo] = useState(false);
+  const [programCoo, setProgramCoo] = useState(false);
+  const [departAdmin, setDepartAdmin] = useState(false);
+
 
   useEffect(() => {
     if (globalState.role === "system admin") {
@@ -31,13 +33,16 @@ function SideDashboard() {
       setProgramAdmin(true);
     } else if (globalState.role === "faculty admin") {
       setFacultyAdmin(true);
-    }else if (globalState.role === "quality coordinator") {
+    } else if (globalState.role === "quality coordinator") {
       setQualityCoo(true);
-    }else if(globalState.role==="student") {
+    } else if (globalState.role === "student") {
       setStudent(true);
     }
-    else if(globalState.role==="program coordinator") {
+    else if (globalState.role === "program coordinator") {
       setProgramCoo(true);
+    }
+    else if (globalState.role === "department admin") {
+      setDepartAdmin(true);
     }
   }, []);
 
@@ -47,9 +52,10 @@ function SideDashboard() {
       {facultyAdmin && <FacultyAdminDashboard />}
       {instructor && <InstructorDashboard />}
       {programAdmin && <ProgramAdminDashboard />}
-      {qualityCoo && <QualityCoordinatorDashboard/>}
-      {student && <StudentDashboard/>}
-      {programCoo && <ProgramCoordinatorDashboard/>}
+      {qualityCoo && <QualityCoordinatorDashboard />}
+      {student && <StudentDashboard />}
+      {programCoo && <ProgramCoordinatorDashboard />}
+      {departAdmin && <DepartmentAdminDashboard />}
     </div>
   );
 }
