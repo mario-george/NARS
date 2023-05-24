@@ -70,7 +70,7 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
   const matchedVerbs = bloomVerbs.filter((verb) => {
     return sentenceWords.some((word) => matchWordToTerm(verb, word));
   });
-
+console.log(matchedVerbs)
   return (
     <Textarea
       v={v}
@@ -79,6 +79,7 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
       key={v}
       rows={0}
       className="w-full pb-[4rem] mr-[5rem] items-center  "
+      hasClass={props.hasClass}
     >
       <Autocomplete
         ref={ref}
