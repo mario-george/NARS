@@ -6,8 +6,10 @@ import { useSelector } from "react-redux";
 import { useRef, useEffect } from "react";
 import React from "react";
 import addRole from "@/common/addRole";
+import deleteRole from "@/common/deleteRole";
+import getStaffRolesAndEmail from "@/common/getStaffRolesAndEmail";
 
-const addProgram = () => {
+const updateProgram = () => {
   const userState = useSelector((s) => s.user);
   // if (userState.role != "department admin" || userState.loggedInStatus != "true") {
   //   return <div className="error">404 could not found</div>;
@@ -19,12 +21,118 @@ const addProgram = () => {
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
   const [alerts, setAlerts] = useState([]);
-  const [headerRole, setHeaderRole] = useState([]);
-  const [headerID, setHeaderID] = useState(null);
-  const [header1ID, setHeader1ID] = useState(null);
-  const [header1Role, setHeader1Role] = useState([]);
-  const [adminRole, setAdminRole] = useState([]);
-  const [adminID, setAdminID] = useState(null);
+  const [programArr, setProgramArr] = useState([]);
+
+  //old
+  const [oldHeaderRole, setOldHeaderRole] = useState([]);
+  const [oldHeaderID, setOldHeaderID] = useState(null);
+  const [oldHeader1ID, setOldHeader1ID] = useState(null);
+  const [oldHeader1Role, setOldHeader1Role] = useState([]);
+  const [oldAdminRole, setOldAdminRole] = useState([]);
+  const [oldAdminID, setOldAdminID] = useState(null);
+  
+  //current
+  const [currentHeaderRole, setCurrentHeaderRole] = useState([]);
+  const [currentHeaderID, setCurrentHeaderID] = useState(null);
+  const [currentHeader1ID, setCurrentHeader1ID] = useState(null);
+  const [currentHeader1Role, setCurrentHeader1Role] = useState([]);
+  const [currentAdminRole, setCurrentAdminRole] = useState([]);
+  const [currentAdminID, setCurrentAdminID] = useState(null);
+
+  const token = userState.token;
+  const name = useRef();
+  const emailH = useRef();
+  const emailA = useRef();
+  const emailQ = useRef();
+  const program = useRef();
+
+  useEffect(() => {
+    async function doThis() {
+      const resp = await fetch(`${process.env.url}api/v1/programs/?faculty=${userState.department}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const data = await resp.json();
+      console.log(data);
+      const newData = data.data.map((e) => {
+        return { name: e.name, id: e._id };
+      });
+      setProgramArr(newData);
+    }
+    doThis();
+  }, []);
+
+  const getProgramData = async () => {
+    if(program.current.value !== 'Choose a Program'){
+      const resp = await fetch(`${process.env.url}api/v1/programs/${program.current.value}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const data = await resp.json();
+      console.log(data);
+      name.current.value = data.data.name;
+      let comps = data.data.competences;
+
+      setInputs(comps.map(c => {
+        let out = {
+          ref: createRef(),
+          value: c.code,
+        };
+        return out;
+      }));
+      setInputs2(comps.map(c => {
+        let out = {
+          ref: createRef(),
+          value: c.description,
+        };
+        return out;
+      }));
+
+      
+      // header
+      setOldHeaderID(data.data.programCoordinator);
+      setCurrentHeaderID(data.data.programCoordinator);
+
+      getStaffRolesAndEmail(
+        data.data.programCoordinator,
+        'program coordinator',
+        setOldHeaderRole,
+        setCurrentHeaderRole,
+        emailH
+      );
+
+      // admin
+      setOldAdminID(data.data.programAdmin);
+      setCurrentAdminID(data.data.programAdmin);
+
+      setCurrentAdminRole(['22'])
+
+      getStaffRolesAndEmail(
+        data.data.programAdmin,
+        'program admin',
+        setOldAdminRole,
+        setCurrentAdminRole,
+        emailA
+      )
+
+      // quality
+      setOldHeader1ID(data.data.qualityCoordinator);
+      setCurrentHeader1ID(data.data.qualityCoordinator);
+
+      getStaffRolesAndEmail(
+        data.data.qualityCoordinator,
+        'quality coordinator',
+        setOldHeader1Role,
+        setCurrentHeader1Role,
+        emailQ
+      );
+
+    }
+  }
 
   const handleAddInput = (e) => {
     e.preventDefault();
@@ -57,11 +165,6 @@ const addProgram = () => {
     );
   };
 
-  const token = userState.token;
-  const name = useRef();
-  const emailH = useRef();
-  const emailA = useRef();
-  const emailQ = useRef();
 
   const emailCheck = async(e) => {
     console.log("we");
@@ -94,16 +197,16 @@ const addProgram = () => {
       }else{
         switch(e.target.attributes.fPar.nodeValue){
           case 'h':
-            setHeaderID(resp.data[0]._id);
-            setHeaderRole(resp.data[0].roles);
+            setCurrentHeaderID(resp.data[0]._id);
+            setCurrentHeaderRole(resp.data[0].roles);
             break;
           case 'q':
-            setHeader1ID(resp.data[0]._id);
-            setHeader1Role(resp.data[0].roles);
+            setCurrentHeader1ID(resp.data[0]._id);
+            setCurrentHeader1Role(resp.data[0].roles);
             break;
           case 'a':
-            setAdminID(resp.data[0]._id);
-            setAdminRole(resp.data[0].roles);
+            setCurrentAdminID(resp.data[0]._id);
+            setCurrentAdminRole(resp.data[0].roles);
             break;
         }
       }
@@ -131,20 +234,20 @@ const addProgram = () => {
         description: b.value,
       };
     });
-    
-    const setStaffProgram = {};
+
+    let setStaffProgram = {'program': null};
 
     try {
-      const r = await fetch(`${process.env.url}api/v1/programs/`, {
-        method: "POST",
+      const r = await fetch(`${process.env.url}api/v1/programs/${program.current.value}`, {
+        method: "PATCH",
 
         body: JSON.stringify({
           name: name.current.value,
           competences: competences,
           department: userState.department,
-          qualityCoordinator: header1ID,
-          programCoordinator: headerID,
-          programAdmin: adminID,
+          qualityCoordinator: currentHeader1ID,
+          programCoordinator: currentHeaderID,
+          programAdmin: currentAdminID,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -159,11 +262,11 @@ const addProgram = () => {
       //console.log(arr2);
       if (resp.status == "success") {
         setAlerts([...alerts, <MassageAlert 
-          success="Program added Successfully"
+          success="Program updated Successfully"
           status="success"
           key={Math.random()} 
       />]);
-      setStaffProgram.program = resp.data._id;
+        setStaffProgram['program'] = resp.data._id;
       } else {
         setAlerts([...alerts, <MassageAlert 
           fail="Problem Happened with Data"
@@ -175,33 +278,56 @@ const addProgram = () => {
       console.log(e);
     }
 
-
     // admin
+      // old
+    await deleteRole(
+      "program admin",
+      oldAdminRole,
+      oldAdminID,
+      setAlerts
+    )
+      // current
     await addRole(
       "program admin",
-      adminRole,
-      adminID,
+      currentAdminRole,
+      currentAdminID,
       setAlerts,
       setStaffProgram
-    );
+    )
 
-    //header
+    // header
+      // old
+    await deleteRole(
+      "program coordinator",
+      oldHeaderRole,
+      oldHeaderID,
+      setAlerts
+    )
+      // current
     await addRole(
       "program coordinator",
-      headerRole,
-      headerID,
+      currentHeaderRole,
+      currentHeaderID,
       setAlerts,
       setStaffProgram
-    );
+    )
 
     //quality
+      // old
+    await deleteRole(
+      "quality coordinator",
+      oldHeader1Role,
+      oldHeader1ID,
+      setAlerts
+    )
+      // current
     await addRole(
       "quality coordinator",
-      header1Role,
-      header1ID,
+      currentHeader1Role,
+      currentHeader1ID,
       setAlerts,
       setStaffProgram
-    );
+    )
   };
 
   return (
@@ -212,7 +338,25 @@ const addProgram = () => {
           className="bg-sky-50 h-[100%] w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
           >
           <div className="contentAddUser2 flex flex-col gap-10 overflow-auto h-[100%] scrollbar-none">
-            <p className="font-normal">Faculty {">"} Add Program</p>
+            <p className="font-normal">Faculty {">"} Update Program</p>
+
+            <div className="flex gap-20 ">
+              <div className="flex flex-col gap-5 w-1/3">
+                <div>Department:</div>
+                <select
+                  onChange={getProgramData}
+                  ref={program}
+                  id="small"
+                  class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                >
+                  <option selected>Choose a Program</option>
+                  {programArr.map((e) => {
+                    return <option value={e.id}>{e.name}</option>;
+                  })}{" "}
+                </select>
+              </div>
+            </div>
+
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Program Name:</div>
@@ -287,6 +431,7 @@ const addProgram = () => {
                           key={index}
                           type="text"
                           ref={input.ref}
+                          defaultValue={input.value ? input.value : ''}
                           className="input-form w-1/6"
                         />
                       );
@@ -302,6 +447,7 @@ const addProgram = () => {
                             key={index}
                             type="text"
                             ref={input2.ref}
+                            defaultValue={input2.value ? input2.value : ''}
                             className="input-form w-3/6"
                           />
                           <button
@@ -342,7 +488,7 @@ const addProgram = () => {
                 type="submit"
                 class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
-                Create
+                Update
               </button>
             </div>
           </div>
@@ -351,4 +497,4 @@ const addProgram = () => {
     </>
   );
 };
-export default addProgram;
+export default updateProgram;

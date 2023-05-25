@@ -5,20 +5,22 @@ const addRole = async(
   role,
   roles,
   id,
-  setAlerts,
-  otherPatch
+  setAlerts
 ) => {
-  const body = otherPatch;
-  body["roles"] = [
-    ...roles,
-    role
-  ];
+  let oldRoles = []
+      roles.forEach(r => {
+        if(r !== role){
+          oldRoles.push(r);
+        }
+      });
 
   try {
     const r = await fetch(`${process.env.url}api/v1/users/staff/${id}`, {
       method: "PATCH",
 
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        "roles": oldRoles,
+      }),
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -27,10 +29,10 @@ const addRole = async(
     });
 
     const resp = await r.json();
-    console.log(`r add for ${role}`, resp);
+    console.log(`r delete for ${role}`, resp);
     if (resp.status !== "success") {
       setAlerts(alerts => [...alerts, <MassageAlert 
-        success={`error happen with ${role}`}
+        success={`error happen with old ${role}`}
         status="fail"
         key={Math.random()} 
     />])
