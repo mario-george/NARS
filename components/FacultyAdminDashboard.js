@@ -25,61 +25,69 @@ export default function FacultyAdminDashboard() {
         </span>
         <span className="ml-2">Profile</span>
       </Link>
-      {header(
-        <span>
-          <FaUniversity
-            style={{
-              fontSize: 30,
-              display: "inline",
-              marginBottom: 4,
-              marginRight: 9,
-            }}
-          />
-          Faculty
-        </span>,
-        [
-          <Link
-            className={
-              router.pathname === "/facultyadmin/addfaculty"
-                ? "activeLinkDashboard2"
-                : "normalLinkDashboard2"
-            }
-            href="/facultyadmin/addfaculty"
-          >
-            Add Faculty
-          </Link>,
-          <Link
-            className={
-              router.pathname === "/facultyadmin/updatefaculty"
-                ? "activeLinkDashboard2"
-                : "normalLinkDashboard2"
-            }
-            href="/facultyadmin/updatefaculty"
-          >
-            Update Faculty
-          </Link>,
-          <Link
-            className={
-              router.pathname === "/facultyadmin/deletefaculty"
-                ? "activeLinkDashboard2"
-                : "normalLinkDashboard2"
-            }
-            href="/facultyadmin/deletefaculty"
-          >
-            Delete Faculty
-          </Link>,
-          <Link
-            className={
-              router.pathname === "/facultyadmin/viewfaculty"
-                ? "activeLinkDashboard2"
-                : "normalLinkDashboard2"
-            }
-            href="/facultyadmin/viewfaculty"
-          >
-            View Faculties
-          </Link>,
-        ]
-      )}
+      
+      
+      <Link
+        className={
+          router.pathname === "/facultyadmin/addDepartment"
+            ? "activeLinkDashboard2"
+            : "normalLinkDashboard2"
+        }
+        href="/facultyadmin/addDepartment"
+      >
+        Add Department
+      </Link>
+      <Link
+        className={
+          router.pathname === "/facultyadmin/updateDepartment"
+            ? "activeLinkDashboard2"
+            : "normalLinkDashboard2"
+        }
+        href="/facultyadmin/updateDepartment"
+      >
+        Update Department
+      </Link>
+      <Link
+        className={
+          router.pathname === "/facultyadmin/deleteDepartment"
+            ? "activeLinkDashboard2"
+            : "normalLinkDashboard2"
+        }
+        href="/facultyadmin/deleteDepartment"
+      >
+        Delete Department
+      </Link>
+      <Link
+        className={
+          router.pathname === "/facultyadmin/viewDepartment"
+            ? "activeLinkDashboard2"
+            : "normalLinkDashboard2"
+        }
+        href="/facultyadmin/viewDepartment"
+      >
+        View Department
+      </Link>
+      <Link
+        className={
+          router.pathname === "/facultyadmin/addStaff"
+            ? "activeLinkDashboard2"
+            : "normalLinkDashboard2"
+        }
+        href="/facultyadmin/addStaff"
+      >
+        Add Staff
+      </Link>
+      <Link
+        className={
+          router.pathname === "/facultyadmin/viewStaff"
+            ? "activeLinkDashboard2"
+            : "normalLinkDashboard2"
+        }
+        href="/facultyadmin/viewStaff"
+      >
+        View Staff
+      </Link>
+
       <button
         className="link2 focus:text-green-400 text-left"
         onClick={logoutHandler}
