@@ -1,17 +1,10 @@
 import Link from "next/link";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { userActions } from "./store/userSlice.js";
-import { useDispatch } from "react-redux";
-import { header } from "./header";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
-import { FaUniversity } from "react-icons/fa";
 
 export default function FacultyAdminDashboard() {
   const router = useRouter();
-  const navStatus = useSelector((s) => s.navStatus);
-  const dispatch = useDispatch();
   const logoutHandler = () => {
     router.push("/logout");
   };
