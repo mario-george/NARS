@@ -3,6 +3,9 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
+import { header } from "./header";
+import { FaUniversity } from "react-icons/fa";
+
 
 export default function DepartmentAdminDashboard() {
   const router = useRouter();
@@ -25,66 +28,97 @@ export default function DepartmentAdminDashboard() {
         <span className="ml-2">Profile</span>
       </Link>
 
-      <Link
-        className={
-          router.pathname === "/departmentadmin/addProgram"
-            ? "activeLinkDashboard2"
-            : "normalLinkDashboard2"
-        }
-        href="/departmentadmin/addProgram"
-      >
-        Create Program
-      </Link>
-      <Link
-        className={
-          router.pathname === "/departmentadmin/updateProgram"
-            ? "activeLinkDashboard2"
-            : "normalLinkDashboard2"
-        }
-        href="/departmentadmin/updateProgram"
-      >
-        Update Program
-      </Link>
-      <Link
-        className={
-          router.pathname === "/departmentadmin/deleteProgram"
-            ? "activeLinkDashboard2"
-            : "normalLinkDashboard2"
-        }
-        href="/departmentadmin/deleteProgram"
-      >
-        Delete Program
-      </Link>
-      <Link
-        className={
-          router.pathname === "/departmentadmin/viewProgram"
-            ? "activeLinkDashboard2"
-            : "normalLinkDashboard2"
-        }
-        href="/departmentadmin/viewProgram"
-      >
-        View Program
-      </Link>
-      <Link
-        className={
-          router.pathname === "/departmentadmin/addStaff"
-            ? "activeLinkDashboard2"
-            : "normalLinkDashboard2"
-        }
-        href="/departmentadmin/addStaff"
-      >
-        Add Staff
-      </Link>
-      <Link
-        className={
-          router.pathname === "/departmentadmin/viewStaff"
-            ? "activeLinkDashboard2"
-            : "normalLinkDashboard2"
-        }
-        href="/departmentadmin/viewStaff"
-      >
-        View Staff
-      </Link>
+      {header(
+        <span>
+          <MdOutlineAdminPanelSettings
+            style={{
+              fontSize: 30,
+              display: "inline",
+              marginBottom: 0,
+              marginRight: 9,
+            }}
+          />
+          Programs
+        </span>,
+        [
+          <Link
+            className={
+              router.pathname === "/departmentadmin/addProgram"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/departmentadmin/addProgram"
+          >
+            Create Program
+          </Link>,
+          <Link
+            className={
+              router.pathname === "/departmentadmin/updateProgram"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/departmentadmin/updateProgram"
+          >
+            Update Program
+          </Link>,
+          <Link
+            className={
+              router.pathname === "/departmentadmin/deleteProgram"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/departmentadmin/deleteProgram"
+          >
+            Delete Program
+          </Link>,
+          <Link
+            className={
+              router.pathname === "/departmentadmin/viewProgram"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/departmentadmin/viewProgram"
+          >
+            View Program
+          </Link>
+        ]
+      )}
+
+      {header(
+        <span>
+          <FaUniversity
+            style={{
+              fontSize: 30,
+              display: "inline",
+              marginBottom: 4,
+              marginRight: 9,
+            }}
+          />
+          Staff
+        </span>,
+        [
+          <Link
+            className={
+              router.pathname === "/departmentadmin/addStaff"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/departmentadmin/addStaff"
+          >
+            Add Staff
+          </Link>,
+          <Link
+            className={
+              router.pathname === "/departmentadmin/viewStaff"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/departmentadmin/viewStaff"
+          >
+            View Staff
+          </Link>
+        ]
+      )}
           
       <button
         className="link2 focus:text-green-400 text-left"

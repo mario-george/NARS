@@ -3,6 +3,10 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
+import { header } from "./header";
+import { FaUniversity } from "react-icons/fa";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
+
 
 export default function DepartmentHeadDashboard() {
   const router = useRouter();
@@ -25,26 +29,58 @@ export default function DepartmentHeadDashboard() {
         <span className="ml-2">Profile</span>
       </Link>
 
-      <Link
-        className={
-          router.pathname === "/departmenthead/viewProgram"
-            ? "activeLinkDashboard2"
-            : "normalLinkDashboard2"
-        }
-        href="/departmenthead/viewProgram"
-      >
-        View Program
-      </Link>
-      <Link
-        className={
-          router.pathname === "/departmentadmin/viewStaff"
-            ? "activeLinkDashboard2"
-            : "normalLinkDashboard2"
-        }
-        href="/departmentadmin/viewStaff"
-      >
-        View Staff
-      </Link>
+      {header(
+        <span>
+          <MdOutlineAdminPanelSettings
+            style={{
+              fontSize: 30,
+              display: "inline",
+              marginBottom: 0,
+              marginRight: 9,
+            }}
+          />
+          Programs
+        </span>,
+        [
+          <Link
+            className={
+              router.pathname === "/departmenthead/viewProgram"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/departmenthead/viewProgram"
+          >
+            View Program
+          </Link>
+        ]
+      )}
+
+      {header(
+        <span>
+          <FaUniversity
+            style={{
+              fontSize: 30,
+              display: "inline",
+              marginBottom: 4,
+              marginRight: 9,
+            }}
+          />
+          Staff
+        </span>,
+        [
+          <Link
+            className={
+              router.pathname === "/departmentadmin/viewStaff"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href="/departmentadmin/viewStaff"
+          >
+            View Staff
+          </Link>
+        ]
+      )}
+
           
       <button
         className="link2 focus:text-green-400 text-left"
