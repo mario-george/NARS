@@ -8,41 +8,21 @@ import Checkbox from "@/components/checkbox/checkbox";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import jsPDF from "jspdf";
 // import mergePDFs from "@/pages/pdf2/merge2.js";
-import mergeTest from "../getPdf/MERGEONLYONE.js/mergeOnlyOne";
+import mergeTest from "@/pages/instructor/courses/[courseID]/getPdf/courseReportPdf";
 // import mergeAllPdf from "./mergePagesToOnePDF";
 import { saveAs } from "file-saver";
 import { PDFDocument } from "pdf-lib";
 import { Worker } from "pdfjs-dist/legacy/build/pdf.worker.entry";
 import * as pdfjs from "pdfjs-dist";
 import LZString from "lz-string";
-import resizeBlobs from "../getPdf/resizeBlob";
 import { updateField } from "@/components/store/userSlice";
-// Compress PDF Blob using lz-string
-const compressBlob = (pdfBlob) => {
-
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const compressedData = LZString.compressToUint8Array(event.target.result);
-      const compressedBlob = new Blob([compressedData], {
-        type: "application/pdf",
-      });
-      resolve(compressedBlob);
-    };
-    reader.onerror = reject;
-    reader.readAsArrayBuffer(pdfBlob);
-  });
-};
-
-// Decompress
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const part10 = ({ cookies }) => {
-  const courseSpecs = cookies.courseSpecs;
+const useFacility = ({ cookies, courseID }) => {
   const d = useDispatch();
   const [t, setT] = useState(true);
-  
+
   const refArray = [
     "Classroom",
     "Smart Board",
@@ -59,7 +39,6 @@ const part10 = ({ cookies }) => {
   );
   const checkboxRefs2 = useRef(false);
   const [tableData, setTableData] = useState(checkboxRefs.current);
-  const [tableData2, setTableData2] = useState(checkboxRefs2.current);
 
   useEffect(() => {
     const getData = async function () {
@@ -126,20 +105,6 @@ const part10 = ({ cookies }) => {
       console.log(data.data.courseSpecs);
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
 
-      // if (
-      //   lecture.current &&
-      //   special.current &&
-      //   hours.current &&
-      //   semester.current &&
-      //   practice.current
-      // ) {
-      //   lecture.current.value = data.data.courseSpecs.courseData.lectures;
-      //   hours.current.value = data.data.courseSpecs.courseData.contactHours;
-      //   special.current.value = data.data.courseSpecs.courseData.specialization;
-      //   semester.current.value = data.data.courseSpecs.courseData.semester;
-      //   practice.current.value = data.data.courseSpecs.courseData.practice;
-      // }
-
       console.log(data);
     };
 
@@ -172,7 +137,7 @@ const part10 = ({ cookies }) => {
 
     formData.append("courseInstance", courseID);
     formData.append("courseSpcs", blob, "mypdf.pdf");
-    try{
+    try {
       const r = await fetch(`${process.env.url}api/v1/courses/specsPdf/`, {
         method: "POST",
         body: formData,
@@ -181,13 +146,12 @@ const part10 = ({ cookies }) => {
           Authorization: "Bearer " + token,
         },
       });
-  
+
       const resp = await r.json();
       console.log(resp);
-    }catch(e){
-      console.log(e)
+    } catch (e) {
+      console.log(e);
     }
-  
   };
   const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
@@ -277,13 +241,13 @@ const part10 = ({ cookies }) => {
     const blobs = [mergedPdf1, mergedPdf2, mergedPdf3, mergedPdf4, mergedPdf5];
     const ImgBlobs = [
       blob,
+      blob2,
+      blob3,
       blob4,
-      // blob2,
-      // blob3,
       blob5,
       blob6,
-      // blob7,
-      // blob8,
+      blob7,
+      blob8,
       blob9,
       blob10,
     ];
@@ -406,8 +370,7 @@ const part10 = ({ cookies }) => {
       </button>
     </div>
   );
-  const router = useRouter();
-  const { courseID } = router.query;
+
   const [selectedItems, setSelectedItems] = useState([]);
   const [handler, setHandler] = useState(false);
   const addOtherHander = () => {
@@ -442,9 +405,8 @@ const part10 = ({ cookies }) => {
   ];
 
   const submitHandler = async (e) => {
-    console.log(selectedItems);
-    console.log(checkboxRefs);
-    buttonRef.current.click();
+
+    // buttonRef.current.click();
     let sentArr = [];
     if (handler) {
       sentArr = selectedItems.concat([other.current.value]);
@@ -475,13 +437,49 @@ const part10 = ({ cookies }) => {
       setMsg(fail);
     }
     console.log(resp);
-    setTimeout(() => {
-      // window.location.href = `/instructor/courses/${courseID}/courseSpecs/Pdf`;
+    // setTimeout(() => {
 
-      downloadMergedPDF();
-    }, 1000);
+    //   downloadMergedPDF();
+    // }, 1000);
   };
-
+  let content = (
+    <>
+      {" "}
+      <div className="text-2xl my-4 bg-yellow-200">10-Facilities</div>{" "}
+      <p className=" mb-0 font-normal">
+        *The following facilities are needed for this course:
+      </p>
+      <div className="">
+        <div className="grid grid-cols-3 gap-4">
+          {items.map((item, index) => (
+            <Checkbox
+              key={item}
+              label={item}
+              value={item}
+              index={index}
+              onChange={handleCheckboxChange}
+              checkboxRefs={checkboxRefs}
+            />
+          ))}
+          <div className="flex items-center  space-x-3">
+            <input
+              type="checkbox"
+              className="w-6 h-6"
+              onChange={addOtherHander}
+              checked={handler === true}
+            />
+            <input
+              type="text"
+              ref={other}
+              className="border input-form "
+              placeholder="Other..."
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+  return {msg,content,submitHandler}
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
@@ -496,7 +494,7 @@ const part10 = ({ cookies }) => {
             className="contentAddUser2 flex flex-col gap-10"
             ref={refToImgBlob}
           >
-            <p className=" mb-0 ">Facilities:</p>
+            <div className="text-2xl my-4 bg-yellow-200">10-Facilities</div>{" "}
             <p className=" mb-0 font-normal">
               *The following facilities are needed for this course:
             </p>
@@ -550,4 +548,4 @@ const part10 = ({ cookies }) => {
     </>
   );
 };
-export default part10;
+export default useFacility;

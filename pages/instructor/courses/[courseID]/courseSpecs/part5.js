@@ -50,7 +50,6 @@ const part69 = ({ cookies }) => {
           i < data.data.courseSpecs.lecturePlan.topics.length;
           i++
         ) {
-          console.log(data.data.courseSpecs.lecturePlan.topics[i].topics[0]);
           if (data.data.courseSpecs.lecturePlan.topics[i].topics[0]) {
             topicsRefs.current[i] =
               data.data.courseSpecs.lecturePlan.topics[i].topics[0];
@@ -59,10 +58,6 @@ const part69 = ({ cookies }) => {
             HoursRefs.current[i] =
               data.data.courseSpecs.lecturePlan.topics[i].plannedHours;
           }
-          // topicsRefs.current[i] =
-          //   data.data.courseSpecs.lecturePlan.topics[i].topics[0];
-          // HoursRefs.current[i] =
-          //   data.data.courseSpecs.lecturePlan.topics[i].plannedHours;
 
           for (
             let j = 0;
@@ -79,7 +74,6 @@ const part69 = ({ cookies }) => {
             }
           }
         }
-        console.log(checkboxRefs.current[0]);
       } catch (e) {
         console.log(e);
       }
@@ -120,16 +114,28 @@ const part69 = ({ cookies }) => {
   let a = [];
   const [addWeek, setAddWeek] = useState(1);
 
-  useEffect(() => {
-    checkboxRefs.current = [
-      ...checkboxRefs.current,
-      Array.from({ length: a.length }, () => false),
-    ];
-  }, [addWeek]);
+  // useEffect(() => {
+  //   checkboxRefs.current = [
+  //     ...checkboxRefs.current,
+  //     Array.from({ length: a.length }, () => false),
+  //   ];
+  // }, [addWeek]);
   const addRowWeek = (e) => {
     e.preventDefault();
 
     setAddWeek(addWeek + 1);
+    checkboxRefs.current = [
+      ...checkboxRefs.current,
+      Array.from({ length: a.length }, () => false),
+    ];
+  };
+  const removeRowHandler = (e) => {
+    e.preventDefault();
+
+    setAddWeek(addWeek - 1);
+    checkboxRefs.current = checkboxRefs.current.slice(0, -1);
+
+
   };
   let cognitive =
     cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
@@ -181,9 +187,7 @@ const part69 = ({ cookies }) => {
         psychomotorParsed = psychomotor;
         affectiveParsed = affective;
         courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
-        console.log(congitiveParsed);
-        console.log(psychomotorParsed);
-        console.log(affectiveParsed);
+
         a = [];
         congitiveParsed.map((e) => {
           a.push(e.code);
@@ -195,8 +199,7 @@ const part69 = ({ cookies }) => {
         affectiveParsed.map((e) => {
           a.push(e.code);
         });
-        console.log(a);
-        console.log(Array.isArray(congitiveParsed));
+
 
         checkboxRefs.current = Array.from({ length: addWeek }, () =>
           Array.from({ length: a.length }, () => false)
@@ -218,18 +221,14 @@ const part69 = ({ cookies }) => {
     setTableData([...checkboxRefs.current]);
     setHoursData([...HoursRefs.current]);
     setTopicsData([...topicsRefs.current]);
-    console.log(checkboxRefs.current[0][0]);
-    console.log(outcomes);
+   
     let lecturePlan = {
       expectedStudyingHoursePerWeek: 5,
       topics: [],
     };
     lecturePlan.topics = [];
 
-    console.log(lecturePlan);
-    console.log(tableData);
-    console.log(topicsData);
-    console.log(hoursData);
+  
     for (let i = 0; i < numRows; i++) {
       let elem = [...outcomes].map((e, k) => {
         if (checkboxRefs.current[i][k]) {
@@ -248,10 +247,7 @@ const part69 = ({ cookies }) => {
       };
       lecturePlan.topics.push(topic);
     }
-    console.log(lecturePlan);
 
-    const lecturePlanStringified = JSON.stringify(lecturePlan);
-    Cookies.set("lecturePlan", lecturePlanStringified);
     const r = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${courseID}`,
       {
@@ -273,27 +269,27 @@ const part69 = ({ cookies }) => {
   };
   const useDynamicHeight = () => {
     const contentRef = useRef(null);
-  
+
     useEffect(() => {
       const adjustHeight = () => {
         const contentElement = contentRef.current;
         const contentHeight = contentElement.offsetHeight;
         const windowHeight = window.innerHeight;
         const maxContentHeight = Math.max(contentHeight, windowHeight);
-        contentElement.style.height = maxContentHeight + 'px';
-        console.log(contentElement)
+        contentElement.style.height = maxContentHeight + "px";
+        console.log(contentElement);
       };
-  
+
       adjustHeight();
-  
+
       const observer = new ResizeObserver(adjustHeight);
       observer.observe(contentRef.current);
-  
+
       return () => {
         observer.disconnect();
       };
     }, [contentRef.current?.style.height]);
-  
+
     return contentRef;
   };
   const contentRef = useDynamicHeight();
@@ -305,9 +301,7 @@ const part69 = ({ cookies }) => {
     e.preventDefault();
     handleSubmit();
 
-    // window.location.href="/instructor/coursespecs/part6"
 
-    // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part6`;
     router.push(`/instructor/courses/${courseID}/courseSpecs/part6`);
   };
   return (
@@ -325,16 +319,39 @@ const part69 = ({ cookies }) => {
             ref={contentRef}
           >
             <div ref={refToImgBlob}>
-              <table className="table-auto mx-auto ">
+              <table className="table-auto w-full ">
                 <thead>
-                  <tr>
-                    <th className="border-2 px-4 py-2">Week</th>
-                    <th className="border-2 px-4 py-2">Topics</th>
-                    <th className="border-2 px-4 py-2">
+                  <tr className="   bg-gray-300">
+                    <th className=" border-t-2 border-r-2 border-t-black border-l-black border-r-black  border-l-2 px-4 ">
+                      Week
+                    </th>
+                    <th className="border-t-2 border-r-2 border-t-black border-l-black border-r-black  border-l-2 px-4">
+                      Topics
+                    </th>
+                    <th
+                      className="border-t-2 border-r-2 border-t-black border-l-black border-r-black  border-l-2 "
+                      style={{ width: "80px" }}
+                    >
                       Planned <br /> Hours
                     </th>
+                    <th
+                      colSpan={outcomes.length}
+                      className="border-t-2 border-r-2 border-t-black border-b-black border-b-2 border-l-black border-r-black  border-l-2 px-4 py-2 text-center"
+                    >
+                      Learning Outcomes
+                      <br />
+                    </th>
+                  </tr>
+
+                  <tr className="bg-gray-300">
+                    <th className=" px-4 border-r-2  border-l-black border-b-black border-b-2 border-r-black  border-l-2  "></th>
+                    <th className=" px-4 border-r-2  border-l-black border-b-black border-b-2 border-r-black  border-l-2 "></th>
+                    <th className=" px-4 border-r-2  border-l-black border-b-black border-b-2 border-r-black  border-l-2  "></th>
                     {outcomes.map((e, i) => (
-                      <th key={i} className="border-2 px-4 py-2">
+                      <th
+                        key={i}
+                        className="border-r-2 border-b-black border-b-2  border-l-black border-r-black  border-l-2  px-4"
+                      >
                         {e}
                       </th>
                     ))}
@@ -343,8 +360,11 @@ const part69 = ({ cookies }) => {
                 <tbody>
                   {Array.from({ length: numRows }).map((_, rowIndex) => (
                     <tr key={rowIndex}>
-                      <td className="border-2 px-4 py-2"> {[rowIndex + 1]}</td>
-                      <td className="border-2 px-4 py-2 ">
+                      <td className="border-2 border-black px-4 py-2">
+                        {" "}
+                        {[rowIndex + 1]}
+                      </td>
+                      <td className="border-2 px-4 py-2 border-black ">
                         <input
                           type="text"
                           name="topic"
@@ -353,7 +373,7 @@ const part69 = ({ cookies }) => {
                           defaultValue={topicsRefs.current[rowIndex]}
                         />
                       </td>
-                      <td className="border-2 px-4 py-2 ">
+                      <td className="border-2 border-black px-4 py-2 ">
                         <input
                           name="hours"
                           type="number"
@@ -363,7 +383,10 @@ const part69 = ({ cookies }) => {
                         />
                       </td>
                       {Array.from({ length: numCols }).map((_, colIndex) => (
-                        <td className="border-2 px-4 py-2" key={colIndex}>
+                        <td
+                          className="border-2 border-black px-4 py-2"
+                          key={colIndex}
+                        >
                           <label className="inline-flex items-center">
                             <input
                               type="checkbox"
@@ -387,9 +410,15 @@ const part69 = ({ cookies }) => {
             <div className="flex justify-end ">
               <button
                 onClick={addRowWeek}
-                class="w-[7rem]  font-Roboto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base  px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                class="w-[7rem]  font-Roboto text-blue-500  py-2 px-4 rounded-md   text-xl mx-2 mb-2 "
               >
-                Add Row
+                Add
+              </button>
+              <button
+                onClick={removeRowHandler}
+                class="w-[7rem]  font-Roboto text-blue-500  py-2 px-4 rounded-md   text-xl mx-2 mb-2 "
+              >
+                Remove
               </button>
               <button
                 type="submit"
