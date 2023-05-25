@@ -65,71 +65,79 @@ const updateProgram = () => {
 
   const getProgramData = async () => {
     if(program.current.value !== 'Choose a Program'){
-      const resp = await fetch(`${process.env.url}api/v1/programs/${program.current.value}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      const data = await resp.json();
-      console.log(data);
-      name.current.value = data.data.name;
-      let comps = data.data.competences;
+      try{
+        const resp = await fetch(`${process.env.url}api/v1/programs/${program.current.value}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+        const data = await resp.json();
+        console.log(data);
+        name.current.value = data.data.name;
+        let comps = data.data.competences;
 
-      setInputs(comps.map(c => {
-        let out = {
-          ref: createRef(),
-          value: c.code,
-        };
-        return out;
-      }));
-      setInputs2(comps.map(c => {
-        let out = {
-          ref: createRef(),
-          value: c.description,
-        };
-        return out;
-      }));
+        setInputs(comps.map(c => {
+          let out = {
+            ref: createRef(),
+            value: c.code,
+          };
+          return out;
+        }));
+        setInputs2(comps.map(c => {
+          let out = {
+            ref: createRef(),
+            value: c.description,
+          };
+          return out;
+        }));
 
-      
-      // header
-      setOldHeaderID(data.data.programCoordinator);
-      setCurrentHeaderID(data.data.programCoordinator);
+        
+        // header
+        setOldHeaderID(data.data.programCoordinator);
+        setCurrentHeaderID(data.data.programCoordinator);
 
-      getStaffRolesAndEmail(
-        data.data.programCoordinator,
-        'program coordinator',
-        [setOldHeaderRole,
-        setCurrentHeaderRole],
-        emailH,
-        setAlerts
-      );
+        getStaffRolesAndEmail(
+          data.data.programCoordinator,
+          'program coordinator',
+          [setOldHeaderRole,
+          setCurrentHeaderRole],
+          emailH,
+          setAlerts
+        );
 
-      // admin
-      setOldAdminID(data.data.programAdmin);
-      setCurrentAdminID(data.data.programAdmin);
+        // admin
+        setOldAdminID(data.data.programAdmin);
+        setCurrentAdminID(data.data.programAdmin);
 
-      getStaffRolesAndEmail(
-        data.data.programAdmin,
-        'program admin',
-        [setOldAdminRole,
-        setCurrentAdminRole],
-        emailA,
-        setAlerts
-      )
+        getStaffRolesAndEmail(
+          data.data.programAdmin,
+          'program admin',
+          [setOldAdminRole,
+          setCurrentAdminRole],
+          emailA,
+          setAlerts
+        )
 
-      // quality
-      setOldHeader1ID(data.data.qualityCoordinator);
-      setCurrentHeader1ID(data.data.qualityCoordinator);
+        // quality
+        setOldHeader1ID(data.data.qualityCoordinator);
+        setCurrentHeader1ID(data.data.qualityCoordinator);
 
-      getStaffRolesAndEmail(
-        data.data.qualityCoordinator,
-        'quality coordinator',
-        [setOldHeader1Role,
-        setCurrentHeader1Role],
-        emailQ,
-        setAlerts
-      );
+        getStaffRolesAndEmail(
+          data.data.qualityCoordinator,
+          'quality coordinator',
+          [setOldHeader1Role,
+          setCurrentHeader1Role],
+          emailQ,
+          setAlerts
+        );
+    }catch(e){
+      setAlerts(alerts => [...alerts, <MassageAlert 
+        fail={`error happen with program`}
+        status="fail"
+        key={Math.random()} 
+    />])
+    }
 
     }
   }

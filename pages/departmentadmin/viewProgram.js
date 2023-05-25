@@ -47,59 +47,61 @@ const viewProgram = () => {
 
   const getProgramData = async () => {
     if(program.current.value !== 'Choose a Program'){
-      try {const resp = await fetch(`${process.env.url}api/v1/programs/${program.current.value}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      const data = await resp.json();
-      console.log(data);
-      name.current.value = data.data.name;
-      let comps = data.data.competences;
+      try {
+        const resp = await fetch(`${process.env.url}api/v1/programs/${program.current.value}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+        const data = await resp.json();
+        console.log(data);
+        name.current.value = data.data.name;
+        let comps = data.data.competences;
 
-      setInputs(comps.map(c => {
-        let out = {
-          ref: createRef(),
-          value: c.code,
-        };
-        return out;
-      }));
-      setInputs2(comps.map(c => {
-        let out = {
-          ref: createRef(),
-          value: c.description,
-        };
-        return out;
-      }));
+        setInputs(comps.map(c => {
+          let out = {
+            ref: createRef(),
+            value: c.code,
+          };
+          return out;
+        }));
+        setInputs2(comps.map(c => {
+          let out = {
+            ref: createRef(),
+            value: c.description,
+          };
+          return out;
+        }));
 
-      
-      // header
-      getStaffRolesAndEmail(
-        data.data.programCoordinator,
-        'program coordinator',
-        [],
-        emailH,
-        setAlerts
-      );
+        
+        // header
+        getStaffRolesAndEmail(
+          data.data.programCoordinator,
+          'program coordinator',
+          [],
+          emailH,
+          setAlerts
+        );
 
-      // admin
-      getStaffRolesAndEmail(
-        data.data.programAdmin,
-        'program admin',
-        [],
-        emailA,
-        setAlerts
-      )
+        // admin
+        getStaffRolesAndEmail(
+          data.data.programAdmin,
+          'program admin',
+          [],
+          emailA,
+          setAlerts
+        )
 
-      // quality
-      getStaffRolesAndEmail(
-        data.data.qualityCoordinator,
-        'quality coordinator',
-        [],
-        emailQ,
-        setAlerts
-      );}catch(e){
+        // quality
+        getStaffRolesAndEmail(
+          data.data.qualityCoordinator,
+          'quality coordinator',
+          [],
+          emailQ,
+          setAlerts
+        );
+    }catch(e){
         setAlerts(alerts => [...alerts, <MassageAlert 
           fail={`error happen with program`}
           status="fail"
