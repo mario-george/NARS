@@ -32,7 +32,7 @@ const addRole = async(
     console.log(`r delete for ${role}`, resp);
     if (resp.status !== "success") {
       setAlerts(alerts => [...alerts, <MassageAlert 
-        success={`error happen with old ${role}`}
+        fail={`error happen with old ${role}`}
         status="fail"
         key={Math.random()} 
     />])

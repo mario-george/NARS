@@ -27,11 +27,11 @@ export default function DepartmentHeadDashboard() {
 
       <Link
         className={
-          router.pathname === "/departmentadmin/viewProgram"
+          router.pathname === "/departmenthead/viewProgram"
             ? "activeLinkDashboard2"
             : "normalLinkDashboard2"
         }
-        href="/departmentadmin/viewProgram"
+        href="/departmenthead/viewProgram"
       >
         View Program
       </Link>

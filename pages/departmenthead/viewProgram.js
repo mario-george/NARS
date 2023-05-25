@@ -8,7 +8,7 @@ import getStaffRolesAndEmail from "@/common/getStaffRolesAndEmail";
 
 const viewProgram = () => {
   const userState = useSelector((s) => s.user);
-  if (userState.role != "department admin" || userState.loggedInStatus != "true") {
+  if (userState.role != "department head" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
   
