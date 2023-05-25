@@ -4,8 +4,7 @@ import token from "./token";
 const getStaffRolesAndEmail = async(
   id,
   role,
-  setCurrentRoles,
-  setOldRoles,
+  setRoles,
   emailRef
 ) => {
   try {
@@ -26,8 +25,7 @@ const getStaffRolesAndEmail = async(
         key={Math.random()} 
     />])
     }else{
-      setCurrentRoles(resp1.data.roles);
-      setOldRoles(resp1.data.roles);
+      setRoles.forEach(s => {s(resp1.data.roles)})
       emailRef.current.value = resp1.data.email;
     }
   } catch (e) {

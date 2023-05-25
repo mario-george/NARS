@@ -1,6 +1,5 @@
 import MassageAlert from "@/components/MassageAlert";
 import { createRef } from "react";
-import Cookies from "js-cookie";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useRef, useEffect } from "react";
@@ -64,9 +63,7 @@ const addProgram = () => {
   const emailQ = useRef();
 
   const emailCheck = async(e) => {
-    console.log("we");
     if(e.target.value){try {
-      console.log("gg");
       const r = await fetch(`${process.env.url}api/v1/users/staff?email=${e.target.value}`, {
         headers: {
           "Content-Type": "application/json",
@@ -154,9 +151,8 @@ const addProgram = () => {
       });
 
       const resp = await r.json();
-      console.log(resp);      
-      //console.log(arr1);
-      //console.log(arr2);
+      console.log(resp);
+
       if (resp.status == "success") {
         setAlerts([...alerts, <MassageAlert 
           success="Program added Successfully"
