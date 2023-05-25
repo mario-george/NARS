@@ -104,7 +104,7 @@ const deleteProgram = () => {
           [setOldAdminRole],
           emailA,
           setAlerts
-        )
+        );
 
         // quality
         setOldHeader1ID(data.data.qualityCoordinator);
@@ -121,8 +121,8 @@ const deleteProgram = () => {
           fail={`error happen with program`}
           status="fail"
           key={Math.random()} 
-      />])
-      }
+      />]);
+    }
 
     }
   }
@@ -150,7 +150,7 @@ const deleteProgram = () => {
       oldAdminRole,
       oldAdminID,
       setAlerts
-    )
+    );
 
     // header
     await deleteRole(
@@ -158,7 +158,7 @@ const deleteProgram = () => {
       oldHeaderRole,
       oldHeaderID,
       setAlerts
-    )
+    );
 
     //quality
     await deleteRole(
@@ -166,7 +166,7 @@ const deleteProgram = () => {
       oldHeader1Role,
       oldHeader1ID,
       setAlerts
-    )
+    );
   };
 
   return (

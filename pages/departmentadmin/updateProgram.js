@@ -117,7 +117,7 @@ const updateProgram = () => {
           setCurrentAdminRole],
           emailA,
           setAlerts
-        )
+        );
 
         // quality
         setOldHeader1ID(data.data.qualityCoordinator);
@@ -271,7 +271,7 @@ const updateProgram = () => {
           status="success"
           key={Math.random()} 
       />]);
-        setStaffProgram['program'] = resp.data._id;
+        setStaffProgram['program'] = program.current.value;
       } else {
         setAlerts([...alerts, <MassageAlert 
           fail="Problem Happened with Data"
@@ -290,7 +290,7 @@ const updateProgram = () => {
       oldAdminRole,
       oldAdminID,
       setAlerts
-    )
+    );
       // current
     await addRole(
       "program admin",
@@ -298,7 +298,7 @@ const updateProgram = () => {
       currentAdminID,
       setAlerts,
       setStaffProgram
-    )
+    );
 
     // header
       // old
@@ -307,7 +307,7 @@ const updateProgram = () => {
       oldHeaderRole,
       oldHeaderID,
       setAlerts
-    )
+    );
       // current
     await addRole(
       "program coordinator",
@@ -315,7 +315,7 @@ const updateProgram = () => {
       currentHeaderID,
       setAlerts,
       setStaffProgram
-    )
+    );
 
     //quality
       // old
@@ -324,7 +324,7 @@ const updateProgram = () => {
       oldHeader1Role,
       oldHeader1ID,
       setAlerts
-    )
+    );
       // current
     await addRole(
       "quality coordinator",
@@ -332,7 +332,7 @@ const updateProgram = () => {
       currentHeader1ID,
       setAlerts,
       setStaffProgram
-    )
+    );
   };
 
   return (

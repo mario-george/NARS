@@ -91,7 +91,7 @@ const viewProgram = () => {
           [],
           emailA,
           setAlerts
-        )
+        );
 
         // quality
         getStaffRolesAndEmail(
@@ -106,7 +106,7 @@ const viewProgram = () => {
           fail={`error happen with program`}
           status="fail"
           key={Math.random()} 
-      />])
+      />]);
       }
 
     }

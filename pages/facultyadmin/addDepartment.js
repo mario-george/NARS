@@ -5,12 +5,13 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useRef, useEffect } from "react";
 import React from "react";
+import addRole from "@/common/addRole";
+
 const addDepartment = () => {
   const userState = useSelector((s) => s.user);
-  // Cookies.set('faculty', '641c3dfc8ba1dcd2d20388d9')
-  // if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
-  //   return <div className="error">404 could not found</div>;
-  // }
+  if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
   
   useEffect(() => {
     document.querySelector("body").classList.add("scrollbar-none");
@@ -18,8 +19,10 @@ const addDepartment = () => {
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
   const [alerts, setAlerts] = useState([]);
-  const [headersRole, setHeaderRole] = useState([]);
+  const [headerRole, setHeaderRole] = useState([]);
   const [headerID, setHeaderID] = useState(null);
+  const [adminRole, setAdminRole] = useState([]);
+  const [adminID, setAdminID] = useState(null);
 
   const handleAddInput = (e) => {
     e.preventDefault();
@@ -54,15 +57,16 @@ const addDepartment = () => {
 
   const token = userState.token;
   const name = useRef();
-  const email = useRef();
+  const emailH = useRef();
+  const emailA = useRef();
   const about = useRef();
   const objectives = useRef();
   console.log('f', Cookies.get('faculty'))
 
-  const emailCheck = async() => {
-    if(email.current.value){try {
-      let pattern = ''
-      const r = await fetch(`${process.env.url}api/v1/users/staff?email=${email.current.value}`, {
+  const emailCheck = async(e) => {
+    if(e.target.value){
+      try {
+      const r = await fetch(`${process.env.url}api/v1/users/staff?email=${e.target.value}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -73,15 +77,30 @@ const addDepartment = () => {
 
       const resp = await r.json();
       // console.log(resp);
-      if (resp.status !== "success") {
+      if (resp.status !== "success" || !resp.data.length) {
         setAlerts([...alerts, <MassageAlert 
           fail="Email have Problem"
           status="fail"
           key={Math.random()} 
       />])
+      }else if (resp.data[0].faculty !== userState.faculty) {
+        console.log(userState.department)
+        setAlerts([...alerts, <MassageAlert 
+          fail="Not in This Faculty"
+          status="fail"
+          key={Math.random()} 
+      />])
       }else{
-        setHeaderID(resp.data[0]._id);
-        setHeaderRole(resp.data[0].roles);
+        switch(e.target.attributes.fPar.nodeValue){
+          case 'h':
+            setHeaderID(resp.data[0]._id);
+            setHeaderRole(resp.data[0].roles);
+            break;
+          case 'a':
+            setAdminID(resp.data[0]._id);
+            setAdminRole(resp.data[0].roles);
+            break;
+        }
       }
     } catch (e) {
       console.log(e);
@@ -108,6 +127,8 @@ const addDepartment = () => {
       };
     });
 
+    let setStaffDepartment = {'department': null};
+
     try {
       const r = await fetch(`${process.env.url}api/v1/department/`, {
         method: "POST",
@@ -115,6 +136,7 @@ const addDepartment = () => {
         body: JSON.stringify({
           name: name.current.value,
           departmentHead: headerID,
+          departmentAdmin: adminID,
           about: about.current.value,
           competences: competences,
           faculty: userState.faculty,
@@ -128,15 +150,17 @@ const addDepartment = () => {
       });
 
       const resp = await r.json();
-      console.log(resp);      
-      //console.log(arr1);
-      //console.log(arr2);
+      console.log(resp);
+      
       if (resp.status == "success") {
         setAlerts([...alerts, <MassageAlert 
           success="Department added Successfully"
           status="success"
           key={Math.random()} 
       />]);
+
+      setStaffDepartment.department = resp.data._id;
+
       } else {
         setAlerts([...alerts, <MassageAlert 
           fail="Problem Happened with Data"
@@ -148,36 +172,25 @@ const addDepartment = () => {
       console.log(e);
     }
 
+    // admin
+    await addRole(
+      "department admin",
+      adminRole,
+      adminID,
+      setAlerts,
+      setStaffDepartment
+    );
 
-    try {
-      const r1 = await fetch(`${process.env.url}api/v1/users/staff/${headerID}`, {
-        method: "PATCH",
+    //header
+    await addRole(
+      "program coordinator",
+      headerRole,
+      headerID,
+      setAlerts,
+      setStaffDepartment
+    );
 
-        body: JSON.stringify({
-          "roles":[
-            ...headersRole,
-            "department admin"
-          ],
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      const resp1 = await r1.json();
-      console.log("r1", resp1);
-      if (resp1.status !== "success") {
-        setAlerts([...alerts, <MassageAlert 
-          success="Error with Department Header Email"
-          status="fail"
-          key={Math.random()} 
-      />])
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    
   };
 
   return (
@@ -199,14 +212,29 @@ const addDepartment = () => {
                   ref={name}
                 />
               </div>
+            </div>
+
+            <div className="flex gap-20 ">
               <div className="flex flex-col gap-5  w-2/5">
                 <div> Department Header:</div>
                 <input
                   type="text"
                   name="year"
                   className="input-form  w-full"
-                  ref={email}
+                  ref={emailH}
                   onChange={emailCheck}
+                  fPar="h"
+                />
+              </div>
+              <div className="flex flex-col gap-5  w-2/5">
+                <div>Department Admin:</div>
+                <input
+                  type="email"
+                  name="year"
+                  className="input-form  w-full"
+                  ref={emailA}
+                  onChange={emailCheck}
+                  fPar="a"
                 />
               </div>
             </div>

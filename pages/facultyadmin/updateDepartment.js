@@ -7,31 +7,45 @@ import { useRef } from "react";
 import Cookies from "js-cookie";
 import Checkbox from "@/components/checkbox/checkbox";
 import MassageAlert from "@/components/MassageAlert";
+import addRole from "@/common/addRole";
+import deleteRole from "@/common/deleteRole";
+import getStaffRolesAndEmail from "@/common/getStaffRolesAndEmail";
 
 const updateDepartment = () => {
+  const userState = useSelector((s) => s.user);
+  if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+
+  useEffect(() => {
+    document.querySelector("body").classList.add("scrollbar-none");
+  });
+
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
   const [departmentArr, setDepartmentArr] = useState([]);
   const [alerts, setAlerts] = useState([]);
+  
+  //old
   const [oldHeaderRole, setOldHeaderRole] = useState([]);
-  const [currentHeaderRole, setCurrentHeaderRole] = useState([]);
   const [oldHeaderID, setOldHeaderID] = useState(null);
+  const [oldAdminRole, setOldAdminRole] = useState([]);
+  const [oldAdminID, setOldAdminID] = useState(null);
+  
+  //current
+  const [currentHeaderRole, setCurrentHeaderRole] = useState([]);
   const [currentHeaderID, setCurrentHeaderID] = useState(null);
-
-  const userState = useSelector((s) => s.user);
+  const [currentAdminRole, setCurrentAdminRole] = useState([]);
+  const [currentAdminID, setCurrentAdminID] = useState(null);
   
   const department = useRef();
   const token = userState.token;
   const name = useRef();
-  const email = useRef();
+  const emailH = useRef();
+  const emailA = useRef();
   const about = useRef();
   const objectives = useRef();
 
-
-  // useEffect(() => {
-  //   document.querySelector("body").classList.add("scrollbar-none");
-  // });
   useEffect(() => {
     async function doThis() {
       const resp = await fetch(`${process.env.url}api/v1/department/?faculty=${userState.faculty}`, {
@@ -52,62 +66,66 @@ const updateDepartment = () => {
 
   const getDepartmentData = async () => {
     if(department.current.value !== 'Choose a Department'){
-      console.log("rr", department.current.value);
-      const resp = await fetch(`${process.env.url}api/v1/department/${department.current.value}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      const data = await resp.json();
-      console.log(data);
-      name.current.value = data.data.name;
-      about.current.value = data.data.about;
-      objectives.current.value = data.data.objectives;
-      let comps = data.data.competences;
-
-      setInputs(comps.map(c => {
-        let out = {
-          ref: createRef(),
-          value: c.code,
-        };
-        return out;
-      }));
-      setInputs2(comps.map(c => {
-        let out = {
-          ref: createRef(),
-          value: c.description,
-        };
-        return out;
-      }));
-
-      setOldHeaderID(data.data.departmentHead);
-
-      try {
-        const r1 = await fetch(`${process.env.url}api/v1/users/staff/${data.data.departmentHead}`, {
+      try{
+        const resp = await fetch(`${process.env.url}api/v1/department/${department.current.value}`, {
           headers: {
             "Content-Type": "application/json",
-            Accept: "application/json",
             Authorization: "Bearer " + token,
           },
         });
-  
-        const resp1 = await r1.json();
-        console.log("r1", resp1);
-        if (resp1.status !== "success") {
-          setAlerts([...alerts, <MassageAlert 
-            fail="Error with Old Department Header"
-            status="fail"
-            key={Math.random()} 
-        />])
-        }else{
-          setCurrentHeaderID(resp1.data._id);
-          setCurrentHeaderRole(resp1.data.roles);
-          setOldHeaderRole(resp1.data.roles);
-          email.current.value = resp1.data.email;
-        }
-      } catch (e) {
-        console.log(e);
+        const data = await resp.json();
+        console.log(data);
+        name.current.value = data.data.name;
+        about.current.value = data.data.about;
+        objectives.current.value = data.data.objectives;
+        let comps = data.data.competences;
+
+        setInputs(comps.map(c => {
+          let out = {
+            ref: createRef(),
+            value: c.code,
+          };
+          return out;
+        }));
+        setInputs2(comps.map(c => {
+          let out = {
+            ref: createRef(),
+            value: c.description,
+          };
+          return out;
+        }));
+
+        // header
+        setOldHeaderID(data.data.departmentHead);
+        setCurrentHeaderID(data.data.departmentHead);
+
+        getStaffRolesAndEmail(
+          data.data.departmentHead,
+          'department head',
+          [setOldHeaderRole,
+          setCurrentHeaderRole],
+          emailH,
+          setAlerts
+        );
+
+        // admin
+        setOldAdminID(data.data.departmentAdmin);
+        setCurrentAdminID(data.data.departmentAdmin);
+
+        getStaffRolesAndEmail(
+          data.data.departmentAdmin,
+          'department admin',
+          [setOldAdminRole,
+          setCurrentAdminRole],
+          emailA,
+          setAlerts
+        );
+      }catch(e){
+        setAlerts(alerts => [...alerts, <MassageAlert 
+          fail={`error happen with department`}
+          status="fail"
+          key={Math.random()} 
+      />]);
       }
     }
   }
@@ -116,10 +134,10 @@ const updateDepartment = () => {
   //   return <div className="error">404 could not found</div>;
   // }
 
-  const emailCheck = async() => {
-    if(email.current.value){try {
-      let pattern = ''
-      const r = await fetch(`${process.env.url}api/v1/users/staff?email=${email.current.value}`, {
+  const emailCheck = async(e) => {
+    if(e.target.value){
+      try {
+      const r = await fetch(`${process.env.url}api/v1/users/staff?email=${e.target.value}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -130,15 +148,30 @@ const updateDepartment = () => {
 
       const resp = await r.json();
       // console.log(resp);
-      if (resp.status !== "success") {
+      if (resp.status !== "success" || !resp.data.length) {
         setAlerts([...alerts, <MassageAlert 
           fail="Email have Problem"
           status="fail"
           key={Math.random()} 
       />])
+      }else if (resp.data[0].faculty !== userState.faculty) {
+        console.log(userState.department)
+        setAlerts([...alerts, <MassageAlert 
+          fail="Not in This Faculty"
+          status="fail"
+          key={Math.random()} 
+      />])
       }else{
-        setCurrentHeaderID(resp.data[0]._id);
-        setCurrentHeaderRole(resp.data[0].roles);
+        switch(e.target.attributes.fPar.nodeValue){
+          case 'h':
+            setCurrentHeaderID(resp.data[0]._id);
+            setCurrentHeaderRole(resp.data[0].roles);
+            break;
+          case 'a':
+            setCurrentAdminID(resp.data[0]._id);
+            setCurrentAdminRole(resp.data[0].roles);
+            break;
+        }
       }
     } catch (e) {
       console.log(e);
@@ -164,6 +197,8 @@ const updateDepartment = () => {
         description: b.value,
       };
     });
+
+    let setStaffDepartment = {'department': null};
 
     try {
       const r = await fetch(
@@ -193,6 +228,9 @@ const updateDepartment = () => {
           status="success"
           key={Math.random()} 
       />]);
+
+        setStaffDepartment.department = department.current.value;
+
       } else {
         setAlerts([...alerts, <MassageAlert 
           fail="Problem Happened with Data"
@@ -203,70 +241,40 @@ const updateDepartment = () => {
     } catch (e) {
       console.log(e);
     }
-    // update old header
-    try {
-      let oldRoles = []
-      oldHeaderRole.forEach(r => {
-        if(r !== 'department admin'){
-          oldRoles.push(r);
-        }
-      });
-      console.log('old roles', oldRoles, oldHeaderRole);
-      const r1 = await fetch(`${process.env.url}api/v1/users/staff/${oldHeaderID}`, {
-        method: "PATCH",
-
-        body: JSON.stringify({
-          "roles": oldRoles,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      const resp1 = await r1.json();
-      console.log("r1", resp1);
-      if (resp1.status !== "success") {
-        setAlerts([...alerts, <MassageAlert 
-          fail="Error with Old Department Header"
-          status="fail"
-          key={Math.random()} 
-      />])
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    // update Current Header Role
-    try {
-      const r2 = await fetch(`${process.env.url}api/v1/users/staff/${currentHeaderID}`, {
-        method: "PATCH",
-
-        body: JSON.stringify({
-          "roles":[
-            ...currentHeaderRole,
-            "department admin"
-          ],
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      const resp2 = await r2.json();
-      console.log("r2", resp2);
-      if (resp1.status !== "success") {
-        setAlerts([...alerts, <MassageAlert 
-          fail="Error with Department Header Email"
-          status="fail"
-          key={Math.random()} 
-      />])
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    
+    // admin
+      // old
+    await deleteRole(
+      "department admin",
+      oldAdminRole,
+      oldAdminID,
+      setAlerts
+    );
+        // current
+    await addRole(
+      "department admin",
+      currentAdminRole,
+      currentAdminID,
+      setAlerts,
+      setStaffDepartment
+    );
+  
+    // header
+        // old
+    await deleteRole(
+      "department head",
+      oldHeaderRole,
+      oldHeaderID,
+      setAlerts
+    );
+        // current
+    await addRole(
+      "department head",
+      currentHeaderRole,
+      currentHeaderID,
+      setAlerts,
+      setStaffDepartment
+    );
   };
 
   const handleAddInput = (e) => {
@@ -339,14 +347,29 @@ const updateDepartment = () => {
                   ref={name}
                 />
               </div>
+            </div>
+
+            <div className="flex gap-20 ">
               <div className="flex flex-col gap-5  w-2/5">
                 <div> Department Header:</div>
                 <input
                   type="text"
                   name="year"
                   className="input-form  w-full"
-                  ref={email}
+                  ref={emailH}
                   onChange={emailCheck}
+                  fPar="h"
+                />
+              </div>
+              <div className="flex flex-col gap-5  w-2/5">
+                <div>Department Admin:</div>
+                <input
+                  type="email"
+                  name="year"
+                  className="input-form  w-full"
+                  ref={emailA}
+                  onChange={emailCheck}
+                  fPar="a"
                 />
               </div>
             </div>
