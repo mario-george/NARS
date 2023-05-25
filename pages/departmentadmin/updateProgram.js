@@ -101,7 +101,8 @@ const updateProgram = () => {
         'program coordinator',
         [setOldHeaderRole,
         setCurrentHeaderRole],
-        emailH
+        emailH,
+        setAlerts
       );
 
       // admin
@@ -113,7 +114,8 @@ const updateProgram = () => {
         'program admin',
         [setOldAdminRole,
         setCurrentAdminRole],
-        emailA
+        emailA,
+        setAlerts
       )
 
       // quality
@@ -125,7 +127,8 @@ const updateProgram = () => {
         'quality coordinator',
         [setOldHeader1Role,
         setCurrentHeader1Role],
-        emailQ
+        emailQ,
+        setAlerts
       );
 
     }

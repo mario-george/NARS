@@ -5,7 +5,8 @@ const getStaffRolesAndEmail = async(
   id,
   role,
   setRoles,
-  emailRef
+  emailRef,
+  setAlerts
 ) => {
   try {
     const r1 = await fetch(`${process.env.url}api/v1/users/staff/${id}`, {

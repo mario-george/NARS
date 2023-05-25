@@ -7,7 +7,7 @@ import React from "react";
 import deleteRole from "@/common/deleteRole";
 import getStaffRolesAndEmail from "@/common/getStaffRolesAndEmail";
 
-const deleteProgram = () => {
+const viewProgram = () => {
   const userState = useSelector((s) => s.user);
   // if (userState.role != "department admin" || userState.loggedInStatus != "true") {
   //   return <div className="error">404 could not found</div>;
@@ -20,14 +20,6 @@ const deleteProgram = () => {
   const [inputs2, setInputs2] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [programArr, setProgramArr] = useState([]);
-
-  //old
-  const [oldHeaderRole, setOldHeaderRole] = useState([]);
-  const [oldHeaderID, setOldHeaderID] = useState(null);
-  const [oldHeader1ID, setOldHeader1ID] = useState(null);
-  const [oldHeader1Role, setOldHeader1Role] = useState([]);
-  const [oldAdminRole, setOldAdminRole] = useState([]);
-  const [oldAdminID, setOldAdminID] = useState(null);
 
   const token = userState.token;
   const name = useRef();
@@ -84,34 +76,28 @@ const deleteProgram = () => {
 
       
       // header
-      setOldHeaderID(data.data.programCoordinator);
-
       getStaffRolesAndEmail(
         data.data.programCoordinator,
         'program coordinator',
-        [setOldHeaderRole],
+        [],
         emailH,
         setAlerts
       );
 
       // admin
-      setOldAdminID(data.data.programAdmin);
-
       getStaffRolesAndEmail(
         data.data.programAdmin,
         'program admin',
-        [setOldAdminRole],
+        [],
         emailA,
         setAlerts
       )
 
       // quality
-      setOldHeader1ID(data.data.qualityCoordinator);
-
       getStaffRolesAndEmail(
         data.data.qualityCoordinator,
         'quality coordinator',
-        [setOldHeader1Role],
+        [],
         emailQ,
         setAlerts
       );
@@ -119,53 +105,10 @@ const deleteProgram = () => {
     }
   }
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-
-    try {
-      const r = await fetch(`${process.env.url}api/v1/programs/${program.current.value}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-    } catch (e) {
-      console.log(e);
-    }
-
-    // admin
-    await deleteRole(
-      "program admin",
-      oldAdminRole,
-      oldAdminID,
-      setAlerts
-    )
-
-    // header
-    await deleteRole(
-      "program coordinator",
-      oldHeaderRole,
-      oldHeaderID,
-      setAlerts
-    )
-
-    //quality
-    await deleteRole(
-      "quality coordinator",
-      oldHeader1Role,
-      oldHeader1ID,
-      setAlerts
-    )
-  };
-
   return (
     <>
       <div className="flex flex-row w-screen h-[100%] mt-2 scrollbar-none">
         <form
-          onSubmit={submitHandler}
           className="bg-sky-50 h-[100%] w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
           >
           <div className="contentAddUser2 flex flex-col gap-10 overflow-auto h-[100%] scrollbar-none">
@@ -284,19 +227,10 @@ const deleteProgram = () => {
             <div className="flex gap-20 ">
               {<div className="w-1/2 mt-10">{alerts.map(s => s)}</div>}
             </div>
-
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Delete
-              </button>
-            </div>
           </div>
         </form>
       </div>
     </>
   );
 };
-export default deleteProgram;
+export default viewProgram;
