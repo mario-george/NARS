@@ -38,6 +38,7 @@ const Surveys = ({ cookies }) => {
   }, [allSurveys]);
 
   async function getCreatedCoursesForInstructor() {
+    console.log("IDDDDD", cookies._id);
     const url = `${
       role === "isStudent"
         ? `${process.env.url}api/v1/users/students/getCourses/${cookies._id}`
@@ -56,6 +57,7 @@ const Surveys = ({ cookies }) => {
       const resp = await data.json();
 
       if (role === "isStudent") {
+        console.log("COURSES", JSON.stringify(resp));
         const courses = resp.courses.map((item) => item.course);
         setCourses(courses);
       } else {
@@ -113,15 +115,19 @@ const Surveys = ({ cookies }) => {
       const submissions = resp.data;
 
       surveys.map((survey) => {
-        if (submissions.map((sub) => sub.survey._id).includes(survey._id)) {
-          survey.submitted = true;
-        } else {
-          survey.submitted = false;
+        if (submissions.length > 0) {
+          if (submissions.map((sub) => sub.survey._id).includes(survey._id)) {
+            survey.submitted = true;
+          } else {
+            survey.submitted = false;
+          }
         }
       });
       surveys.sort(function (a, b) {
         return new Date(b.dueTo) - new Date(a.dueTo);
       });
+
+      console.log("SRUVEYS", JSON.stringify(surveys));
 
       setStudentSubmissions(resp.data);
       setAllSurveys(surveys);

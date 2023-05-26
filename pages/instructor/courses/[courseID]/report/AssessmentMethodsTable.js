@@ -80,10 +80,18 @@ const AssessmentMethodsTable = ({
             <th className="border-2 px-4 py-2 " rowSpan="2">
               Assessment Tools
             </th>
-            <th className="border-2 mx-4 my-2 py-2" rowSpan="1" colSpan="3">
+            <th
+              className="border-2 mx-4 my-2 py-2"
+              rowSpan="1"
+              colSpan={`${competences.length}`}
+            >
               Competences
             </th>
-            <th className="border-2 px-4 py-2" rowSpan="2">
+            <th
+              className="border-2 px-4 py-2"
+              rowSpan="2"
+              colSpan={`${competences.length}`}
+            >
               Percentage total
             </th>
           </tr>

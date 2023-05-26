@@ -20,41 +20,50 @@ ChartJS.register(
   Tooltip
 );
 
-const CLOQ = (props) => {
-  const labels = Object.keys(props.clomap);
-  const dataValue = [];
+const CoursesBar = (props) => {
+  // courses, w, h
 
-  console.log("ELEMENTS",labels);
-  labels.forEach((elm) => {
-    //question for CLO
-    const cloqs = new Set();
-    //competencies for CLO
-    console.log("LOS HEREEEEEE",props.clomap);
-    console.log("COMPETENCE HEREEEEEE",props.cmap);
-    const clocmp = props.clomap[elm];
+  const labels = Object.keys(props.courses);
 
-    clocmp.forEach(elm => {
-      //question for competencies
-    console.log("COMPETENCE ELEMENT",props.cmap[elm]);
-      const cqs = props.cmap[elm];
-      
-      cqs.forEach(elm => {
-        cloqs.add(elm);
-      });
-    })
-    dataValue.push(Array.from(cloqs).length)
+  const dataValues = [
+    new Array(labels.length).fill(0),
+    new Array(labels.length).fill(0),
+    new Array(labels.length).fill(0),
+  ];
+
+  const bg  = [
+    'rgba(119, 221, 119, 1)',
+    'rgba(108, 160, 220, 1)',
+    'rgba(255, 105, 97, 1)',
+  ];
+
+  labels.forEach((elm, i) => {
+    dataValues[0][i] = props.courses[elm]['direct'];
+    dataValues[1][i] = props.courses[elm]['indirect'];
+    dataValues[2][i] = props.courses[elm]['avg'];
   });
-
-  return (
-    <Bar
+  
+  return <Bar
         data = {{
       labels,
       datasets: [{
-        label: `Number of ${props.title || "Questions"} for each LO`,
-        data: dataValue,
-        backgroundColor: 'rgba(108, 160, 220, 1)',
+        label: `Direct Assessment`,
+        data: dataValues[0],
+        backgroundColor: bg[0],
         borderWidth: 1,
-        maxBarThickness: 80
+        maxBarThickness: 80,
+      },{
+        label: `Indirect Assessment`,
+        data: dataValues[1],
+        backgroundColor: bg[1],
+        borderWidth: 1,
+        maxBarThickness: 80,
+      },{
+        label: `Overall Assessment`,
+        data: dataValues[2],
+        backgroundColor: bg[2],
+        borderWidth: 1,
+        maxBarThickness: 80,
       }
     ]
     }}
@@ -68,7 +77,7 @@ const CLOQ = (props) => {
             x: {
               title: {
                 display: true,
-                text: 'LOs',
+                text: 'Courses',
                 color: '#777',
               font: {
                 family: 'Times',
@@ -78,13 +87,13 @@ const CLOQ = (props) => {
               },
               padding: {top: 20, left: 0, right: 0, bottom: 0}
               },
-              
             },
             y: {
               beginAtZero: true,
+              max: 100,
               title: {
                 display: true,
-                text: `Number of ${props.title || "Questions"}`,
+                text: `Achieved Percentage %`,
                 color: '#777',
               font: {
                 family: 'Times',
@@ -98,7 +107,9 @@ const CLOQ = (props) => {
       }
         }}
   />
-  )
+
+
+
 }
 
-export default CLOQ;
+export default CoursesBar;
