@@ -5,11 +5,8 @@ import CompetenciesQ from "@/components/chart/CompetenciesQ";
 import CompetenciesBar from "@/components/chart/CompetenciesBar";
 
 export const CompetencesLosOverall = ({
-  competenciesMap,
   learningOutcomes,
   numberOfStudents,
-  avgValues,
-  avgValuesSurvey,
   avgLOS,
   avgAvg
 }) => {

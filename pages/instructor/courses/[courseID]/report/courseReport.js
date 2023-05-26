@@ -1,21 +1,18 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import Navbar from "@/components/Navbar/Navbar";
-import GradPie from "@/components/chart/GradPie";
 import getData from "@/components/chart/getData";
-import CompetencesTable from "./competencesTable";
-import CourseData from "./courseData";
-import TopicsTable from "./TopicsTable";
-import AssessmentMethodsTable from "./AssessmentMethodsTable";
-import ExamGrades from "./ExamGrades";
-import { CompetencesLosAchievement } from "./CompetencesLosAchievement";
-import { CompetencesLosGrades } from "./CompetencesLosGrades";
-import { CompetencesLosAchievementSurvey } from "./CompetencesLosAchievementSurvey";
-import { CompetencesLosSurvey } from "./CompetencesLosSurvey";
-import { CompetencesLosAchievementOVerall } from "./CompetencesLosAchievementOverall";
-import { CompetencesLosOverall } from "./CompetencesLosOverall";
+import CompetencesTable from "@/components/CRComposnents/competencesTable";
+import CourseData from "@/components/CRComposnents/courseData";
+import TopicsTable from "@/components/CRComposnents/TopicsTable";
+import AssessmentMethodsTable from "@/components/CRComposnents/AssessmentMethodsTable";
+import ExamGrades from "@/components/CRComposnents/ExamGrades";
+import { CompetencesLosAchievement } from "@/components/CRComposnents/CompetencesLosAchievement";
+import { CompetencesLosGrades } from "@/components/CRComposnents/CompetencesLosGrades";
+import { CompetencesLosAchievementSurvey } from "@/components/CRComposnents/CompetencesLosAchievementSurvey";
+import { CompetencesLosSurvey } from "@/components/CRComposnents/CompetencesLosSurvey";
+import { CompetencesLosAchievementOVerall } from "@/components/CRComposnents/CompetencesLosAchievementOverall";
+import { CompetencesLosOverall } from "@/components/CRComposnents/CompetencesLosOverall";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import mergeTest from "../getPdf/courseReportPdf";
 import { saveAs } from "file-saver";
@@ -628,9 +625,8 @@ const courseReport = ({ cookies }) => {
                         <CompetencesLosOverall
                           numberOfStudents={numberOfStudents}
                           avgLOS={avgValuesLOs}
-                          avgValues={avgValues}
-                          avgValuesSurvey={avgValuesSurvey}
                           learningOutcomes={learningOutcomes}
+                          avgAvg={avgAvg}
                         />
                       </div>
                       <div className="w-full" ref={refToImgBlob7}>
@@ -645,16 +641,7 @@ const courseReport = ({ cookies }) => {
                           avgAvg={avgAvg}
                         />
                       </div>
-                      <div className="w-full" ref={refToImgBlob8}>
-                        <CompetencesLosOverall
-                          numberOfStudents={numberOfStudents}
-                          avgLOS={avgValuesLOs}
-                          avgValues={avgValues}
-                          avgValuesSurvey={avgValuesSurvey}
-                          learningOutcomes={learningOutcomes}
-                          avgAvg={avgAvg}
-                        />
-                      </div>
+                      
 
                       <button
                         ref={buttonRef2}
