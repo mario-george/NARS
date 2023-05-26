@@ -131,6 +131,7 @@ const courseReport = ({ cookies }) => {
   const [courseCompetences, setCourseCompetences] = useState([]);
   const [avgValues, setAvgValues] = useState({});
   const [avgValuesSurvey, setAvgValuesSurvey] = useState({});
+  const [avgAvg, setAvgAvg] = useState({});
   const [avgValuesLOs, setAvgValuesLOs] = useState({});
   const [learningOutcomes, setLearningOutcomes] = useState({});
   const [courseLearningOutcomes, setCourseLearningOutcomes] = useState({});
@@ -448,19 +449,31 @@ const courseReport = ({ cookies }) => {
         getData(jsonData.data.report.questions);
       setCourseCompetences(jsonData.data.course.competences);
       setNumberOfStudents(numOfStudents);
-      tempIt.push(getAvg(jsonData.data.report.avgCompetences));
-      setAvgValues(getAvg(jsonData.data.report.avgCompetences));
-      tempIt.push(getAvg(jsonData.data.report.avgCompetencesInDirect));
-      setAvgValuesSurvey(getAvg(jsonData.data.report.avgCompetencesInDirect));
+      let compD = getAvg(jsonData.data.report.avgCompetences);
+      let compI = getAvg(jsonData.data.report.avgCompetencesInDirect)
+      console.log(compI)
+      tempIt.push(compD);
+      setAvgValues(compD);
+      tempIt.push(compI);
+      setAvgValuesSurvey(compI);
+      let avo = {};
+      Object.keys(compD).forEach(elm => {
+        avo[elm] = (compD[elm] + compI[elm]) / 2
+      });
+      setAvgAvg(avo);
       tempIt.push(getAvgLOs(jsonData.data.report.avgLOSInDirect));
       setAvgValuesLOs(getAvgLOs(jsonData.data.report.avgLOSInDirect));
+      console.log("jsonData.data.report.avgLOSInDirect",
+      jsonData.data.report.avgLOSInDirect)
+      console.log("jsonData.data.report.avgCompetencesInDirect",
+      jsonData.data.report.avgCompetencesInDirect)
       tempIt.push([
-        jsonData.data.course.target.minTarget,
-        jsonData.data.course.target.maxTarget,
+        jsonData.data.target.minTarget,
+        jsonData.data.target.maxTarget,
       ]);
       setTarget([
-        jsonData.data.course.target.minTarget,
-        jsonData.data.course.target.maxTarget,
+        jsonData.data.target.minTarget,
+        jsonData.data.target.maxTarget,
       ]);
       const { final, midterm } = examGrades;
       setCompetenciesMap(competences);
@@ -472,7 +485,6 @@ const courseReport = ({ cookies }) => {
         jsonData.data.courseSpecs.studentAssessment.assessmentSchedulesWeight
       );
       setLectureTopics(jsonData.data.courseSpecs.lecturePlan.topics);
-      setDataLoaded(true);
       tempIt.push(jsonData.data.report.questions);
       let myTemp = [];
       if (
@@ -497,7 +509,10 @@ const courseReport = ({ cookies }) => {
     } catch (e) {
       console.log("ERROR", e);
     }
+    setDataLoaded(true);
   };
+
+  
 
   return (
     <>
@@ -612,6 +627,7 @@ const courseReport = ({ cookies }) => {
                           avgValuesSurvey={avgValuesSurvey}
                           numberOfStudents={numberOfStudents}
                           learningOutcomes={learningOutcomes}
+                          avgAvg={avgAvg}
                         />
                       </div>
                       <div className="w-full" ref={refToImgBlob8}>
@@ -621,6 +637,7 @@ const courseReport = ({ cookies }) => {
                           avgValues={avgValues}
                           avgValuesSurvey={avgValuesSurvey}
                           learningOutcomes={learningOutcomes}
+                          avgAvg={avgAvg}
                         />
                       </div>
 

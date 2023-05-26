@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-labels';
+// import ss from "simple-statistics";
 // import "chartjs-plugin-datalabels";
 
 ChartJS.register(
@@ -40,6 +41,12 @@ const AttainmentPie = (props) => {
     'rgba(108, 160, 220, 1)',
     'rgba(255, 105, 97, 1)',
   ];
+
+  let sumValues = dataValue.reduce((a, b) => a + b, 0);
+
+  for (let i = 0; i < dataValue.length ; i++) {
+    dataValue[i] = (dataValue[i] / sumValues) * 100;
+  }
 
   const data = {
       labels,

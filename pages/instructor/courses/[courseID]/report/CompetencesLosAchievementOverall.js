@@ -9,12 +9,9 @@ export const CompetencesLosAchievementOVerall = ({
   avgLOS,
   avgValuesSurvey,
   learningOutcomes,
-  target
+  target,
+  avgAvg
 }) => {
-  const avgAvg = {}
-  Object.keys(avgValues).forEach(elm => {
-    avgAvg[elm] = (avgValues[elm] + avgValuesSurvey[elm]) / 2
-  })
   return (
     <div className="flex flex-col w-full items-start">
       <h2 className="font-bold text-xl mb-2">
