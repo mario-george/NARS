@@ -7,7 +7,7 @@ import cn from "classnames";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
 
-const useAssessment = ({ cookies, courseID }) => {
+const useAssessment = ({ courseID }) => {
   const userState = useSelector((s) => s.user);
 
   const refArray = [
@@ -22,7 +22,11 @@ const useAssessment = ({ cookies, courseID }) => {
     "project-assignments",
     "in-class-questions",
   ];
-
+  const cookies = {
+    courseSpecs: {
+      courseLearningOutcomes: userState.courseLearningOutcomes,
+    },
+  };
   const d = useDispatch();
   useEffect(() => {
     const getData = async function () {
@@ -40,11 +44,11 @@ const useAssessment = ({ cookies, courseID }) => {
       console.log(data);
 
       const length1 =
-        cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes.length;
+        data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes.length;
       const length2 =
-        cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes.length;
+        data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes.length;
       const length3 =
-        cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes.length;
+        data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes.length;
 
       try {
         checkboxRefs.current = Array.from({ length: length1 }, () =>
@@ -102,14 +106,69 @@ const useAssessment = ({ cookies, courseID }) => {
             });
           });
         }
-        console.log(checkboxRefs.current[0]);
+        console.log(checkboxRefs.current);
+        console.log(checkboxRefs2.current);
+        console.log(checkboxRefs3.current);
+        setTableData([...checkboxRefs.current]);
+        setTableData2([...checkboxRefs2.current]);
+        setTableData3([...checkboxRefs3.current]);
+
       } catch (e) {
         console.log(e);
+      }
+      let cognitive =
+        data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+      let affective =
+        data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
+      let psychomotor =
+        data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
+
+      if (cognitive && affective && psychomotor) {
+        try {
+          setArrays((prevState) => ({
+            LO: cognitive,
+            LO2: psychomotor,
+            LO3: affective,
+          }));
+          numRows = cognitive.length;
+          numRows2 = psychomotor.length;
+          numRows3 = affective.length;
+          // checkboxRefs.current = Array.from({ length: numRows }, () =>
+          //   Array.from({ length: numCols }, () => false)
+          // );
+
+          // checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
+          //   Array.from({ length: numCols }, () => false)
+          // );
+
+          // checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
+          //   Array.from({ length: numCols }, () => false)
+          // );
+        } catch (error) {
+          console.error(`Error parsing cookie: ${error}`);
+        }
+      } else {
+        console.error("Cookie not found");
       }
     };
 
     getData();
   }, []);
+useEffect(()=>{
+  console.log(checkboxRefs)
+  console.log(checkboxRefs2)
+  console.log(checkboxRefs3)
+  console.log(checkboxRefs)
+  console.log(checkboxRefs2)
+  console.log(checkboxRefs3)
+  console.log(checkboxRefs)
+  console.log(checkboxRefs2)
+  console.log(checkboxRefs3)
+  console.log(checkboxRefs)
+  console.log(checkboxRefs2)
+  console.log(checkboxRefs3)
+},[])
+
   useEffect(() => {
     const getData = async function () {
       const r = await fetch(
@@ -150,58 +209,12 @@ const useAssessment = ({ cookies, courseID }) => {
   }, []);
   const token = userState.token;
 
-  let cognitive =
-    cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
-  let affective =
-    cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
-  let psychomotor =
-    cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
-  console.log(psychomotor);
-  console.log(cognitive);
   const [arrays, setArrays] = useState({
     LO: [],
     LO2: [],
     LO3: [],
   });
-  useEffect(() => {
-    if (cognitive && affective && psychomotor) {
-      try {
-        congitiveParsed = cognitive;
-        psychomotorParsed = psychomotor;
-        affectiveParsed = affective;
-        courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
-
-        setArrays((prevState) => ({
-          LO: congitiveParsed,
-          LO2: psychomotorParsed,
-          LO3: affectiveParsed,
-        }));
-        numRows = congitiveParsed.length;
-        numRows2 = psychomotorParsed.length;
-        numRows3 = affectiveParsed.length;
-        checkboxRefs.current = Array.from({ length: numRows }, () =>
-          Array.from({ length: numCols }, () => false)
-        );
-
-        checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
-          Array.from({ length: numCols }, () => false)
-        );
-
-        checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
-          Array.from({ length: numCols }, () => false)
-        );
-      } catch (error) {
-        console.error(`Error parsing cookie: ${error}`);
-      }
-    } else {
-      console.error("Cookie not found");
-    }
-  }, []);
-
-  let congitiveParsed;
-  let psychomotorParsed;
-  let affectiveParsed;
-  let courseLearningOutcomes;
+  useEffect(() => {}, []);
 
   const numCols = 10;
   let numRows = arrays.LO.length;
@@ -250,27 +263,80 @@ const useAssessment = ({ cookies, courseID }) => {
   };
 
   const handleSubmit = async (CLOS) => {
-    let cp2 = JSON.parse(JSON.stringify(CLOS));
+    const deepCopy = (obj) => {
+      if (typeof obj !== 'object' || obj === null) {
+        return obj;
+      }
+    
+      let copy;
+    
+      if (Array.isArray(obj)) {
+        copy = obj.map((item) => deepCopy(item));
+      } else {
+        copy = {};
+        for (let key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            copy[key] = deepCopy(obj[key]);
+          }
+        }
+      }
+    
+      return copy;
+    };
+    
+    // Usage
+    let cp2 = deepCopy(CLOS);
+    console.log(CLOS)
+
     setTableData([...checkboxRefs.current]);
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
-    let courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
+    console.log(CLOS)
+    console.log(CLOS)
+    console.log(CLOS)
+    console.log(CLOS)
+    console.log(CLOS)
+    console.log('CLOS')
+    console.log(CLOS[0].learningOutcomes[0].mappedCompetence)
+    console.log(CLOS[0].learningOutcomes[0].mappedCompetence)
+    console.log(CLOS[0].learningOutcomes[0].mappedCompetence)
+    console.log(CLOS)
+console.log('cp2')
+console.log(cp2)
+    const r = await fetch(
+      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    const data = await r.json();
+    console.log(data);
+
+    let courseLearningOutcomes = data.data.courseSpecs.courseLearningOutcomes;
+    console.log(cp2)
+    console.log(cp2)
+    console.log(cp2)
 
     if (courseLearningOutcomes) {
       try {
         let l1P =
-          cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+        data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
         let l2P =
-          cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
+        data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
         let l3P =
-          cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
+        data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
 
         if (
-          cookies.courseSpecs.courseLearningOutcomes[0].title == "cognitive"
+          data.data.courseSpecs.courseLearningOutcomes[0].title == "cognitive"
         ) {
           cp2[0].learningOutcomes = l1P.map((e, i) => {
             return {
               ...e,
+              mappedCompetence:CLOS[0].learningOutcomes[i].mappedCompetence,
               studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
                 return checkboxRefs.current[i][k];
               }),
@@ -278,11 +344,12 @@ const useAssessment = ({ cookies, courseID }) => {
           });
         }
         if (
-          cookies.courseSpecs.courseLearningOutcomes[1].title == "psychomotor"
+          data.data.courseSpecs.courseLearningOutcomes[1].title == "psychomotor"
         ) {
           cp2[1].learningOutcomes = l2P.map((e, i) => {
             return {
               ...e,
+              mappedCompetence:CLOS[1].learningOutcomes[i].mappedCompetence,
               studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
                 return checkboxRefs2.current[i][k];
               }),
@@ -290,11 +357,12 @@ const useAssessment = ({ cookies, courseID }) => {
           });
         }
         if (
-          cookies.courseSpecs.courseLearningOutcomes[2].title == "affective"
+          data.data.courseSpecs.courseLearningOutcomes[2].title == "affective"
         ) {
           cp2[2].learningOutcomes = l3P.map((e, i) => {
             return {
               ...e,
+              mappedCompetence:CLOS[2].learningOutcomes[i].mappedCompetence,
               studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
                 return checkboxRefs3.current[i][k];
               }),
@@ -303,6 +371,13 @@ const useAssessment = ({ cookies, courseID }) => {
         }
 
         d(updateField({ field: "cp2", value: cp2 }));
+        console.log(cp2)
+        console.log(cp2)
+        console.log(cp2)
+        console.log(cp2)
+        console.log(cp2)
+        console.log(cp2)
+        console.log(cp2)
         return cp2;
       } catch (error) {
         console.error(`Error parsing cookie: ${error}`);
@@ -343,10 +418,10 @@ const useAssessment = ({ cookies, courseID }) => {
   ];
   let content = (
     <>
-      <div className="text-2xl my-4 bg-yellow-200">
-        8- Student Assessment
+      <div className="text-2xl my-4 bg-yellow-200">8- Student Assessment</div>
+      <div className="text-xl my-4 bg-[#f0e1c2] ml-4">
+        a- Student Assessment Methods
       </div>
-      <div className="text-xl my-4 bg-sky-100 ml-4">a- Student Assessment Methods</div>
       <table className="table-fixed border-collapse mb-[5rem]">
         <thead>
           <tr>
@@ -485,8 +560,6 @@ const useAssessment = ({ cookies, courseID }) => {
           ))}
         </tbody>
       </table>
-      <div className="text-xl my-4 bg-sky-100 ml-4">b- Assessment Schedule and Weight</div>
-
     </>
   );
   return { content, handleSubmit };

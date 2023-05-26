@@ -411,7 +411,13 @@ const part1 = ({ cookies }) => {
   }
   const token = userState.token;
   const refToImgBlob = useRef();
+  const refToImgBlob2 = useRef();
+  const refToImgBlob3 = useRef();
+  const refToImgBlob4 = useRef();
   const buttonRef = useRef(null);
+  const buttonRef2 = useRef(null);
+  const buttonRef3 = useRef(null);
+  const buttonRef4 = useRef(null);
 
   const code = useRef("");
   const semester = useRef("");
@@ -446,6 +452,88 @@ const part1 = ({ cookies }) => {
       </>
     );
   }
+  function ChildComponent2({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf2", pdfBase64);
+        };
+        // do something with pdfBlob
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef2} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+      </>
+    );
+  }
+  function ChildComponent3({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf3", pdfBase64);
+        };
+        // do something with pdfBlob
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef3} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+      </>
+    );
+  }
+  function ChildComponent4({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf4", pdfBase64);
+        };
+        // do something with pdfBlob
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef4} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+      </>
+    );
+  }
   const d = useDispatch();
   d(updateField({ field: "instance_id", value: courseID }));
 
@@ -453,7 +541,9 @@ const part1 = ({ cookies }) => {
     setIsSubmitting(true);
     setHasClass(false);
     handleSubmit();
-    buttonRef.current.click();
+    await buttonRef.current.click();
+    await buttonRef2.current.click();
+    await buttonRef3.current.click();
 
     e.preventDefault();
 
@@ -506,6 +596,12 @@ const part1 = ({ cookies }) => {
         <CustomReactToPdf targetRef={refToImgBlob} filename="part1.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
+        <CustomReactToPdf targetRef={refToImgBlob2} filename="part2.pdf">
+          {({ toPdf }) => <ChildComponent2 toPdf={toPdf} />}
+        </CustomReactToPdf>
+        <CustomReactToPdf targetRef={refToImgBlob3} filename="part3.pdf">
+          {({ toPdf }) => <ChildComponent3 toPdf={toPdf} />}
+        </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 "
@@ -516,7 +612,14 @@ const part1 = ({ cookies }) => {
             </div>
             <div ref={refToImgBlob}>
               <HeaderSpecs />
-              <CourseData
+            
+           
+              <div>
+               
+              </div>
+            </div>
+            <div ref={refToImgBlob2}>
+            <CourseData
                 hasClass={hasClass}
                 semester={semester}
                 code={code}
@@ -527,7 +630,9 @@ const part1 = ({ cookies }) => {
                 courseAims={courseAims}
                 courseContent={courseContent}
               />
-              <div className="flex ">
+            </div>
+            <div ref={refToImgBlob3}>
+            <div className="flex ">
                 <LearningOutcomes
                   hasClass={hasClass}
                   handleAddInput={handleAddInput}
@@ -540,9 +645,6 @@ const part1 = ({ cookies }) => {
                   inputs2={inputs2}
                   inputs3={inputs3}
                 />
-              </div>
-              <div>
-               
               </div>
             </div>
             <div className="flex justify-end">

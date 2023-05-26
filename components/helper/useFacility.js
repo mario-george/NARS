@@ -8,7 +8,7 @@ import Checkbox from "@/components/checkbox/checkbox";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import jsPDF from "jspdf";
 // import mergePDFs from "@/pages/pdf2/merge2.js";
-import mergeTest from "@/pages/instructor/courses/[courseID]/getPdf/courseReportPdf";
+import mergeTest from "@/pages/instructor/courses/[courseID]/getPdf/MERGEONLYONE.js/test";
 // import mergeAllPdf from "./mergePagesToOnePDF";
 import { saveAs } from "file-saver";
 import { PDFDocument } from "pdf-lib";
@@ -19,7 +19,8 @@ import { updateField } from "@/components/store/userSlice";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const useFacility = ({ cookies, courseID }) => {
+const useFacility = ({ cookies, courseID, hasClass }) => {
+  const [other, setOther] = useState("");
   const d = useDispatch();
   const [t, setT] = useState(true);
 
@@ -62,6 +63,7 @@ const useFacility = ({ cookies, courseID }) => {
         if (t) {
           let splicedArr = data.data.courseSpecs.facilities;
           const mc = data.data.courseSpecs.facilities;
+          console.log(mc);
           console.log(checkboxRefs.current);
           let d = false;
           for (let j = 0; j < mc.length; j++) {
@@ -69,7 +71,7 @@ const useFacility = ({ cookies, courseID }) => {
             if (ind >= 0) {
               checkboxRefs.current[ind] = true;
             } else {
-              other.current.value = mc[j];
+              setOther(mc[j]);
               splicedArr = mc.filter((element) => element !== mc[j]);
               setHandler(true);
             }
@@ -292,9 +294,7 @@ const useFacility = ({ cookies, courseID }) => {
       </>
     );
   }
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+
   const closeMsg = () => {
     setMsg("");
   };
@@ -376,18 +376,24 @@ const useFacility = ({ cookies, courseID }) => {
   const addOtherHander = () => {
     setHandler(!handler);
   };
-  const other = useRef();
-  const handleCheckboxChange = (value, isChecked, index) => {
+  const otherChangeHandler = (e) => {
+    setOther(e.target.value);
+  };
+  const handleCheckboxChange = async (value, isChecked, index) => {
+    console.log(selectedItems);
+
     console.log(checkboxRefs.current);
     checkboxRefs.current[index] = !checkboxRefs.current[index];
-    setTableData([...checkboxRefs.current]);
     let removeItem = refArray[index];
+    console.log(removeItem);
     if (checkboxRefs.current[index]) {
       setSelectedItems([...selectedItems, refArray[index]]);
     } else {
       let newArray = selectedItems.filter((item) => item !== removeItem);
       setSelectedItems(newArray);
     }
+    console.log(selectedItems);
+    setTableData([...checkboxRefs.current]);
   };
   /*if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
@@ -405,15 +411,18 @@ const useFacility = ({ cookies, courseID }) => {
   ];
 
   const submitHandler = async (e) => {
-
-    // buttonRef.current.click();
+    console.log(other);
+    console.log(selectedItems);
     let sentArr = [];
     if (handler) {
-      sentArr = selectedItems.concat([other.current.value]);
+      console.log(other);
+      sentArr = selectedItems.concat([other]);
     } else {
       sentArr = selectedItems;
     }
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     const r = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${courseID}`,
       {
@@ -445,7 +454,7 @@ const useFacility = ({ cookies, courseID }) => {
   let content = (
     <>
       {" "}
-      <div className="text-2xl my-4 bg-yellow-200">10-Facilities</div>{" "}
+      <div className="text-2xl my-4 bg-yellow-200">9-Facilities</div>{" "}
       <p className=" mb-0 font-normal">
         *The following facilities are needed for this course:
       </p>
@@ -468,10 +477,12 @@ const useFacility = ({ cookies, courseID }) => {
               onChange={addOtherHander}
               checked={handler === true}
             />
+            <span>Other:</span>
             <input
               type="text"
-              ref={other}
-              className="border input-form "
+              value={other}
+              onChange={otherChangeHandler}
+              className={`${hasClass ? `border input-form ` : ``}`}
               placeholder="Other..."
             />
           </div>
@@ -479,7 +490,7 @@ const useFacility = ({ cookies, courseID }) => {
       </div>
     </>
   );
-  return {msg,content,submitHandler}
+  return { msg, content, submitHandler,downloadMergedPDF };
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">

@@ -1,3 +1,5 @@
+import Textarea from "../Textarea/LPTextArea";
+
 const LecturePlan = ({
   outcomes,
   addRowWeek,
@@ -12,6 +14,9 @@ const LecturePlan = ({
   HoursRefs,
   hasClass,
 }) => {
+                  // defaultValue={}
+  console.log(topicsRefs.current)
+  console.log(topicsRefs.current[0])
   return (
     <div>
       <div className="text-2xl my-4 bg-yellow-200">6- Lecture Plan</div>
@@ -40,7 +45,7 @@ const LecturePlan = ({
 
       <table className="table-auto w-full ">
         <thead>
-          <tr className="   bg-gray-300">
+          <tr className="   bg-sky-200">
             <th className=" border-t-2 border-r-2 border-t-black border-l-black border-r-black  border-l-2 px-4 ">
               Week
             </th>
@@ -62,7 +67,7 @@ const LecturePlan = ({
             </th>
           </tr>
 
-          <tr className="bg-gray-300">
+          <tr className="bg-sky-200">
             <th className=" px-4 border-r-2  border-l-black border-b-black border-b-2 border-r-black  border-l-2  "></th>
             <th className=" px-4 border-r-2  border-l-black border-b-black border-b-2 border-r-black  border-l-2 "></th>
             <th className=" px-4 border-r-2  border-l-black border-b-black border-b-2 border-r-black  border-l-2  "></th>
@@ -84,19 +89,21 @@ const LecturePlan = ({
                 {[rowIndex + 1]}
               </td>
               <td className="border-2 px-4 py-2 border-black ">
-                <input
+                <Textarea
                   type="text"
                   name="topic"
-                  className="w-full"
+                  className="w-full input-form "
                   onChange={(e) => handleTopicChange(rowIndex, e)}
-                  defaultValue={topicsRefs.current[rowIndex]}
+                  // defaultValue={topicsRefs.current[rowIndex]}
+                  value={topicsRefs.current[rowIndex]}
+                  style={{ resize: "none" }}
                 />
               </td>
               <td className="border-2 border-black px-4 py-2 ">
                 <input
                   name="hours"
                   type="number"
-                  className="w-full"
+                  className="w-full text-2xl text-sky-800"
                   onChange={(e) => handleHoursChange(rowIndex, e)}
                   defaultValue={HoursRefs.current[rowIndex]}
                 />
@@ -131,7 +138,7 @@ const LecturePlan = ({
           className={`sameLineForm text-red-500 ${
             hasClass ? `bg-sky-50  ` : ``
           } `}
-          placeholder={`${hasClass?`Hours`:``}`}
+          placeholder={`${hasClass ? `Hours` : ``}`}
         />{" "}
         hours
       </div>

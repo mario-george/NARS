@@ -14,26 +14,7 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  useEffect(() => {
-    if (assesment0.current) {
-      assesment0.current.value = "Midterm Examination";
-    }
-    if (assesment1.current) {
-      assesment1.current.value = "Final Examination";
-    }
-    if (assesment2.current) {
-      assesment2.current.value = "Quizzes";
-    }
-    if (assesment3.current) {
-      assesment3.current.value = "Home assignments, and Reports";
-    }
-    if (assesment4.current) {
-      assesment4.current.value = "Mini Project";
-    }
-    if (assesment5.current) {
-      assesment5.current.value = "Total";
-    }
-  }, []);
+
   useEffect(() => {
     const getData = async function () {
       const r = await fetch(
@@ -52,42 +33,79 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
       console.log(data);
 
       try {
-        week0.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[0].week;
-        week1.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[1].week;
-        week2.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[2].week;
-        week3.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[3].week;
-        week4.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[4].week;
-        week5.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[5].week;
-        assesment0.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[0].assessment;
-        assesment1.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[1].assessment;
-        assesment2.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[2].assessment;
-        assesment3.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[3].assessment;
-        assesment4.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[4].assessment;
-        assesment5.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[5].assessment;
-        weight0.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[0].weight;
-        weight1.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[1].weight;
-        weight2.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[2].weight;
-        weight3.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[3].weight;
-        weight4.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[4].weight;
-        weight5.current.value =
-          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[5].weight;
+        setWeek0(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[0]
+            .week
+        );
+
+        setWeek1(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[1]
+            .week
+        );
+        setWeek2(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[2]
+            .week
+        );
+        setWeek3(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[3]
+            .week
+        );
+        setWeek4(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[4]
+            .week
+        );
+        setWeek5(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[5]
+            .week
+        );
+        setAssessment0(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[0]
+            .assessment
+        );
+        setAssessment1(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[1]
+            .assessment
+        );
+        setAssessment2(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[2]
+            .assessment
+        );
+        setAssessment3(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[3]
+            .assessment
+        );
+        setAssessment4(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[4]
+            .assessment
+        );
+        setAssessment5(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[5]
+            .assessment
+        );
+        setWeight0(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[0]
+            .weight
+        );
+        setWeight1(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[1]
+            .weight
+        );
+        setWeight2(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[2]
+            .weight
+        );
+        setWeight3(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[3]
+            .weight
+        );
+        setWeight4(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[4]
+            .weight
+        );
+        setWeight5(
+          data.data.courseSpecs.studentAssessment.assessmentSchedulesWeight[5]
+            .weight
+        );
       } catch (e) {
         console.log(e);
       }
@@ -133,33 +151,35 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
     }*/
 
   const updateTotal = () => {
-    weight5.current.value =
-      Number(weight0.current.value) +
-      Number(weight1.current.value) +
-      Number(weight2.current.value) +
-      Number(weight3.current.value) +
-      Number(weight4.current.value);
+    setWeight5(
+      Number(weight0) +
+        Number(weight1) +
+        Number(weight2) +
+        Number(weight3) +
+        Number(weight4)
+    );
   };
 
-  const assesment0 = useRef('');
-  const assesment1 = useRef('');
-  const assesment2 = useRef('');
-  const assesment3 = useRef('');
-  const assesment4 = useRef('');
-  const assesment5 = useRef('');
-  const week0 = useRef();
-  const week1 = useRef();
-  const week2 = useRef();
-  const week3 = useRef();
-  const week4 = useRef();
-  const week5 = useRef();
+  const [assessment0, setAssessment0] = useState("");
+  const [assessment1, setAssessment1] = useState("");
+  const [assessment2, setAssessment2] = useState("");
+  const [assessment3, setAssessment3] = useState("");
+  const [assessment4, setAssessment4] = useState("");
+  const [assessment5, setAssessment5] = useState("");
 
-  const weight0 = useRef();
-  const weight1 = useRef();
-  const weight2 = useRef();
-  const weight3 = useRef();
-  const weight4 = useRef();
-  const weight5 = useRef();
+  const [week0, setWeek0] = useState("");
+  const [week1, setWeek1] = useState("");
+  const [week2, setWeek2] = useState("");
+  const [week3, setWeek3] = useState("");
+  const [week4, setWeek4] = useState("");
+  const [week5, setWeek5] = useState("");
+
+  const [weight0, setWeight0] = useState("");
+  const [weight1, setWeight1] = useState("");
+  const [weight2, setWeight2] = useState("");
+  const [weight3, setWeight3] = useState("");
+  const [weight4, setWeight4] = useState("");
+  const [weight5, setWeight5] = useState("");
 
   const arr = [];
 
@@ -167,8 +187,7 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
     if (e) {
       e.preventDefault();
     }
-console.log(assesment0)
-console.log(assesment1)
+
     const r = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${courseID}`,
       {
@@ -179,33 +198,33 @@ console.log(assesment1)
               assessmentSchedulesWeight: [
                 {
                   assessment: "Midterm Examination",
-                  week: week0.current.value,
-                  weight: weight0.current.value,
+                  week: week0,
+                  weight: weight0,
                 },
                 {
-                  assessment:' Final Examination',
-                  week: week1.current.value,
-                  weight: weight1.current.value,
+                  assessment: " Final Examination",
+                  week: week1,
+                  weight: weight1,
                 },
                 {
                   assessment: "Quizzes",
-                  week: week2.current.value,
-                  weight: weight2.current.value,
+                  week: week2,
+                  weight: weight2,
                 },
                 {
                   assessment: "Home assignments, and Reports",
-                  week: week3.current.value,
-                  weight: weight3.current.value,
+                  week: week3,
+                  weight: weight3,
                 },
                 {
-                  assessment: 'Mini Project',
-                  week: week4.current.value,
-                  weight: weight4.current.value,
+                  assessment: "Mini Project",
+                  week: week4,
+                  weight: weight4,
                 },
                 {
-                  assessment: 'Total',
-                  week: week5.current.value,
-                  weight: weight5.current.value,
+                  assessment: "Total",
+                  week: week5,
+                  weight: weight5,
                 },
               ],
             },
@@ -223,6 +242,8 @@ console.log(assesment1)
   };
   let content = (
     <>
+      <div className="text-xl my-4 bg-[#f0e1c2] ml-4">b- Assessment Schedule and Weight</div>
+
       <table className="table-auto">
         <thead>
           <tr className="bg-gray-300 ">
@@ -243,14 +264,19 @@ console.log(assesment1)
                   type="text"
                   name="assesment"
                   className="w-96 font-normal"
-                  ref={assesment0}
+                  value={assessment0}
                 />
               </label>
             </td>
 
-            <td className="border-2 border-l-black px-2 py-2 w-0.5">
+            <td className="border-2 px-2 py-2 w-0.5">
               <label className="inline-flex items-center">
-                <input type="number" name="week" ref={week0} />
+                <input
+                  type="number"
+                  name="week"
+                  value={week0}
+                  onChange={(e) => setWeek0(e.target.value)}
+                />
               </label>
             </td>
 
@@ -259,8 +285,11 @@ console.log(assesment1)
                 <input
                   type="number"
                   name="weight"
-                  ref={weight0}
-                  onChange={updateTotal}
+                  value={weight0}
+                  onChange={(e) => {
+                    setWeight0(e.target.value);
+                    updateTotal();
+                  }}
                 />
               </label>
             </td>
@@ -273,15 +302,21 @@ console.log(assesment1)
                   type="text"
                   name="assesment"
                   className="w-96 font-normal"
-                  ref={assesment1}
-                  value="Final Examination"
+                  value={assessment1}
                 />
               </label>
             </td>
 
-            <td className="border-2 border-l-black px-2 py-2 w-0.5">
+            <td className="border-2  px-2 py-2 w-0.5">
               <label className="inline-flex items-center">
-                <input type="number" name="week" ref={week1} />
+                <input
+                  type="number"
+                  name="week"
+                  value={week1}
+                  onChange={(e) => {
+                    setWeek1(e.target.value);
+                  }}
+                />
               </label>
             </td>
 
@@ -290,8 +325,11 @@ console.log(assesment1)
                 <input
                   type="number"
                   name="weight"
-                  ref={weight1}
-                  onChange={updateTotal}
+                  value={weight1}
+                  onChange={(e) => {
+                    setWeight1(e.target.value);
+                    updateTotal();
+                  }}
                 />
               </label>
             </td>
@@ -303,14 +341,21 @@ console.log(assesment1)
                   type="text"
                   name="assesment"
                   className="w-96 font-normal"
-                  ref={assesment2}
+                  value={assessment2}
                 />
               </label>
             </td>
 
-            <td className="border-2 border-l-black px-2 py-2 w-0.5">
+            <td className="border-2  px-2 py-2 w-0.5">
               <label className="inline-flex items-center">
-                <input type="number" name="week" ref={week2} />
+                <input
+                  type="number"
+                  name="week"
+                  value={week2}
+                  onChange={(e) => {
+                    setWeek2(e.target.value);
+                  }}
+                />
               </label>
             </td>
 
@@ -319,8 +364,11 @@ console.log(assesment1)
                 <input
                   type="number"
                   name="weight"
-                  ref={weight2}
-                  onChange={updateTotal}
+                  value={weight2}
+                  onChange={(e) => {
+                    setWeight2(e.target.value);
+                    updateTotal();
+                  }}
                 />
               </label>
             </td>
@@ -332,14 +380,21 @@ console.log(assesment1)
                   type="text"
                   name="assesment"
                   className="w-96 font-normal"
-                  ref={assesment3}
+                  value={assessment3}
                 />
               </label>
             </td>
 
             <td className="border-2 px-2 py-2 w-0.5">
               <label className="inline-flex items-center">
-                <input type="number" name="week" ref={week3} />
+                <input
+                  type="number"
+                  name="week"
+                  value={week3}
+                  onChange={(e) => {
+                    setWeek3(e.target.value);
+                  }}
+                />
               </label>
             </td>
 
@@ -348,8 +403,11 @@ console.log(assesment1)
                 <input
                   type="number"
                   name="weight"
-                  ref={weight3}
-                  onChange={updateTotal}
+                  value={weight3}
+                  onChange={(e) => {
+                    setWeight3(e.target.value);
+                    updateTotal();
+                  }}
                 />
               </label>
             </td>
@@ -361,14 +419,21 @@ console.log(assesment1)
                   type="text"
                   name="assesment"
                   className="w-96 font-normal"
-                  ref={assesment4}
+                  value={assessment4}
                 />
               </label>
             </td>
 
             <td className="border-2 px-2 py-2 w-0.5">
               <label className="inline-flex items-center">
-                <input type="number" name="week" ref={week4} />
+                <input
+                  type="number"
+                  name="week"
+                  value={week4}
+                  onChange={(e) => {
+                    setWeek4(e.target.value);
+                  }}
+                />
               </label>
             </td>
 
@@ -377,8 +442,11 @@ console.log(assesment1)
                 <input
                   type="number"
                   name="weight"
-                  ref={weight4}
-                  onChange={updateTotal}
+                  value={weight4}
+                  onChange={(e) => {
+                    setWeight4(e.target.value);
+                    updateTotal();
+                  }}
                 />
               </label>
             </td>
@@ -390,20 +458,36 @@ console.log(assesment1)
                   type="text"
                   name="assesment"
                   className="w-96 font-bold"
-                  ref={assesment5}
+                  value={assessment5}
                 />
               </label>
             </td>
 
             <td className="border-2 border-b-black  px-2 py-2 w-0.5">
               <label className="inline-flex items-center">
-                <input type="number" name="week" ref={week5} disabled />
+                <input
+                  type="number"
+                  name="week"
+                  value={week5}
+                  onChange={(e) => {
+                    setWeek5(e.target.value);
+                  }}
+                  disabled
+                />
               </label>
             </td>
 
             <td className="border-2 border-r-black border-b-black px-2 py-2 w-0.5">
               <label className="inline-flex items-center">
-                <input type="number" name="weight" ref={weight5} />
+                <input
+                  type="number"
+                  name="weight"
+                  value={weight5}
+                  onChange={(e) => {
+                    setWeight5(e.target.value);
+                    updateTotal();
+                  }}
+                />
               </label>
             </td>
           </tr>

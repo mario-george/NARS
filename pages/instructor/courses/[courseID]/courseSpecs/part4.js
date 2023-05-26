@@ -11,12 +11,13 @@ import useAssessment from "@/components/helper/useAssessment";
 import useTeachingMethods from "@/components/helper/useTeachingMethods";
 import useAssessmentSchedule from "@/components/helper/useAssessmentSchedule";
 import useFacility from "@/components/helper/useFacility";
+import useListOfReferences from "@/components/helper/useListOfReferences";
 
 const part4 = ({ cookies }) => {
   const d = useDispatch();
   let a = [];
   const [hasClass, setHasClass] = useState(true);
-
+  const [specs, setSpecs] = useState({});
   const [outcomes, setoutcomes] = useState([]);
   const [t, setT] = useState(true);
   const [competences, setComp] = useState([]);
@@ -26,6 +27,7 @@ const part4 = ({ cookies }) => {
     )
   );
   const userState = useSelector((s) => s.user);
+  const other = useRef();
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
@@ -53,7 +55,10 @@ const part4 = ({ cookies }) => {
     HoursRefs.current[rowIndex] = value;
   };
   const handleTopicChange = (rowIndex, e) => {
-    topicsRefs.current[rowIndex] = e.target.value;
+    // const updatedValue = e.target.value;
+    console.log(e);
+    console.log(rowIndex);
+    topicsRefs.current[rowIndex] = e;
   };
   const addRowWeek = (e) => {
     e.preventDefault();
@@ -74,43 +79,59 @@ const part4 = ({ cookies }) => {
     );
   };
   useEffect(() => {
-    let cognitive =
-      cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
-    let psychomotor =
-      cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
-    let affective =
-      cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
-    if (cognitive && affective && psychomotor) {
-      try {
-        courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
-
-        a = [];
-        cognitive.map((e) => {
-          a.push(e.code);
-        });
-
-        psychomotor.map((e) => {
-          a.push(e.code);
-        });
-        affective.map((e) => {
-          a.push(e.code);
-        });
-        console.log(a);
-        checkboxRefsLecturePlan.current = Array.from({ length: addWeek }, () =>
-          Array.from({ length: a.length }, () => false)
-        );
-        if (!HoursRefs.current) {
-          HoursRefs.current = Array.from({ length: outcomes.length }, () => 0);
+    const getData = async () => {
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
         }
-        topicsRefs.current = Array.from({ length: a.length }, () => null);
-        setoutcomes((prevState) => a);
-        console.log(outcomes);
-      } catch (error) {
-        console.error(`Error parsing cookie: ${error}`);
+      );
+      const data = await r.json();
+      console.log(data);
+      let cognitive =
+        data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+      let psychomotor =
+        data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
+      let affective =
+        data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
+
+      if (cognitive && affective && psychomotor) {
+        try {
+          a = [];
+          cognitive.map((e) => {
+            a.push(e.code);
+          });
+
+          psychomotor.map((e) => {
+            a.push(e.code);
+          });
+          affective.map((e) => {
+            a.push(e.code);
+          });
+          console.log(a);
+          checkboxRefsLecturePlan.current = Array.from(
+            { length: addWeek },
+            () => Array.from({ length: a.length }, () => false)
+          );
+          if (!HoursRefs.current) {
+            HoursRefs.current = Array.from(
+              { length: outcomes.length },
+              () => 0
+            );
+          }
+          topicsRefs.current = Array.from({ length: addWeek }, () => null);
+          setoutcomes((prevState) => a);
+          console.log(outcomes);
+        } catch (error) {
+          console.error(`Error parsing cookie: ${error} lol`);
+        }
       }
-    } else {
-      console.error("Cookie not found");
-    }
+    };
+    getData();
   }, []);
   useEffect(() => {
     const getData = async function () {
@@ -126,7 +147,7 @@ const part4 = ({ cookies }) => {
       );
       const data = await r.json();
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
-
+      setSpecs(data.data.courseSpecs);
       const length1 =
         data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes.length;
       const length2 =
@@ -237,11 +258,11 @@ const part4 = ({ cookies }) => {
         console.log(e);
       }
       let cognitive =
-        cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+        data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
       let psychomotor =
-        cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
+        data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
       let affective =
-        cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
+        data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
       if (cognitive && affective && psychomotor) {
         try {
           let FetchedOutcomes = [];
@@ -271,9 +292,18 @@ const part4 = ({ cookies }) => {
   const refToImgBlob = useRef();
   const refToImgBlob2 = useRef();
   const refToImgBlob3 = useRef();
+  const refToImgBlob4 = useRef();
+  const refToImgBlob5 = useRef();
+  const refToImgBlob6 = useRef();
+  const refToImgBlob7 = useRef();
   const buttonRef = useRef(null);
   const buttonRef2 = useRef(null);
   const buttonRef3 = useRef(null);
+  const buttonRef4 = useRef(null);
+  const buttonRef5 = useRef(null);
+  const buttonRef6 = useRef(null);
+  const buttonRef7 = useRef(null);
+
   function ChildComponent({ toPdf }) {
     const handleClick = async () => {
       try {
@@ -351,6 +381,110 @@ const part4 = ({ cookies }) => {
       <>
         {" "}
         <button ref={buttonRef3} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+      </>
+    );
+  }
+  function ChildComponent4({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf7", pdfBase64);
+        };
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef4} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+      </>
+    );
+  }
+  function ChildComponent5({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf8", pdfBase64);
+        };
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef5} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+      </>
+    );
+  }
+  function ChildComponent6({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf9", pdfBase64);
+        };
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef6} onClick={handleClick} hidden>
+          Capture as PDF
+        </button>
+      </>
+    );
+  }
+  function ChildComponent7({ toPdf }) {
+    const handleClick = async () => {
+      try {
+        console.log(toPdf);
+        const pdfBlob = await toPdf();
+        const reader = new FileReader();
+        reader.readAsDataURL(pdfBlob);
+
+        reader.onload = () => {
+          const pdfBase64 = reader.result.split(",")[1];
+          localStorage.setItem("pdf10", pdfBase64);
+        };
+      } catch (error) {
+        console.error("Failed to capture PDF:", error);
+      }
+    };
+
+    return (
+      <>
+        {" "}
+        <button ref={buttonRef7} onClick={handleClick} hidden>
           Capture as PDF
         </button>
       </>
@@ -434,17 +568,33 @@ const part4 = ({ cookies }) => {
     </div>
   );
   const { courseID } = router.query;
-  const assessmentHandler = useAssessment({ courseID, cookies });
+  const assessmentHandler = useAssessment({
+    courseID,
+    cookies,
+    courseSpecs: specs,
+  });
+  const ListOfReferencesHandler = useListOfReferences({
+    courseID,
+    cookies,
+    hasClass,
+  });
+  const referencesContent = ListOfReferencesHandler.content;
   const assessmentScheduleHandler = useAssessmentSchedule({
     courseID,
     cookies,
   });
   const assessmentScheduleContent = assessmentScheduleHandler.content;
-  const facilityHandler = useFacility({ courseID, cookies });
+  const facilityHandler = useFacility({
+    courseID: courseID,
+    cookies: cookies,
+    hasClass,
+  });
+
   const facilityHandlerContent = facilityHandler.content;
   const teachingMethodsHandler = useTeachingMethods({
     courseID: courseID,
     cookies: cookies,
+    courseSpecs: specs,
   });
   const teachingMethodsContent = teachingMethodsHandler.content;
   const assessmentContent = assessmentHandler.content;
@@ -570,24 +720,40 @@ const part4 = ({ cookies }) => {
     setTableData([...checkboxRefs.current]);
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
-    let courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
+
+    console.log(checkboxRefs);
+    console.log(checkboxRefs2);
+    console.log(checkboxRefs3);
+    const r2 = await fetch(
+      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    const data = await r2.json();
+    console.log(data);
+    let courseLearningOutcomes = data.data.courseSpecs.courseLearningOutcomes;
     let cp2;
     if (courseLearningOutcomes) {
       try {
         let courseLearningOutcomesParsed =
-          cookies.courseSpecs.courseLearningOutcomes;
+          data.data.courseSpecs.courseLearningOutcomes;
 
         let l1P =
-          cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+          data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
         let l2P =
-          cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
+          data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
         let l3P =
-          cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
+          data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
 
         cp2 = JSON.parse(JSON.stringify(courseLearningOutcomes));
 
         if (
-          cookies.courseSpecs.courseLearningOutcomes[0].title == "cognitive"
+          data.data.courseSpecs.courseLearningOutcomes[0].title == "cognitive"
         ) {
           cp2[0].learningOutcomes = l1P.map((e, i) => {
             console.log(e);
@@ -610,7 +776,7 @@ const part4 = ({ cookies }) => {
           });
         }
         if (
-          cookies.courseSpecs.courseLearningOutcomes[2].title == "affective"
+          data.data.courseSpecs.courseLearningOutcomes[2].title == "affective"
         ) {
           cp2[2].learningOutcomes = l3P.map((e, i) => {
             return {
@@ -643,7 +809,7 @@ const part4 = ({ cookies }) => {
           return { code: e };
         });
         console.log(cm);
-        const resp = await fetch(
+        const resp2 = await fetch(
           `${process.env.url}api/v1/courses/checkComp/${courseID}`,
           {
             method: "POST",
@@ -655,13 +821,13 @@ const part4 = ({ cookies }) => {
             body: JSON.stringify({ competences: cm }),
           }
         );
-        const data = await resp.json();
+        const data2 = await resp2.json();
         console.log(combined);
 
-        console.log(data);
+        console.log(data2);
         if (data.status === "success") {
           setMsg(success);
-          router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
+          // router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
         } else {
           setMsg(fail);
         }
@@ -717,32 +883,39 @@ const part4 = ({ cookies }) => {
         );
         const resp = await r.json();
         console.log(resp);
+        facilityHandler.submitHandler();
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
+        const newCLOS = await assessmentHandler.handleSubmit(cp2);
+        const newCLOS2 = await teachingMethodsHandler.handleSubmit(newCLOS);
+
+        const r2 = await fetch(
+          `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({
+              courseSpecs: {
+                courseLearningOutcomes: newCLOS2,
+              },
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const resp2 = await r2.json();
       }
     } catch (e) {
       console.log(e);
     }
-    facilityHandler.submitHandler();
 
-    const newCLOS = await assessmentHandler.handleSubmit(cp2);
-    const newCLOS2 = await teachingMethodsHandler.handleSubmit(newCLOS);
-
-    const r = await fetch(
-      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify({
-          courseSpecs: {
-            courseLearningOutcomes: newCLOS2,
-          },
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    const resp = await r.json();
     try {
       assessmentScheduleHandler.submitHandler();
     } catch (e) {
@@ -752,12 +925,17 @@ const part4 = ({ cookies }) => {
 
   const submitHandler = async (e) => {
     setHasClass(false);
-
+    ListOfReferencesHandler.submitHandler();
     await buttonRef.current.click();
     await buttonRef2.current.click();
     await buttonRef3.current.click();
+    await buttonRef4.current.click();
+    await buttonRef5.current.click();
+    await buttonRef6.current.click();
+    await buttonRef7.current.click();
     e.preventDefault();
     handleSubmit();
+    facilityHandler.downloadMergedPDF();
   };
 
   return (
@@ -772,9 +950,21 @@ const part4 = ({ cookies }) => {
         <CustomReactToPdf targetRef={refToImgBlob3} filename="part6.pdf">
           {({ toPdf }) => <ChildComponent3 toPdf={toPdf} />}
         </CustomReactToPdf>
+        <CustomReactToPdf targetRef={refToImgBlob4} filename="part7.pdf">
+          {({ toPdf }) => <ChildComponent4 toPdf={toPdf} />}
+        </CustomReactToPdf>
+        <CustomReactToPdf targetRef={refToImgBlob5} filename="part8.pdf">
+          {({ toPdf }) => <ChildComponent5 toPdf={toPdf} />}
+        </CustomReactToPdf>
+        <CustomReactToPdf targetRef={refToImgBlob6} filename="part9.pdf">
+          {({ toPdf }) => <ChildComponent6 toPdf={toPdf} />}
+        </CustomReactToPdf>
+        <CustomReactToPdf targetRef={refToImgBlob7} filename="part10.pdf">
+          {({ toPdf }) => <ChildComponent7 toPdf={toPdf} />}
+        </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none "
+          className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1  "
         >
           <div className="contentAddUserFlexible2 flex flex-col gap-10">
             <div className=" flex flex-col" ref={refToImgBlob}>
@@ -792,6 +982,8 @@ const part4 = ({ cookies }) => {
                 handleCheckboxChange2={handleCheckboxChange2}
                 handleCheckboxChange3={handleCheckboxChange3}
               />
+            </div>
+            <div className="flex flex-col" ref={refToImgBlob2}>
               <LecturePlan
                 topicsRefs={topicsRefs}
                 HoursRefs={HoursRefs}
@@ -809,24 +1001,30 @@ const part4 = ({ cookies }) => {
                 removeRowHandler={removeRowHandler}
               />
             </div>
-            <div className=" flex flex-col" ref={refToImgBlob2}>
-              {teachingMethodsContent}
-              {assessmentContent}
-      
-            </div>
             <div className=" flex flex-col" ref={refToImgBlob3}>
-   
+              {teachingMethodsContent}
+            </div>
+            <div className="flex flex-col" ref={refToImgBlob4}>
+              {assessmentContent}
+            </div>
+            <div className=" flex flex-col" ref={refToImgBlob5}>
               {assessmentScheduleContent}
+            </div>
+            <div className=" flex flex-col" ref={refToImgBlob6}>
               {facilityHandlerContent}
             </div>
+            <div className=" flex flex-col" ref={refToImgBlob7}>
+              {referencesContent}
+            </div>
+
             <div className="flex justify-between">
               <div>{msg}</div>
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 >
-                  Next
+                  Submit
                 </button>
               </div>
             </div>
