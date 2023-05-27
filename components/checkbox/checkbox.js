@@ -13,7 +13,7 @@ const Checkbox = ({ label, value, onChange ,index,checkboxRefs}) => {
       <input
         type="checkbox"
         className="form-checkbox h-5 w-5 text-blue-600"
-        checked={checkboxRefs.current[index] === true}
+        //checked={checkboxRefs.current[index] === true}
         onChange={handleCheckboxChange}
       />
       <span className="ml-2 text-gray-700">{label}</span>

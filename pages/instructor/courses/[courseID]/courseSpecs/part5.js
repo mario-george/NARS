@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import { updateField } from "@/components/store/userSlice";
 
 const part69 = ({ cookies }) => {
   const [isRunning, setIsRunning] = useState(true);
   const userState = useSelector((s) => s.user);
+  const d = useDispatch();
+
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
@@ -30,7 +33,7 @@ const part69 = ({ cookies }) => {
       );
       const data = await r.json();
       console.log(data);
-      // console.log(data.data.courseSpecs.lecturePlan.topics.length)
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
 
       try {
         setAddWeek(data.data.courseSpecs.lecturePlan.topics.length);
@@ -48,10 +51,22 @@ const part69 = ({ cookies }) => {
           i < data.data.courseSpecs.lecturePlan.topics.length;
           i++
         ) {
-          topicsRefs.current[i] =
-            data.data.courseSpecs.lecturePlan.topics[i].topics[0];
-          HoursRefs.current[i] =
-            data.data.courseSpecs.lecturePlan.topics[i].plannedHours;
+          console.log(data.data.courseSpecs.lecturePlan.topics[i].topics[0])
+          if (
+            data.data.courseSpecs.lecturePlan.topics[i].topics[0]
+          ) {
+            topicsRefs.current[i] =
+            data.data.courseSpecs.lecturePlan.topics[i].topics[0];          }
+          if (
+            data.data.courseSpecs.lecturePlan.topics[i].plannedHours != 0
+          ) {
+            HoursRefs.current[i] =
+            data.data.courseSpecs.lecturePlan.topics[i].plannedHours;    
+                }
+          // topicsRefs.current[i] =
+          //   data.data.courseSpecs.lecturePlan.topics[i].topics[0];
+          // HoursRefs.current[i] =
+          //   data.data.courseSpecs.lecturePlan.topics[i].plannedHours;
 
           for (
             let j = 0;
@@ -69,46 +84,7 @@ const part69 = ({ cookies }) => {
           }
         }
         console.log(checkboxRefs.current[0]);
-        // console.log(
-        //   data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes
-        // );
 
-        // setInputs3(
-        //   data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes.map(
-        //     (e) => {
-        //       return {
-        //         ref: createRef(),
-        //         code: e.code,
-        //         name: e.code,
-        //         description: e.description,
-        //       };
-        //     }
-        //   )
-        // );
-        // setInputs(
-        //   data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes.map(
-        //     (e) => {
-        //       return {
-        //         ref: createRef(),
-        //         code: e.code,
-        //         name: e.code,
-        //         description: e.description,
-        //       };
-        //     }
-        //   )
-        // );
-        // setInputs2(
-        //   data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes.map(
-        //     (e) => {
-        //       return {
-        //         ref: createRef(),
-        //         code: e.code,
-        //         name: e.code,
-        //         description: e.description,
-        //       };
-        //     }
-        //   )
-        // );
       } catch (e) {
         console.log(e);
       }
@@ -143,31 +119,27 @@ const part69 = ({ cookies }) => {
       </>
     );
   }
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+
   const [hoursValue, setHoursValue] = useState("");
   const [outcomes, setoutcomes] = useState([]);
   let a = [];
   const [addWeek, setAddWeek] = useState(1);
-  useEffect(() => {
-    console.log(checkboxRefs);
 
-    checkboxRefs.current = Array.from({ length: addWeek }, () =>
-      Array.from({ length: a.length }, () => false)
-    );
+  useEffect(() => {
+
+checkboxRefs.current = [
+  ...checkboxRefs.current,
+  Array.from({ length: a.length }, () => false)
+];
   }, [addWeek]);
   const addRowWeek = (e) => {
     e.preventDefault();
-    // checkboxRefs.current = Array.from({ length: addWeek }, () =>
-    // Array.from({ length: a.length }, () => false)
-    // );
+
     setAddWeek(addWeek + 1);
   };
-  // const outcomes = ['LO1', 'LO2', 'LO3', 'LO4', 'LO5', 'LO6']
-  let cognitive = cookies.courseLearningOutcomes[0].learningOutcomes;
-  let affective = cookies.courseLearningOutcomes[2].learningOutcomes;
-  let psychomotor = cookies.courseLearningOutcomes[1].learningOutcomes;
+  let cognitive = cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+  let affective = cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
+  let psychomotor = cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
   let numCols = outcomes.length;
   let numRows = addWeek;
   const router = useRouter();
@@ -211,20 +183,20 @@ const part69 = ({ cookies }) => {
         congitiveParsed = cognitive;
         psychomotorParsed = psychomotor;
         affectiveParsed = affective;
-        courseLearningOutcomes = cookies.courseLearningOutcomes;
+        courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
         console.log(congitiveParsed);
         console.log(psychomotorParsed);
         console.log(affectiveParsed);
         a = [];
         congitiveParsed.map((e) => {
-          a.push(e.name);
+          a.push(e.code);
         });
 
         psychomotorParsed.map((e) => {
-          a.push(e.name);
+          a.push(e.code);
         });
         affectiveParsed.map((e) => {
-          a.push(e.name);
+          a.push(e.code);
         });
         console.log(a);
         console.log(Array.isArray(congitiveParsed));
@@ -317,19 +289,20 @@ const part69 = ({ cookies }) => {
   };
   return (
     <>
-      <div className="flex flex-row w-screen h-auto  mt-2">
+      <div className="flex flex-row w-auto h-auto  space-x-0">
         <CustomReactToPdf targetRef={refToImgBlob} filename="part5.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
+          className="bg-sky-50 h-auto w-auto translate-x-[21%] flex flex-col justify-center items-center text-black "
         >
+          <div className="contentAddUserFlexible3  flex flex-col gap-10">
           <div
-            className="contentAddUser2 flex flex-col gap-10"
+            
             ref={refToImgBlob}
           >
-            <table className="table-auto mb-[35rem] ">
+            <table className="table-auto mx-auto ">
               <thead>
                 <tr>
                   <th className="border-2 px-4 py-2">Week</th>
@@ -388,7 +361,7 @@ const part69 = ({ cookies }) => {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-end absolute  right-24">
+          <div className="flex justify-end ">
             <button
               onClick={addRowWeek}
               class="w-[7rem]  font-Roboto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base  px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -400,7 +373,7 @@ const part69 = ({ cookies }) => {
               class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Next
-            </button>
+            </button></div>
           </div>
         </form>
       </div>

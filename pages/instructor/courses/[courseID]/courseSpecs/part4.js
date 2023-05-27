@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import { updateField } from "@/components/store/userSlice";
 
 const part4 = ({ cookies }) => {
+  const d = useDispatch();
+
   const [competences, setComp] = useState([]);
 
   const userState = useSelector((s) => s.user);
@@ -27,15 +30,26 @@ const part4 = ({ cookies }) => {
         }
       );
       const data = await r.json();
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
+
       console.log(data);
-      console.log(cookies.courseLearningOutcomes[0].learningOutcomes.length);
-      console.log(cookies.courseLearningOutcomes[1].learningOutcomes.length);
-      console.log(cookies.courseLearningOutcomes[2].learningOutcomes.length);
+      console.log(
+        data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes.length
+      );
+      console.log(
+        data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes.length
+      );
+      console.log(
+        data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes.length
+      );
       console.log(competences.length);
       console.log(competences);
-      const length1 = cookies.courseLearningOutcomes[0].learningOutcomes.length;
-      const length2 = cookies.courseLearningOutcomes[1].learningOutcomes.length;
-      const length3 = cookies.courseLearningOutcomes[2].learningOutcomes.length;
+      const length1 =
+        data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes.length;
+      const length2 =
+        data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes.length;
+      const length3 =
+        data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes.length;
 
       try {
         checkboxRefs.current = Array.from({ length: length1 }, () =>
@@ -53,93 +67,46 @@ const part4 = ({ cookies }) => {
 
         setTableData3([...checkboxRefs3.current]);
 
-   
-        console.log(
-          data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[0]
-            .mappedCompetence
-        );
         for (let i = 0; i < length1; i++) {
           const mc =
             data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[i]
               .mappedCompetence;
-          console.log(
-            data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes[i]
-              .mappedCompetence
-          );
-          for (let j = 0; j < mc.length; j++) {
-            const ind = competences.indexOf(mc[j]);
-            checkboxRefs.current[i][ind] = !checkboxRefs.current[i][ind];
-            setTableData([...checkboxRefs.current]);
-
-          }
-          for (
-            let j = 0;
-            j <
-            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
-            j++
-          ) {
-            if (
-              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
-                j
-              ] != null
-            ) {
-              checkboxRefs.current[i][j] = true;
-            }
-          }
+          competences.forEach((c, j) => {
+            mc.forEach((e) => {
+              if (c == e) {
+                checkboxRefs.current[i][j] = true;
+                setTableData([...checkboxRefs.current]);
+              }
+            });
+          });
         }
+
         for (let i = 0; i < length2; i++) {
           const mc =
             data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes[i]
               .mappedCompetence;
-       
-          for (let j = 0; j < mc.length; j++) {
-            const ind = competences.indexOf(mc[j]);
-            checkboxRefs2.current[i][ind] = !checkboxRefs2.current[i][ind];
-            setTableData2([...checkboxRefs2.current]);
-
-          }
-          for (
-            let j = 0;
-            j <
-            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
-            j++
-          ) {
-            if (
-              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
-                j
-              ] != null
-            ) {
-              checkboxRefs.current[i][j] = true;
-            }
-          }
+          competences.forEach((c, j) => {
+            mc.forEach((e) => {
+              if (c == e) {
+                checkboxRefs2.current[i][j] = true;
+                setTableData2([...checkboxRefs2.current]);
+              }
+            });
+          });
         }
         for (let i = 0; i < length3; i++) {
           const mc =
             data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes[i]
               .mappedCompetence;
-        
-          for (let j = 0; j < mc.length; j++) {
-            const ind = competences.indexOf(mc[j]);
-            checkboxRefs3.current[i][ind] = !checkboxRefs3.current[i][ind];
-            setTableData3([...checkboxRefs3.current]);
-
-          }
-          for (
-            let j = 0;
-            j <
-            data.data.courseSpecs.lecturePlan.topics[0].learningOutcomes.length;
-            j++
-          ) {
-            if (
-              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
-                j
-              ] != null
-            ) {
-              checkboxRefs.current[i][j] = true;
-            }
-          }
+          competences.forEach((c, j) => {
+            mc.forEach((e) => {
+              if (c == e) {
+                checkboxRefs3.current[i][j] = true;
+                setTableData3([...checkboxRefs3.current]);
+              }
+            });
+          });
         }
-        console.log(checkboxRefs.current[0]);
       } catch (e) {
         console.log(e);
       }
@@ -261,7 +228,6 @@ const part4 = ({ cookies }) => {
     </div>
   );
   const { courseID } = router.query;
-  console.log(cookies.courseLearningOutcomes);
 
   // const competences = ["A1", "A2", "A3"];
   const getComp = async () => {
@@ -288,84 +254,67 @@ const part4 = ({ cookies }) => {
     setComp(comp);
     console.log(competences);
     console.log(competences.length);
-    return comp;
+    return data.data.courseSpecs.courseLearningOutcomes;
   };
 
-  let cognitive = cookies.courseLearningOutcomes[0].learningOutcomes;
-  let affective = cookies.courseLearningOutcomes[2].learningOutcomes;
-  let psychomotor = cookies.courseLearningOutcomes[1].learningOutcomes;
-  console.log(cognitive);
   const [arrays, setArrays] = useState({
     LO: [],
     LO2: [],
     LO3: [],
   });
+
   // let congitiveParsed=JSON.parse(cognitive)
   // let psychomotorParsed=JSON.parse(psychomotor)
   // let affectiveParsed=JSON.parse(affective)
-  let congitiveParsed;
-  let psychomotorParsed;
-  let affectiveParsed;
-  let courseLearningOutcomes;
 
   useEffect(() => {
-    getComp();
-    if (cognitive && affective && psychomotor) {
-      try {
-        congitiveParsed = cognitive;
-        psychomotorParsed = psychomotor;
-        affectiveParsed = affective;
-        courseLearningOutcomes = cookies.courseLearningOutcomes;
-        console.log(congitiveParsed);
-        console.log(psychomotorParsed);
-        console.log(affectiveParsed);
+    const fetchingData = async () => {
+      const CLO = await getComp();
 
-        setArrays((prevState) => ({
-          LO: congitiveParsed,
-          LO2: psychomotorParsed,
-          LO3: affectiveParsed,
-        }));
-        numCols = competences.length;
-        numRows = congitiveParsed.length;
-        numRows2 = psychomotorParsed.length;
-        numRows3 = affectiveParsed.length;
-        checkboxRefs.current = Array.from({ length: numRows }, () =>
-          Array.from({ length: numCols }, () => false)
-        );
+      let cognitive = CLO[0].learningOutcomes;
+      let psychomotor = CLO[1].learningOutcomes;
+      let affective = CLO[2].learningOutcomes;
+      console.log(cognitive);
+      console.log(cognitive);
+      console.log(cognitive);
+      console.log(cognitive);
+      console.log(cognitive);
+      if (cognitive && affective && psychomotor) {
+        try {
+          setArrays((prevState) => ({
+            LO: cognitive,
+            LO2: psychomotor,
+            LO3: affective,
+          }));
+          numCols = competences.length;
+          numRows = cognitive.length;
+          numRows2 = psychomotor.length;
+          numRows3 = affective.length;
+          checkboxRefs.current = Array.from({ length: numRows }, () =>
+            Array.from({ length: numCols }, () => false)
+          );
 
-        checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
-          Array.from({ length: numCols }, () => false)
-        );
+          checkboxRefs3.current = Array.from({ length: numRows3 }, () =>
+            Array.from({ length: numCols }, () => false)
+          );
 
-        checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
-          Array.from({ length: numCols }, () => false)
-        );
-      } catch (error) {
-        console.error(`Error parsing cookie: ${error}`);
+          checkboxRefs2.current = Array.from({ length: numRows2 }, () =>
+            Array.from({ length: numCols }, () => false)
+          );
+        } catch (error) {
+          console.error(`Error parsing cookie: ${error}`);
+        }
+      } else {
+        console.error("Cookie not found");
       }
-    } else {
-      console.error("Cookie not found");
-    }
-    // getComp();
+    };
+    fetchingData();
   }, []);
 
-  // console.log(affectiveParsed)
-  // console.log(psychomotorParsed)
-  // console.log(congitiveParsed)
-  // let cognitiveMap = cognitive.map(e=>{
-  //   return{name:e.name}
-  // })
-
-  // let psychomotorMap = psychomotor?.map(e=>{
-  //   return `${e.name}`
-  // })
   let affectiveMap;
   let a;
   let b = [];
 
-  // const LO = ["LO1", "LO2"];
-  // const LO2 = ["LO3", "LO4"];
-  // const LO3 = [];
   let numCols = competences.length;
   let numRows = arrays.LO.length;
   let numRows2 = arrays.LO2.length;
@@ -425,32 +374,31 @@ const part4 = ({ cookies }) => {
     setTableData([...checkboxRefs.current]);
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
-    let courseLearningOutcomes = cookies.courseLearningOutcomes;
+    let courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
     let cp2;
     if (courseLearningOutcomes) {
       try {
-        let courseLearningOutcomesParsed = cookies.courseLearningOutcomes;
-        console.log(courseLearningOutcomesParsed);
-        console.log(typeof courseLearningOutcomesParsed);
+        let courseLearningOutcomesParsed =
+          cookies.courseSpecs.courseLearningOutcomes;
 
-        console.log(courseLearningOutcomesParsed[0].title);
-
-        let l1P = cookies.courseLearningOutcomes[0].learningOutcomes;
-        let l2P = cookies.courseLearningOutcomes[1].learningOutcomes;
-        let l3P = cookies.courseLearningOutcomes[2].learningOutcomes;
+        let l1P =
+          cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+        let l2P =
+          cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
+        let l3P =
+          cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
         // console.log(l1P);
         // console.log(typeof l1P);
         l1P.map((e, k) => {
-          console.log("dfhgsdfhswftreyhewarhgeg");
+          console.log("535353");
         });
-        // courseLearningOutcomes[0].learningOutcomes =[]
         cp2 = JSON.parse(JSON.stringify(courseLearningOutcomes));
-        //         console.log(Array.isArray(cp2));
-        //         console.log(Array.isArray(l1P));
-        //         console.log(l1P.length);
-        // console.log(l1P)
 
-        if (cookies.courseLearningOutcomes[0].title == "cognitive") {
+        console.log(cp2);
+
+        if (
+          cookies.courseSpecs.courseLearningOutcomes[0].title == "cognitive"
+        ) {
           cp2[0].learningOutcomes = l1P.map((e, i) => {
             console.log(e);
             return {
@@ -477,7 +425,9 @@ const part4 = ({ cookies }) => {
             };
           });
         }
-        if (cookies.courseLearningOutcomes[2].title == "affective") {
+        if (
+          cookies.courseSpecs.courseLearningOutcomes[2].title == "affective"
+        ) {
           cp2[2].learningOutcomes = l3P.map((e, i) => {
             // console.log(e);
             return {
@@ -579,21 +529,8 @@ const part4 = ({ cookies }) => {
     buttonRef.current.click();
     e.preventDefault();
     handleSubmit();
-    // window.location.href="/instructor/coursespecs/part5"
   };
-  // affective ? (a = Object.entries(JSON.parse(affective))) : null;
-  // affective ? (console.log(Object.entries(JSON.parse(affective)))) : null;
-  // affective
-  //   ? a.map((e) => {
-  //       e.map((el2, key) => {
-  //         if (key == 0) {
-  //           return;
-  //         } else {
-  //           return b.push(el2.name);
-  //         }
-  //       });
-  //     })
-  //   : null;
+
   return (
     <>
       <div className="flex flex-row w-screen h-auto">
@@ -602,134 +539,134 @@ const part4 = ({ cookies }) => {
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none relative"
+          className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-none "
         >
-          <div className="contentAddUser2">
-          <div className=" flex flex-col" ref={refToImgBlob}>
-            <table className="table-auto my-8">
-              <thead>
-                <tr>
-                  <th className="border-2 px-4 py-2">LO/Competences</th>
-                  {competences.map((e, i) => (
-                    <th key={i} className="border-2 px-4 py-2">
-                      {e}
+          <div className="contentAddUserFlexible2 flex flex-col gap-10">
+            <div className=" flex flex-col" ref={refToImgBlob}>
+              <table className="table-auto mb-8">
+                <thead>
+                  <tr>
+                    <th className="border-2 px-4 py-2">LO/Competences</th>
+                    {competences.map((e, i) => (
+                      <th key={i} className="border-2 px-4 py-2">
+                        {e}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="w-full bg-sky-50">
+                    <th className="border-l px-4 py-2 text-left ">
+                      Cognitive domain
                     </th>
+                    <th className=" bg-sky-50"></th>
+                    <th className=" "></th>
+                    <th className=" border-r"></th>
+                  </tr>
+                  {Array.from({ length: numRows }).map((_, rowIndex) => (
+                    <tr key={rowIndex}>
+                      <td className="border-2 px-4 py-2">
+                        {" "}
+                        {arrays.LO[rowIndex].code}
+                      </td>
+                      {Array.from({ length: numCols }).map((_, colIndex) => (
+                        <td className="border-2 px-4 py-2" key={colIndex}>
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
+                              onChange={() =>
+                                handleCheckboxChange(rowIndex, colIndex)
+                              }
+                              checked={
+                                checkboxRefs.current[rowIndex]?.[colIndex] ===
+                                true
+                              }
+                            />
+                          </label>
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="w-full bg-sky-50">
-                  <th className="border-l px-4 py-2 text-left ">
-                    Cognitive domain
-                  </th>
-                  <th className=" bg-sky-50"></th>
-                  <th className=" "></th>
-                  <th className=" border-r"></th>
-                </tr>
-                {Array.from({ length: numRows }).map((_, rowIndex) => (
-                  <tr key={rowIndex}>
-                    <td className="border-2 px-4 py-2">
-                      {" "}
-                      {arrays.LO[rowIndex].name}
-                    </td>
-                    {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border-2 px-4 py-2" key={colIndex}>
-                        <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
-                            onChange={() =>
-                              handleCheckboxChange(rowIndex, colIndex)
-                            }
-                            checked={
-                              checkboxRefs.current[rowIndex]?.[colIndex] ===
-                              true
-                            }
-                          />
-                        </label>
-                      </td>
-                    ))}
+                  <tr className="w-full bg-sky-50">
+                    <th className="border-l px-4 py-2 text-left ">
+                      Psychomotor domain
+                    </th>
+                    <th className=" bg-sky-50"></th>
+                    <th className=" "></th>
+                    <th className=" border-r"></th>
                   </tr>
-                ))}
-                <tr className="w-full bg-sky-50">
-                  <th className="border-l px-4 py-2 text-left ">
-                    Psychomotor domain
-                  </th>
-                  <th className=" bg-sky-50"></th>
-                  <th className=" "></th>
-                  <th className=" border-r"></th>
-                </tr>
-                {Array.from({ length: numRows2 }).map((_, rowIndex) => (
-                  <tr key={rowIndex}>
-                    <td className="border-2 px-4 py-2">
-                      {" "}
-                      {arrays.LO2[rowIndex].name}
-                    </td>
-                    {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border-2 px-4 py-2" key={colIndex}>
-                        <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
-                            onChange={() =>
-                              handleCheckboxChange2(rowIndex, colIndex)
-                            }
-                            checked={
-                              checkboxRefs2.current[rowIndex]?.[colIndex] ===
-                              true
-                            }
-                          />
-                        </label>
+                  {Array.from({ length: numRows2 }).map((_, rowIndex) => (
+                    <tr key={rowIndex}>
+                      <td className="border-2 px-4 py-2">
+                        {" "}
+                        {arrays.LO2[rowIndex].code}
                       </td>
-                    ))}
+                      {Array.from({ length: numCols }).map((_, colIndex) => (
+                        <td className="border-2 px-4 py-2" key={colIndex}>
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
+                              onChange={() =>
+                                handleCheckboxChange2(rowIndex, colIndex)
+                              }
+                              checked={
+                                checkboxRefs2.current[rowIndex]?.[colIndex] ===
+                                true
+                              }
+                            />
+                          </label>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                  <tr className="w-full bg-sky-50">
+                    <th className="border-l px-4 py-2 text-left ">
+                      Affective domain
+                    </th>
+                    <th className=" bg-sky-50"></th>
+                    <th className=" "></th>
+                    <th className=" border-r"></th>
                   </tr>
-                ))}
-                <tr className="w-full bg-sky-50">
-                  <th className="border-l px-4 py-2 text-left ">
-                    Affective domain
-                  </th>
-                  <th className=" bg-sky-50"></th>
-                  <th className=" "></th>
-                  <th className=" border-r"></th>
-                </tr>
-                {Array.from({ length: numRows3 }).map((_, rowIndex) => (
-                  <tr key={rowIndex}>
-                    <td className="border-2 px-4 py-2">
-                      {" "}
-                      {arrays.LO3[rowIndex].name}
-                    </td>
-                    {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border-2 px-4 py-2" key={colIndex}>
-                        <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
-                            onChange={() =>
-                              handleCheckboxChange3(rowIndex, colIndex)
-                            }
-                            checked={
-                              checkboxRefs3.current[rowIndex]?.[colIndex] ===
-                              true
-                            }
-                          />
-                        </label>
+                  {Array.from({ length: numRows3 }).map((_, rowIndex) => (
+                    <tr key={rowIndex}>
+                      <td className="border-2 px-4 py-2">
+                        {" "}
+                        {arrays.LO3[rowIndex].code}
                       </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex justify-between">
-            <div>{msg}</div>
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Next
-              </button>
+                      {Array.from({ length: numCols }).map((_, colIndex) => (
+                        <td className="border-2 px-4 py-2" key={colIndex}>
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
+                              onChange={() =>
+                                handleCheckboxChange3(rowIndex, colIndex)
+                              }
+                              checked={
+                                checkboxRefs3.current[rowIndex]?.[colIndex] ===
+                                true
+                              }
+                            />
+                          </label>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
+            <div className="flex justify-between">
+              <div>{msg}</div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         </form>
@@ -738,36 +675,4 @@ const part4 = ({ cookies }) => {
   );
 };
 
-// export async function getServerSideProps(context) {
-//   let cookies = context.req.cookies;
-//   let LO33 = [];
-//   let cognitive = Cookies.get("cognitive");
-//   let affective = Cookies.get("affective");
-//   let psychomotor = Cookies.get("psychomotor");
-
-// let congitiveParsed=JSON.parse(cognitive)
-// let psychomotorParsed=JSON.parse(psychomotor)
-// let affectiveParsed=JSON.parse(affective)
-
-//   let a;
-//   let b=[]
-//   affective ? (a = Object.entries(JSON.parse(affective))) : null;
-//   affective ? (console.log(Object.entries(JSON.parse(affective)))) : null;
-//   affective
-//     ? a.map((e) => {
-//         e.map((el2, key) => {
-//           if (key == 0) {
-//             return;
-//           } else {
-//             return b.push(el2.name);
-//           }
-//         });
-//       })
-//     : null;
-//   return {
-//     props: {
-//       LO33:b,
-//     },
-//   };
-// }
 export default part4;

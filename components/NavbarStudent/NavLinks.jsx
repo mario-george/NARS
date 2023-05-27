@@ -26,7 +26,8 @@ const NavLinks = ({id}) => {
       sublinks: [
         {
           sublink: [
-            { name: "Assingments grades", link: `/student/${id}/assignments/viewassignments` },
+            { name: "Assingments grades", link: `/student/${id}/assignments/grades` },
+            { name: "Course grade", link: `/student/${id}/coursegrade` },
           ],
         },
         

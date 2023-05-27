@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import Textarea from "@/components/Textarea/Textarea";
+import { updateField } from "@/components/store/userSlice";
 
 const part2 = ({ cookies }) => {
   const courseSpecs=cookies.courseSpecs
+  const d = useDispatch()
   useEffect(()=>{
  
     const getData = async function (){
@@ -25,8 +27,17 @@ const part2 = ({ cookies }) => {
       );
       const data = await r.json();
       console.log(data)
-courseAims.current.value=data.data.courseSpecs.courseAims
-courseContent.current.value=data.data.courseSpecs.courseContent
+      console.log(data.data.courseSpecs.courseAims)
+      if(data.data.courseSpecs.courseAims){
+
+        courseAims.current.value=data.data.courseSpecs.courseAims
+      }
+      if(data.data.courseSpecs.courseContent){
+
+        courseContent.current.value=data.data.courseSpecs.courseContent
+      }
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
+
 
     }
     getData()
@@ -77,8 +88,7 @@ courseContent.current.value=data.data.courseSpecs.courseContent
   const token = userState.token;
   const courseAims = useRef();
   const courseContent = useRef();
-  const lvla = useRef();
-  const lvlb = useRef();
+
   const router = useRouter();
   const { courseID } = router.query;
   useEffect(() => {
@@ -96,8 +106,7 @@ courseContent.current.value=data.data.courseSpecs.courseContent
           courseSpecs: {
             courseAims: courseAims.current.value,
             courseContent: courseContent.current.value,
-            // levelA: lvla.current.value,
-            // levelB: lvlb.current.value,
+       
           },
         }),
         headers: {
@@ -107,10 +116,8 @@ courseContent.current.value=data.data.courseSpecs.courseContent
         },
       }
     );
-    //Cookies.set('courseAims',courseAims.current.value)
     const resp = await r.json();
     console.log(resp);
-    // window.location.href = '/instructor/coursespecs/part3';
     router.push(`/instructor/courses/${courseID}/courseSpecs/part3`);
   };
 
@@ -127,59 +134,29 @@ courseContent.current.value=data.data.courseSpecs.courseContent
           <div className="flex my-24 ">
             <div className="flex flex-col gap-5 w-full">
               <div>-Course Aims:</div>
-              {/* <textarea
-                  rows="4"
-                  name="aims"
-                  className="w-full input-form"
-                  //defaultValue={cookies.courseAims}
-                  ref={courseAims}
-                  placeholder="Type here the Course Aims"
-                ></textarea> */}
+             
+       
               <Textarea
                 rows="4"
                 placeholder="Type here the Course Aims"
                 ref={courseAims}
+                v={courseAims.current?.value}
               />
             </div>
           </div>
           <div className="flex flex-col gap-5  w-full">
             <div> -Course Contents(As indicated in the program):</div>
-            {/* <textarea
-                ref={courseContent}
-                rows="4"
-                name="contents"
-                className="w-full input-form"
-                placeholder="Type here the Course Contents"
-              ></textarea> */}
+       
             <Textarea
               rows="4"
               placeholder="Type here the Course Contents"
               ref={courseContent}
+              v={courseContent.current?.value}
+
             />
           </div>
 
-          {/* <div className="flex gap-20 ">
-            <div className="flex flex-col gap-5 w-full">
-              <div>-Level (A) Competencies:</div>
-       
-              <Textarea
-                rows="4"
-                placeholder="Level (A) Competencies "
-                ref={lvla}
-              />
-            </div>
-          </div> */}
-          {/* <div className="flex flex-col gap-5  w-full">
-            <div> -Level (B) Competencies: </div>
-
-            <Textarea
-              className="  "
-              rows="4"
-              placeholder="Level (B) Competencies "
-              ref={lvlb}
-            />
-            <div className="mb-32"></div>
-          </div> */}
+    
         </div>
       </form>
       <div className="flex justify-end absolute bottom-8 right-24">

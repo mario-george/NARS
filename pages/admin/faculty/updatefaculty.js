@@ -38,7 +38,7 @@ const updatefaculty = ({ cookies }) => {
     }
   };
   const userState = useSelector((s) => s.user);
-  if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
+  if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
   const faculty = useRef();

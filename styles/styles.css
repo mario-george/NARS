@@ -69,6 +69,9 @@
 .contentAddUserFlexible2 {
   @apply w-[90%] h-auto rounded-3xl px-12 py-12 mt-12 bg-white  font-Roboto  text-lg md:text-lg shadow-lg border-2;
 }
+.contentAddUserFlexible3 {
+  @apply w-auto h-auto rounded-3xl px-12 py-12 mt-12 bg-white  font-Roboto  text-lg md:text-lg shadow-lg border-2;
+}
 .topNav {
   @apply w-[90%] p-4   font-Roboto  text-lg md:text-lg;
 }
@@ -175,6 +178,10 @@
   }
   .input-form {
     @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300 focus:border-gray-500;
+    transition-property: background-color;
+  }
+  .BloomTax {
+    @apply appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300 focus:border-gray-500;
     transition-property: background-color;
   }
   .choose-form {
