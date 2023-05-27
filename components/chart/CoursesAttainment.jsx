@@ -55,27 +55,30 @@ const CoursesAttainment = (props) => {
     else if(props.courses[elm]['avg'] < target[0]){dataValues[2][2] += 1;}
   });
 
+  console.log("dataValues", dataValues)
+  console.log("props.courses", props.courses)
+
   data = {
     labels,
     datasets: [
     {
       label: 'Direct Attainment',
       data: dataValues[0],
-      backgroundColor: bg,
+      backgroundColor: bg[0],
       borderWidth: 1,
       maxBarThickness: 80
     },
     {
       label: 'Indirect Attainment',
       data: dataValues[1],
-      backgroundColor: bg,
+      backgroundColor: bg[1],
       borderWidth: 1,
       maxBarThickness: 80
     },
     {
       label: 'Overall Attainment',
       data: dataValues[2],
-      backgroundColor: bg,
+      backgroundColor: bg[2],
       borderWidth: 1,
       maxBarThickness: 80
     },

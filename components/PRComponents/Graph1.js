@@ -19,7 +19,7 @@ const CoursesCompetences = ({ cookies }) => {
       }
       try {
         const resp2 = await fetch(
-          `${process.env.url}api/v1/programs/getProgramSummary/${cookies.program}`,
+          `${process.env.url}api/v1/programs/${cookies.program}/inDirectAssessment`,
           {
             headers: {
               Authorization: "Bearer " + cookies.token,
@@ -27,37 +27,64 @@ const CoursesCompetences = ({ cookies }) => {
           }
         );
         const data2 = await resp2.json();
-        // console.log('gh', cookies.program);
         let comp1 = data2.data.report.programCompAvgs;
         let courses = data2.data.report.courseAvgDirect;
         let compTemp = {};
         let coursesTemp = {};
         comp1.forEach(elm => {
-          compTemp[elm.code] = {
-            "direct" : elm.avg,
+          if(elm.avg){
+            compTemp[elm.code] = {
+              "direct" : elm.avg,
+            };
+          }else{
+            compTemp[elm.code] = {
+              "direct" : 0,
+            };
           }
         });
         courses.forEach(elm => {
-          coursesTemp[elm.name] = {
-            "direct" : elm.avg,
+          if(elm.avg){
+            coursesTemp[elm.name] = {
+              "direct" : elm.avg,
+            };
+          }else{
+            coursesTemp[elm.name] = {
+              "direct" : elm.avg,
+            };
           }
         });
+        console.log('data2', data2)
+        // console.log('compTemp', compTemp);
+        console.log('data2.data.report.programCompAvgsIndirect', data2.data.report.programCompAvgsIndirect)
         //indirect
         comp1 = data2.data.report.programCompAvgsIndirect;
         courses = data2.data.report.courseAvgIndirect;
         comp1.forEach(elm => {
-          compTemp[elm.code]["indirect"] = elm.avg;
-          compTemp[elm.code]['avg'] = (elm.avg + compTemp[elm.code]["indirect"]) / 2;
+          console.log("der0")
+          if(elm.avg){
+            console.log("der1")
+            compTemp[elm.code]["indirect"] = elm.avg;
+            compTemp[elm.code]['avg'] = (elm.avg + compTemp[elm.code]["indirect"]) / 2;
+          }else{
+            console.log("der2")
+            compTemp[elm.code]["indirect"] = 0;
+            compTemp[elm.code]['avg'] = (0 + compTemp[elm.code]["indirect"]) / 2;
+          }
         });
         courses.forEach(elm => {
-          coursesTemp[elm.name]["indirect"] = elm.avg;
-          coursesTemp[elm.name]['avg'] = (elm.avg + coursesTemp[elm.name]["indirect"]) / 2;
+          if(elm.avg){
+            oursesTemp[elm.name]["indirect"] = elm.avg;
+            coursesTemp[elm.name]['avg'] = (elm.avg + coursesTemp[elm.name]["indirect"]) / 2;
+          }else{
+            oursesTemp[elm.name]["indirect"] = 0;
+            coursesTemp[elm.name]['avg'] = (0 + coursesTemp[elm.name]["indirect"]) / 2;
+          }
         });
         setComp(compTemp);
         setCoursesAvg(coursesTemp);
 
         const resp3 = await fetch(
-          `${process.env.url}api/v1/programs/getProgramSummary/${cookies.program}/percentageSpecsAndReports`,
+          `${process.env.url}api/v1/programs/${cookies.program}/percentageSpecsAndReports`,
           {
             headers: {
               Authorization: "Bearer " + cookies.token,
@@ -68,9 +95,6 @@ const CoursesCompetences = ({ cookies }) => {
         let specs = Math.round(data3.data.percentageOfFillingSpecs * 100);
         let report = Math.round(data3.data.percentageOfFillingReport * 100);
         
-        // let specs = Math.round(data2.data.report.percentageOfFillingSpecs * 100);
-        // let report = Math.round(data2.data.report.percentageOfFillingReport * 100);
-        console.log(specs, report);
         setNumSpecs([specs, 100 - specs]);
         setNumReport([report, 100 - report]);
       } catch (e) {

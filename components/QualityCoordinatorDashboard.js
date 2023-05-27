@@ -39,7 +39,7 @@ export default function QualityCoordinatorDashboard() {
             style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
           />
         </span>
-        <span className="ml-2">Assign courses competences</span>
+        <span className="ml-2">Assign Courses Competences</span>
       </Link>
       <Link
         className="link2 focus:text-green-400 "
@@ -50,7 +50,7 @@ export default function QualityCoordinatorDashboard() {
             style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
           />
         </span>
-        <span className="ml-2">Download courses Specs</span>
+        <span className="ml-2">Download Courses Specs</span>
       </Link>
       <button
         className="link2 focus:text-green-400 text-left"
