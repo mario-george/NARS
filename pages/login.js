@@ -54,24 +54,24 @@ export default function Login({ cookies }) {
       if (resp.data.user.role === "student") {
         dispatch(updateField({ field: "role", value: resp.data.user.role }));
         router.push("/studentProfile");
-      }
-      else if (resp.data.user.roles.length <= 1) {
-        dispatch(updateField({ field: "role", value: resp.data.user.roles[0] }));
+      } else if (resp.data.user.roles.length <= 1) {
+        dispatch(
+          updateField({ field: "role", value: resp.data.user.roles[0] })
+        );
         router.push("/profile");
-      }
-      else {
+      } else {
         setRoles(resp.data.user.roles);
         setShowModal(true);
       }
     }
   };
-  const submitRole = async(e) => {
+  const submitRole = async (e) => {
     if (e) {
       e.preventDefault();
     }
     dispatch(updateField({ field: "role", value: role.current.value }));
     router.push("/profile");
-  }
+  };
   return (
     <>
       <div className=" flex flex-col">
@@ -152,7 +152,8 @@ export default function Login({ cookies }) {
               ref={role}
               id="small"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
-              rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"            >
+              rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+            >
               <option selected>Choose a role</option>
               {rolesArr.map((e) => {
                 return <option value={e}>{e}</option>;
