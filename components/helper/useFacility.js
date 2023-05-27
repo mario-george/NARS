@@ -157,7 +157,9 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
   };
   const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
+
   const downloadMergedPDF = async () => {
+  
     const pdfBase64 = localStorage.getItem("pdf1");
     const pdfBase64_2 = localStorage.getItem("pdf2");
     const pdfBase64_22 = localStorage.getItem("pdf3");
@@ -490,7 +492,7 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
       </div>
     </>
   );
-  return { msg, content, submitHandler,downloadMergedPDF };
+  return { msg, content, submitHandler, downloadMergedPDF };
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">

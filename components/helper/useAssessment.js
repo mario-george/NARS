@@ -243,7 +243,7 @@ useEffect(()=>{
     {
       colspan: 10,
       label: "Assessment Methods*",
-      className: "horizontal bg-sky-50",
+      className: "horizontal bg-sky-100",
     },
   ];
   const handleCheckboxChange = (rowIndex, colIndex) => {
@@ -454,7 +454,7 @@ console.log(cp2)
                   key={cellIndex}
                   className={`border text-lg border-gray-500  transistion-all  py-8 px-4${
                     cellIndex === 0
-                      ? `text-right text-red-500 text-2xl font-bold py-24 `
+                      ? `text-right text-[#FF0000] text-2xl font-bold py-24 `
                       : ``
                   }`}
                 >
@@ -465,12 +465,12 @@ console.log(cp2)
           ))}
         </thead>
         <tbody>
-          <tr className="w-full bg-sky-50">
+          <tr className="w-full bg-sky-100">
             <th className="border-l px-4 py-2 text-left border-gray-500 ">
               Cognitive domain
             </th>
             <th
-              className=" bg-sky-50 border-r border-gray-500"
+              className=" bg-sky-100 border-r border-gray-500"
               colSpan={10}
             ></th>
           </tr>
@@ -496,12 +496,12 @@ console.log(cp2)
               ))}
             </tr>
           ))}
-          <tr className="w-full bg-sky-50">
+          <tr className="w-full bg-sky-100">
             <th className="border-l px-4 py-2 text-left  border-gray-500">
               Psychomotor domain
             </th>
             <th
-              className=" bg-sky-50 border-r border-gray-500"
+              className=" bg-sky-100 border-r border-gray-500"
               colSpan={10}
             ></th>
           </tr>
@@ -527,12 +527,12 @@ console.log(cp2)
               ))}
             </tr>
           ))}
-          <tr className="w-full bg-sky-50">
+          <tr className="w-full bg-sky-100">
             <th className="border-l px-4 py-2 text-left border-gray-500 ">
               Affective domain
             </th>
             <th
-              className=" bg-sky-50 border-r border-gray-500"
+              className=" bg-sky-100 border-r border-gray-500"
               colSpan={10}
             ></th>
           </tr>

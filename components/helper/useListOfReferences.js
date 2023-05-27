@@ -4,23 +4,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRef, useState, useEffect } from "react";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
+import Textarea from "../Textarea/LPTextArea";
 
 const ListOfReferences = ({ cookies, courseID, hasClass }) => {
   const d = useDispatch();
   const websitesInputHandler = (e) => {
-    const updatedInput = e.target.value;
+    const updatedInput = e;
     setWebsites(updatedInput);
   };
   const RbookInputHandler = (e) => {
-    const updatedInput = e.target.value;
+    const updatedInput = e;
     setRbooks(updatedInput);
   };
   const bookInputHandler = (e) => {
-    const updatedInput = e.target.value;
+    const updatedInput = e;
     setBooks(updatedInput);
   };
   const notesInputHandler = (e) => {
-    const updatedInput = e.target.value;
+    const updatedInput = e;
     setNotes(updatedInput);
   };
   const userState = useSelector((s) => s.user);
@@ -133,25 +134,25 @@ const ListOfReferences = ({ cookies, courseID, hasClass }) => {
       <div className="text-2xl my-4 bg-yellow-200">10- List of References </div>
       <div className="flex flex-col gap-5 w-full">
         <div className="text-xl my-4 bg-[#f0e1c2] ml-4">a-Course Notes</div>
-        <textarea
+        <Textarea
           rows="6"
           name="notes"
           className={`${hasClass ? `input-form bg-sky-50` : ``} w-full  ml-4`}
-          defaultValue={notes}
+          value={notes}
           placeholder="Type here the Course Notes"
           onChange={notesInputHandler}
-        ></textarea>
+        ></Textarea>
         <div className="flex flex-col gap-5  w-full">
           <div className="text-xl my-4 bg-[#f0e1c2] ml-4">b-Books</div>
 
-          <textarea
+          <Textarea
             rows="6"
             name="books"
             className={`${hasClass ? `input-form bg-sky-50` : ``} w-full  ml-4`}
-            defaultValue={books}
+            value={books}
             onChange={bookInputHandler}
             placeholder="Type here the books"
-          ></textarea>
+          ></Textarea>
         </div>
       </div>
       <div className="flex flex-col gap-5 w-full ">
@@ -159,27 +160,27 @@ const ListOfReferences = ({ cookies, courseID, hasClass }) => {
           c-Recommended Books
         </div>
 
-        <textarea
+        <Textarea
           rows="6"
           name="Rbooks"
           className={`${hasClass ? `input-form bg-sky-50` : ``} w-full  ml-4`}
-          defaultValue={Rbooks}
+          value={Rbooks}
           placeholder="Type here the Recommended Books"
           onChange={RbookInputHandler}
-        ></textarea>
+        ></Textarea>
         <div className="flex flex-col gap-5  w-full">
           <div className="text-xl my-4 bg-[#f0e1c2] ml-4">
             d-Course websites
           </div>
 
-          <textarea
+          <Textarea
             rows="6"
             name="websites"
             className={`${hasClass ? `input-form bg-sky-50` : ``} w-full  ml-4`}
-            defaultValue={websites}
+            value={websites}
             onChange={websitesInputHandler}
             placeholder="Type here the Course websites"
-          ></textarea>
+          ></Textarea>
         </div>
       </div>
     </>

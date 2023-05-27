@@ -14,6 +14,15 @@ import useFacility from "@/components/helper/useFacility";
 import useListOfReferences from "@/components/helper/useListOfReferences";
 
 const part4 = ({ cookies }) => {
+  useEffect(() => {
+    localStorage.removeItem("pdf4");
+    localStorage.removeItem("pdf5");
+    localStorage.removeItem("pdf6");
+    localStorage.removeItem("pdf7");
+    localStorage.removeItem("pdf8");
+    localStorage.removeItem("pdf9");
+    localStorage.removeItem("pdf10");
+  }, []);
   const d = useDispatch();
   let a = [];
   const [hasClass, setHasClass] = useState(true);
@@ -935,7 +944,9 @@ const part4 = ({ cookies }) => {
     await buttonRef7.current.click();
     e.preventDefault();
     handleSubmit();
-    facilityHandler.downloadMergedPDF();
+    setTimeout(() => {
+      facilityHandler.downloadMergedPDF();
+    }, 2000);
   };
 
   return (

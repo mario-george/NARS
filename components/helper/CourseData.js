@@ -16,7 +16,7 @@ const CourseData = ({
       <div className="courseDataMainTitle">1-Course Data</div>
       <div className="flex  ">
         <div className="flex items-center  gap-5 w-1/2">
-          <div className="text-red-500 text-xl  font-bold">
+          <div className="text-[#FF0000] text-xl  font-bold">
             Course Code & Title:
           </div>
           <input
@@ -27,7 +27,7 @@ const CourseData = ({
           />
         </div>
         <div className="flex items-center gap-5  w-1/2">
-          <div className="text-red-500  text-xl font-bold"> Semester/Year:</div>
+          <div className="text-[#FF0000]  text-xl font-bold"> Semester/Year:</div>
           <input
             type="text"
             name="year"
@@ -38,7 +38,7 @@ const CourseData = ({
       </div>
       <div className="flex  ">
         <div className="flex items-center  gap-5 w-1/2">
-          <div className="text-red-500 text-xl  font-bold">Specialization:</div>
+          <div className="text-[#FF0000] text-xl  font-bold">Specialization:</div>
           <input
             type="text"
             name="special"
@@ -49,7 +49,7 @@ const CourseData = ({
       </div>
       <div className="flex  ">
         <div className="flex items-center  gap-5 w-1/2">
-          <div className="text-red-500 text-xl  font-bold">Contact Hours:</div>
+          <div className="text-[#FF0000] text-xl  font-bold">Contact Hours:</div>
           <input
             type="number"
             name="hours"
@@ -58,7 +58,7 @@ const CourseData = ({
           />
         </div>
         <div className="flex items-center gap-5  w-1/4">
-          <div className="text-red-500  text-xl font-bold"> Lecture:</div>
+          <div className="text-[#FF0000]  text-xl font-bold"> Lecture:</div>
           <input
             type="number"
             name="lecture"
@@ -67,7 +67,7 @@ const CourseData = ({
           />
         </div>
         <div className="flex items-center gap-5  w-1/4">
-          <div className="text-red-500  text-xl font-bold">
+          <div className="text-[#FF0000]  text-xl font-bold">
             {" "}
             Practical/Practice:
           </div>

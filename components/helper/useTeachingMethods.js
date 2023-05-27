@@ -301,7 +301,7 @@ const useTeachingMethods = ({ courseID }) => {
     {
       colspan: 10,
       label: "Teaching and Learning Methods",
-      className: "horizontal bg-sky-50",
+      className: "horizontal bg-sky-100",
     },
   ];
   const handleCheckboxChange = (rowIndex, colIndex) => {
@@ -475,7 +475,7 @@ console.log(cp2)
                   key={cellIndex}
                   className={`border text-xl border-gray-500 transistion-all  py-8 px-2 ${
                     cellIndex === 0
-                      ? `text-right text-red-500 font-bold text-2xl`
+                      ? `text-right text-[#FF0000] font-bold text-2xl`
                       : ``
                   }`}
                   // className={cn({
@@ -496,12 +496,12 @@ console.log(cp2)
           ))}
         </thead>
         <tbody>
-          <tr className="w-full bg-sky-50">
+          <tr className="w-full bg-sky-100">
             <th className="border-l px-4 py-2 text-left border-gray-500 ">
               Cognitive domain
             </th>
             <th
-              className=" bg-sky-50 border-r border-gray-500"
+              className=" bg-sky-100 border-r border-gray-500"
               colSpan={10}
             ></th>
           </tr>
@@ -527,12 +527,12 @@ console.log(cp2)
               ))}
             </tr>
           ))}
-          <tr className="w-full bg-sky-50">
+          <tr className="w-full bg-sky-100">
             <th className="border-l px-4 py-2 text-left  border-gray-500">
               Psychomotor domain
             </th>
             <th
-              className=" bg-sky-50 border-r border-gray-500"
+              className=" bg-sky-100 border-r border-gray-500"
               colSpan={10}
             ></th>
           </tr>
@@ -558,12 +558,12 @@ console.log(cp2)
               ))}
             </tr>
           ))}
-          <tr className="w-full bg-sky-50">
+          <tr className="w-full bg-sky-100">
             <th className="border-l px-4 py-2 text-left border-gray-500 ">
               Affective domain
             </th>
             <th
-              className=" bg-sky-50 border-r border-gray-500"
+              className=" bg-sky-100 border-r border-gray-500"
               colSpan={10}
             ></th>
           </tr>

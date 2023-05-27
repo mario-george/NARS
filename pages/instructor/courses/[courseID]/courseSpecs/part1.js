@@ -17,7 +17,11 @@ const part1 = ({ cookies }) => {
   const router = useRouter();
   const { courseID } = router.query;
   const [hasClass, setHasClass] = useState(true);
-
+  useEffect(() => {
+    localStorage.removeItem("pdf1");
+    localStorage.removeItem("pdf2");
+    localStorage.removeItem("pdf3");
+  }, []);
   const courseAims = useRef("");
   const courseContent = useRef("");
   const [pdfBlob, setpdfBlob] = useState();
@@ -512,7 +516,7 @@ const part1 = ({ cookies }) => {
         console.log(toPdf);
         const pdfBlob = await toPdf();
         const reader = new FileReader();
-        
+
         reader.readAsDataURL(pdfBlob);
 
         reader.onload = () => {
@@ -612,14 +616,11 @@ const part1 = ({ cookies }) => {
             </div>
             <div ref={refToImgBlob}>
               <HeaderSpecs />
-            
-           
-              <div>
-               
-              </div>
+
+              <div></div>
             </div>
             <div ref={refToImgBlob2}>
-            <CourseData
+              <CourseData
                 hasClass={hasClass}
                 semester={semester}
                 code={code}
@@ -632,7 +633,7 @@ const part1 = ({ cookies }) => {
               />
             </div>
             <div ref={refToImgBlob3}>
-            <div className="flex ">
+              <div className="flex ">
                 <LearningOutcomes
                   hasClass={hasClass}
                   handleAddInput={handleAddInput}

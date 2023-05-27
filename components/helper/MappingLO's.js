@@ -19,8 +19,8 @@ const MappingLOs = ({
       </div>
       <table className="table-auto mb-8">
         <thead>
-          <tr className=" bg-red-400 text-2xl">
-            <th className="border-2 px-4 py-2 text-left text-xl text-yellow-200 uppercase">
+          <tr className=" bg-[#FF0000] text-2xl py-4">
+            <th className="border-2 px-4 py-4 text-left text-xl text-yellow-200 uppercase">
               LO'S/NARS
             </th>
             {competences.map((e, i) => (
@@ -34,7 +34,7 @@ const MappingLOs = ({
           </tr>
         </thead>
         <tbody>
-          <tr className="w-full bg-sky-50">
+          <tr className="w-full bg-sky-100">
             <th
               className="border-l px-4 py-2 text-left border-r "
               colSpan={competences.length + 1}
@@ -64,7 +64,7 @@ const MappingLOs = ({
               ))}
             </tr>
           ))}
-          <tr className="w-full bg-sky-50">
+          <tr className="w-full bg-sky-100">
             <th
               className="border-l px-4 py-2 text-left border-r"
               colSpan={competences.length + 1}
@@ -95,7 +95,7 @@ const MappingLOs = ({
               ))}
             </tr>
           ))}
-          <tr className="w-full bg-sky-50">
+          <tr className="w-full bg-sky-100">
             <th
               className="border-l px-4 py-2 text-left border-r"
               colSpan={competences.length + 1}
