@@ -160,12 +160,12 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
     );
   };
 
-  const [assessment0, setAssessment0] = useState("");
-  const [assessment1, setAssessment1] = useState("");
-  const [assessment2, setAssessment2] = useState("");
-  const [assessment3, setAssessment3] = useState("");
-  const [assessment4, setAssessment4] = useState("");
-  const [assessment5, setAssessment5] = useState("");
+  const [assessment0, setAssessment0] = useState("Midterm Examination");
+  const [assessment1, setAssessment1] = useState("Final Examination");
+  const [assessment2, setAssessment2] = useState("Quizzes");
+  const [assessment3, setAssessment3] = useState("Home assignments, and Reports");
+  const [assessment4, setAssessment4] = useState("Mini Project");
+  const [assessment5, setAssessment5] = useState("Total");
 
   const [week0, setWeek0] = useState("");
   const [week1, setWeek1] = useState("");

@@ -24,6 +24,7 @@ const part4 = ({ cookies }) => {
     localStorage.removeItem("pdf10");
   }, []);
   const d = useDispatch();
+  const expectedStudyingHoursPerWeek = useRef();
   let a = [];
   const [hasClass, setHasClass] = useState(true);
   const [specs, setSpecs] = useState({});
@@ -233,7 +234,10 @@ const part4 = ({ cookies }) => {
           setTableDataLecturePlan([...checkboxRefsLecturePlan.current]);
           setT(false);
         }
-
+        if (data.data.courseSpecs.lecturePlan.expectedStudyingHoursPerWeek ) {
+          expectedStudyingHoursPerWeek.current.value =
+          data.data.courseSpecs.lecturePlan.expectedStudyingHoursPerWeek;
+        }
         for (
           let i = 0;
           i < data.data.courseSpecs.lecturePlan.topics.length;
@@ -849,14 +853,16 @@ const part4 = ({ cookies }) => {
     try {
       setTableDataLecturePlan([...checkboxRefsLecturePlan.current]);
       setHoursData([...HoursRefs.current]);
-      setTopicsData([...topicsRefs.current]);
+      setTopicsData([...topicsRefs.current.filter(e=>e&&e.topics&&e.topics>0&&e.topics[0]!="")]);
 
       let lecturePlan = {
-        expectedStudyingHoursePerWeek: 5,
+        expectedStudyingHoursPerWeek:
+          expectedStudyingHoursPerWeek.current.value,
         topics: [],
       };
       lecturePlan.topics = [];
-
+      lecturePlan.expectedStudyingHoursPerWeek =
+        expectedStudyingHoursPerWeek.current.value;
       for (let i = 0; i < numRowsLecturePlan; i++) {
         let elem = [...outcomes].map((e, k) => {
           if (checkboxRefsLecturePlan.current[i][k]) {
@@ -874,53 +880,61 @@ const part4 = ({ cookies }) => {
           learningOutcomes: elem,
         };
         lecturePlan.topics.push(topic);
-        const r = await fetch(
-          `${process.env.url}api/v1/courses/created-courses/${courseID}`,
-          {
-            method: "PATCH",
-            body: JSON.stringify({
-              courseSpecs: {
-                lecturePlan: lecturePlan,
-              },
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-        const resp = await r.json();
-        console.log(resp);
-        facilityHandler.submitHandler();
-        console.log(cp2);
-        console.log(cp2);
-        console.log(cp2);
-        console.log(cp2);
-        console.log(cp2);
-        console.log(cp2);
-        console.log(cp2);
-        const newCLOS = await assessmentHandler.handleSubmit(cp2);
-        const newCLOS2 = await teachingMethodsHandler.handleSubmit(newCLOS);
-
-        const r2 = await fetch(
-          `${process.env.url}api/v1/courses/created-courses/${courseID}`,
-          {
-            method: "PATCH",
-            body: JSON.stringify({
-              courseSpecs: {
-                courseLearningOutcomes: newCLOS2,
-              },
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-        const resp2 = await r2.json();
       }
+      lecturePlan.expectedStudyingHoursPerWeek =
+        expectedStudyingHoursPerWeek.current.value;
+        console.log(lecturePlan)
+        console.log(lecturePlan)
+        console.log(lecturePlan)
+        console.log(lecturePlan)
+        console.log(lecturePlan)
+        console.log(lecturePlan)
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            courseSpecs: {
+              lecturePlan: lecturePlan,
+            },
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const resp = await r.json();
+      console.log(resp);
+      facilityHandler.submitHandler();
+      console.log(cp2);
+      console.log(cp2);
+      console.log(cp2);
+      console.log(cp2);
+      console.log(cp2);
+      console.log(cp2);
+      console.log(cp2);
+      const newCLOS = await assessmentHandler.handleSubmit(cp2);
+      const newCLOS2 = await teachingMethodsHandler.handleSubmit(newCLOS);
+
+      const r2 = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            courseSpecs: {
+              courseLearningOutcomes: newCLOS2,
+            },
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const resp2 = await r2.json();
     } catch (e) {
       console.log(e);
     }
@@ -996,6 +1010,7 @@ const part4 = ({ cookies }) => {
             </div>
             <div className="flex flex-col" ref={refToImgBlob2}>
               <LecturePlan
+                expectedStudyingHoursPerWeek={expectedStudyingHoursPerWeek}
                 topicsRefs={topicsRefs}
                 HoursRefs={HoursRefs}
                 outcomes={outcomes}

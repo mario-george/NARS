@@ -13,10 +13,11 @@ const LecturePlan = ({
   topicsRefs,
   HoursRefs,
   hasClass,
+  expectedStudyingHoursPerWeek,
 }) => {
-                  // defaultValue={}
-  console.log(topicsRefs.current)
-  console.log(topicsRefs.current[0])
+  // defaultValue={}
+  console.log(topicsRefs.current);
+  console.log(topicsRefs.current[0]);
   return (
     <div>
       <div className="text-2xl my-4 bg-yellow-200">6- Lecture Plan</div>
@@ -134,6 +135,7 @@ const LecturePlan = ({
         b) Additional private study/learning hours expected for students per
         week is{" "}
         <input
+          ref={expectedStudyingHoursPerWeek}
           type="text"
           className={`sameLineForm text-red-500 ${
             hasClass ? `bg-sky-50  ` : ``
