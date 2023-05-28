@@ -19,8 +19,9 @@ export default function QualityCoordinatorDashboard() {
   };
   return (
     <nav
-      className={`nav2 transition-all duration-300 transform ${navStatus ? ` -translate-x-full` : `translate-x-0 `
-        }`}
+      className={`nav2 transition-all duration-300 transform ${
+        navStatus ? ` -translate-x-full` : `translate-x-0 `
+      }`}
     >
       <Link className="link2 focus:text-green-400 " href="/profile">
         <span>
@@ -41,7 +42,7 @@ export default function QualityCoordinatorDashboard() {
         </span>
         <span className="ml-2">Assign competences</span>
       </Link>
-      <Link
+      {/* <Link
         className="link2 focus:text-green-400 "
         href="/qualitycoordinator/downloadSpecs"
       >
@@ -51,6 +52,17 @@ export default function QualityCoordinatorDashboard() {
           />
         </span>
         <span className="ml-2">Download courses Specs</span>
+      </Link> */}
+      <Link
+        className="link2 focus:text-green-400 "
+        href="/report/programReport"
+      >
+        <span>
+          <VscChecklist
+            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
+          />
+        </span>
+        <span className="ml-2">Program Report</span>
       </Link>
       <Link
         className="link2 focus:text-green-400 "
