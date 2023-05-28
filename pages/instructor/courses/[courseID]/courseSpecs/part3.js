@@ -19,7 +19,6 @@ const part3 = ({ cookies }) => {
     PsychomotorDomainVerbs,
   } = require("@/components/helpers/domainArrays");
 
-  const courseSpecs = cookies.courseSpecs;
   useEffect(() => {
     const getData = async function () {
       const r = await fetch(
@@ -37,9 +36,7 @@ const part3 = ({ cookies }) => {
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
 
       try {
-        // console.log(
-        //   data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes
-        // );
+    
 
         setInputs3(
           data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes.map(
@@ -200,8 +197,7 @@ const part3 = ({ cookies }) => {
     ]);
   };
   const handleSubmit = async (e) => {
-    console.log(inputs);
-    console.log("inp ref");
+
     const cognitive = inputs.map((input) => {
       return {
         description: input.ref.current.value,
@@ -325,10 +321,7 @@ const part3 = ({ cookies }) => {
     Cookies.set("cognitive", stringifiedCognitive);
     Cookies.set("psychomotor", stringifiedPsychomotor);
     Cookies.set("affective", stringifiedAffective);
-    // console.log(cognitive);
-    // console.log(psychomotor);
-    // console.log(affective);
-    console.log(courseLearningOutcomes);
+
   };
 
   const router = useRouter();
