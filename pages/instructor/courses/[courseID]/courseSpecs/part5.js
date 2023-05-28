@@ -11,7 +11,6 @@ const part69 = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
   const d = useDispatch();
 
-
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
@@ -51,22 +50,14 @@ const part69 = ({ cookies }) => {
           i < data.data.courseSpecs.lecturePlan.topics.length;
           i++
         ) {
-          console.log(data.data.courseSpecs.lecturePlan.topics[i].topics[0])
-          if (
-            data.data.courseSpecs.lecturePlan.topics[i].topics[0]
-          ) {
+          if (data.data.courseSpecs.lecturePlan.topics[i].topics[0]) {
             topicsRefs.current[i] =
-            data.data.courseSpecs.lecturePlan.topics[i].topics[0];          }
-          if (
-            data.data.courseSpecs.lecturePlan.topics[i].plannedHours != 0
-          ) {
+              data.data.courseSpecs.lecturePlan.topics[i].topics[0];
+          }
+          if (data.data.courseSpecs.lecturePlan.topics[i].plannedHours != 0) {
             HoursRefs.current[i] =
-            data.data.courseSpecs.lecturePlan.topics[i].plannedHours;    
-                }
-          // topicsRefs.current[i] =
-          //   data.data.courseSpecs.lecturePlan.topics[i].topics[0];
-          // HoursRefs.current[i] =
-          //   data.data.courseSpecs.lecturePlan.topics[i].plannedHours;
+              data.data.courseSpecs.lecturePlan.topics[i].plannedHours;
+          }
 
           for (
             let j = 0;
@@ -83,8 +74,6 @@ const part69 = ({ cookies }) => {
             }
           }
         }
-        console.log(checkboxRefs.current[0]);
-
       } catch (e) {
         console.log(e);
       }
@@ -125,21 +114,35 @@ const part69 = ({ cookies }) => {
   let a = [];
   const [addWeek, setAddWeek] = useState(1);
 
-  useEffect(() => {
-
-checkboxRefs.current = [
-  ...checkboxRefs.current,
-  Array.from({ length: a.length }, () => false)
-];
-  }, [addWeek]);
+  // useEffect(() => {
+  //   checkboxRefs.current = [
+  //     ...checkboxRefs.current,
+  //     Array.from({ length: a.length }, () => false),
+  //   ];
+  // }, [addWeek]);
   const addRowWeek = (e) => {
     e.preventDefault();
 
     setAddWeek(addWeek + 1);
+    checkboxRefs.current = [
+      ...checkboxRefs.current,
+      Array.from({ length: a.length }, () => false),
+    ];
   };
-  let cognitive = cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
-  let affective = cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
-  let psychomotor = cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
+  const removeRowHandler = (e) => {
+    e.preventDefault();
+
+    setAddWeek(addWeek - 1);
+    checkboxRefs.current = checkboxRefs.current.slice(0, -1);
+
+
+  };
+  let cognitive =
+    cookies.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+  let affective =
+    cookies.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
+  let psychomotor =
+    cookies.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
   let numCols = outcomes.length;
   let numRows = addWeek;
   const router = useRouter();
@@ -184,9 +187,7 @@ checkboxRefs.current = [
         psychomotorParsed = psychomotor;
         affectiveParsed = affective;
         courseLearningOutcomes = cookies.courseSpecs.courseLearningOutcomes;
-        console.log(congitiveParsed);
-        console.log(psychomotorParsed);
-        console.log(affectiveParsed);
+
         a = [];
         congitiveParsed.map((e) => {
           a.push(e.code);
@@ -198,8 +199,7 @@ checkboxRefs.current = [
         affectiveParsed.map((e) => {
           a.push(e.code);
         });
-        console.log(a);
-        console.log(Array.isArray(congitiveParsed));
+
 
         checkboxRefs.current = Array.from({ length: addWeek }, () =>
           Array.from({ length: a.length }, () => false)
@@ -221,18 +221,14 @@ checkboxRefs.current = [
     setTableData([...checkboxRefs.current]);
     setHoursData([...HoursRefs.current]);
     setTopicsData([...topicsRefs.current]);
-    console.log(checkboxRefs.current[0][0]);
-    console.log(outcomes);
+   
     let lecturePlan = {
       expectedStudyingHoursePerWeek: 5,
       topics: [],
     };
     lecturePlan.topics = [];
 
-    console.log(lecturePlan);
-    console.log(tableData);
-    console.log(topicsData);
-    console.log(hoursData);
+  
     for (let i = 0; i < numRows; i++) {
       let elem = [...outcomes].map((e, k) => {
         if (checkboxRefs.current[i][k]) {
@@ -251,10 +247,7 @@ checkboxRefs.current = [
       };
       lecturePlan.topics.push(topic);
     }
-    console.log(lecturePlan);
 
-    const lecturePlanStringified = JSON.stringify(lecturePlan);
-    Cookies.set("lecturePlan", lecturePlanStringified);
     const r = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${courseID}`,
       {
@@ -274,6 +267,32 @@ checkboxRefs.current = [
     const resp = await r.json();
     console.log(resp);
   };
+  const useDynamicHeight = () => {
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+      const adjustHeight = () => {
+        const contentElement = contentRef.current;
+        const contentHeight = contentElement.offsetHeight;
+        const windowHeight = window.innerHeight;
+        const maxContentHeight = Math.max(contentHeight, windowHeight);
+        contentElement.style.height = maxContentHeight + "px";
+        console.log(contentElement);
+      };
+
+      adjustHeight();
+
+      const observer = new ResizeObserver(adjustHeight);
+      observer.observe(contentRef.current);
+
+      return () => {
+        observer.disconnect();
+      };
+    }, [contentRef.current?.style.height]);
+
+    return contentRef;
+  };
+  const contentRef = useDynamicHeight();
 
   const submitHandler = async (e) => {
     setIsRunning(false);
@@ -282,9 +301,7 @@ checkboxRefs.current = [
     e.preventDefault();
     handleSubmit();
 
-    // window.location.href="/instructor/coursespecs/part6"
 
-    // window.location.href = `/instructor/courses/${courseID}/courseSpecs/part6`;
     router.push(`/instructor/courses/${courseID}/courseSpecs/part6`);
   };
   return (
@@ -295,85 +312,121 @@ checkboxRefs.current = [
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-auto w-auto translate-x-[21%] flex flex-col justify-center items-center text-black "
+          className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black "
         >
-          <div className="contentAddUserFlexible3  flex flex-col gap-10">
           <div
-            
-            ref={refToImgBlob}
+            className="contentAddUserFlexible2  flex flex-col gap-10"
+            ref={contentRef}
           >
-            <table className="table-auto mx-auto ">
-              <thead>
-                <tr>
-                  <th className="border-2 px-4 py-2">Week</th>
-                  <th className="border-2 px-4 py-2">Topics</th>
-                  <th className="border-2 px-4 py-2">
-                    Planned <br /> Hours
-                  </th>
-                  {outcomes.map((e, i) => (
-                    <th key={i} className="border-2 px-4 py-2">
-                      {e}
+            <div ref={refToImgBlob}>
+              <table className="table-auto w-full ">
+                <thead>
+                  <tr className="   bg-gray-300">
+                    <th className=" border-t-2 border-r-2 border-t-black border-l-black border-r-black  border-l-2 px-4 ">
+                      Week
                     </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {Array.from({ length: numRows }).map((_, rowIndex) => (
-                  <tr key={rowIndex}>
-                    <td className="border-2 px-4 py-2"> {[rowIndex + 1]}</td>
-                    <td className="border-2 px-4 py-2 ">
-                      <input
-                        type="text"
-                        name="topic"
-                        className="w-full"
-                        onChange={(e) => handleTopicChange(rowIndex, e)}
-                        defaultValue={topicsRefs.current[rowIndex]}
-                      />
-                    </td>
-                    <td className="border-2 px-4 py-2 ">
-                      <input
-                        name="hours"
-                        type="number"
-                        className="w-full"
-                        onChange={(e) => handleHoursChange(rowIndex, e)}
-                        defaultValue={HoursRefs.current[rowIndex]}
-                      />
-                    </td>
-                    {Array.from({ length: numCols }).map((_, colIndex) => (
-                      <td className="border-2 px-4 py-2" key={colIndex}>
-                        <label className="inline-flex items-center">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
-                            onChange={() =>
-                              handleCheckboxChange(rowIndex, colIndex)
-                            }
-                            checked={
-                              checkboxRefs.current[rowIndex]?.[colIndex] ===
-                              true
-                            }
-                          />
-                        </label>
-                      </td>
+                    <th className="border-t-2 border-r-2 border-t-black border-l-black border-r-black  border-l-2 px-4">
+                      Topics
+                    </th>
+                    <th
+                      className="border-t-2 border-r-2 border-t-black border-l-black border-r-black  border-l-2 "
+                      style={{ width: "80px" }}
+                    >
+                      Planned <br /> Hours
+                    </th>
+                    <th
+                      colSpan={outcomes.length}
+                      className="border-t-2 border-r-2 border-t-black border-b-black border-b-2 border-l-black border-r-black  border-l-2 px-4 py-2 text-center"
+                    >
+                      Learning Outcomes
+                      <br />
+                    </th>
+                  </tr>
+
+                  <tr className="bg-gray-300">
+                    <th className=" px-4 border-r-2  border-l-black border-b-black border-b-2 border-r-black  border-l-2  "></th>
+                    <th className=" px-4 border-r-2  border-l-black border-b-black border-b-2 border-r-black  border-l-2 "></th>
+                    <th className=" px-4 border-r-2  border-l-black border-b-black border-b-2 border-r-black  border-l-2  "></th>
+                    {outcomes.map((e, i) => (
+                      <th
+                        key={i}
+                        className="border-r-2 border-b-black border-b-2  border-l-black border-r-black  border-l-2  px-4"
+                      >
+                        {e}
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex justify-end ">
-            <button
-              onClick={addRowWeek}
-              class="w-[7rem]  font-Roboto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base  px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Add Row
-            </button>
-            <button
-              type="submit"
-              class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Next
-            </button></div>
+                </thead>
+                <tbody>
+                  {Array.from({ length: numRows }).map((_, rowIndex) => (
+                    <tr key={rowIndex}>
+                      <td className="border-2 border-black px-4 py-2">
+                        {" "}
+                        {[rowIndex + 1]}
+                      </td>
+                      <td className="border-2 px-4 py-2 border-black ">
+                        <input
+                          type="text"
+                          name="topic"
+                          className="w-full"
+                          onChange={(e) => handleTopicChange(rowIndex, e)}
+                          defaultValue={topicsRefs.current[rowIndex]}
+                        />
+                      </td>
+                      <td className="border-2 border-black px-4 py-2 ">
+                        <input
+                          name="hours"
+                          type="number"
+                          className="w-full"
+                          onChange={(e) => handleHoursChange(rowIndex, e)}
+                          defaultValue={HoursRefs.current[rowIndex]}
+                        />
+                      </td>
+                      {Array.from({ length: numCols }).map((_, colIndex) => (
+                        <td
+                          className="border-2 border-black px-4 py-2"
+                          key={colIndex}
+                        >
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              className="form-checkbox h-5 w-5 text-blue-600 custom-checkbox"
+                              onChange={() =>
+                                handleCheckboxChange(rowIndex, colIndex)
+                              }
+                              checked={
+                                checkboxRefs.current[rowIndex]?.[colIndex] ===
+                                true
+                              }
+                            />
+                          </label>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex justify-end ">
+              <button
+                onClick={addRowWeek}
+                class="w-[7rem]  font-Roboto text-blue-500  py-2 px-4 rounded-md   text-xl mx-2 mb-2 "
+              >
+                Add
+              </button>
+              <button
+                onClick={removeRowHandler}
+                class="w-[7rem]  font-Roboto text-blue-500  py-2 px-4 rounded-md   text-xl mx-2 mb-2 "
+              >
+                Remove
+              </button>
+              <button
+                type="submit"
+                class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </form>
       </div>

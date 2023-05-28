@@ -49,7 +49,7 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
             top: "100%",
             left: 0,
           }}
-          className=" input-form relative "
+          className={`${props.hasClass ? ` bg-gray-100 duration-300 border border-gray-200 `:``} input-formV2 relative `}
         >
           {items.map((item) => (
             <div
@@ -70,15 +70,16 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
   const matchedVerbs = bloomVerbs.filter((verb) => {
     return sentenceWords.some((word) => matchWordToTerm(verb, word));
   });
-
+console.log(matchedVerbs)
   return (
-    <Textarea
+    <div
       v={v}
       ref={ref}
       small={true}
       key={v}
       rows={0}
       className="w-full pb-[4rem] mr-[5rem] items-center  "
+      hasClass={props.hasClass}
     >
       <Autocomplete
         ref={ref}
@@ -101,14 +102,14 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
         renderMenu={renderMenu}
         inputProps={{
           id: "sentence",
-          className: `relative border-gray-300 border-2 rounded-md py-2 px-3 input-form px-[1rem] transform translate-y-4  `,
-          style: { width: "300%" },
+          className: `relative border-gray-300  rounded-md py-2 px-3 input-formV2 ${props.hasClass?` border-2 bg-sky-50`:``} px-[1rem] transform translate-y-4  `,
+          style: { width: "400%" },
           defaultValue: "asd", // add this line
         }}
         wrapperProps={{ className: `absolute  ` }}
         menuStyle={{ position: `absolute  `, zIndex: "10" }}
       />
-    </Textarea>
+    </div>
   );
 });
 

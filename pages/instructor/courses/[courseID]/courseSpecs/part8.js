@@ -225,7 +225,7 @@ const part69 = ({ cookies }) => {
           >
             <table className="table-auto">
               <thead>
-                <tr>
+                <tr className="bg-gray-300">
                   <th className="border-2 px-4 py-2">Assesments</th>
                   <th className="border-2 px-4 py-2">week</th>
                   <th className="border-2 px-4 py-2">Weight</th>
