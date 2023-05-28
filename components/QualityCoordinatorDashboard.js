@@ -4,6 +4,9 @@ import { header } from "./header";
 import { userActions } from "./store/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
+import { CgProfile } from "react-icons/cg";
+import { CgLogOut } from "react-icons/cg";
+import { VscChecklist } from "react-icons/vsc";
 import { HiDownload } from "react-icons/hi";
 
 export default function QualityCoordinatorDashboard() {
@@ -60,19 +63,6 @@ export default function QualityCoordinatorDashboard() {
           />
         </span>
         <span className="ml-2">Program Report</span>
-      </Link>
-      <Link
-        className="link2 focus:text-green-400 "
-        href={`${process.env.url}api/v1/programs/programSpcs/${userState.program}`}
-        target="_blank"
-        download
-      >
-        <span>
-          <HiDownload
-            style={{ fontSize: 30, display: "inline", marginBottom: 5 }}
-          />
-        </span>
-        <span className="ml-2">Download program Specs</span>
       </Link>
       <Link
         className="link2 focus:text-green-400 "

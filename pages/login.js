@@ -42,7 +42,6 @@ export default function Login({ cookies }) {
       dispatch(userActions.toggleLoggedIn(true));
       dispatch(updateField({ field: "courses", value: courses }));
       dispatch(updateField({ field: "loggedInStatus", value: "true" }));
-      console.log("FIX THIS");
       dispatch(updateField({ field: "_id", value: resp.data.user._id }));
       dispatch(updateField({ field: "email", value: resp.data.user.email }));
       dispatch(updateField({ field: "jwt", value: resp.token }));
