@@ -188,10 +188,6 @@ const part1 = ({ cookies }) => {
     );
     const resp = await r.json();
     console.log(resp);
-
-    const stringifiedCognitive = JSON.stringify(cognitive);
-    const stringifiedPsychomotor = JSON.stringify(psychomotor);
-    const stringifiedAffective = JSON.stringify(affective);
   };
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
@@ -424,11 +420,11 @@ const part1 = ({ cookies }) => {
   const refToImgBlob = useRef();
   const refToImgBlob2 = useRef();
   const refToImgBlob3 = useRef();
-  const refToImgBlob4 = useRef();
+  const refToImgBlob33 = useRef();
   const buttonRef = useRef(null);
   const buttonRef2 = useRef(null);
   const buttonRef3 = useRef(null);
-  const buttonRef4 = useRef(null);
+  const buttonRef33 = useRef(null);
 
   const code = useRef("");
   const semester = useRef("");
@@ -529,7 +525,7 @@ const part1 = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf4", pdfBase64);
+          localStorage.setItem("pdf33", pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -540,7 +536,7 @@ const part1 = ({ cookies }) => {
     return (
       <>
         {" "}
-        <button ref={buttonRef4} onClick={handleClick} hidden>
+        <button ref={buttonRef33} onClick={handleClick} hidden>
           Capture as PDF
         </button>
       </>
@@ -563,9 +559,8 @@ const part1 = ({ cookies }) => {
         name: input.name,
       };
 
-      if (description?.trim() === "" || description.length < 5) {
-        const error =
-          "Description of Learning Outcomes should not be empty and should have at least 5 characters.";
+      if (description?.trim() === "") {
+        const error = "Description of Learning Outcomes should not be empty.";
         if (!newErrors.includes(error)) {
           newErrors.push(error);
         }
@@ -583,9 +578,8 @@ const part1 = ({ cookies }) => {
         name: input.name,
       };
 
-      if (description?.trim() === "" || description.length < 5) {
-        const error =
-          "Description of Learning Outcomes should not be empty and should have at least 5 characters.";
+      if (description?.trim() === "") {
+        const error = "Description of Learning Outcomes should not be empty.";
         if (!newErrors.includes(error)) {
           newErrors.push(error);
         }
@@ -603,9 +597,8 @@ const part1 = ({ cookies }) => {
         name: input.name,
       };
 
-      if (description?.trim() === "" || description.length < 5) {
-        const error =
-          "Description of Learning Outcomes should not be empty and should have at least 5 characters.";
+      if (description?.trim() === "") {
+        const error = "Description of Learning Outcomes should not be empty.";
         if (!newErrors.includes(error)) {
           newErrors.push(error);
         }
@@ -613,13 +606,8 @@ const part1 = ({ cookies }) => {
 
       return newInput;
     });
-    if (
-      semester.current?.value.trim() === "" ||
-      semester.current?.value.length < 5
-    ) {
-      newErrors.push(
-        "Semester/Year should not be empty and should have at least 5 characters."
-      );
+    if (semester.current?.value.trim() === "") {
+      newErrors.push("Semester/Year should not be empty.");
       setIsSemesterYearInvalid(true);
     } else {
       setIsSemesterYearInvalid(false);
@@ -644,13 +632,8 @@ const part1 = ({ cookies }) => {
     } else {
       setIsPracticalPracticeInvalid(false);
     }
-    if (
-      special.current?.value.trim() === "" ||
-      special.current?.value.length < 5
-    ) {
-      newErrors.push(
-        "Specialization should not be empty and should have at least 5 characters."
-      );
+    if (special.current?.value.trim() === "") {
+      newErrors.push("Specialization should not be empty.");
       setIsSpecializationInvalid(true);
     } else {
       setIsSpecializationInvalid(false);
@@ -667,10 +650,10 @@ const part1 = ({ cookies }) => {
     }
     if (
       courseAims.current?.value.trim() === "" ||
-      courseAims.current?.value.length < 5
+      courseAims.current?.value.length < 10
     ) {
       newErrors.push(
-        "Course Aims should not be empty and should have at least 5 characters."
+        "Course Aims should not be empty and should have at least 10 characters."
       );
       setIsCourseAimsInvalid(true);
     } else {
@@ -678,18 +661,16 @@ const part1 = ({ cookies }) => {
     }
     if (
       courseContent.current?.value.trim() === "" ||
-      courseContent.current?.value.length < 5
+      courseContent.current?.value.length < 10
     ) {
       newErrors.push(
-        "Course Content should not be empty and should have at least 5 characters."
+        "Course Content should not be empty and should have at least 10 characters."
       );
       setIsCourseContentInvalid(true);
     } else {
       setIsCourseContentInvalid(false);
     }
     if (newErrors.length === 0) {
-      // No errors, proceed with form submission
-      // Add your form submission logic here
       console.log("Form submitted successfully!");
 
       setIsSubmitting(true);
@@ -698,6 +679,7 @@ const part1 = ({ cookies }) => {
       await buttonRef.current.click();
       await buttonRef2.current.click();
       await buttonRef3.current.click();
+      await buttonRef33.current.click();
 
       const r = await fetch(
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
@@ -730,7 +712,6 @@ const part1 = ({ cookies }) => {
       console.log(resp);
       router.push(`/instructor/courses/${courseID}/courseSpecs/part4`);
     } else {
-      // Errors exist, update the errors state
       setErrors(newErrors);
     }
   };
@@ -765,6 +746,9 @@ const part1 = ({ cookies }) => {
         </CustomReactToPdf>
         <CustomReactToPdf targetRef={refToImgBlob3} filename="part3.pdf">
           {({ toPdf }) => <ChildComponent3 toPdf={toPdf} />}
+        </CustomReactToPdf>
+        <CustomReactToPdf targetRef={refToImgBlob33} filename="part33.pdf">
+          {({ toPdf }) => <ChildComponent4 toPdf={toPdf} />}
         </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
@@ -806,8 +790,12 @@ const part1 = ({ cookies }) => {
                 courseContent={courseContent}
               />
             </div>
-            {courseSpecs && <ProgramCompetencesServed data={courseSpecs} />}
-            <div ref={refToImgBlob3}>
+            {courseSpecs && (
+              <div ref={refToImgBlob3}>
+                <ProgramCompetencesServed data={courseSpecs} />
+              </div>
+            )}
+            <div ref={refToImgBlob33}>
               <div className="flex ">
                 <LearningOutcomes
                   hasClass={hasClass}

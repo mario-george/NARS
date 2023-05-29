@@ -441,7 +441,7 @@ console.log(cp2)
   let content = (
     <>
       <div className="text-2xl my-4 bg-yellow-200">
-        7- Teaching and Learning Methods
+        8- Teaching and Learning Methods
       </div>
       <table className="table-fixed border-collapse mb-[5rem]">
         <thead>

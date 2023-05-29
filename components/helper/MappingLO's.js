@@ -15,7 +15,7 @@ const MappingLOs = ({
   return (
     <>
       <div className="text-2xl my-4 bg-yellow-200">
-        5-Mapping Learning Outcomes (LO's) with competences
+        6-Mapping Learning Outcomes (LO's) with competences
       </div>
       <table className="table-auto mb-8">
         <thead>

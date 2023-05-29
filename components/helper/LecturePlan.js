@@ -20,7 +20,7 @@ const LecturePlan = ({
   console.log(topicsRefs.current[0]);
   return (
     <div>
-      <div className="text-2xl my-4 bg-yellow-200">6- Lecture Plan</div>
+      <div className="text-2xl my-4 bg-yellow-200">7- Lecture Plan</div>
       <div className="flex justify-between items-center">
         <div>a) Topics to be Covered weekly & Matrix of LO’s</div>
 

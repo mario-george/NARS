@@ -818,11 +818,20 @@ const part4 = ({ cookies }) => {
 
         const dynamicArray = competences
           .map((competence, index) => {
-            const ref1 = checkboxRefs.current[index].filter((value) => value);
-            const ref2 = checkboxRefs2.current[index].filter((value) => value);
-            const ref3 = checkboxRefs3.current[index].filter((value) => value);
+            let ref1;
+            let ref2;
+            let ref3;
+            if (checkboxRefs.current[index]) {
+              ref1 = checkboxRefs.current[index].filter((value) => value);
+            }
+            if (checkboxRefs2.current[index]) {
+              ref2 = checkboxRefs2.current[index].filter((value) => value);
+            }
+            if (checkboxRefs3.current[index]) {
+              ref3 = checkboxRefs3.current[index].filter((value) => value);
+            }
 
-            if (ref1.length > 0 || ref2.length > 0 || ref3.length > 0) {
+            if (ref1?.length > 0 || ref2?.length > 0 || ref3?.length > 0) {
               return competence;
             }
 
@@ -856,7 +865,7 @@ const part4 = ({ cookies }) => {
           return;
         }
       } catch (error) {
-        console.error(`Error parsing cookie: ${error}`);
+        console.error(`Error parsing cookie: ${error} 123`);
       }
     } else {
       console.error("Cookie not found");
@@ -864,11 +873,7 @@ const part4 = ({ cookies }) => {
     try {
       setTableDataLecturePlan([...checkboxRefsLecturePlan.current]);
       setHoursData([...HoursRefs.current]);
-      setTopicsData([
-        ...topicsRefs.current.filter(
-          (e) => e && e.topics && e.topics > 0 && e.topics[0] != ""
-        ),
-      ]);
+      setTopicsData([...topicsRefs.current]);
 
       let lecturePlan = {
         expectedStudyingHoursPerWeek:
@@ -973,7 +978,7 @@ const part4 = ({ cookies }) => {
     await buttonRef7.current.click();
     e.preventDefault();
     handleSubmit();
-    console.log(msg.includes("Competences has been achieved successfully!"));
+   
     setTimeout(() => {
       facilityHandler.downloadMergedPDF();
     }, 2000);

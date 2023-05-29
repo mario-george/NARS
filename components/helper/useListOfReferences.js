@@ -131,7 +131,7 @@ const ListOfReferences = ({ cookies, courseID, hasClass }) => {
   let content = (
     <>
       {" "}
-      <div className="text-2xl my-4 bg-yellow-200">10- List of References </div>
+      <div className="text-2xl my-4 bg-yellow-200">11- List of References </div>
       <div className="flex flex-col gap-5 w-full">
         <div className="text-xl my-4 bg-[#f0e1c2] ml-4">a-Course Notes</div>
         <Textarea

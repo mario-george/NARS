@@ -16,7 +16,7 @@ const LearningOutcomes = ({
 }) => {
   return (
     <div className="flex flex-col  w-full ">
-      <div className="text-2xl my-2 bg-yellow-200">4-Learning Outcomes</div>
+      <div className="text-2xl my-2 bg-yellow-200">5-Learning Outcomes</div>
       <i> At the end of the course, the student will be able to:</i>
 
       <div class="flex  items-center justify-between text-lg text-gray-700 capitalize  dark:bg-gray-700 dark:text-gray-400 ">
