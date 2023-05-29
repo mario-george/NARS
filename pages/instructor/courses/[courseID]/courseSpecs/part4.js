@@ -14,6 +14,8 @@ import useFacility from "@/components/helper/useFacility";
 import useListOfReferences from "@/components/helper/useListOfReferences";
 
 const part4 = ({ cookies }) => {
+  const [errors, setErrors] = useState([]);
+
   useEffect(() => {
     localStorage.removeItem("pdf4");
     localStorage.removeItem("pdf5");
@@ -587,6 +589,7 @@ const part4 = ({ cookies }) => {
     courseID,
     cookies,
     courseSpecs: specs,
+    hasClass,
   });
   const ListOfReferencesHandler = useListOfReferences({
     courseID,
@@ -610,6 +613,7 @@ const part4 = ({ cookies }) => {
     courseID: courseID,
     cookies: cookies,
     courseSpecs: specs,
+    hasClass,
   });
   const teachingMethodsContent = teachingMethodsHandler.content;
   const assessmentContent = assessmentHandler.content;
@@ -839,29 +843,29 @@ const part4 = ({ cookies }) => {
           })
           .filter((value) => value !== null);
         console.log(dynamicArray);
-        const achievedCompetences = dynamicArray.map((e) => {
-          return { code: e };
-        });
-
-        const resp2 = await fetch(
-          `${process.env.url}api/v1/courses/checkComp/${courseID}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "Bearer " + token,
-            },
-            body: JSON.stringify({ competences: achievedCompetences }),
-          }
+        const areAllCompetencesAchieved = competences.every((competence) =>
+          dynamicArray.includes(competence)
         );
-        const data2 = await resp2.json();
 
-        if (data2.status === "success") {
+        if (areAllCompetencesAchieved) {
           setMsg(success);
+          const error =
+            "Competences is not met. please review the entered data";
+
+          if (errors.includes(error)) {
+            setErrors((prevErrors) =>
+              prevErrors.filter((error) => error !== errorToRemove)
+            );
+          }
           // router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
         } else {
           setMsg(fail);
+          const error =
+            "Competences is not met. please review the entered data";
+          if (!errors.includes(error)) {
+            setErrors([...errors, error]);
+          }
+
           return;
         }
       } catch (error) {
@@ -965,23 +969,127 @@ const part4 = ({ cookies }) => {
       console.log(e);
     }
   };
+  const [
+    isexpectedStudyingHoursPerWeekInvalid,
+    setIsexpectedStudyingHoursPerWeekInvalid,
+  ] = useState(false);
 
   const submitHandler = async (e) => {
-    setHasClass(false);
-    ListOfReferencesHandler.submitHandler();
-    await buttonRef.current.click();
-    await buttonRef2.current.click();
-    await buttonRef3.current.click();
-    await buttonRef4.current.click();
-    await buttonRef5.current.click();
-    await buttonRef6.current.click();
-    await buttonRef7.current.click();
     e.preventDefault();
-    handleSubmit();
-   
-    setTimeout(() => {
-      facilityHandler.downloadMergedPDF();
-    }, 2000);
+    const findInvalidElement = (array) => {
+      const index = array.findIndex((element) =>
+        element.every((value) => value === false)
+      );
+      if (index !== -1) {
+        return { index };
+      }
+      return null;
+    };
+    const cognitiveAssessmentCheckedForErrors = findInvalidElement(
+      assessmentHandler.checkboxRefs.current
+    );
+    const psychomotorAssessmentCheckedForErrors = findInvalidElement(
+      assessmentHandler.checkboxRefs2.current
+    );
+    const affectiveAssessmentCheckedForErrors = findInvalidElement(
+      assessmentHandler.checkboxRefs3.current
+    );
+
+    const cognitiveTeachingMethodsCheckedForErrors = findInvalidElement(
+      teachingMethodsHandler.checkboxRefs.current
+    );
+    const psychomotorTeachingMethodsCheckedForErrors = findInvalidElement(
+      teachingMethodsHandler.checkboxRefs2.current
+    );
+    const affectiveTeachingMethodsCheckedForErrors = findInvalidElement(
+      teachingMethodsHandler.checkboxRefs3.current
+    );
+
+    const newErrors = [];
+    console.log(competences);
+    const dynamicArray = competences.filter((competence, index) => {
+      const ref1 = checkboxRefs.current.map((row) => row[index]);
+      const ref2 = checkboxRefs2.current.map((row) => row[index]);
+      const ref3 = checkboxRefs3.current.map((row) => row[index]);
+
+      if (
+        ref1.some((value) => value) ||
+        ref2.some((value) => value) ||
+        ref3.some((value) => value)
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+    console.log(dynamicArray);
+    const areAllCompetencesAchieved = competences.every((competence) =>
+      dynamicArray.includes(competence)
+    );
+
+    if (areAllCompetencesAchieved) {
+      setMsg(success);
+
+      // router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
+    } else {
+      setMsg(fail);
+      newErrors.push("Competences is not met. please review the entered data");
+    }
+    if (
+      cognitiveAssessmentCheckedForErrors ||
+      psychomotorAssessmentCheckedForErrors ||
+      affectiveAssessmentCheckedForErrors
+    ) {
+      newErrors.push("Learning outcomes must achieve at least one assessment");
+      assessmentHandler.getInvalidData(true);
+    } else {
+      assessmentHandler.getInvalidData(false);
+    }
+    if (
+      cognitiveTeachingMethodsCheckedForErrors ||
+      psychomotorTeachingMethodsCheckedForErrors ||
+      affectiveTeachingMethodsCheckedForErrors
+    ) {
+      newErrors.push(
+        "Learning outcomes must achieve at least one teaching method"
+      );
+      teachingMethodsHandler.getInvalidData(true);
+    } else {
+      teachingMethodsHandler.getInvalidData(false);
+    }
+    if (expectedStudyingHoursPerWeek.current?.value.trim() === "") {
+      newErrors.push(
+        "Private Expected Studying Hours Per week should not be empty."
+      );
+      setIsexpectedStudyingHoursPerWeekInvalid(true);
+    } else {
+      setIsexpectedStudyingHoursPerWeekInvalid(false);
+      const errorToRemove =
+        "Private Expected Studying Hours Per week should not be empty.";
+
+      setErrors((prevErrors) =>
+        prevErrors.filter((error) => error !== errorToRemove)
+      );
+    }
+    if (newErrors.length === 0) {
+      setHasClass(false);
+      ListOfReferencesHandler.submitHandler();
+      await buttonRef.current.click();
+      await buttonRef2.current.click();
+      await buttonRef3.current.click();
+      await buttonRef4.current.click();
+      await buttonRef5.current.click();
+      await buttonRef6.current.click();
+      await buttonRef7.current.click();
+      handleSubmit();
+
+      setTimeout(() => {
+        facilityHandler.downloadMergedPDF();
+      }, 2000);
+    } else {
+      setErrors(newErrors);
+    }
   };
 
   return (
@@ -1031,6 +1139,12 @@ const part4 = ({ cookies }) => {
             </div>
             <div className="flex flex-col" ref={refToImgBlob2}>
               <LecturePlan
+                isexpectedStudyingHoursPerWeekInvalid={
+                  isexpectedStudyingHoursPerWeekInvalid
+                }
+                setIsexpectedStudyingHoursPerWeekInvalid={
+                  setIsexpectedStudyingHoursPerWeekInvalid
+                }
                 expectedStudyingHoursPerWeek={expectedStudyingHoursPerWeek}
                 topicsRefs={topicsRefs}
                 HoursRefs={HoursRefs}
@@ -1083,6 +1197,16 @@ const part4 = ({ cookies }) => {
                 </button>
               </div>
             </div>
+            {errors.length > 0 && (
+              <div className="mt-4 bg-red-200 text-red-700 p-4 rounded">
+                <p className="font-bold">Invalid Input:</p>
+                <ul>
+                  {errors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </form>
       </div>

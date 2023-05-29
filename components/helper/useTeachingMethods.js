@@ -7,7 +7,11 @@ import cn from "classnames";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
 
-const useTeachingMethods = ({ courseID }) => {
+const useTeachingMethods = ({ courseID,hasClass }) => {
+  const [invalid, setInvalid] = useState(false);
+  const getInvalidData = (boolean) => {
+    setInvalid(boolean);
+  };
   const userState = useSelector((s) => s.user);
   const cookies = {
     courseSpecs: {
@@ -591,8 +595,14 @@ console.log(cp2)
           ))}
         </tbody>
       </table>
+      {invalid && hasClass && (
+        <div className="input-form-invalid">
+          {" "}
+          Learning outcomes must achieve at least one teaching method
+        </div>
+      )}
     </>
   );
-  return { content, handleSubmit };
+  return { content, handleSubmit ,getInvalidData,checkboxRefs,checkboxRefs2,checkboxRefs3};
 };
 export default useTeachingMethods;

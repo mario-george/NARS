@@ -14,6 +14,8 @@ const LecturePlan = ({
   HoursRefs,
   hasClass,
   expectedStudyingHoursPerWeek,
+  isexpectedStudyingHoursPerWeekInvalid,
+  setIsexpectedStudyingHoursPerWeekInvalid,
 }) => {
   // defaultValue={}
   console.log(topicsRefs.current);
@@ -139,7 +141,14 @@ const LecturePlan = ({
           type="text"
           className={`sameLineForm text-red-500 ${
             hasClass ? `bg-sky-50  ` : ``
-          } `}
+          }  ${
+            hasClass && isexpectedStudyingHoursPerWeekInvalid
+              ? `border border-red-500 bg-red-100`
+              : ``
+          }`}
+          onChange={() => {
+            setIsexpectedStudyingHoursPerWeekInvalid(false);
+          }}
           placeholder={`${hasClass ? `Hours` : ``}`}
         />{" "}
         hours

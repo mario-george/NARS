@@ -7,9 +7,12 @@ import cn from "classnames";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
 
-const useAssessment = ({ courseID }) => {
+const useAssessment = ({ courseID, hasClass }) => {
   const userState = useSelector((s) => s.user);
-
+  const [invalid, setInvalid] = useState(false);
+  const getInvalidData = (boolean) => {
+    setInvalid(boolean);
+  };
   const refArray = [
     "written-exams",
     "online-exams",
@@ -112,7 +115,6 @@ const useAssessment = ({ courseID }) => {
         setTableData([...checkboxRefs.current]);
         setTableData2([...checkboxRefs2.current]);
         setTableData3([...checkboxRefs3.current]);
-
       } catch (e) {
         console.log(e);
       }
@@ -154,20 +156,20 @@ const useAssessment = ({ courseID }) => {
 
     getData();
   }, []);
-useEffect(()=>{
-  console.log(checkboxRefs)
-  console.log(checkboxRefs2)
-  console.log(checkboxRefs3)
-  console.log(checkboxRefs)
-  console.log(checkboxRefs2)
-  console.log(checkboxRefs3)
-  console.log(checkboxRefs)
-  console.log(checkboxRefs2)
-  console.log(checkboxRefs3)
-  console.log(checkboxRefs)
-  console.log(checkboxRefs2)
-  console.log(checkboxRefs3)
-},[])
+  useEffect(() => {
+    console.log(checkboxRefs);
+    console.log(checkboxRefs2);
+    console.log(checkboxRefs3);
+    console.log(checkboxRefs);
+    console.log(checkboxRefs2);
+    console.log(checkboxRefs3);
+    console.log(checkboxRefs);
+    console.log(checkboxRefs2);
+    console.log(checkboxRefs3);
+    console.log(checkboxRefs);
+    console.log(checkboxRefs2);
+    console.log(checkboxRefs3);
+  }, []);
 
   useEffect(() => {
     const getData = async function () {
@@ -264,12 +266,12 @@ useEffect(()=>{
 
   const handleSubmit = async (CLOS) => {
     const deepCopy = (obj) => {
-      if (typeof obj !== 'object' || obj === null) {
+      if (typeof obj !== "object" || obj === null) {
         return obj;
       }
-    
+
       let copy;
-    
+
       if (Array.isArray(obj)) {
         copy = obj.map((item) => deepCopy(item));
       } else {
@@ -280,29 +282,29 @@ useEffect(()=>{
           }
         }
       }
-    
+
       return copy;
     };
-    
+
     // Usage
     let cp2 = deepCopy(CLOS);
-    console.log(CLOS)
+    console.log(CLOS);
 
     setTableData([...checkboxRefs.current]);
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
-    console.log(CLOS)
-    console.log(CLOS)
-    console.log(CLOS)
-    console.log(CLOS)
-    console.log(CLOS)
-    console.log('CLOS')
-    console.log(CLOS[0].learningOutcomes[0].mappedCompetence)
-    console.log(CLOS[0].learningOutcomes[0].mappedCompetence)
-    console.log(CLOS[0].learningOutcomes[0].mappedCompetence)
-    console.log(CLOS)
-console.log('cp2')
-console.log(cp2)
+    console.log(CLOS);
+    console.log(CLOS);
+    console.log(CLOS);
+    console.log(CLOS);
+    console.log(CLOS);
+    console.log("CLOS");
+    console.log(CLOS[0].learningOutcomes[0].mappedCompetence);
+    console.log(CLOS[0].learningOutcomes[0].mappedCompetence);
+    console.log(CLOS[0].learningOutcomes[0].mappedCompetence);
+    console.log(CLOS);
+    console.log("cp2");
+    console.log(cp2);
     const r = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${courseID}`,
       {
@@ -317,18 +319,18 @@ console.log(cp2)
     console.log(data);
 
     let courseLearningOutcomes = data.data.courseSpecs.courseLearningOutcomes;
-    console.log(cp2)
-    console.log(cp2)
-    console.log(cp2)
+    console.log(cp2);
+    console.log(cp2);
+    console.log(cp2);
 
     if (courseLearningOutcomes) {
       try {
         let l1P =
-        data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
+          data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes;
         let l2P =
-        data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
+          data.data.courseSpecs.courseLearningOutcomes[1].learningOutcomes;
         let l3P =
-        data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
+          data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
 
         if (
           data.data.courseSpecs.courseLearningOutcomes[0].title == "cognitive"
@@ -336,7 +338,7 @@ console.log(cp2)
           cp2[0].learningOutcomes = l1P.map((e, i) => {
             return {
               ...e,
-              mappedCompetence:CLOS[0].learningOutcomes[i].mappedCompetence,
+              mappedCompetence: CLOS[0].learningOutcomes[i].mappedCompetence,
               studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
                 return checkboxRefs.current[i][k];
               }),
@@ -349,7 +351,7 @@ console.log(cp2)
           cp2[1].learningOutcomes = l2P.map((e, i) => {
             return {
               ...e,
-              mappedCompetence:CLOS[1].learningOutcomes[i].mappedCompetence,
+              mappedCompetence: CLOS[1].learningOutcomes[i].mappedCompetence,
               studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
                 return checkboxRefs2.current[i][k];
               }),
@@ -362,7 +364,7 @@ console.log(cp2)
           cp2[2].learningOutcomes = l3P.map((e, i) => {
             return {
               ...e,
-              mappedCompetence:CLOS[2].learningOutcomes[i].mappedCompetence,
+              mappedCompetence: CLOS[2].learningOutcomes[i].mappedCompetence,
               studentAssessmentMethods: [...tableData33[0]].filter((e, k) => {
                 return checkboxRefs3.current[i][k];
               }),
@@ -371,13 +373,13 @@ console.log(cp2)
         }
 
         d(updateField({ field: "cp2", value: cp2 }));
-        console.log(cp2)
-        console.log(cp2)
-        console.log(cp2)
-        console.log(cp2)
-        console.log(cp2)
-        console.log(cp2)
-        console.log(cp2)
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
         return cp2;
       } catch (error) {
         console.error(`Error parsing cookie: ${error}`);
@@ -560,8 +562,24 @@ console.log(cp2)
           ))}
         </tbody>
       </table>
+      {invalid && hasClass && (
+        <div className="input-form-invalid">
+          {" "}
+          Learning outcomes must achieve at least one assessment
+        </div>
+      )}
     </>
   );
-  return { content, handleSubmit };
+  return {
+    content,
+    handleSubmit,
+    numRows,
+    numRows2,
+    numRows3,
+    checkboxRefs,
+    checkboxRefs2,
+    checkboxRefs3,
+    getInvalidData,
+  };
 };
 export default useAssessment;

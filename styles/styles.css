@@ -190,7 +190,7 @@
     transition-property: background-color;
   }
   .input-form-invalid {
-    @apply appearance-none  w-full py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300   bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded focus:ring-red-500 focus:border-red-500 p-2.5 dark:bg-red-100 dark:border-red-400;
+    @apply appearance-none  w-full py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300   bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-xl rounded focus:ring-red-500 focus:border-red-500 p-2.5 dark:bg-red-100 dark:border-red-400;
     transition-property: background-color;
   }
   .input-formV2 {
