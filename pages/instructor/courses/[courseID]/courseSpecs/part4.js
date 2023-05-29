@@ -261,7 +261,9 @@ const part4 = ({ cookies }) => {
             if (
               data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
                 j
-              ] != null
+              ] != null &&
+              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[j]
+                .selected
             ) {
               checkboxRefsLecturePlan.current[i][j] = true;
             }
@@ -734,9 +736,6 @@ const part4 = ({ cookies }) => {
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
 
-    console.log(checkboxRefs);
-    console.log(checkboxRefs2);
-    console.log(checkboxRefs3);
     const r2 = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${courseID}`,
       {
@@ -817,11 +816,24 @@ const part4 = ({ cookies }) => {
         }
         combined = removeDuplicates(combined);
 
-        console.log(combined);
-        const cm = competences.map((e) => {
+        const dynamicArray = competences
+          .map((competence, index) => {
+            const ref1 = checkboxRefs.current[index].filter((value) => value);
+            const ref2 = checkboxRefs2.current[index].filter((value) => value);
+            const ref3 = checkboxRefs3.current[index].filter((value) => value);
+
+            if (ref1.length > 0 || ref2.length > 0 || ref3.length > 0) {
+              return competence;
+            }
+
+            return null;
+          })
+          .filter((value) => value !== null);
+        console.log(dynamicArray);
+        const achievedCompetences = dynamicArray.map((e) => {
           return { code: e };
         });
-        console.log(cm);
+
         const resp2 = await fetch(
           `${process.env.url}api/v1/courses/checkComp/${courseID}`,
           {
@@ -831,18 +843,17 @@ const part4 = ({ cookies }) => {
               Accept: "application/json",
               Authorization: "Bearer " + token,
             },
-            body: JSON.stringify({ competences: cm }),
+            body: JSON.stringify({ competences: achievedCompetences }),
           }
         );
         const data2 = await resp2.json();
-        console.log(combined);
 
-        console.log(data2);
-        if (data.status === "success") {
+        if (data2.status === "success") {
           setMsg(success);
           // router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
         } else {
           setMsg(fail);
+          return;
         }
       } catch (error) {
         console.error(`Error parsing cookie: ${error}`);
@@ -870,9 +881,9 @@ const part4 = ({ cookies }) => {
       for (let i = 0; i < numRowsLecturePlan; i++) {
         let elem = [...outcomes].map((e, k) => {
           if (checkboxRefsLecturePlan.current[i][k]) {
-            return { code: outcomes[k] };
+            return { code: outcomes[k], selected: true };
           } else {
-            return;
+            return { code: outcomes[k], selected: false };
           }
         });
         let topic = {
@@ -962,6 +973,7 @@ const part4 = ({ cookies }) => {
     await buttonRef7.current.click();
     e.preventDefault();
     handleSubmit();
+    console.log(msg.includes("Competences has been achieved successfully!"));
     setTimeout(() => {
       facilityHandler.downloadMergedPDF();
     }, 2000);
@@ -1051,9 +1063,9 @@ const part4 = ({ cookies }) => {
               <div>{msg}</div>
               <div className="flex justify-end">
                 <button
-                 onClick={() => {
-                  router.back();
-                }}
+                  onClick={() => {
+                    router.back();
+                  }}
                   class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 >
                   Previous

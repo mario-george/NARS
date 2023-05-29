@@ -189,15 +189,17 @@
     @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300 focus:border-gray-500;
     transition-property: background-color;
   }
+  .input-form-invalid {
+    @apply appearance-none  w-full py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300   bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded focus:ring-red-500 focus:border-red-500 p-2.5 dark:bg-red-100 dark:border-red-400;
+    transition-property: background-color;
+  }
   .input-formV2 {
     @apply appearance-none block w-full duration-300  text-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white  focus:border-gray-500;
     transition-property: background-color;
   }
   .sameLineForm {
-   
-      @apply appearance-none inline   duration-300  text-gray-700 rounded py-3 px-1 w-[5rem] mb-3 leading-tight focus:outline-none focus:bg-white  focus:border-gray-500;
-      transition-property: background-color;
-    
+    @apply appearance-none inline   duration-300  text-gray-700 rounded py-3 px-1 w-[5rem] mb-3 leading-tight focus:outline-none focus:bg-white  focus:border-gray-500;
+    transition-property: background-color;
   }
   .BloomTax {
     @apply appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300 focus:border-gray-500;

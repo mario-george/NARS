@@ -16,6 +16,7 @@ import ProgramCompetencesServed from "@/components/helper/ProgramCompetencesServ
 
 const part1 = ({ cookies }) => {
   const [courseSpecs, setCourseSpecs] = useState(null);
+  const [errors, setErrors] = useState([]);
 
   const router = useRouter();
   const { courseID } = router.query;
@@ -72,6 +73,7 @@ const part1 = ({ cookies }) => {
       })
     );
   };
+
   const handleSubmit = async (e) => {
     const cognitive = inputs.map((input) => {
       return {
@@ -434,6 +436,7 @@ const part1 = ({ cookies }) => {
   const hours = useRef("");
   const lecture = useRef("");
   const practice = useRef("");
+
   function ChildComponent({ toPdf }) {
     const handleClick = async () => {
       try {
@@ -547,46 +550,198 @@ const part1 = ({ cookies }) => {
   d(updateField({ field: "instance_id", value: courseID }));
 
   const submitHandler = async (e) => {
-    setIsSubmitting(true);
-    setHasClass(false);
-    handleSubmit();
-    await buttonRef.current.click();
-    await buttonRef2.current.click();
-    await buttonRef3.current.click();
-
     e.preventDefault();
 
-    const r = await fetch(
-      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify({
-          courseSpecs: {
-            courseAims: courseAims.current.value,
-            courseContent: courseContent.current.value,
+    const newErrors = [];
+    const cognitive = inputs.map((input) => {
+      const description = input.ref.current.value;
+      const newInput = {
+        description,
+        value: description,
+        counter: input.counter,
+        code: input.name,
+        name: input.name,
+      };
 
-            courseData: {
-              courseCode: code.current.value,
-              semester: semester.current.value,
-              practice: practice.current.value,
-              lectures: lecture.current.value,
-              contactHours: hours.current.value,
-              specialization: special.current.value,
-            },
-          },
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
+      if (description?.trim() === "" || description.length < 5) {
+        const error =
+          "Description of Learning Outcomes should not be empty and should have at least 5 characters.";
+        if (!newErrors.includes(error)) {
+          newErrors.push(error);
+        }
       }
-    );
 
-    const resp = await r.json();
-    console.log(resp);
-    router.push(`/instructor/courses/${courseID}/courseSpecs/part4`);
+      return newInput;
+    });
+    const psychomotor = inputs.map((input) => {
+      const description = input.ref.current.value;
+      const newInput = {
+        description,
+        value: description,
+        counter: input.counter,
+        code: input.name,
+        name: input.name,
+      };
+
+      if (description?.trim() === "" || description.length < 5) {
+        const error =
+          "Description of Learning Outcomes should not be empty and should have at least 5 characters.";
+        if (!newErrors.includes(error)) {
+          newErrors.push(error);
+        }
+      }
+
+      return newInput;
+    });
+    const affective = inputs3.map((input) => {
+      const description = input.ref.current.value;
+      const newInput = {
+        description,
+        value: description,
+        counter: input.counter,
+        code: input.name,
+        name: input.name,
+      };
+
+      if (description?.trim() === "" || description.length < 5) {
+        const error =
+          "Description of Learning Outcomes should not be empty and should have at least 5 characters.";
+        if (!newErrors.includes(error)) {
+          newErrors.push(error);
+        }
+      }
+
+      return newInput;
+    });
+    if (
+      semester.current?.value.trim() === "" ||
+      semester.current?.value.length < 5
+    ) {
+      newErrors.push(
+        "Semester/Year should not be empty and should have at least 5 characters."
+      );
+      setIsSemesterYearInvalid(true);
+    } else {
+      setIsSemesterYearInvalid(false);
+    }
+    if (
+      isNaN(Number(lecture.current?.value)) ||
+      lecture.current?.value.trim() === "" ||
+      Number(lecture.current?.value) <= 0
+    ) {
+      newErrors.push("Lecture should be a positive non-zero value.");
+      setIsLectureInvalid(true);
+    } else {
+      setIsLectureInvalid(false);
+    }
+    if (
+      isNaN(Number(practice.current?.value)) ||
+      practice.current?.value.trim() === "" ||
+      Number(practice.current?.value) <= 0
+    ) {
+      newErrors.push("Practical/Practice should be a positive non-zero value.");
+      setIsPracticalPracticeInvalid(true);
+    } else {
+      setIsPracticalPracticeInvalid(false);
+    }
+    if (
+      special.current?.value.trim() === "" ||
+      special.current?.value.length < 5
+    ) {
+      newErrors.push(
+        "Specialization should not be empty and should have at least 5 characters."
+      );
+      setIsSpecializationInvalid(true);
+    } else {
+      setIsSpecializationInvalid(false);
+    }
+    if (
+      isNaN(Number(hours.current?.value)) ||
+      hours.current?.value.trim() === "" ||
+      Number(hours.current?.value) <= 0
+    ) {
+      newErrors.push("Contact Hours should be a positive non-zero value.");
+      setIsContactHoursInvalid(true);
+    } else {
+      setIsContactHoursInvalid(false);
+    }
+    if (
+      courseAims.current?.value.trim() === "" ||
+      courseAims.current?.value.length < 5
+    ) {
+      newErrors.push(
+        "Course Aims should not be empty and should have at least 5 characters."
+      );
+      setIsCourseAimsInvalid(true);
+    } else {
+      setIsCourseAimsInvalid(false);
+    }
+    if (
+      courseContent.current?.value.trim() === "" ||
+      courseContent.current?.value.length < 5
+    ) {
+      newErrors.push(
+        "Course Content should not be empty and should have at least 5 characters."
+      );
+      setIsCourseContentInvalid(true);
+    } else {
+      setIsCourseContentInvalid(false);
+    }
+    if (newErrors.length === 0) {
+      // No errors, proceed with form submission
+      // Add your form submission logic here
+      console.log("Form submitted successfully!");
+
+      setIsSubmitting(true);
+      setHasClass(false);
+      handleSubmit();
+      await buttonRef.current.click();
+      await buttonRef2.current.click();
+      await buttonRef3.current.click();
+
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            courseSpecs: {
+              courseAims: courseAims.current.value,
+              courseContent: courseContent.current.value,
+
+              courseData: {
+                courseCode: code.current.value,
+                semester: semester.current.value,
+                practice: practice.current.value,
+                lectures: lecture.current.value,
+                contactHours: hours.current.value,
+                specialization: special.current.value,
+              },
+            },
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      const resp = await r.json();
+      console.log(resp);
+      router.push(`/instructor/courses/${courseID}/courseSpecs/part4`);
+    } else {
+      // Errors exist, update the errors state
+      setErrors(newErrors);
+    }
   };
+  const [isSemesterYearInvalid, setIsSemesterYearInvalid] = useState(false);
+  const [isSpecializationInvalid, setIsSpecializationInvalid] = useState(false);
+  const [isContactHoursInvalid, setIsContactHoursInvalid] = useState(false);
+  const [isLectureInvalid, setIsLectureInvalid] = useState(false);
+  const [isPracticalPracticeInvalid, setIsPracticalPracticeInvalid] =
+    useState(false);
+  const [isCourseAimsInvalid, setIsCourseAimsInvalid] = useState(false);
+  const [isCourseContentInvalid, setIsCourseContentInvalid] = useState(false);
 
   if (blobIsFound) {
     return (
@@ -620,14 +775,26 @@ const part1 = ({ cookies }) => {
               <Navbar cookies={cookies} id={courseID} />
             </div>
             <div ref={refToImgBlob}>
-              {courseSpecs &&
-              <HeaderSpecs data={courseSpecs} token={token}/>
-              }
+              {courseSpecs && <HeaderSpecs data={courseSpecs} token={token} />}
 
               <div></div>
             </div>
             <div ref={refToImgBlob2}>
               <CourseData
+                setIsContactHoursInvalid={setIsContactHoursInvalid}
+                setIsLectureInvalid={setIsLectureInvalid}
+                setIsPracticalPracticeInvalid={setIsPracticalPracticeInvalid}
+                setIsSemesterYearInvalid={setIsSemesterYearInvalid}
+                setIsSpecializationInvalid={setIsSpecializationInvalid}
+                setIsCourseAimsInvalid={setIsCourseAimsInvalid}
+                setIsCourseContentInvalid={setIsCourseContentInvalid}
+                isLectureInvalid={isLectureInvalid}
+                isContactHoursInvalid={isContactHoursInvalid}
+                isSpecializationInvalid={isSpecializationInvalid}
+                isSemesterYearInvalid={isSemesterYearInvalid}
+                isPracticalPracticeInvalid={isPracticalPracticeInvalid}
+                isCourseAimsInvalid={isCourseAimsInvalid}
+                isCourseContentInvalid={isCourseContentInvalid}
                 hasClass={hasClass}
                 semester={semester}
                 code={code}
@@ -639,9 +806,7 @@ const part1 = ({ cookies }) => {
                 courseContent={courseContent}
               />
             </div>
-            {courseSpecs && (
-              <ProgramCompetencesServed data={courseSpecs} />
-            )}
+            {courseSpecs && <ProgramCompetencesServed data={courseSpecs} />}
             <div ref={refToImgBlob3}>
               <div className="flex ">
                 <LearningOutcomes
@@ -666,6 +831,16 @@ const part1 = ({ cookies }) => {
                 Next
               </button>
             </div>
+            {errors.length > 0 && (
+              <div className="mt-4 bg-red-200 text-red-700 p-4 rounded">
+                <p className="font-bold">Invalid Input:</p>
+                <ul>
+                  {errors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </form>
       </div>
