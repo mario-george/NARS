@@ -22,12 +22,16 @@ const CourseData = ({
           <input
             type="text"
             name="code"
-            className={`${hasClass ? "input-form" : ""} w-[60%]`}
+            className={`${hasClass ? "input-form bg-red-100 border-[#f10000]" : ""} w-[60%]`}
             ref={code}
+            disabled
           />
         </div>
         <div className="flex items-center gap-5  w-1/2">
-          <div className="text-[#FF0000]  text-xl font-bold"> Semester/Year:</div>
+          <div className="text-[#FF0000]  text-xl font-bold">
+            {" "}
+            Semester/Year:
+          </div>
           <input
             type="text"
             name="year"
@@ -38,7 +42,9 @@ const CourseData = ({
       </div>
       <div className="flex  ">
         <div className="flex items-center  gap-5 w-1/2">
-          <div className="text-[#FF0000] text-xl  font-bold">Specialization:</div>
+          <div className="text-[#FF0000] text-xl  font-bold">
+            Specialization:
+          </div>
           <input
             type="text"
             name="special"
@@ -49,7 +55,9 @@ const CourseData = ({
       </div>
       <div className="flex  ">
         <div className="flex items-center  gap-5 w-1/2">
-          <div className="text-[#FF0000] text-xl  font-bold">Contact Hours:</div>
+          <div className="text-[#FF0000] text-xl  font-bold">
+            Contact Hours:
+          </div>
           <input
             type="number"
             name="hours"

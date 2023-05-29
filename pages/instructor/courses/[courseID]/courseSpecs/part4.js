@@ -234,9 +234,9 @@ const part4 = ({ cookies }) => {
           setTableDataLecturePlan([...checkboxRefsLecturePlan.current]);
           setT(false);
         }
-        if (data.data.courseSpecs.lecturePlan.expectedStudyingHoursPerWeek ) {
+        if (data.data.courseSpecs.lecturePlan.expectedStudyingHoursPerWeek) {
           expectedStudyingHoursPerWeek.current.value =
-          data.data.courseSpecs.lecturePlan.expectedStudyingHoursPerWeek;
+            data.data.courseSpecs.lecturePlan.expectedStudyingHoursPerWeek;
         }
         for (
           let i = 0;
@@ -853,7 +853,11 @@ const part4 = ({ cookies }) => {
     try {
       setTableDataLecturePlan([...checkboxRefsLecturePlan.current]);
       setHoursData([...HoursRefs.current]);
-      setTopicsData([...topicsRefs.current.filter(e=>e&&e.topics&&e.topics>0&&e.topics[0]!="")]);
+      setTopicsData([
+        ...topicsRefs.current.filter(
+          (e) => e && e.topics && e.topics > 0 && e.topics[0] != ""
+        ),
+      ]);
 
       let lecturePlan = {
         expectedStudyingHoursPerWeek:
@@ -883,12 +887,12 @@ const part4 = ({ cookies }) => {
       }
       lecturePlan.expectedStudyingHoursPerWeek =
         expectedStudyingHoursPerWeek.current.value;
-        console.log(lecturePlan)
-        console.log(lecturePlan)
-        console.log(lecturePlan)
-        console.log(lecturePlan)
-        console.log(lecturePlan)
-        console.log(lecturePlan)
+      console.log(lecturePlan);
+      console.log(lecturePlan);
+      console.log(lecturePlan);
+      console.log(lecturePlan);
+      console.log(lecturePlan);
+      console.log(lecturePlan);
       const r = await fetch(
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
@@ -1046,6 +1050,14 @@ const part4 = ({ cookies }) => {
             <div className="flex justify-between">
               <div>{msg}</div>
               <div className="flex justify-end">
+                <button
+                 onClick={() => {
+                  router.back();
+                }}
+                  class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >
+                  Previous
+                </button>
                 <button
                   type="submit"
                   class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"

@@ -12,8 +12,11 @@ import LearningOutcomes from "@/components/helper/LearningOutcomes";
 import HeaderSpecs from "@/components/helper/HeaderSpecs";
 import CourseData from "@/components/helper/CourseData";
 import DefaultPage from "@/components/helper/DefaultPage";
+import ProgramCompetencesServed from "@/components/helper/ProgramCompetencesServed";
 
 const part1 = ({ cookies }) => {
+  const [courseSpecs, setCourseSpecs] = useState(null);
+
   const router = useRouter();
   const { courseID } = router.query;
   const [hasClass, setHasClass] = useState(true);
@@ -257,6 +260,8 @@ const part1 = ({ cookies }) => {
       const data = await r.json();
       console.log(data);
       console.log(data.data.courseSpecs);
+      const fetchedCourseSpecs = data.data.courseSpecs;
+      setCourseSpecs(data.data);
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
 
       if (
@@ -615,7 +620,9 @@ const part1 = ({ cookies }) => {
               <Navbar cookies={cookies} id={courseID} />
             </div>
             <div ref={refToImgBlob}>
-              <HeaderSpecs />
+              {courseSpecs &&
+              <HeaderSpecs data={courseSpecs} token={token}/>
+              }
 
               <div></div>
             </div>
@@ -632,6 +639,9 @@ const part1 = ({ cookies }) => {
                 courseContent={courseContent}
               />
             </div>
+            {courseSpecs && (
+              <ProgramCompetencesServed data={courseSpecs} />
+            )}
             <div ref={refToImgBlob3}>
               <div className="flex ">
                 <LearningOutcomes
