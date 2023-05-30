@@ -98,7 +98,6 @@ const profile = ({ cookies }) => {
     setMsg("");
   };
 
- 
   let fail = (
     <div
       id="alert-border-2"

@@ -1,6 +1,8 @@
 {
-  "name": "model",
-  "version": "0.1.0",
+  "name": "narqa-quality-assurance",
+  "author": "1. Mario George\r 2. Mohamed Mostafa\r 3. Ahmed Achraf \r 4. Ahmed Magdy \r 5.Farouk Ayman 6.Ahmed hasanen",
+  "description": "1. Mario George\r 2. Mohamed Mostafa\r 3. Ahmed Achraf \r 4. Ahmed Magdy \r 5.Farouk Ayman 6.Ahmed hasanen",
+  "version": "1.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -60,7 +62,7 @@
     "react-custom-alert": "^1.0.4",
     "react-doc-viewer": "^0.1.5",
     "react-dom": "18.2.0",
-    "react-file-viewer": "^0.5.0",
+    "react-file-viewer": "^0.1.13",
     "react-icons": "^4.8.0",
     "react-modal": "^3.16.1",
     "react-pdf": "^6.2.2",

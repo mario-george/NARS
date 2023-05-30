@@ -8,41 +8,22 @@ import Checkbox from "@/components/checkbox/checkbox";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import jsPDF from "jspdf";
 // import mergePDFs from "@/pages/pdf2/merge2.js";
-import mergeTest from "../getPdf/MERGEONLYONE.js/test";
+import mergeTest from "@/pages/instructor/courses/[courseID]/getPdf/MERGEONLYONE.js/test";
 // import mergeAllPdf from "./mergePagesToOnePDF";
 import { saveAs } from "file-saver";
 import { PDFDocument } from "pdf-lib";
 import { Worker } from "pdfjs-dist/legacy/build/pdf.worker.entry";
 import * as pdfjs from "pdfjs-dist";
 import LZString from "lz-string";
-import resizeBlobs from "../getPdf/resizeBlob";
 import { updateField } from "@/components/store/userSlice";
-// Compress PDF Blob using lz-string
-const compressBlob = (pdfBlob) => {
-
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const compressedData = LZString.compressToUint8Array(event.target.result);
-      const compressedBlob = new Blob([compressedData], {
-        type: "application/pdf",
-      });
-      resolve(compressedBlob);
-    };
-    reader.onerror = reject;
-    reader.readAsArrayBuffer(pdfBlob);
-  });
-};
-
-// Decompress
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const part10 = ({ cookies }) => {
-  const courseSpecs = cookies.courseSpecs;
+const useFacility = ({ cookies, courseID, hasClass }) => {
+  const [other, setOther] = useState("");
   const d = useDispatch();
   const [t, setT] = useState(true);
-  
+
   const refArray = [
     "Classroom",
     "Smart Board",
@@ -59,7 +40,6 @@ const part10 = ({ cookies }) => {
   );
   const checkboxRefs2 = useRef(false);
   const [tableData, setTableData] = useState(checkboxRefs.current);
-  const [tableData2, setTableData2] = useState(checkboxRefs2.current);
 
   useEffect(() => {
     const getData = async function () {
@@ -83,6 +63,7 @@ const part10 = ({ cookies }) => {
         if (t) {
           let splicedArr = data.data.courseSpecs.facilities;
           const mc = data.data.courseSpecs.facilities;
+          console.log(mc);
           console.log(checkboxRefs.current);
           let d = false;
           for (let j = 0; j < mc.length; j++) {
@@ -90,7 +71,7 @@ const part10 = ({ cookies }) => {
             if (ind >= 0) {
               checkboxRefs.current[ind] = true;
             } else {
-              other.current.value = mc[j];
+              setOther(mc[j]);
               splicedArr = mc.filter((element) => element !== mc[j]);
               setHandler(true);
             }
@@ -126,20 +107,6 @@ const part10 = ({ cookies }) => {
       console.log(data.data.courseSpecs);
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
 
-      // if (
-      //   lecture.current &&
-      //   special.current &&
-      //   hours.current &&
-      //   semester.current &&
-      //   practice.current
-      // ) {
-      //   lecture.current.value = data.data.courseSpecs.courseData.lectures;
-      //   hours.current.value = data.data.courseSpecs.courseData.contactHours;
-      //   special.current.value = data.data.courseSpecs.courseData.specialization;
-      //   semester.current.value = data.data.courseSpecs.courseData.semester;
-      //   practice.current.value = data.data.courseSpecs.courseData.practice;
-      // }
-
       console.log(data);
     };
 
@@ -172,7 +139,7 @@ const part10 = ({ cookies }) => {
 
     formData.append("courseInstance", courseID);
     formData.append("courseSpcs", blob, "mypdf.pdf");
-    try{
+    try {
       const r = await fetch(`${process.env.url}api/v1/courses/specsPdf/`, {
         method: "POST",
         body: formData,
@@ -181,13 +148,12 @@ const part10 = ({ cookies }) => {
           Authorization: "Bearer " + token,
         },
       });
-  
+
       const resp = await r.json();
       console.log(resp);
-    }catch(e){
-      console.log(e)
+    } catch (e) {
+      console.log(e);
     }
-  
   };
   const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
@@ -277,15 +243,15 @@ const part10 = ({ cookies }) => {
     const blobs = [mergedPdf1, mergedPdf2, mergedPdf3, mergedPdf4, mergedPdf5];
     const ImgBlobs = [
       blob,
+      blob2,
+      blob3,
       blob4,
-      // blob2,
-      // blob3,
       blob5,
       blob6,
       blob7,
       blob8,
-      // blob9,
-      // blob10,
+      blob9,
+      blob10,
     ];
     const mergedBlob = await mergeTest(ImgBlobs);
     // const compressedBlob = await compressBlob(mergedBlob);
@@ -328,9 +294,7 @@ const part10 = ({ cookies }) => {
       </>
     );
   }
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+
   const closeMsg = () => {
     setMsg("");
   };
@@ -406,25 +370,30 @@ const part10 = ({ cookies }) => {
       </button>
     </div>
   );
-  const router = useRouter();
-  const { courseID } = router.query;
+
   const [selectedItems, setSelectedItems] = useState([]);
   const [handler, setHandler] = useState(false);
   const addOtherHander = () => {
     setHandler(!handler);
   };
-  const other = useRef();
-  const handleCheckboxChange = (value, isChecked, index) => {
+  const otherChangeHandler = (e) => {
+    setOther(e.target.value);
+  };
+  const handleCheckboxChange = async (value, isChecked, index) => {
+    console.log(selectedItems);
+
     console.log(checkboxRefs.current);
     checkboxRefs.current[index] = !checkboxRefs.current[index];
-    setTableData([...checkboxRefs.current]);
     let removeItem = refArray[index];
+    console.log(removeItem);
     if (checkboxRefs.current[index]) {
       setSelectedItems([...selectedItems, refArray[index]]);
     } else {
       let newArray = selectedItems.filter((item) => item !== removeItem);
       setSelectedItems(newArray);
     }
+    console.log(selectedItems);
+    setTableData([...checkboxRefs.current]);
   };
   /*if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
@@ -442,18 +411,18 @@ const part10 = ({ cookies }) => {
   ];
 
   const submitHandler = async (e) => {
+    console.log(other);
     console.log(selectedItems);
-    console.log(checkboxRefs);
-    buttonRef.current.click();
     let sentArr = [];
     if (handler) {
-      console.log(other)
-      console.log(other.current)
-      sentArr = selectedItems.concat([other.current.value]);
+      console.log(other);
+      sentArr = selectedItems.concat([other]);
     } else {
       sentArr = selectedItems;
     }
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     const r = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${courseID}`,
       {
@@ -477,13 +446,51 @@ const part10 = ({ cookies }) => {
       setMsg(fail);
     }
     console.log(resp);
-    setTimeout(() => {
-      // window.location.href = `/instructor/courses/${courseID}/courseSpecs/Pdf`;
+    // setTimeout(() => {
 
-      downloadMergedPDF();
-    }, 1000);
+    //   downloadMergedPDF();
+    // }, 1000);
   };
-
+  let content = (
+    <>
+      {" "}
+      <div className="text-2xl my-4 bg-yellow-200">9-Facilities</div>{" "}
+      <p className=" mb-0 font-normal">
+        *The following facilities are needed for this course:
+      </p>
+      <div className="">
+        <div className="grid grid-cols-3 gap-4">
+          {items.map((item, index) => (
+            <Checkbox
+              key={item}
+              label={item}
+              value={item}
+              index={index}
+              onChange={handleCheckboxChange}
+              checkboxRefs={checkboxRefs}
+            />
+          ))}
+          <div className="flex items-center  space-x-3">
+            <input
+              type="checkbox"
+              className="w-6 h-6"
+              onChange={addOtherHander}
+              checked={handler === true}
+            />
+            <span>Other:</span>
+            <input
+              type="text"
+              value={other}
+              onChange={otherChangeHandler}
+              className={`${hasClass ? `border input-form ` : ``}`}
+              placeholder="Other..."
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+  return { msg, content, submitHandler,downloadMergedPDF };
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
@@ -498,7 +505,7 @@ const part10 = ({ cookies }) => {
             className="contentAddUser2 flex flex-col gap-10"
             ref={refToImgBlob}
           >
-            <p className=" mb-0 ">Facilities:</p>
+            <div className="text-2xl my-4 bg-yellow-200">10-Facilities</div>{" "}
             <p className=" mb-0 font-normal">
               *The following facilities are needed for this course:
             </p>
@@ -552,4 +559,4 @@ const part10 = ({ cookies }) => {
     </>
   );
 };
-export default part10;
+export default useFacility;

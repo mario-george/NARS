@@ -16,7 +16,6 @@ const TopicsTable = ({ lectureTopics, learningOutcomes, courseID, token }) => {
     lectureTopics.forEach((lectureTopic) => {
       const learningOutcomes = lectureTopic.learningOutcomes
         .filter((lo) => lo != null)
-        .filter((lo) => lo.selected)
         .map((lo) => lo.code);
       currentTopics.push({
         title: lectureTopic.topics[0],
