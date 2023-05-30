@@ -306,7 +306,7 @@ const part69 = ({ cookies }) => {
   };
   return (
     <>
-      <div className="flex flex-row w-auto h-auto  space-x-0">
+      <div className="flex flex-row w-screen h-auto  space-x-0">
         <CustomReactToPdf targetRef={refToImgBlob} filename="part5.pdf">
           {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
         </CustomReactToPdf>

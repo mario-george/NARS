@@ -15,6 +15,7 @@ const uploadgrades = ({ cookies }) => {
     });
     const [data, setData] = useState([]);
     const [msg, setMsg] = useState("");
+    var dataArr = [];
     const closeMsg = () => {
         setMsg("");
     };
@@ -24,29 +25,70 @@ const uploadgrades = ({ cookies }) => {
         }
         try {
             data.forEach(async (row) => {
-                const { studentCode, mark} = row;
+                const { studentCode, mark } = row;
                 const obj = { studentCode, mark };
-                const resp = await fetch(`${process.env.url}api/v1/courses/${cookies.instance_id}/marks`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        "marks": [obj]
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        Authorization: "Bearer " + cookies.token,
-                    },
+                dataArr.push(obj);
 
-                });
-                const r = await resp.json();
-                console.log(obj,r);
             });
+            const resp = await fetch(`${process.env.url}api/v1/courses/${cookies.instance_id}/marks`, {
+                method: "POST",
+                body: JSON.stringify({
+                    "marks": dataArr
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: "Bearer " + cookies.token,
+                },
+
+            });
+            const r = await resp.json();
+            if (r.status == "success") {
+                setMsg(success);
+            } else {
+                setMsg(fail);
+            }
 
         } catch (e) {
             console.log(e);
         }
 
     }
+    let fail = (
+        <div
+            id="alert-border-2"
+            class="flex p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+            role="alert"
+        >
+            <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+            <div class="ml-3 text-sm font-medium">
+                Failed to upload the grades
+                <a href="#" class="font-semibold underline hover:no-underline"></a>.
+            </div>
+            <button
+                type="button"
+                onClick={closeMsg}
+                class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                data-dismiss-target="#alert-border-2"
+                aria-label="Close"
+            >
+                <span class="sr-only">Dismiss</span>
+                <svg
+                    aria-hidden="true"
+                    class="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                    ></path>
+                </svg>
+            </button>
+        </div>
+    );
     let success = (
         <div
             id="alert-border-3"
@@ -90,7 +132,7 @@ const uploadgrades = ({ cookies }) => {
                         <Navbar cookies={cookies} />
                         <div className=" flex flex-col items-center justify-center">
                             <label className=" text-black text-2xl mb-5">
-                                Failed to upload the grades
+                                Upload the final course grades
                             </label>
                             <div className="w-2/3 flex flex-col items-center content-center">
                                 <div className="w-full flex flex-col border-2 px-4 py-5 border-gray-200 m-0 mt-4  items-center content-center">

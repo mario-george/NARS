@@ -1,8 +1,4 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Checkbox from "@/components/checkbox/checkbox";
 import { createRef } from "react";
-import Cookies from "js-cookie";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useRef, useEffect } from "react";
@@ -51,26 +47,55 @@ const addfaculty = ({ cookies }) => {
       })
     );
   };
-  const selectedItems = [];
-  const handleCheckboxChange = (year) => {
-    selectedItems.push(year.current.value);
-    choosen.current.value = selectedItems.map((e) => {
+  const [err, setErr] = useState("");
+  const [itemsArr, setItems] = useState([]);
+  const [ID, setID] = useState("")
+  const handleSelectChange = (year) => {
+    itemsArr.push(year.current.value);
+    choosen.current.value = itemsArr.map((e) => {
       return e;
     });
-    console.log(selectedItems);
+
+    console.log(itemsArr);
   };
   const handleReset = (e) => {
     e.preventDefault();
-    selectedItems.length = 0;
-    choosen.current.value = selectedItems.map((e) => {
+    itemsArr.length = 0;
+    choosen.current.value = itemsArr.map((e) => {
       return e;
     });
-    console.log(selectedItems);
+    console.log(itemsArr);
   };
 
-  const token = Cookies.get("token");
+  const getIdByEmail = async (email) => {
+    try {
+      const r = await fetch(`${process.env.url}api/v1/users/staff?email=${email.current.value}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + userState.token,
+        },
+      });
+
+      const resp = await r.json();
+      console.log(resp);
+      if (resp.status == "fail" || resp.status == "error") {
+        setErr(resp.error.errors.dean.message);
+        console.log(resp,err);
+      }
+      else {
+        setID(resp.data[0]._id);
+        console.log(resp, ID);
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const name = useRef();
-  const id = useRef();
+  const email = useRef();
   const about = useRef();
   const choosen = useRef();
   const year = useRef();
@@ -111,27 +136,29 @@ const addfaculty = ({ cookies }) => {
 
         body: JSON.stringify({
           name: name.current.value,
-          dean: id.current.value,
+          dean: ID,
           about: about.current.value,
           competences: competences,
-          academicYears: selectedItems,
+          academicYears: itemsArr,
         }),
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " +  userState.token,
+          Authorization: "Bearer " + userState.token,
         },
       });
 
       const resp = await r.json();
       console.log(resp);
-      console.log(selectedItems);
-      //console.log(arr1);
-      //console.log(arr2);
-      if (resp.status == "success") {
-        setMsg(success);
-      } else {
+      console.log(itemsArr);
+      if (resp.status == "fail" || resp.status == "error") {
+        setErr(resp.error.errors.dean.message);
+        console.log(resp,err);
         setMsg(fail);
+      }
+      else {
+        setMsg(success);
+        console.log(resp);
       }
     } catch (e) {
       console.log(e);
@@ -146,7 +173,7 @@ const addfaculty = ({ cookies }) => {
     >
       <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
       <div class="ml-3 text-sm font-medium">
-        Something went wrong please try again
+        Failed to create faculty
         <a href="#" class="font-semibold underline hover:no-underline"></a>.
       </div>
       <button
@@ -216,7 +243,7 @@ const addfaculty = ({ cookies }) => {
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
-          >
+        >
           <div className="contentAddUser2 flex flex-col gap-10 overflow-auto scrollbar-none">
             <p className="font-normal">Faculty {">"} Add Faculty</p>
             <div className="flex gap-20 ">
@@ -230,12 +257,13 @@ const addfaculty = ({ cookies }) => {
                 />
               </div>
               <div className="flex flex-col gap-5  w-2/5">
-                <div> Dean:</div>
+                <div> Dean email:</div>
                 <input
-                  type="text"
+                  type="email"
                   name="year"
                   className="input-form  w-full"
-                  ref={id}
+                  ref={email}
+                  onBlur={() => getIdByEmail(email)}
                 />
               </div>
             </div>
@@ -258,7 +286,7 @@ const addfaculty = ({ cookies }) => {
                   id="small"
                   required
                   class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
-                  onChange={() => handleCheckboxChange(year)}
+                  onChange={() => handleSelectChange(year)}
                 >
                   <option selected>Choose a year</option>
                   {items.map((e) => {
@@ -360,7 +388,7 @@ const addfaculty = ({ cookies }) => {
               </div>
             </div>
             <div className="flex gap-20 ">
-              {<div className="w-1/2 mt-10">{msg}</div>}
+            {<div className="w-1/2 mt-10">{msg}</div>}
             </div>
 
             <div className="flex justify-end">
