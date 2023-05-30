@@ -414,9 +414,30 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
     "MIS system",
     "Internet Access",
   ];
-
+  const validate = () => {
+    return { handler, selectedItems };
+  };
   const submitHandler = async (e) => {
     console.log(other);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
     console.log(selectedItems);
     let sentArr = [];
     if (handler) {
@@ -495,7 +516,7 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
       </div>
     </>
   );
-  return { msg, content, submitHandler, downloadMergedPDF };
+  return { msg, content, submitHandler, downloadMergedPDF, validate };
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">

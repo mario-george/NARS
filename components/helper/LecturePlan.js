@@ -1,5 +1,6 @@
+import { useState } from "react";
 import Textarea from "../Textarea/LPTextArea";
-
+import { getErrorField, getErrorFieldArray } from "./errorField";
 const LecturePlan = ({
   outcomes,
   addRowWeek,
@@ -16,10 +17,16 @@ const LecturePlan = ({
   expectedStudyingHoursPerWeek,
   isexpectedStudyingHoursPerWeekInvalid,
   setIsexpectedStudyingHoursPerWeekInvalid,
+  invalidEmptyTopic,
+  invalidPlannedHours,
+  invalidTopicsRefs,
+  errorEmptyTopics,
+  errorPlannedHours,
+  errorTopicsRefs,
+  setInvalidEmptyTopic,
+  setInvalidPlannedHours,
+  setInvalidTopicsRefs,
 }) => {
-  // defaultValue={}
-  console.log(topicsRefs.current);
-  console.log(topicsRefs.current[0]);
   return (
     <div>
       <div className="text-2xl my-4 bg-yellow-200">7- Lecture Plan</div>
@@ -102,11 +109,12 @@ const LecturePlan = ({
                   style={{ resize: "none" }}
                 />
               </td>
-              <td className="border-2 border-black px-4 py-2 ">
+              <td className="border-2 border-black px-2 py-2 ">
                 <input
                   name="hours"
-                  type="number"
+                  type="text"
                   className="w-full text-2xl text-sky-800"
+                  maxLength={3}
                   onChange={(e) => handleHoursChange(rowIndex, e)}
                   defaultValue={HoursRefs.current[rowIndex]}
                 />
@@ -153,6 +161,32 @@ const LecturePlan = ({
         />{" "}
         hours
       </div>
+      {/* {invalidEmptyTopic && hasClass && (
+        <div className="input-form-invalid"> {errorEmptyTopics}</div>
+      )}
+      {invalidPlannedHours && hasClass && (
+        <div className="input-form-invalid"> {errorPlannedHours}</div>
+      )}
+      {invalidTopicsRefs && hasClass && (
+        <div className="input-form-invalid"> {errorTopicsRefs}</div>
+      )} */}
+      {(invalidEmptyTopic || invalidPlannedHours || invalidTopicsRefs) &&
+        hasClass &&
+        getErrorFieldArray(
+          {
+            invalidEmptyTopic: invalidEmptyTopic,
+            invalidPlannedHours: invalidPlannedHours,
+            invalidTopicsRefs: invalidTopicsRefs,
+            errorEmptyTopics: errorEmptyTopics,
+            errorPlannedHours: errorPlannedHours,
+            errorTopicsRefs: errorTopicsRefs,
+          },
+          () => {
+            setInvalidEmptyTopic(false);
+            setInvalidPlannedHours(false);
+            setInvalidTopicsRefs(false);
+          }
+        )}
     </div>
   );
 };

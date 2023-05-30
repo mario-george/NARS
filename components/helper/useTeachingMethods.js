@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import cn from "classnames";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
+import { getErrorField } from "./errorField";
 
 const useTeachingMethods = ({ courseID,hasClass }) => {
   const [invalid, setInvalid] = useState(false);
@@ -595,12 +596,15 @@ console.log(cp2)
           ))}
         </tbody>
       </table>
-      {invalid && hasClass && (
-        <div className="input-form-invalid">
-          {" "}
-          Learning outcomes must achieve at least one teaching method
-        </div>
-      )}
+    
+      {invalid &&
+        hasClass &&
+        getErrorField(
+          "Learning outcomes must achieve at least one teaching method",
+          () => {
+            setInvalid(false);
+          }
+        )}
     </>
   );
   return { content, handleSubmit ,getInvalidData,checkboxRefs,checkboxRefs2,checkboxRefs3};

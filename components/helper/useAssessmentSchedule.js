@@ -5,10 +5,23 @@ import { createRef, useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
+import { getErrorField } from "@/components/helper/errorField";
+const useAssessmentSchedule = ({ cookies, courseID, specs, hasClass }) => {
+  const [invalidTotal, setInvalidTotal] = useState(false);
+  const passInvalidTotal = (boolean) => {
+    console.log(hasClass);
+    console.log(invalidTotal);
 
-const useAssessmentSchedule = ({ cookies, courseID }) => {
+    setInvalidTotal(boolean);
+    console.log(invalidTotal);
+  };
   const d = useDispatch();
-
+  console.log(specs);
+  console.log(specs.course);
+  const getInvalidData = () => {
+    const testingValidation = specs.course.fullMark == weight5;
+    return { validation: testingValidation, fullMark: specs.course.fullMark };
+  };
   const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
@@ -482,8 +495,15 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
           </tr>
         </tbody>
       </table>
+      {invalidTotal &&
+        hasClass &&
+        getErrorField(
+          `Total Weight must achieve the Full Mark of the course : ${
+            getInvalidData().fullMark
+          } `,()=>{setInvalidTotal(false)}
+        )}
     </>
   );
-  return { content, submitHandler };
+  return { content, submitHandler, getInvalidData, passInvalidTotal };
 };
 export default useAssessmentSchedule;

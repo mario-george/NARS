@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import cn from "classnames";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
-
+import { getErrorField } from "./errorField";
 const useAssessment = ({ courseID, hasClass }) => {
   const userState = useSelector((s) => s.user);
   const [invalid, setInvalid] = useState(false);
@@ -562,12 +562,15 @@ const useAssessment = ({ courseID, hasClass }) => {
           ))}
         </tbody>
       </table>
-      {invalid && hasClass && (
-        <div className="input-form-invalid">
-          {" "}
-          Learning outcomes must achieve at least one assessment
-        </div>
-      )}
+      
+        {invalid &&
+        hasClass &&
+        getErrorField(
+          "Learning outcomes must achieve at least one assessment",
+          () => {
+            setInvalid(false);
+          }
+        )}
     </>
   );
   return {

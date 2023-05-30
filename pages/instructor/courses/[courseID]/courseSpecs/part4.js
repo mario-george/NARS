@@ -15,7 +15,47 @@ import useListOfReferences from "@/components/helper/useListOfReferences";
 
 const part4 = ({ cookies }) => {
   const [errors, setErrors] = useState([]);
+  const [invalidTopicsRefs, setInvalidTopicsRefs] = useState(false);
+  const [CompetencesInvalid, setCompetencesInvalid] = useState(false);
 
+  const [invalidEmptyTopic, setInvalidEmptyTopic] = useState(false);
+  const [invalidPlannedHours, setInvalidPlannedHours] = useState(false);
+  const [errorPlannedHours, setErrorPlannedHours] = useState("");
+  const [errorTopcsRefs, setErrorTopicsRefs] = useState("");
+  const [errorEmptyTopics, setErrorEmptyTopic] = useState("");
+  const passInvalidEmptyTopic = ({ boolean, error }) => {
+    if (error) {
+      setErrorEmptyTopic(error);
+    }
+    if (boolean == false) {
+      setInvalidEmptyTopic(false);
+    }
+    if (boolean == true) {
+      setInvalidEmptyTopic(true);
+    }
+  };
+  const passInvalidTopicsRefs = ({ boolean, error }) => {
+    if (error) {
+      setErrorTopicsRefs(error);
+    }
+    if (boolean == false) {
+      setInvalidTopicsRefs(false);
+    }
+    if (boolean == true) {
+      setInvalidTopicsRefs(true);
+    }
+  };
+  const passInvalidPlannedHours = ({ boolean, error }) => {
+    if (error) {
+      setErrorPlannedHours(error);
+    }
+    if (boolean == false) {
+      setInvalidPlannedHours(false);
+    }
+    if (boolean == true) {
+      setInvalidPlannedHours(true);
+    }
+  };
   useEffect(() => {
     localStorage.removeItem("pdf4");
     localStorage.removeItem("pdf5");
@@ -159,7 +199,7 @@ const part4 = ({ cookies }) => {
       );
       const data = await r.json();
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
-      setSpecs(data.data.courseSpecs);
+      setSpecs(data.data);
       const length1 =
         data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes.length;
       const length2 =
@@ -600,6 +640,8 @@ const part4 = ({ cookies }) => {
   const assessmentScheduleHandler = useAssessmentSchedule({
     courseID,
     cookies,
+    specs,
+    hasClass,
   });
   const assessmentScheduleContent = assessmentScheduleHandler.content;
   const facilityHandler = useFacility({
@@ -862,6 +904,9 @@ const part4 = ({ cookies }) => {
           setMsg(fail);
           const error =
             "Competences is not met. please review the entered data";
+          setCompetencesInvalid(true);
+          console.log(CompetencesInvalid);
+          console.log(CompetencesInvalid);
           if (!errors.includes(error)) {
             setErrors([...errors, error]);
           }
@@ -975,6 +1020,53 @@ const part4 = ({ cookies }) => {
   ] = useState(false);
 
   const submitHandler = async (e) => {
+    const {selectedItems,handler} = facilityHandler.validate();
+    console.log(selectedItems)
+    console.log(selectedItems)
+    console.log(selectedItems)
+    console.log(selectedItems)
+    console.log(selectedItems)
+    console.log(selectedItems)
+    console.log(selectedItems)
+    console.log(selectedItems)
+    console.log(selectedItems)
+    console.log(handler)
+    console.log(handler)
+    console.log(handler)
+    console.log(handler)
+    console.log(handler)
+    console.log(selectedItems)
+    console.log(assessmentScheduleHandler.getInvalidData());
+    console.log(assessmentScheduleHandler.getInvalidData());
+    console.log(assessmentScheduleHandler.getInvalidData());
+    console.log(assessmentScheduleHandler.getInvalidData());
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(assessmentScheduleHandler.getInvalidData().validation);
+
+    function testArray(array) {
+      for (let i = 0; i < array.length; i++) {
+        if (array[i] === "" || array[i] === null || array[i] === undefined) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function checkAllNumbers(array) {
+      const digitRegex = /^\d+$/;
+      for (let i = 0; i < array.length; i++) {
+        if (!digitRegex.test(array[i]) || array[i] <= 0) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    console.log(topicsRefs.current);
     e.preventDefault();
     const findInvalidElement = (array) => {
       const index = array.findIndex((element) =>
@@ -987,6 +1079,9 @@ const part4 = ({ cookies }) => {
     };
     const cognitiveAssessmentCheckedForErrors = findInvalidElement(
       assessmentHandler.checkboxRefs.current
+    );
+    const topicsRefsCheckedForErrors = findInvalidElement(
+      checkboxRefsLecturePlan.current
     );
     const psychomotorAssessmentCheckedForErrors = findInvalidElement(
       assessmentHandler.checkboxRefs2.current
@@ -1006,7 +1101,23 @@ const part4 = ({ cookies }) => {
     );
 
     const newErrors = [];
-    console.log(competences);
+    if (!testArray(topicsRefs.current)) {
+      newErrors.push("Topics can't be empty.");
+      const error = "Topics can't be empty.";
+      passInvalidEmptyTopic({ boolean: true, error });
+    } else {
+      passInvalidEmptyTopic({ boolean: false });
+    }
+    if (!checkAllNumbers(HoursRefs.current)) {
+      newErrors.push(
+        "Planned Hours should be positive non zero number and should not be empty."
+      );
+      const error =
+        "Planned Hours should be positive non zero number and should not be empty.";
+      passInvalidPlannedHours({ boolean: true, error });
+    } else {
+      passInvalidPlannedHours({ boolean: false });
+    }
     const dynamicArray = competences.filter((competence, index) => {
       const ref1 = checkboxRefs.current.map((row) => row[index]);
       const ref2 = checkboxRefs2.current.map((row) => row[index]);
@@ -1030,11 +1141,28 @@ const part4 = ({ cookies }) => {
 
     if (areAllCompetencesAchieved) {
       setMsg(success);
-
-      // router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
     } else {
+      setCompetencesInvalid(true);
+
       setMsg(fail);
       newErrors.push("Competences is not met. please review the entered data");
+    }
+    if (topicsRefsCheckedForErrors) {
+      newErrors.push("Each Topic must achieve at least one Learning Outcome.");
+      const error = "Each Topic must achieve at least one Learning Outcome.";
+      passInvalidTopicsRefs({ boolean: true, error });
+    } else {
+      passInvalidTopicsRefs({ boolean: false });
+    }
+    if (!assessmentScheduleHandler.getInvalidData().validation) {
+      newErrors.push(
+        `Total Weight must achieve the Full Mark of the course : ${
+          assessmentScheduleHandler.getInvalidData().fullMark
+        } `
+      );
+      assessmentScheduleHandler.passInvalidTotal(true);
+    } else {
+      assessmentScheduleHandler.passInvalidTotal(false);
     }
     if (
       cognitiveAssessmentCheckedForErrors ||
@@ -1123,6 +1251,8 @@ const part4 = ({ cookies }) => {
           <div className="contentAddUserFlexible2 flex flex-col gap-10">
             <div className=" flex flex-col" ref={refToImgBlob}>
               <MappingLOs
+                CompetencesInvalid={CompetencesInvalid}
+                setCompetencesInvalid={setCompetencesInvalid}
                 competences={competences}
                 numRows={numRows}
                 numRows2={numRows2}
@@ -1135,10 +1265,20 @@ const part4 = ({ cookies }) => {
                 handleCheckboxChange={handleCheckboxChange}
                 handleCheckboxChange2={handleCheckboxChange2}
                 handleCheckboxChange3={handleCheckboxChange3}
+                hasClass={hasClass}
               />
             </div>
             <div className="flex flex-col" ref={refToImgBlob2}>
               <LecturePlan
+                setInvalidEmptyTopic={setInvalidEmptyTopic}
+                setInvalidPlannedHours={setInvalidPlannedHours}
+                setInvalidTopicsRefs={setInvalidTopicsRefs}
+                errorEmptyTopics={errorEmptyTopics}
+                errorPlannedHours={errorPlannedHours}
+                errorTopicsRefs={errorTopcsRefs}
+                invalidEmptyTopic={invalidEmptyTopic}
+                invalidPlannedHours={invalidPlannedHours}
+                invalidTopicsRefs={invalidTopicsRefs}
                 isexpectedStudyingHoursPerWeekInvalid={
                   isexpectedStudyingHoursPerWeekInvalid
                 }
