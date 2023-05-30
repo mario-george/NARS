@@ -7,7 +7,7 @@ const competencesTable = ({ courseCompetences, learningOutcomes }) => {
 
   return (
     <div>
-      <div className="flex flex-col">
+      <div className="flex flex-col mt-10">
         <h2 className="font-bold text-xl mb-2">
           Achievement of Course Learning Outcomes and Competences
         </h2>
@@ -25,12 +25,14 @@ const competencesTable = ({ courseCompetences, learningOutcomes }) => {
           </thead>
           <tbody>
             <tr className="w-full bg-sky-50">
-              <th className="border-l px-4 py-2 text-left ">
-                Cognitive domain
-              </th>
+              <th className="border-2 px-4 py-2 text-left">Cognitive domain</th>
               <th className=" bg-sky-50"></th>
-              <th className=" "></th>
-              <th className=" border-r"></th>
+              {Array.from({ length: courseCompetences.length - 2 }).map(
+                (comp) => (
+                  <th className=" "></th>
+                )
+              )}
+              <th className=" border-2"></th>
             </tr>
             {Array.from({ length: cognitiveLearningOutcomes.length }).map(
               (_, rowIndex) => (
@@ -61,12 +63,16 @@ const competencesTable = ({ courseCompetences, learningOutcomes }) => {
               )
             )}
             <tr className="w-full bg-sky-50">
-              <th className="border-l px-4 py-2 text-left ">
+              <th className="border-2 px-4 py-2 text-left ">
                 Psychomotor domain
               </th>
               <th className=" bg-sky-50"></th>
-              <th className=" "></th>
-              <th className=" border-r"></th>
+              {Array.from({ length: courseCompetences.length - 2 }).map(
+                (comp) => (
+                  <th className=" "></th>
+                )
+              )}
+              <th className=" border-2"></th>
             </tr>
             {Array.from({ length: psychomotorLearningOutcomes.length }).map(
               (_, rowIndex) => (
@@ -97,12 +103,16 @@ const competencesTable = ({ courseCompetences, learningOutcomes }) => {
               )
             )}
             <tr className="w-full bg-sky-50">
-              <th className="border-l px-4 py-2 text-left ">
+              <th className="border-2 px-4 py-2 text-left ">
                 Affective domain
               </th>
               <th className=" bg-sky-50"></th>
-              <th className=" "></th>
-              <th className=" border-r"></th>
+              {Array.from({ length: courseCompetences.length - 2 }).map(
+                (comp) => (
+                  <th className=" "></th>
+                )
+              )}
+              <th className=" border-2"></th>
             </tr>
             {Array.from({ length: affectiveLearningOutcomes.length }).map(
               (_, rowIndex) => (

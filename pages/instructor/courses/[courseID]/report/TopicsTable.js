@@ -59,7 +59,7 @@ const TopicsTable = ({ lectureTopics, learningOutcomes, courseID, token }) => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mt-10">
       <div className="flex flex-row items-center content-between justify-between my-2">
         <h2 className="font-bold text-xl mb-2">Course Teaching/Assessment</h2>
         {isEditing ? (
