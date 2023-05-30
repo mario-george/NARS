@@ -1020,22 +1020,28 @@ const part4 = ({ cookies }) => {
   ] = useState(false);
 
   const submitHandler = async (e) => {
-    const {selectedItems,handler} = facilityHandler.validate();
-    console.log(selectedItems)
-    console.log(selectedItems)
-    console.log(selectedItems)
-    console.log(selectedItems)
-    console.log(selectedItems)
-    console.log(selectedItems)
-    console.log(selectedItems)
-    console.log(selectedItems)
-    console.log(selectedItems)
-    console.log(handler)
-    console.log(handler)
-    console.log(handler)
-    console.log(handler)
-    console.log(handler)
-    console.log(selectedItems)
+    const { selectedItems, handler } = facilityHandler.validate();
+    const { notes, books, Rbooks, websites } =
+      ListOfReferencesHandler.validate();
+    console.log(books);
+    console.log(Rbooks);
+    console.log(notes);
+    console.log(websites);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(handler);
+    console.log(handler);
+    console.log(handler);
+    console.log(handler);
+    console.log(handler);
+    console.log(selectedItems);
     console.log(assessmentScheduleHandler.getInvalidData());
     console.log(assessmentScheduleHandler.getInvalidData());
     console.log(assessmentScheduleHandler.getInvalidData());
@@ -1163,6 +1169,45 @@ const part4 = ({ cookies }) => {
       assessmentScheduleHandler.passInvalidTotal(true);
     } else {
       assessmentScheduleHandler.passInvalidTotal(false);
+    }
+    if (!handler && selectedItems.length == 0) {
+      newErrors.push("At least one facility are needed for this course.");
+      facilityHandler.getInvalidData(true);
+    } else {
+      facilityHandler.getInvalidData(false);
+    }
+    if (books === "") {
+      newErrors.push("Books should not be empty.");
+      ListOfReferencesHandler.passInvalid({ boolean: true, error: "books" });
+    } else {
+      ListOfReferencesHandler.passInvalid({ boolean: false, error: "books" });
+    }
+    if (websites.length === 0) {
+      newErrors.push("Websites should not be empty.");
+      ListOfReferencesHandler.passInvalid({ boolean: true, error: "websites" });
+    } else {
+      ListOfReferencesHandler.passInvalid({
+        boolean: false,
+        error: "websites",
+      });
+    }
+    if (notes === "") {
+      newErrors.push("Notes should not be empty.");
+      ListOfReferencesHandler.passInvalid({ boolean: true, error: "notes" });
+    } else {
+      ListOfReferencesHandler.passInvalid({ boolean: false, error: "notes" });
+    }
+    if (Rbooks.length === 0) {
+      newErrors.push("Reference Books should not be empty.");
+      ListOfReferencesHandler.passInvalid({
+        boolean: true,
+        error: "referencebooks",
+      });
+    } else {
+      ListOfReferencesHandler.passInvalid({
+        boolean: false,
+        error: "referencebooks",
+      });
     }
     if (
       cognitiveAssessmentCheckedForErrors ||

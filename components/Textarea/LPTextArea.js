@@ -15,6 +15,9 @@ const Textarea = (props) => {
     if (onChange && typeof onChange === "function") {
       onChange(updatedValue);
     }
+    if (props.changeProp && typeof props.changeProp === "function") {
+      props.changeProp();
+    }
   };
   useEffect(() => {
     if (textareaRef.current && props.value !== "") {
@@ -31,7 +34,9 @@ const Textarea = (props) => {
     <div className="w-full">
       <textarea
         ref={textareaRef}
-        className={`${props.hasClass ? "input-form" : ""} block w-full text-sky-800 text-lg  ${
+        className={`${props.hasClass ? "input-form  " : ""} ${
+          props.hasClass && props.invalid && props.references  ? "bg-red-50 border-red-500" : "bg-sky-100"
+        } block w-full text-sky-800 text-lg  ${
           small ? `h-[3rem]` : `h-[6rem]`
         } p-2 leading-5 resize-none border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 overflow-hidden`}
         value={value}

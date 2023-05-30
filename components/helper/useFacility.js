@@ -16,6 +16,7 @@ import { Worker } from "pdfjs-dist/legacy/build/pdf.worker.entry";
 import * as pdfjs from "pdfjs-dist";
 import LZString from "lz-string";
 import { updateField } from "@/components/store/userSlice";
+import { getErrorField } from "./errorField";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -23,7 +24,10 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
   const [other, setOther] = useState("");
   const d = useDispatch();
   const [t, setT] = useState(true);
-
+  const [invalid, setInvalid] = useState(false);
+  const getInvalidData = (boolean) => {
+    setInvalid(boolean);
+  };
   const refArray = [
     "Classroom",
     "Smart Board",
@@ -417,6 +421,7 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
   const validate = () => {
     return { handler, selectedItems };
   };
+
   const submitHandler = async (e) => {
     console.log(other);
     console.log(selectedItems);
@@ -514,9 +519,24 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
           </div>
         </div>
       </div>
+      {invalid &&
+        hasClass &&
+        getErrorField(
+          "At least one facility are needed for this course.",
+          () => {
+            setInvalid(false);
+          }
+        )}
     </>
   );
-  return { msg, content, submitHandler, downloadMergedPDF, validate };
+  return {
+    msg,
+    content,
+    submitHandler,
+    downloadMergedPDF,
+    validate,
+    getInvalidData,
+  };
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">

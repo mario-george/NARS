@@ -5,8 +5,33 @@ import { useRef, useState, useEffect } from "react";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
 import Textarea from "../Textarea/LPTextArea";
+import { getErrorFieldArray } from "./errorField";
 
 const ListOfReferences = ({ cookies, courseID, hasClass }) => {
+  const validate = () => {
+    return { notes, books, Rbooks, websites };
+  };
+  const [invalidNotes, setInvalidNotes] = useState(false);
+  const [invalidBooks, setInvalidBooks] = useState(false);
+  const [invalidReferenceBooks, setInvalidReferenceBooks] = useState(false);
+  const [invalidWebsites, setInvalidWebsites] = useState(false);
+  const passInvalid = ({ boolean, error }) => {
+    if (error === "websites") {
+      setInvalidWebsites(boolean);
+    }
+    if (error === "notes") {
+      setInvalidNotes(boolean);
+    }
+    if (error === "referencebooks") {
+      setInvalidReferenceBooks(boolean);
+    }
+    if (error === "books") {
+      setInvalidBooks(boolean);
+    }
+  };
+  const getInvalidData = (boolean) => {
+    setInvalid(boolean);
+  };
   const d = useDispatch();
   const websitesInputHandler = (e) => {
     const updatedInput = e;
@@ -139,8 +164,15 @@ const ListOfReferences = ({ cookies, courseID, hasClass }) => {
           name="notes"
           className={`${hasClass ? `input-form bg-sky-50` : ``} w-full  ml-4`}
           value={notes}
+          references={true}
+
           placeholder="Type here the Course Notes"
           onChange={notesInputHandler}
+          hasClass={hasClass}
+          invalid={invalidNotes}
+          changeProp={() => {
+            setInvalidNotes(false);
+          }}
         ></Textarea>
         <div className="flex flex-col gap-5  w-full">
           <div className="text-xl my-4 bg-[#f0e1c2] ml-4">b-Books</div>
@@ -152,6 +184,12 @@ const ListOfReferences = ({ cookies, courseID, hasClass }) => {
             value={books}
             onChange={bookInputHandler}
             placeholder="Type here the books"
+            hasClass={hasClass}
+            changeProp={() => {
+              setInvalidBooks(false);
+            }}
+            references={true}
+            invalid={invalidBooks}
           ></Textarea>
         </div>
       </div>
@@ -167,6 +205,13 @@ const ListOfReferences = ({ cookies, courseID, hasClass }) => {
           value={Rbooks}
           placeholder="Type here the Recommended Books"
           onChange={RbookInputHandler}
+          hasClass={hasClass}
+          invalid={invalidReferenceBooks}
+          changeProp={() => {
+            setInvalidReferenceBooks(false);
+          }}
+          references={true}
+
         ></Textarea>
         <div className="flex flex-col gap-5  w-full">
           <div className="text-xl my-4 bg-[#f0e1c2] ml-4">
@@ -179,13 +224,43 @@ const ListOfReferences = ({ cookies, courseID, hasClass }) => {
             className={`${hasClass ? `input-form bg-sky-50` : ``} w-full  ml-4`}
             value={websites}
             onChange={websitesInputHandler}
+            changeProp={() => {
+              setInvalidWebsites(false);
+            }}
+            references={true}
+
             placeholder="Type here the Course websites"
+            hasClass={hasClass}
+            invalid={invalidWebsites}
           ></Textarea>
         </div>
       </div>
+      {(invalidWebsites ||
+        invalidBooks ||
+        invalidReferenceBooks ||
+        invalidNotes) &&
+        hasClass &&
+        getErrorFieldArray(
+          {
+            invalidBooks,
+            invalidReferenceBooks,
+            invalidWebsites,
+            invalidNotes,
+            errorBooks: "Books should not be empty.",
+            errorReferenceBooks: "Reference Books should not be empty.",
+            errorNotes: "Notes should not be empty.",
+            errorWebsites: "Websites should not be empty.",
+          },
+          () => {
+            setInvalidBooks(false);
+            setInvalidReferenceBooks(false);
+            setInvalidWebsites(false);
+            setInvalidNotes(false);
+          }
+        )}
     </>
   );
-  return { content, submitHandler };
+  return { content, submitHandler, validate, getInvalidData, passInvalid };
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">
