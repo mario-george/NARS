@@ -19,6 +19,8 @@ import { CompetencesLosOverall } from "./CompetencesLosOverall";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import mergeTest from "../getPdf/courseReportPdf";
 import { saveAs } from "file-saver";
+import ReportNotComplete from "./ReportNotComplete";
+import { isIndexSignatureDeclaration } from "typescript";
 
 const courseReport = ({ cookies }) => {
   const router = useRouter();
@@ -103,17 +105,7 @@ const courseReport = ({ cookies }) => {
     const mergedPdf4 = await mergeTest([blob7, blob8]);
 
     const blobs = [mergedPdf1, mergedPdf2, mergedPdf3, mergedPdf4];
-    const ImgBlobs = [
-      blob,
-      blob2,
-      blob3,
-      blob4,
-      blob5,
-      blob6,
-      blob7,
-      blob8,
-
-    ];
+    const ImgBlobs = [blob, blob2, blob3, blob4, blob5, blob6, blob7, blob8];
     const mergedBlob = await mergeTest(ImgBlobs);
 
     saveAs(mergedBlob, "CourseReport.pdf");
@@ -145,7 +137,16 @@ const courseReport = ({ cookies }) => {
   const [wantedData, setWantedData] = useState([]);
   const [studentAssessments, setStudentAssessments] = useState([]);
   const [lectureTopics, setLectureTopics] = useState([]);
+  const [reportCompleted, setReportCompleted] = useState(false);
+  const [courseFullMark, setCourseFullMark] = useState(0);
   const { courseID } = router.query;
+
+  const isDirectAssessmentComplete = useRef(false);
+  const isInDirectAssessmentComplete = useRef(false);
+  const isCourseSpecsComplete = useRef(false);
+  const doesCourseHaveCompetences = useRef(false);
+  const doesCourseHaveTarget = useRef(false);
+
   function ChildComponent({ toPdf }) {
     const handleClick = async () => {
       try {
@@ -372,7 +373,7 @@ const courseReport = ({ cookies }) => {
   }
 
   const submitHandler = async (e) => {
-    await  buttonRef.current.click();
+    await buttonRef.current.click();
     await buttonRef22.current.click();
     await buttonRef3.current.click();
     await buttonRef4.current.click();
@@ -404,7 +405,6 @@ const courseReport = ({ cookies }) => {
     console.log("CALCULATED AVG VALUES", JSON.stringify(cAvg));
     return cAvg;
   };
-  
 
   const getAvgLOs = (avgs) => {
     const cAvg = {};
@@ -435,71 +435,94 @@ const courseReport = ({ cookies }) => {
         }
       );
       const jsonData = await resp.json();
-      const learningOutcomes = jsonData.data.courseSpecs.courseLearningOutcomes;
-      setCourseLearningOutcomes(learningOutcomes);
-      const mappedLearningOutcomes = {};
-      learningOutcomes.forEach((learningOutcomeDomain) => {
-        learningOutcomeDomain.learningOutcomes.forEach((learningOutcome) => {
-          mappedLearningOutcomes[learningOutcome.code] =
-            learningOutcome.mappedCompetence;
-        });
-      });
-      let tempIt = [];
-      setCourseData(jsonData.data);
-      setLearningOutcomes(mappedLearningOutcomes);
-      const { competences, examGrades, questionsGrades, numOfStudents } =
-        getData(jsonData.data.report.questions);
-      setCourseCompetences(jsonData.data.course.competences);
-      setNumberOfStudents(numOfStudents);
-      tempIt.push(getAvg(jsonData.data.report.avgCompetences));
-      setAvgValues(getAvg(jsonData.data.report.avgCompetences));
-      tempIt.push(getAvg(jsonData.data.report.avgCompetencesInDirect));
-      setAvgValuesSurvey(getAvg(jsonData.data.report.avgCompetencesInDirect));
-      tempIt.push(getAvgLOs(jsonData.data.report.avgLOSInDirect));
-      setAvgValuesLOs(getAvgLOs(jsonData.data.report.avgLOSInDirect));
-      tempIt.push([
-        jsonData.data.course.minTarget,
-        jsonData.data.course.maxTarget,
-      ]);
-      setTarget([
-        jsonData.data.course.minTarget,
-        jsonData.data.course.maxTarget,
-      ]);
-      const { final, midterm } = examGrades;
-      console.log("final ", JSON.stringify(final));
-      console.log("midterm ", JSON.stringify(midterm));
-      setCompetenciesMap(competences);
-      setQuestionsGrades(questionsGrades);
-      setQuestions(jsonData.data.report.questions);
-      setMid(midterm);
-      setFinal(final);
-      setStudentAssessments(
-        jsonData.data.courseSpecs.studentAssessment.assessmentSchedulesWeight
+
+      isDirectAssessmentComplete.value =
+        jsonData.data.report.questions &&
+        jsonData.data.report.questions.length > 0;
+      isInDirectAssessmentComplete.value =
+        jsonData.data.report.avgCompetencesInDirect &&
+        jsonData.data.report.avgCompetencesInDirect.length > 0;
+      isCourseSpecsComplete.value = jsonData.data.courseSpecsCompleted;
+      doesCourseHaveCompetences.value =
+        jsonData.data.course.competences &&
+        jsonData.data.course.competences.length > 0;
+      doesCourseHaveTarget.value =
+        jsonData.data.course.minTarget && jsonData.data.course.maxTarget;
+      setReportCompleted(
+        isDirectAssessmentComplete.value &&
+          isInDirectAssessmentComplete.value &&
+          isCourseSpecsComplete.value &&
+          doesCourseHaveCompetences &&
+          doesCourseHaveTarget
       );
-      setLectureTopics(jsonData.data.courseSpecs.lecturePlan.topics);
+
+      const learningOutcomes = jsonData.data.courseSpecs.courseLearningOutcomes;
+      if (learningOutcomes && learningOutcomes.length > 0) {
+        setCourseLearningOutcomes(learningOutcomes);
+        const mappedLearningOutcomes = {};
+        learningOutcomes.forEach((learningOutcomeDomain) => {
+          if (learningOutcomeDomain.learningOutcomes) {
+            learningOutcomeDomain.learningOutcomes.forEach(
+              (learningOutcome) => {
+                if (!learningOutcome.code || !learningOutcome.mappedCompetence)
+                  return;
+                mappedLearningOutcomes[learningOutcome.code] =
+                  learningOutcome.mappedCompetence;
+              }
+            );
+          }
+        });
+        setLearningOutcomes(mappedLearningOutcomes);
+      } else {
+        console.log("ERROR", "NO LEARNING OUTCOMES FOUND");
+      }
+
+      setCourseData(jsonData.data);
+      setCourseFullMark(parseInt(jsonData.data.course.fullMark));
+      const courseSpecs = jsonData.data.courseSpecs;
+      if (
+        courseSpecs &&
+        courseSpecs.studentAssessment &&
+        courseSpecs.studentAssessment.assessmentSchedulesWeight
+      ) {
+        setStudentAssessments(
+          jsonData.data.courseSpecs.studentAssessment.assessmentSchedulesWeight
+        );
+      }
+      if (courseSpecs.lecturePlan && courseSpecs.lecturePlan.topics) {
+        setLectureTopics(jsonData.data.courseSpecs.lecturePlan.topics);
+      }
+      setCourseCompetences(jsonData.data.course.competences);
+
+      if (jsonData.data.course.minTarget && jsonData.data.course.maxTarget) {
+        setTarget([
+          jsonData.data.course.minTarget,
+          jsonData.data.course.maxTarget,
+        ]);
+      } else {
+        console.log("ERROR", "COURSE DOES NOT HAVE A TARGET");
+      }
+
+      if (isDirectAssessmentComplete.value) {
+        const { competences, examGrades, questionsGrades, numOfStudents } =
+          getData(jsonData.data.report.questions);
+
+        setNumberOfStudents(numOfStudents);
+        setAvgValues(getAvg(jsonData.data.report.avgCompetences));
+        setAvgValuesSurvey(getAvg(jsonData.data.report.avgCompetencesInDirect));
+        setAvgValuesLOs(getAvgLOs(jsonData.data.report.avgLOSInDirect));
+
+        const { final, midterm } = examGrades;
+        setCompetenciesMap(competences);
+        console.log("COMPETNECES MAP IS ", JSON.stringify(competences));
+        setQuestionsGrades(questionsGrades);
+        setQuestions(jsonData.data.report.questions);
+        setMid(midterm);
+        setFinal(final);
+      }
+
       setDataLoaded(true);
-      tempIt.push(jsonData.data.report.questions);
-      let myTemp = [];
-      if (
-        typeof(tempIt[1]) == "undefined" ||
-        typeof(tempIt[4]) == "undefined"
-      ) {
-        myTemp.push("Direct Assessment isn't Completed yet");
-      }
-      if (!tempIt[3][1]) {
-        myTemp.push("Target isn't given");
-      }
-      if (
-        typeof(tempIt[1]) == "undefined" ||
-        typeof(tempIt[2]) == "undefined"
-      ) {
-        myTemp.push("Indirect Assessment isn't Completed yet");
-      }
-      if (!jsonData.data.courseSpecsCompleted) {
-        myTemp.push("Course Specs isn't Completed yet");
-      }
-      setWantedData(myTemp);
-      console.log(jsonData.data)
+      console.log(jsonData.data);
     } catch (e) {
       console.log("ERROR", e);
     }
@@ -541,105 +564,122 @@ const courseReport = ({ cookies }) => {
               <CustomReactToPdf targetRef={refToImgBlob8} filename="part8.pdf">
                 {({ toPdf }) => <ChildComponent8 toPdf={toPdf} />}
               </CustomReactToPdf>{" "}
-
               <div className="flex flex-row w-auto h-auto ">
-                <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none ">
-                  <div className="contentAddUserFlexible2 flex flex-col gap-10  ">
-                    <div ref={refToImgBlob}>
-                      <CourseData createdCourse={courseData} />
-                      <AssessmentMethodsTable
-                        questions={questions}
-                        competences={courseCompetences}
-                        studentAssessments={studentAssessments}
-                      />
+                {reportCompleted ? (
+                  <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none ">
+                    <div className="contentAddUserFlexible2 flex flex-col gap-10  ">
+                      <div ref={refToImgBlob}>
+                        <CourseData createdCourse={courseData} />
+                        <AssessmentMethodsTable
+                          questions={questions}
+                          competences={courseCompetences}
+                          studentAssessments={studentAssessments}
+                          courseFullMark={courseFullMark}
+                        />
 
-                      <CompetencesTable
-                        className="flex justify-center items-center m-20"
-                        courseCompetences={courseCompetences}
-                        learningOutcomes={courseLearningOutcomes}
-                      />
-                      <TopicsTable
-                        lectureTopics={lectureTopics}
-                        learningOutcomes={courseLearningOutcomes}
-                        courseID={courseID}
-                        token={cookies.token}
-                      />
-                    </div>
-
-                    <div className="flex flex-col justify-center items-center">
-                      <div className="w-full" ref={refToImgBlob2}>
-                        <ExamGrades
-                          mid={mid}
-                          final={final}
-                          numberOfStudents={numberOfStudents}
+                        <CompetencesTable
+                          courseCompetences={courseCompetences}
+                          learningOutcomes={courseLearningOutcomes}
                         />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob4}>
-                        <CompetencesLosGrades
-                          numberOfStudents={numberOfStudents}
-                          avgValues={avgValues}
-                          competenciesMap={competenciesMap}
-                          learningOutcomes={learningOutcomes}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob3}>
-                        <CompetencesLosAchievement
-                          target={target}
-                          competenciesMap={competenciesMap}
-                          avgValues={avgValues}
-                          numberOfStudents={numberOfStudents}
-                          learningOutcomes={learningOutcomes}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob6}>
-                        <CompetencesLosSurvey
-                          numberOfStudents={numberOfStudents}
-                          avgLOS={avgValuesLOs}
-                          avgValues={avgValuesSurvey}
-                          learningOutcomes={learningOutcomes}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob5}>
-                        <CompetencesLosAchievementSurvey
-                          target={target}
-                          competenciesMap={competenciesMap}
-                          avgValues={avgValuesSurvey}
-                          avgLOS={avgValuesLOs}
-                          numberOfStudents={numberOfStudents}
-                          learningOutcomes={learningOutcomes}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob8}>
-                        <CompetencesLosOverall
-                          numberOfStudents={numberOfStudents}
-                          avgLOS={avgValuesLOs}
-                          avgValues={avgValues}
-                          avgValuesSurvey={avgValuesSurvey}
-                          learningOutcomes={learningOutcomes}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob7}>
-                        <CompetencesLosAchievementOVerall
-                          target={target}
-                          competenciesMap={competenciesMap}
-                          avgLOS={avgValuesLOs}
-                          avgValues={avgValues}
-                          avgValuesSurvey={avgValuesSurvey}
-                          numberOfStudents={numberOfStudents}
-                          learningOutcomes={learningOutcomes}
+                        <TopicsTable
+                          lectureTopics={lectureTopics}
+                          learningOutcomes={courseLearningOutcomes}
+                          courseID={courseID}
+                          token={cookies.token}
                         />
                       </div>
 
-                      <button
-                        ref={buttonRef2}
-                        onClick={submitHandler}
-                        class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                      >
-                        Export
-                      </button>
+                      <div className="flex flex-col justify-center items-center">
+                        <div className="w-full" ref={refToImgBlob2}>
+                          <ExamGrades
+                            mid={mid}
+                            final={final}
+                            numberOfStudents={numberOfStudents}
+                          />
+                        </div>
+                        <div className="w-full" ref={refToImgBlob4}>
+                          <CompetencesLosGrades
+                            numberOfStudents={numberOfStudents}
+                            avgValues={avgValues}
+                            competenciesMap={competenciesMap}
+                            learningOutcomes={learningOutcomes}
+                          />
+                        </div>
+                        <div className="w-full" ref={refToImgBlob3}>
+                          <CompetencesLosAchievement
+                            target={target}
+                            competenciesMap={competenciesMap}
+                            avgValues={avgValues}
+                            numberOfStudents={numberOfStudents}
+                            learningOutcomes={learningOutcomes}
+                          />
+                        </div>
+                        <div className="w-full" ref={refToImgBlob6}>
+                          <CompetencesLosSurvey
+                            numberOfStudents={numberOfStudents}
+                            avgLOS={avgValuesLOs}
+                            avgValues={avgValuesSurvey}
+                            learningOutcomes={learningOutcomes}
+                          />
+                        </div>
+                        <div className="w-full" ref={refToImgBlob5}>
+                          <CompetencesLosAchievementSurvey
+                            target={target}
+                            competenciesMap={competenciesMap}
+                            avgValues={avgValuesSurvey}
+                            avgLOS={avgValuesLOs}
+                            numberOfStudents={numberOfStudents}
+                            learningOutcomes={learningOutcomes}
+                          />
+                        </div>
+                        <div className="w-full" ref={refToImgBlob8}>
+                          <CompetencesLosOverall
+                            numberOfStudents={numberOfStudents}
+                            avgLOS={avgValuesLOs}
+                            avgValues={avgValues}
+                            avgValuesSurvey={avgValuesSurvey}
+                            learningOutcomes={learningOutcomes}
+                          />
+                        </div>
+                        <div className="w-full" ref={refToImgBlob7}>
+                          <CompetencesLosAchievementOVerall
+                            target={target}
+                            competenciesMap={competenciesMap}
+                            avgLOS={avgValuesLOs}
+                            avgValues={avgValues}
+                            avgValuesSurvey={avgValuesSurvey}
+                            numberOfStudents={numberOfStudents}
+                            learningOutcomes={learningOutcomes}
+                          />
+                        </div>
+
+                        <button
+                          ref={buttonRef2}
+                          onClick={submitHandler}
+                          class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        >
+                          Export
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="bg-sky-50 h-[100%] w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none ">
+                    <ReportNotComplete
+                      isInDirectAssessmentComplete={
+                        isInDirectAssessmentComplete.value
+                      }
+                      isDirectAssessmentComplete={
+                        isDirectAssessmentComplete.value
+                      }
+                      isCourseSpecsComplete={isCourseSpecsComplete.value}
+                      doesCourseHaveCompetences={
+                        doesCourseHaveCompetences.value
+                      }
+                      doesCourseHaveTarget={doesCourseHaveTarget.value}
+                    />
+                  </div>
+                )}
               </div>
             </>
           )}
