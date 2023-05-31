@@ -104,7 +104,7 @@ const profile = ({ cookies }) => {
     }, []);
   } else if (cookies.role === "instructor") {
     useEffect(() => {
-      setInstructor(true);
+      // setInstructor(true);
     }, []);
   } else if (cookies.role === "program admin") {
     useEffect(() => {

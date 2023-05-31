@@ -55,8 +55,8 @@ const CoursesAttainment = (props) => {
     else if(props.courses[elm]['avg'] < target[0]){dataValues[2][2] += 1;}
   });
 
-  console.log("dataValues", dataValues)
-  console.log("props.courses", props.courses)
+  // console.log("dataValues", dataValues)
+  // console.log("props.courses", props.courses)
 
   data = {
     labels,
