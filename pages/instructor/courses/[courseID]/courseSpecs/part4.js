@@ -596,8 +596,8 @@ const part4 = ({ cookies }) => {
       role="alert"
     >
       <i className="fa-solid fa-circle-check"></i>
-      <div className="ml-3 text-sm font-medium">
-        Competences has been achieved successfully!
+      <div className="ml-3  font-medium">
+        Course data has been submitted successfully!
         <a href="#" className="font-semibold underline hover:no-underline"></a>
       </div>
       <button
@@ -861,58 +861,6 @@ const part4 = ({ cookies }) => {
           return array.filter((item, index) => array.indexOf(item) === index);
         }
         combined = removeDuplicates(combined);
-
-        const dynamicArray = competences
-          .map((competence, index) => {
-            let ref1;
-            let ref2;
-            let ref3;
-            if (checkboxRefs.current[index]) {
-              ref1 = checkboxRefs.current[index].filter((value) => value);
-            }
-            if (checkboxRefs2.current[index]) {
-              ref2 = checkboxRefs2.current[index].filter((value) => value);
-            }
-            if (checkboxRefs3.current[index]) {
-              ref3 = checkboxRefs3.current[index].filter((value) => value);
-            }
-
-            if (ref1?.length > 0 || ref2?.length > 0 || ref3?.length > 0) {
-              return competence;
-            }
-
-            return null;
-          })
-          .filter((value) => value !== null);
-        console.log(dynamicArray);
-        const areAllCompetencesAchieved = competences.every((competence) =>
-          dynamicArray.includes(competence)
-        );
-
-        if (areAllCompetencesAchieved) {
-          setMsg(success);
-          const error =
-            "Competences is not met. please review the entered data";
-
-          if (errors.includes(error)) {
-            setErrors((prevErrors) =>
-              prevErrors.filter((error) => error !== errorToRemove)
-            );
-          }
-          // router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
-        } else {
-          setMsg(fail);
-          const error =
-            "Competences is not met. please review the entered data";
-          setCompetencesInvalid(true);
-          console.log(CompetencesInvalid);
-          console.log(CompetencesInvalid);
-          if (!errors.includes(error)) {
-            setErrors([...errors, error]);
-          }
-
-          return;
-        }
       } catch (error) {
         console.error(`Error parsing cookie: ${error} 123`);
       }
@@ -1020,28 +968,21 @@ const part4 = ({ cookies }) => {
   ] = useState(false);
 
   const submitHandler = async (e) => {
+
+
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(topicsRefs.current);
+    console.log(topicsRefs.current);
+    console.log(topicsRefs.current);
+    console.log(topicsRefs.current);
+
     const { selectedItems, handler } = facilityHandler.validate();
     const { notes, books, Rbooks, websites } =
       ListOfReferencesHandler.validate();
-    console.log(books);
-    console.log(Rbooks);
-    console.log(notes);
-    console.log(websites);
-    console.log(selectedItems);
-    console.log(selectedItems);
-    console.log(selectedItems);
-    console.log(selectedItems);
-    console.log(selectedItems);
-    console.log(selectedItems);
-    console.log(selectedItems);
-    console.log(selectedItems);
-    console.log(selectedItems);
-    console.log(handler);
-    console.log(handler);
-    console.log(handler);
-    console.log(handler);
-    console.log(handler);
-    console.log(selectedItems);
+    
     console.log(assessmentScheduleHandler.getInvalidData());
     console.log(assessmentScheduleHandler.getInvalidData());
     console.log(assessmentScheduleHandler.getInvalidData());
@@ -1146,7 +1087,7 @@ const part4 = ({ cookies }) => {
     );
 
     if (areAllCompetencesAchieved) {
-      setMsg(success);
+      // setMsg(success);
     } else {
       setCompetencesInvalid(true);
 
@@ -1246,6 +1187,8 @@ const part4 = ({ cookies }) => {
       );
     }
     if (newErrors.length === 0) {
+      setErrors([]);
+
       setHasClass(false);
       ListOfReferencesHandler.submitHandler();
       await buttonRef.current.click();
@@ -1259,6 +1202,7 @@ const part4 = ({ cookies }) => {
 
       setTimeout(() => {
         facilityHandler.downloadMergedPDF();
+        setMsg(success);
       }, 2000);
     } else {
       setErrors(newErrors);

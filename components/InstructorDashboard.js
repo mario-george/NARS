@@ -94,7 +94,7 @@ export default function InstructorDashboard({ cookies }) {
           Array(
             c.map((courseInstance) => {
               return (
-                <div key={courseInstance._id} className=" mb-5 -mx-4  px-0 ">
+                <div key={courseInstance._id} className=" mb-1 -mx-4  px-0 ">
                   <HeaderElement
                     className={``}
                     key={courseInstance._id}
