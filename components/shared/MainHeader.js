@@ -31,7 +31,7 @@ function MainHeader() {
         console.log(res);
         const imageBlob = await res.blob();
         const imageObjectURL = URL.createObjectURL(imageBlob);
-        console.log(imageObjectURL);
+        console.log("photoooooooo",imageObjectURL);
         setImg(imageObjectURL);
       } catch (e) {
         console.log(e);

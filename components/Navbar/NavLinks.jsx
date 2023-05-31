@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 const NavLinks = () => {
   const [heading, setHeading] = useState("");
   const [subHeading, setSubHeading] = useState("");
-  const userState= useSelector(s=>s.user);
-  const links  = [
+  const userState = useSelector(s => s.user);
+  const links = [
     {
       name: "Materials",
       submenu: true,
@@ -17,7 +17,7 @@ const NavLinks = () => {
             { name: "View materials", link: `/instructor/courses/${userState.instance_id}/materials/viewmaterials` },
           ],
         },
-        
+
       ],
     },
     {
@@ -30,7 +30,7 @@ const NavLinks = () => {
             { name: "View assingments ", link: `/instructor/courses/${userState.instance_id}/assignment/viewassignments` },
           ],
         },
-        
+
       ],
     },
     {
@@ -43,10 +43,10 @@ const NavLinks = () => {
             { name: "View exams ", link: `/instructor/courses/${userState.instance_id}/exams/viewexams  ` },
           ],
         },
-        
+
       ],
     },
-    
+
     {
       name: "Assesment",
       submenu: true,
@@ -54,10 +54,22 @@ const NavLinks = () => {
         {
           sublink: [
             { name: "Direct assesment", link: `/instructor/courses/${userState.instance_id}/assessment/directAssessment` },
-            { name: "Indirect assesment ", link: `/instructor/courses/${userState.instance_id}/exams/viewexams` },
           ],
         },
-        
+
+      ],
+    },
+    {
+      name: "Grades",
+      submenu: true,
+      sublinks: [
+        {
+          sublink: [
+            { name: "Upload grades", link: `/instructor/courses/${userState.instance_id}/grades/uploadgrades` },
+            { name: "Update student grade", link: `/instructor/courses/${userState.instance_id}/grades/updategrades` },
+          ],
+        },
+
       ],
     },
   ];
@@ -76,9 +88,8 @@ const NavLinks = () => {
               {link.name}
               <span className="text-xl md:hidden inline">
                 <ion-icon
-                  name={`${
-                    heading === link.name ? "chevron-up" : "chevron-down"
-                  }`}
+                  name={`${heading === link.name ? "chevron-up" : "chevron-down"
+                    }`}
                 ></ion-icon>
               </span>
               <span className="text-xl md:mt-1 md:ml-2  md:block hidden group-hover:rotate-180 group-hover:-mt-2">
@@ -139,18 +150,16 @@ const NavLinks = () => {
 
                     <span className="text-xl md:mt-1 md:ml-2 inline">
                       <ion-icon
-                        name={`${
-                          subHeading === slinks.Head
+                        name={`${subHeading === slinks.Head
                             ? "chevron-up"
                             : "chevron-down"
-                        }`}
+                          }`}
                       ></ion-icon>
                     </span>
                   </h1>
                   <div
-                    className={`${
-                      subHeading === slinks.Head ? "md:hidden" : "hidden"
-                    }`}
+                    className={`${subHeading === slinks.Head ? "md:hidden" : "hidden"
+                      }`}
                   >
                     {slinks.sublink.map((slink) => (
                       <li className="py-3 pl-14">

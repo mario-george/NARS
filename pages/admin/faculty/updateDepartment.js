@@ -1,67 +1,138 @@
-import MassageAlert from "@/components/MassageAlert";
+import Link from "next/link";
 import { createRef } from "react";
-import Cookies from "js-cookie";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useRef, useEffect } from "react";
-import React from "react";
+import { useRef } from "react";
+import Cookies from "js-cookie";
+import Checkbox from "@/components/checkbox/checkbox";
+import MassageAlert from "@/components/MassageAlert";
 import addRole from "@/common/addRole";
+import deleteRole from "@/common/deleteRole";
+import getStaffRolesAndEmail from "@/common/getStaffRolesAndEmail";
 
-const addDepartment = () => {
+const updateDepartment = () => {
   const userState = useSelector((s) => s.user);
   if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  
+
   useEffect(() => {
     document.querySelector("body").classList.add("scrollbar-none");
   });
+
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
+  const [departmentArr, setDepartmentArr] = useState([]);
   const [alerts, setAlerts] = useState([]);
-  const [headerRole, setHeaderRole] = useState([]);
-  const [headerID, setHeaderID] = useState(null);
-  const [adminRole, setAdminRole] = useState([]);
-  const [adminID, setAdminID] = useState(null);
-
-  const handleAddInput = (e) => {
-    e.preventDefault();
-
-    setInputs([
-      ...inputs,
-      {
-        ref: createRef(),
-      },
-    ]);
-
-    setInputs2([
-      ...inputs2,
-      {
-        ref: createRef(),
-      },
-    ]);
-  };
-  const removeLO1 = (e, input2, input) => {
-    e.preventDefault();
-    setInputs2(
-      inputs2.filter((e) => {
-        return e != input2;
-      })
-    );
-    setInputs(
-      inputs.filter((e) => {
-        return e != input;
-      })
-    );
-  };
-
+  
+  //old
+  const [oldHeaderRole, setOldHeaderRole] = useState([]);
+  const [oldHeaderID, setOldHeaderID] = useState(null);
+  const [oldAdminRole, setOldAdminRole] = useState([]);
+  const [oldAdminID, setOldAdminID] = useState(null);
+  
+  //current
+  const [currentHeaderRole, setCurrentHeaderRole] = useState([]);
+  const [currentHeaderID, setCurrentHeaderID] = useState(null);
+  const [currentAdminRole, setCurrentAdminRole] = useState([]);
+  const [currentAdminID, setCurrentAdminID] = useState(null);
+  
+  const department = useRef();
   const token = userState.token;
   const name = useRef();
   const emailH = useRef();
   const emailA = useRef();
   const about = useRef();
   const objectives = useRef();
-  console.log('f', Cookies.get('faculty'))
+
+  useEffect(() => {
+    async function doThis() {
+      const resp = await fetch(`${process.env.url}api/v1/department/?faculty=${userState.faculty}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const data = await resp.json();
+      console.log(data);
+      const newData = data.data.map((e) => {
+        return { name: e.name, id: e._id };
+      });
+      setDepartmentArr(newData);
+    }
+    doThis();
+  }, []);
+
+  const getDepartmentData = async () => {
+    if(department.current.value !== 'Choose a Department'){
+      try{
+        const resp = await fetch(`${process.env.url}api/v1/department/${department.current.value}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+        const data = await resp.json();
+        console.log(data);
+        name.current.value = data.data.name;
+        about.current.value = data.data.about;
+        objectives.current.value = data.data.objectives;
+        let comps = data.data.competences;
+
+        setInputs(comps.map(c => {
+          let out = {
+            ref: createRef(),
+            value: c.code,
+          };
+          return out;
+        }));
+        setInputs2(comps.map(c => {
+          let out = {
+            ref: createRef(),
+            value: c.description,
+          };
+          return out;
+        }));
+
+        // header
+        setOldHeaderID(data.data.departmentHead);
+        setCurrentHeaderID(data.data.departmentHead);
+
+        getStaffRolesAndEmail(
+          data.data.departmentHead,
+          'department head',
+          [setOldHeaderRole,
+          setCurrentHeaderRole],
+          emailH,
+          setAlerts
+        );
+
+        // admin
+        setOldAdminID(data.data.departmentAdmin);
+        setCurrentAdminID(data.data.departmentAdmin);
+
+        getStaffRolesAndEmail(
+          data.data.departmentAdmin,
+          'department admin',
+          [setOldAdminRole,
+          setCurrentAdminRole],
+          emailA,
+          setAlerts
+        );
+      }catch(e){
+        setAlerts(alerts => [...alerts, <MassageAlert 
+          fail={`error happen with department`}
+          status="fail"
+          key={Math.random()} 
+      />]);
+      }
+    }
+  }
+
+  // if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
+  //   return <div className="error">404 could not found</div>;
+  // }
 
   const emailCheck = async(e) => {
     if(e.target.value){
@@ -93,12 +164,12 @@ const addDepartment = () => {
       }else{
         switch(e.target.attributes.fPar.nodeValue){
           case 'h':
-            setHeaderID(resp.data[0]._id);
-            setHeaderRole(resp.data[0].roles);
+            setCurrentHeaderID(resp.data[0]._id);
+            setCurrentHeaderRole(resp.data[0].roles);
             break;
           case 'a':
-            setAdminID(resp.data[0]._id);
-            setAdminRole(resp.data[0].roles);
+            setCurrentAdminID(resp.data[0]._id);
+            setCurrentAdminRole(resp.data[0].roles);
             break;
         }
       }
@@ -106,7 +177,7 @@ const addDepartment = () => {
       console.log(e);
     }}
   };
-
+  
   const submitHandler = async (e) => {
     e.preventDefault();
     const arr1 = inputs.map((input1) => {
@@ -130,36 +201,35 @@ const addDepartment = () => {
     let setStaffDepartment = {'department': null};
 
     try {
-      const r = await fetch(`${process.env.url}api/v1/department/`, {
-        method: "POST",
-
-        body: JSON.stringify({
-          name: name.current.value,
-          departmentHead: headerID,
-          departmentAdmin: adminID,
-          about: about.current.value,
-          competences: competences,
-          faculty: userState.faculty,
-          objectives: objectives.current.value,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
+      const r = await fetch(
+        `${process.env.url}api/v1/department/${department.current.value}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            name: name.current.value,
+            departmentHead: currentHeaderID,
+            about: about.current.value,
+            competences: competences,
+            faculty: Cookies.get('faculty'),
+            objectives: objectives.current.value,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       const resp = await r.json();
       console.log(resp);
-      
       if (resp.status == "success") {
         setAlerts([...alerts, <MassageAlert 
-          success="Department added Successfully"
+          success="Department updated Successfully"
           status="success"
           key={Math.random()} 
       />]);
 
-      setStaffDepartment.department = resp.data._id;
+        setStaffDepartment.department = department.current.value;
 
       } else {
         setAlerts([...alerts, <MassageAlert 
@@ -171,37 +241,102 @@ const addDepartment = () => {
     } catch (e) {
       console.log(e);
     }
-
+    
     // admin
+      // old
+    await deleteRole(
+      "department admin",
+      oldAdminRole,
+      oldAdminID,
+      setAlerts
+    );
+        // current
     await addRole(
       "department admin",
-      adminRole,
-      adminID,
+      currentAdminRole,
+      currentAdminID,
       setAlerts,
       setStaffDepartment
     );
-
-    //header
+  
+    // header
+        // old
+    await deleteRole(
+      "department head",
+      oldHeaderRole,
+      oldHeaderID,
+      setAlerts
+    );
+        // current
     await addRole(
-      "program coordinator",
-      headerRole,
-      headerID,
+      "department head",
+      currentHeaderRole,
+      currentHeaderID,
       setAlerts,
       setStaffDepartment
     );
+  };
 
+  const handleAddInput = (e) => {
+    e.preventDefault();
     
+
+    setInputs([
+      ...inputs,
+      {
+        ref: createRef(),
+      },
+    ]);
+
+    setInputs2([
+      ...inputs2,
+      {
+        ref: createRef(),
+      },
+    ]);
+  };
+
+  const removeLO1 = (e, input2, input) => {
+    e.preventDefault();
+    setInputs2(
+      inputs2.filter((e) => {
+        return e != input2;
+      })
+    );
+    setInputs(
+      inputs.filter((e) => {
+        return e != input;
+      })
+    );
   };
 
   return (
     <>
-      <div className="flex flex-row w-screen h-[100%] mt-2 scrollbar-none">
+      <div className="flex flex-row w-screen h-[100%] mt-2">
         <form
           onSubmit={submitHandler}
-          className="bg-sky-50 h-[100%] w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+          className="bg-sky-50 h-[100%] w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center 
+          text-black ml-1 rounded-2xl"
           >
-          <div className="contentAddUser2 flex flex-col gap-10 overflow-auto h-[100%] scrollbar-none">
-            <p className="font-normal">Faculty {">"} Add Department</p>
+          <div className="contentAddUser2 flex flex-col gap-10 h-[100%]">
+            <p className="font-normal">Faculty {">"} Update Department</p>
+            <div className="flex gap-20 ">
+              <div className="flex flex-col gap-5 w-1/3">
+                <div>Department:</div>
+                <select
+                  onChange={getDepartmentData}
+                  ref={department}
+                  id="small"
+                  class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                >
+                  <option selected>Choose a Department</option>
+                  {departmentArr.map((e) => {
+                    return <option value={e.id}>{e.name}</option>;
+                  })}{" "}
+                </select>
+              </div>
+            </div>
+
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Department Name:</div>
@@ -282,6 +417,7 @@ const addDepartment = () => {
                         <input
                           key={index}
                           type="text"
+                          defaultValue={input.value ? input.value : ''}
                           ref={input.ref}
                           className="input-form w-1/6"
                         />
@@ -297,6 +433,7 @@ const addDepartment = () => {
                           <input
                             key={index}
                             type="text"
+                            defaultValue={input2.value ? input2.value : ''}
                             ref={input2.ref}
                             className="input-form w-3/6"
                           />
@@ -338,7 +475,7 @@ const addDepartment = () => {
                 type="submit"
                 class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
-                Create
+                Update
               </button>
             </div>
           </div>
@@ -347,4 +484,5 @@ const addDepartment = () => {
     </>
   );
 };
-export default addDepartment;
+export default updateDepartment;
+

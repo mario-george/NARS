@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createRef, useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import { updateField } from "@/components/store/userSlice";
 
 const part69 = ({ cookies }) => {
+  const d = useDispatch();
+
   const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
@@ -25,6 +28,8 @@ const part69 = ({ cookies }) => {
         }
       );
       const data = await r.json();
+      d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
+
       console.log(data);
 
       try {
@@ -220,7 +225,7 @@ const part69 = ({ cookies }) => {
           >
             <table className="table-auto">
               <thead>
-                <tr>
+                <tr className="bg-gray-300">
                   <th className="border-2 px-4 py-2">Assesments</th>
                   <th className="border-2 px-4 py-2">week</th>
                   <th className="border-2 px-4 py-2">Weight</th>

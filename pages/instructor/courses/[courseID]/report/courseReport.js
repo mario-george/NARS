@@ -16,6 +16,8 @@ import { CompetencesLosOverall } from "@/components/CRComponents/CompetencesLosO
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import mergeTest from "../getPdf/courseReportPdf";
 import { saveAs } from "file-saver";
+import ReportNotComplete from "./ReportNotComplete";
+import { isIndexSignatureDeclaration } from "typescript";
 
 const courseReport = ({ cookies }) => {
   const router = useRouter();
@@ -100,17 +102,7 @@ const courseReport = ({ cookies }) => {
     const mergedPdf4 = await mergeTest([blob7, blob8]);
 
     const blobs = [mergedPdf1, mergedPdf2, mergedPdf3, mergedPdf4];
-    const ImgBlobs = [
-      blob,
-      blob2,
-      blob3,
-      blob4,
-      blob5,
-      blob6,
-      blob7,
-      blob8,
-
-    ];
+    const ImgBlobs = [blob, blob2, blob3, blob4, blob5, blob6, blob7, blob8];
     const mergedBlob = await mergeTest(ImgBlobs);
 
     saveAs(mergedBlob, "CourseReport.pdf");
@@ -143,7 +135,16 @@ const courseReport = ({ cookies }) => {
   const [wantedData, setWantedData] = useState([]);
   const [studentAssessments, setStudentAssessments] = useState([]);
   const [lectureTopics, setLectureTopics] = useState([]);
+  const [reportCompleted, setReportCompleted] = useState(false);
+  const [courseFullMark, setCourseFullMark] = useState(0);
   const { courseID } = router.query;
+
+  const isDirectAssessmentComplete = useRef(false);
+  const isInDirectAssessmentComplete = useRef(false);
+  const isCourseSpecsComplete = useRef(false);
+  const doesCourseHaveCompetences = useRef(false);
+  const doesCourseHaveTarget = useRef(false);
+
   function ChildComponent({ toPdf }) {
     const handleClick = async () => {
       try {
@@ -370,7 +371,7 @@ const courseReport = ({ cookies }) => {
   }
 
   const submitHandler = async (e) => {
-    await  buttonRef.current.click();
+    await buttonRef.current.click();
     await buttonRef22.current.click();
     await buttonRef3.current.click();
     await buttonRef4.current.click();
@@ -402,7 +403,6 @@ const courseReport = ({ cookies }) => {
     console.log("CALCULATED AVG VALUES", JSON.stringify(cAvg));
     return cAvg;
   };
-  
 
   const getAvgLOs = (avgs) => {
     const cAvg = {};
@@ -433,20 +433,63 @@ const courseReport = ({ cookies }) => {
         }
       );
       const jsonData = await resp.json();
+
+      isDirectAssessmentComplete.value =
+        jsonData.data.report.questions &&
+        jsonData.data.report.questions.length > 0;
+      isInDirectAssessmentComplete.value =
+        jsonData.data.report.avgCompetencesInDirect &&
+        jsonData.data.report.avgCompetencesInDirect.length > 0;
+      isCourseSpecsComplete.value = jsonData.data.courseSpecsCompleted;
+      doesCourseHaveCompetences.value =
+        jsonData.data.course.competences &&
+        jsonData.data.course.competences.length > 0;
+      doesCourseHaveTarget.value =
+        jsonData.data.course.minTarget && jsonData.data.course.maxTarget;
+      setReportCompleted(
+        isDirectAssessmentComplete.value &&
+          isInDirectAssessmentComplete.value &&
+          isCourseSpecsComplete.value &&
+          doesCourseHaveCompetences &&
+          doesCourseHaveTarget
+      );
+
       const learningOutcomes = jsonData.data.courseSpecs.courseLearningOutcomes;
-      setCourseLearningOutcomes(learningOutcomes);
-      const mappedLearningOutcomes = {};
-      learningOutcomes.forEach((learningOutcomeDomain) => {
-        learningOutcomeDomain.learningOutcomes.forEach((learningOutcome) => {
-          mappedLearningOutcomes[learningOutcome.code] =
-            learningOutcome.mappedCompetence;
+      if (learningOutcomes && learningOutcomes.length > 0) {
+        setCourseLearningOutcomes(learningOutcomes);
+        const mappedLearningOutcomes = {};
+        learningOutcomes.forEach((learningOutcomeDomain) => {
+          if (learningOutcomeDomain.learningOutcomes) {
+            learningOutcomeDomain.learningOutcomes.forEach(
+              (learningOutcome) => {
+                if (!learningOutcome.code || !learningOutcome.mappedCompetence)
+                  return;
+                mappedLearningOutcomes[learningOutcome.code] =
+                  learningOutcome.mappedCompetence;
+              }
+            );
+          }
         });
-      });
-      let tempIt = [];
+        setLearningOutcomes(mappedLearningOutcomes);
+      } else {
+        console.log("ERROR", "NO LEARNING OUTCOMES FOUND");
+      }
+
       setCourseData(jsonData.data);
-      setLearningOutcomes(mappedLearningOutcomes);
-      const { competences, examGrades, questionsGrades, numOfStudents } =
-        getData(jsonData.data.report.questions);
+      setCourseFullMark(parseInt(jsonData.data.course.fullMark));
+      const courseSpecs = jsonData.data.courseSpecs;
+      if (
+        courseSpecs &&
+        courseSpecs.studentAssessment &&
+        courseSpecs.studentAssessment.assessmentSchedulesWeight
+      ) {
+        setStudentAssessments(
+          jsonData.data.courseSpecs.studentAssessment.assessmentSchedulesWeight
+        );
+      }
+      if (courseSpecs.lecturePlan && courseSpecs.lecturePlan.topics) {
+        setLectureTopics(jsonData.data.courseSpecs.lecturePlan.topics);
+      }
       setCourseCompetences(jsonData.data.course.competences);
       setNumberOfStudents(numOfStudents);
       let compD = getAvg(jsonData.data.report.avgCompetences);
@@ -553,30 +596,30 @@ const courseReport = ({ cookies }) => {
               <CustomReactToPdf targetRef={refToImgBlob8} filename="part8.pdf">
                 {({ toPdf }) => <ChildComponent8 toPdf={toPdf} />}
               </CustomReactToPdf>{" "}
-
               <div className="flex flex-row w-auto h-auto ">
-                <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none ">
-                  <div className="contentAddUserFlexible2 flex flex-col gap-10  ">
-                    <div ref={refToImgBlob}>
-                      <CourseData createdCourse={courseData} />
-                      <AssessmentMethodsTable
-                        questions={questions}
-                        competences={courseCompetences}
-                        studentAssessments={studentAssessments}
-                      />
+                {reportCompleted ? (
+                  <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none ">
+                    <div className="contentAddUserFlexible2 flex flex-col gap-10  ">
+                      <div ref={refToImgBlob}>
+                        <CourseData createdCourse={courseData} />
+                        <AssessmentMethodsTable
+                          questions={questions}
+                          competences={courseCompetences}
+                          studentAssessments={studentAssessments}
+                          courseFullMark={courseFullMark}
+                        />
 
-                      <CompetencesTable
-                        className="flex justify-center items-center m-20"
-                        courseCompetences={courseCompetences}
-                        learningOutcomes={courseLearningOutcomes}
-                      />
-                      <TopicsTable
-                        lectureTopics={lectureTopics}
-                        learningOutcomes={courseLearningOutcomes}
-                        courseID={courseID}
-                        token={cookies.token}
-                      />
-                    </div>
+                        <CompetencesTable
+                          courseCompetences={courseCompetences}
+                          learningOutcomes={courseLearningOutcomes}
+                        />
+                        <TopicsTable
+                          lectureTopics={lectureTopics}
+                          learningOutcomes={courseLearningOutcomes}
+                          courseID={courseID}
+                          token={cookies.token}
+                        />
+                      </div>
 
                     <div className="flex flex-col justify-center items-center">
                       <div className="w-full" ref={refToImgBlob2}>
