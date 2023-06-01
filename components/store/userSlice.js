@@ -21,7 +21,7 @@ let initialState = {
   program: "",
   courseSpecs: {},
   faculty:"",
-  department:""
+  department:"",
   CreatedCoursesForInstructor: "null",
 };
 const userSlice = createSlice({

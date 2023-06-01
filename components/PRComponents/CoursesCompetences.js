@@ -54,10 +54,10 @@ const CoursesCompetences = ({ cookies }) => {
           }
         );
         const data2 = await resp2.json();
-        let arr2 = data2.facultyComp;
-        let arr3 = data2.departmentComp;
+        // let arr2 = data2.facultyComp;
+        // let arr3 = data2.departmentComp;
         let arr4 = data2.programComp;
-        setComp([...arr2, ...arr3, ...arr4]);
+        setComp([...arr4]);
       } catch (e) {
         console.log(e);
       }

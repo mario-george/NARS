@@ -39,6 +39,8 @@ const programAvg = async(
           "avg": 0,
           "numCourses": 0
         };
+
+        // console.log("blo", compAvg[comp.code], comp.code);
       });
     }
   }catch(e){
@@ -93,8 +95,6 @@ const programAvg = async(
           "avg": 0
         };
 
-        console.log("courseAvg[course[0]]", courseAvg[course[0]])
-
 
         let wantedCourse = ceCourses.data.map(c => {
           // if(c.active){
@@ -129,7 +129,7 @@ const programAvg = async(
             let direct = weCourse.data.report.avgCompetences;
             let indirect = weCourse.data.report.avgCompetencesInDirect;
 
-            console.log("direct", direct);
+            // console.log("direct", direct);
   
             direct.forEach((elm, i) => {
 
@@ -137,19 +137,30 @@ const programAvg = async(
 
               if(direct[i].avg){
                 courseAvg[course[0]]['direct'] += direct[i].avg;
-
-                compAvg[c]['direct'] += direct[i].avg;
+                
+                // console.log(`rto ${c} > 1`, direct[i].avg, compAvg[c]['direct'])
+                if(isNaN(compAvg[c]['direct'])){
+                  // console.log("blolo");
+                  compAvg[c]['direct'] = direct[i].avg;
+                }else{
+                  // console.log("blolopo", c);
+                  compAvg[c]['direct'] += direct[i].avg;
+                }
+                // console.log(`rto ${c} > 2`, direct[i].avg, compAvg[c]['direct'])
               }
 
               if(indirect[i].avg){
                 courseAvg[course[0]]['indirect'] += indirect[i].avg;
 
-                compAvg[c]['indirect'] += indirect[i].avg;
+                // compAvg[c]['indirect'] += indirect[i].avg;
+                // console.log(`rto ${c} > 1`, indirect[i].avg, compAvg[c]['indirect'])
+                compAvg[c]['indirect'] += direct[i].avg;
+                // console.log(`rto ${c} > 2`, indirect[i].avg, compAvg[c]['indirect'])
               }
 
               compAvg[c]['numCourses'] += 1;
             });
-  
+
             courseAvg[course[0]]['direct'] /= direct.length;
             courseAvg[course[0]]['indirect'] /= indirect.length;
   
@@ -165,20 +176,20 @@ const programAvg = async(
     console.log("courses/created-courses/?course=$", e);
   }
 
-  Object.keys(compAvg).forEach(c => {
-    console.log("git int u", c, compAvg[c]['direct'], compAvg[c]);
-    if(compAvg[c]['numCourses']){
-      console.log("c", c);
-      compAvg[c]['direct'] /= compAvg[c]['numCourses'];
-      compAvg[c]['indirect'] /= compAvg[c]['numCourses'];
-      compAvg[c]['avg'] = (compAvg[c]['direct'] + compAvg[c]['indirect']) / 2;
-    }
+  // Object.keys(compAvg).forEach(c => {
+  //   console.log("git int u", c, compAvg[c]['direct'], compAvg[c]);
+  //   if(compAvg[c]['numCourses']){
+  //     console.log("c", c);
+  //     compAvg[c]['direct'] /= compAvg[c]['numCourses'];
+  //     compAvg[c]['indirect'] /= compAvg[c]['numCourses'];
+  //     compAvg[c]['avg'] = (compAvg[c]['direct'] + compAvg[c]['indirect']) / 2;
+  //   }
     
 
-  });
+  // });
 
-  console.log("compAvg", compAvg);
-  console.log("courseAvg", Object.keys(courseAvg), courseAvg);
+  // console.log("compAvg", compAvg);
+  // console.log("courseAvg", Object.keys(courseAvg), courseAvg);
 
   setCompAvg(compAvg);
   setCourseAvg(courseAvg);

@@ -491,71 +491,48 @@ const courseReport = ({ cookies }) => {
         setLectureTopics(jsonData.data.courseSpecs.lecturePlan.topics);
       }
       setCourseCompetences(jsonData.data.course.competences);
-      setNumberOfStudents(numOfStudents);
-      let compD = getAvg(jsonData.data.report.avgCompetences);
-      let compI = getAvg(jsonData.data.report.avgCompetencesInDirect)
-      console.log(compI)
-      tempIt.push(compD);
-      setAvgValues(compD);
-      tempIt.push(compI);
-      setAvgValuesSurvey(compI);
-      let avo = {};
-      Object.keys(compD).forEach(elm => {
-        avo[elm] = (compD[elm] + compI[elm]) / 2
-      });
-      setAvgAvg(avo);
-      tempIt.push(getAvgLOs(jsonData.data.report.avgLOSInDirect));
-      setAvgValuesLOs(getAvgLOs(jsonData.data.report.avgLOSInDirect));
-      console.log("jsonData.data.report.avgLOSInDirect",
-      jsonData.data.report.avgLOSInDirect)
-      console.log("jsonData.data.report.avgCompetencesInDirect",
-      jsonData.data.report.avgCompetencesInDirect)
-      tempIt.push([
-        jsonData.data.course.minTarget,
-        jsonData.data.course.maxTarget,
-      ]);
-      setTarget([
-        jsonData.data.course.minTarget,
-        jsonData.data.course.maxTarget,
-      ]);
-      const { final, midterm } = examGrades;
-      console.log("final ", JSON.stringify(final));
-      console.log("midterm ", JSON.stringify(midterm));
-      setCompetenciesMap(competences);
-      setQuestionsGrades(questionsGrades);
-      setQuestions(jsonData.data.report.questions);
-      setMid(midterm);
-      setFinal(final);
-      setStudentAssessments(
-        jsonData.data.courseSpecs.studentAssessment.assessmentSchedulesWeight
-      );
-      setLectureTopics(jsonData.data.courseSpecs.lecturePlan.topics);
-      tempIt.push(jsonData.data.report.questions);
-      let myTemp = [];
-      if (
-        typeof(tempIt[1]) == "undefined" ||
-        typeof(tempIt[4]) == "undefined"
-      ) {
-        myTemp.push("Direct Assessment isn't Completed yet");
+      if (jsonData.data.course.minTarget && jsonData.data.course.maxTarget) {
+        setTarget([
+          jsonData.data.course.minTarget,
+          jsonData.data.course.maxTarget,
+        ]);
+      } else {
+        console.log("ERROR", "COURSE DOES NOT HAVE A TARGET");
       }
-      if (!tempIt[3][1]) {
-        myTemp.push("Target isn't given");
+
+      if (isDirectAssessmentComplete.value) {
+        const { competences, examGrades, questionsGrades, numOfStudents } =
+          getData(jsonData.data.report.questions);
+
+        setNumberOfStudents(numOfStudents);
+        let compD = getAvg(jsonData.data.report.avgCompetences);
+        let compI = getAvg(jsonData.data.report.avgCompetencesInDirect)
+        console.log(compI)
+        setAvgValues(compD);
+        setAvgValuesSurvey(compI);
+        let avo = {};
+        Object.keys(compD).forEach(elm => {
+          avo[elm] = (compD[elm] + compI[elm]) / 2
+        });
+        setAvgAvg(avo);
+        setAvgValues(getAvg(jsonData.data.report.avgCompetences));
+        setAvgValuesSurvey(getAvg(jsonData.data.report.avgCompetencesInDirect));
+        setAvgValuesLOs(getAvgLOs(jsonData.data.report.avgLOSInDirect));
+
+        const { final, midterm } = examGrades;
+        setCompetenciesMap(competences);
+        console.log("COMPETNECES MAP IS ", JSON.stringify(competences));
+        setQuestionsGrades(questionsGrades);
+        setQuestions(jsonData.data.report.questions);
+        setMid(midterm);
+        setFinal(final);
       }
-      if (
-        typeof(tempIt[1]) == "undefined" ||
-        typeof(tempIt[2]) == "undefined"
-      ) {
-        myTemp.push("Indirect Assessment isn't Completed yet");
-      }
-      if (!jsonData.data.courseSpecsCompleted) {
-        myTemp.push("Course Specs isn't Completed yet");
-      }
-      setWantedData(myTemp);
-      console.log(jsonData.data)
+
+      setDataLoaded(true);
+      console.log(jsonData.data);
     } catch (e) {
       console.log("ERROR", e);
-    }
-    setDataLoaded(true);
+    }      
   };
 
   
@@ -621,7 +598,7 @@ const courseReport = ({ cookies }) => {
                         />
                       </div>
 
-                    <div className="flex flex-col justify-center items-center">
+                      <div className="flex flex-col justify-center items-center">
                       <div className="w-full" ref={refToImgBlob2}>
                         <ExamGrades
                           mid={mid}
@@ -684,18 +661,34 @@ const courseReport = ({ cookies }) => {
                           avgAvg={avgAvg}
                         />
                       </div>
-                      
 
-                      <button
-                        ref={buttonRef2}
-                        onClick={submitHandler}
-                        class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                      >
-                        Export
-                      </button>
+                        <button
+                          ref={buttonRef2}
+                          onClick={submitHandler}
+                          class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        >
+                          Export
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="bg-sky-50 h-[100%] w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none ">
+                    <ReportNotComplete
+                      isInDirectAssessmentComplete={
+                        isInDirectAssessmentComplete.value
+                      }
+                      isDirectAssessmentComplete={
+                        isDirectAssessmentComplete.value
+                      }
+                      isCourseSpecsComplete={isCourseSpecsComplete.value}
+                      doesCourseHaveCompetences={
+                        doesCourseHaveCompetences.value
+                      }
+                      doesCourseHaveTarget={doesCourseHaveTarget.value}
+                    />
+                  </div>
+                )}
               </div>
             </>
           )}

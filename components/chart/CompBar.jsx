@@ -39,9 +39,9 @@ const CompBar = (props) => {
   ];
 
   labels.forEach((elm, i) => {
-    dataValues[0][i] = props.comp[elm]['direct'];
-    dataValues[1][i] = props.comp[elm]['indirect'];
-    dataValues[2][i] = props.comp[elm]['avg'];
+    dataValues[0][i] = props.comp[elm]['direct'] / props.comp[elm]['numCourses'];
+    dataValues[1][i] = props.comp[elm]['indirect'] / props.comp[elm]['numCourses'];
+    dataValues[2][i] = (dataValues[0][i] + dataValues[1][i]) / 2;
   });
   
   return <Bar

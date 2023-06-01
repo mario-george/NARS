@@ -66,12 +66,12 @@ const CoursesCompetences = ({ cookies }) => {
         <h2 className="font-bold text-xl mb-2">
           Courses & Competences Review
         </h2>
-        <h1>
+        {/* <h1>
           {JSON.stringify(comp)}
         </h1>
         <h1>
           {JSON.stringify(coursesAvg)}
-        </h1>
+        </h1> */}
         <div className="h-0.5 w-full bg-gray-300 mb-2" />
         <div className="flex flex-col w-full items-center">
         <label className="mt-12">Courses Specs and Report Filled</label>
