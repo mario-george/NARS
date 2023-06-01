@@ -56,7 +56,7 @@ const CoursesCompetences = ({ cookies }) => {
     
     // setNumReport([3, 2])
     // setNumSpecs([2, 3])
-    setTarget([30, 70])
+    setTarget([50, 70])
   }, []);
 
   return (
@@ -96,17 +96,20 @@ const CoursesCompetences = ({ cookies }) => {
           </div>
         </div>
         <label className="mt-12">Courses and Competences Achievement</label>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 gap-y-1 w-[90%] mb-10">
+        <div className={`grid grid-cols-1 
+          md:${((Object.keys(coursesAvg).length > 1) || (Object.keys(comp).length > 3))? 
+            "grid-cols-1 items-center":"grid-cols-2"}
+          gap-1 md:gap-2 gap-y-1 w-[90%] mb-10`}>
           <div>
             <CoursesBar
               courses={coursesAvg}
-              w={60}
+              w={(Object.keys(coursesAvg).length > 3)? 150:60}
               h={60}
             />
           </div>
           <div>
             <CompBar
-              comp={comp}
+              comp={(Object.keys(comp).length > 3)? 150:60}
               w={60}
               h={60}
             />

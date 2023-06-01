@@ -154,7 +154,7 @@ const programAvg = async(
 
                 // compAvg[c]['indirect'] += indirect[i].avg;
                 // console.log(`rto ${c} > 1`, indirect[i].avg, compAvg[c]['indirect'])
-                compAvg[c]['indirect'] += direct[i].avg;
+                compAvg[c]['indirect'] += indirect[i].avg;
                 // console.log(`rto ${c} > 2`, indirect[i].avg, compAvg[c]['indirect'])
               }
 
@@ -188,8 +188,8 @@ const programAvg = async(
 
   // });
 
-  // console.log("compAvg", compAvg);
-  // console.log("courseAvg", Object.keys(courseAvg), courseAvg);
+  console.log("compAvg", compAvg);
+  console.log("courseAvg", Object.keys(courseAvg), courseAvg);
 
   setCompAvg(compAvg);
   setCourseAvg(courseAvg);
