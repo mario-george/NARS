@@ -46,6 +46,7 @@ const courseReport = ({ cookies }) => {
   const buttonRef13 = useRef(null);
   const buttonRef14 = useRef(null);
   const buttonRef15 = useRef(null);
+  const buttonRef16 = useRef(null);
   useEffect(() => {
     localStorage.removeItem("courseReport1");
     localStorage.removeItem("courseReport2");
@@ -62,6 +63,7 @@ const courseReport = ({ cookies }) => {
     localStorage.removeItem("courseReport13");
     localStorage.removeItem("courseReport14");
     localStorage.removeItem("courseReport15");
+    localStorage.removeItem("courseReport16");
   }, []);
   const downloadMergedPDF = async () => {
     const pdfBase64 = localStorage.getItem("courseReport1");
@@ -79,6 +81,7 @@ const courseReport = ({ cookies }) => {
     const pdfBase64_part13 = localStorage.getItem("courseReport13");
     const pdfBase64_part14 = localStorage.getItem("courseReport14");
     const pdfBase64_part15 = localStorage.getItem("courseReport15");
+    const pdfBase64_part16 = localStorage.getItem("courseReport16");
 
     const binaryData = atob(pdfBase64);
     const binaryData2 = atob(pdfBase64_2);
@@ -95,6 +98,7 @@ const courseReport = ({ cookies }) => {
     const binaryData13 = atob(pdfBase64_part13);
     const binaryData14 = atob(pdfBase64_part14);
     const binaryData15 = atob(pdfBase64_part15);
+    const binaryData16 = atob(pdfBase64_part16);
 
     const array = new Uint8Array(binaryData.length);
     for (let i = 0; i < binaryData.length; i++) {
@@ -160,6 +164,10 @@ const courseReport = ({ cookies }) => {
     for (let i = 0; i < binaryData15.length; i++) {
       array15[i] = binaryData15.charCodeAt(i);
     }
+    const array16 = new Uint8Array(binaryData16.length);
+    for (let i = 0; i < binaryData16.length; i++) {
+      array16[i] = binaryData16.charCodeAt(i);
+    }
 
     const blob = new Blob([array], { type: "image/jpeg" });
     const blob2 = new Blob([array2], { type: "image/jpeg" });
@@ -176,6 +184,7 @@ const courseReport = ({ cookies }) => {
     const blob13 = new Blob([array13], { type: "image/jpeg" });
     const blob14 = new Blob([array14], { type: "image/jpeg" });
     const blob15 = new Blob([array15], { type: "image/jpeg" });
+    const blob16 = new Blob([array16], { type: "image/jpeg" });
 
     const ImgBlobs = [
       blob,
@@ -191,8 +200,9 @@ const courseReport = ({ cookies }) => {
       blob11,
       blob12,
       blob13,
-
-
+      blob14,
+      blob15,
+      blob16,
     ];
     const mergedBlob = await mergeTest(ImgBlobs);
 
@@ -213,6 +223,7 @@ const courseReport = ({ cookies }) => {
   const refToImgBlob13 = useRef();
   const refToImgBlob14 = useRef();
   const refToImgBlob15 = useRef();
+  const refToImgBlob16 = useRef();
 
   const [competenciesMap, setCompetenciesMap] = useState({});
   const [courseCompetences, setCourseCompetences] = useState([]);
@@ -241,7 +252,6 @@ const courseReport = ({ cookies }) => {
   const isCourseSpecsComplete = useRef(false);
   const doesCourseHaveCompetences = useRef(false);
   const doesCourseHaveTarget = useRef(false);
-
 
   function CustomChildComponent({ toPdf, buttonRef, nameOfpdfItem }) {
     const handleClick = async () => {
@@ -288,12 +298,38 @@ const courseReport = ({ cookies }) => {
     await buttonRef13.current.click();
     await buttonRef14.current.click();
     await buttonRef15.current.click();
+    await buttonRef16.current.click();
 
     e.preventDefault();
 
-    setTimeout(() => {
-      // window.location.href = `/instructor/courses/${courseID}/courseSpecs/Pdf`;
+    // send courseRep to save to the backend
+    // setTimeout(() => {
 
+    //   downloadMergedPDF();
+    // }, 2000);
+  };
+  const downloadOnly = async (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    await buttonRef.current.click();
+    await buttonRef2.current.click();
+    await buttonRef3.current.click();
+    await buttonRef4.current.click();
+    await buttonRef5.current.click();
+    await buttonRef6.current.click();
+    await buttonRef7.current.click();
+    await buttonRef8.current.click();
+    await buttonRef9.current.click();
+    await buttonRef10.current.click();
+    await buttonRef11.current.click();
+    await buttonRef12.current.click();
+    await buttonRef13.current.click();
+    await buttonRef14.current.click();
+    await buttonRef15.current.click();
+    await buttonRef16.current.click();
+
+    setTimeout(() => {
       downloadMergedPDF();
     }, 2000);
   };
@@ -600,6 +636,18 @@ const courseReport = ({ cookies }) => {
                   />
                 )}
               </CustomReactToPdf>{" "}
+              <CustomReactToPdf
+                targetRef={refToImgBlob16}
+                filename="part16.pdf"
+              >
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef16}
+                    nameOfpdfItem={`courseReport16`}
+                  />
+                )}
+              </CustomReactToPdf>{" "}
               <div className="flex flex-row w-auto h-auto ">
                 {reportCompleted ? (
                   <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none resize-none  ">
@@ -641,16 +689,20 @@ const courseReport = ({ cookies }) => {
                             refToImgBlob5={refToImgBlob5}
                           />
                         </div>
-                        <div className="w-full" ref={refToImgBlob7}>
+                        <div className="w-full">
                           <CompetencesLosGrades
                             numberOfStudents={numberOfStudents}
                             avgValues={avgValues}
                             competenciesMap={competenciesMap}
                             learningOutcomes={learningOutcomes}
+                            refToImgBlob7={refToImgBlob7}
+                            refToImgBlob8={refToImgBlob8}
                           />
                         </div>
-                        <div className="w-full" ref={refToImgBlob8}>
+                        <div className="w-full">
                           <CompetencesLosAchievement
+                            refToImgBlob9={refToImgBlob9}
+                            refToImgBlob10={refToImgBlob10}
                             target={target}
                             competenciesMap={competenciesMap}
                             avgValues={avgValues}
@@ -658,7 +710,7 @@ const courseReport = ({ cookies }) => {
                             learningOutcomes={learningOutcomes}
                           />
                         </div>
-                        <div className="w-full" ref={refToImgBlob9}>
+                        <div className="w-full" ref={refToImgBlob11}>
                           <CompetencesLosSurvey
                             numberOfStudents={numberOfStudents}
                             avgLOS={avgValuesLOs}
@@ -666,7 +718,7 @@ const courseReport = ({ cookies }) => {
                             learningOutcomes={learningOutcomes}
                           />
                         </div>
-                        <div className="w-full" ref={refToImgBlob10}>
+                        <div className="w-full">
                           <CompetencesLosAchievementSurvey
                             target={target}
                             competenciesMap={competenciesMap}
@@ -674,9 +726,11 @@ const courseReport = ({ cookies }) => {
                             avgLOS={avgValuesLOs}
                             numberOfStudents={numberOfStudents}
                             learningOutcomes={learningOutcomes}
+                            refToImgBlob13={refToImgBlob13}
+                            refToImgBlob12={refToImgBlob12}
                           />
                         </div>
-                        <div className="w-full" ref={refToImgBlob11}>
+                        <div className="w-full" ref={refToImgBlob14}>
                           <CompetencesLosOverall
                             numberOfStudents={numberOfStudents}
                             avgLOS={avgValuesLOs}
@@ -685,7 +739,7 @@ const courseReport = ({ cookies }) => {
                             learningOutcomes={learningOutcomes}
                           />
                         </div>
-                        <div className="w-full" >
+                        <div className="w-full">
                           <CompetencesLosAchievementOVerall
                             target={target}
                             competenciesMap={competenciesMap}
@@ -694,17 +748,25 @@ const courseReport = ({ cookies }) => {
                             avgValuesSurvey={avgValuesSurvey}
                             numberOfStudents={numberOfStudents}
                             learningOutcomes={learningOutcomes}
-                            refToImgBlob13={refToImgBlob13}
-                            refToImgBlob12={refToImgBlob12}
+                            refToImgBlob15={refToImgBlob15}
+                            refToImgBlob16={refToImgBlob16}
                           />
                         </div>
-
+                        <div className="flex justify-end w-full">
                         <button
-                          onClick={submitHandler}
-                          class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                        >
-                          Export
-                        </button>
+                            onClick={downloadOnly}
+                            class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                          >
+                            Download Pdf
+                          </button>
+                          <button
+                            onClick={submitHandler}
+                            class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                          >
+                            Submit
+                          </button>
+                       
+                        </div>
                       </div>
                     </div>
                   </div>
