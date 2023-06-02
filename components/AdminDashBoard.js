@@ -13,7 +13,11 @@ import { TiGroupOutline } from "react-icons/ti";
 export default function AdminDashBoard() {
   const router = useRouter();
   const navStatus = useSelector((s) => s.user.navStatus);
+  const userState = useSelector((s) => s.user);
   const dispatch = useDispatch();
+  
+  const {modalOpen}=userState
+
   const logoutHandler = () => {
     router.push('/logout')
 
@@ -21,7 +25,7 @@ export default function AdminDashBoard() {
   };
   return (
     <nav
-      className={`nav2 transition-all duration-300 transform ${navStatus ? ` -translate-x-full` : `translate-x-0 `
+      className={`nav2 transition-all ${modalOpen ? `z-30  ` : ``} duration-300 transform ${navStatus ? ` -translate-x-full` : `translate-x-0 `
         }`}
     >
       <Link className="link2 focus:text-green-400 " href="/profile">

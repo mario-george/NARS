@@ -5,15 +5,38 @@ import Cookies from "js-cookie";
 import UserList from "@/components/user/UserList";
 import UserCard from "@/components/user/UserCard";
 import { useSelector } from "react-redux";
+import StaffCard from "@/components/user/StaffCard";
+import DropdownRoles from "@/components/user/DropDownRoles";
 const SearchStudent = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
-  const token = Cookies.get("token");
+  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+  const handleDivClick = (event) => {
+    const checkbox = event.currentTarget.querySelector(
+      'input[type="checkbox"]'
+    );
+    if (checkbox) {
+      checkbox.click();
+    }
+  };
+  const handleRoleChange = (event) => {
+    const value = event.target.value;
+    const isChecked = event.target.checked;
+
+    setSelectedRoles((prevSelectedRoles) => {
+      if (isChecked) {
+        return [...prevSelectedRoles, value];
+      } else {
+        return prevSelectedRoles.filter((role) => role !== value);
+      }
+    });
+  };
   const router = useRouter();
   const [staff, setStaff] = useState([]);
   const [invalidData, setInvalidData] = useState(false);
@@ -46,10 +69,15 @@ const SearchStudent = ({ cookies }) => {
   };
   const editConfirm = (s) => {
     setEditModalIsOpen(true);
+    console.log(s);
+    setSelectedRoles(s.roles);
     setTobeEdited(s);
     document.body.classList.toggle("overflow-hidden");
   };
-  const deleteHandler = async (staff) => {
+  const deleteHandler = async (e) => {
+    if(e){
+      e.preventDefault()
+    }
     try {
       const resp = await fetch(
         `${process.env.url}api/v1/users/staff/${tobeDeleted._id}`,
@@ -58,7 +86,7 @@ const SearchStudent = ({ cookies }) => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + cookies.token,
           },
         }
       );
@@ -84,11 +112,12 @@ const SearchStudent = ({ cookies }) => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + cookies.token,
           },
           body: JSON.stringify({
             name: name.current.value,
             email: email.current.value,
+            roles: selectedRoles,
           }),
         }
       );
@@ -108,24 +137,20 @@ const SearchStudent = ({ cookies }) => {
       e.preventDefault();
     }
     try {
+  
+
       const resp = await fetch(
-        `${process.env.url}api/v1/users/staff/?role=${role.current.value}`,
+        `${process.env.url}api/v1/users/staff?roles=${role.current.value}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-            // 'Custom-Header':code.current.value,
+            Authorization: "Bearer " + cookies.token,
           },
-          // body: JSON.stringify({
-          //   code: code.current.value,
-
-          // }),
         }
       );
       const data = await resp.json();
       setStaff(data.data);
-      // console.log(data.data.data[0].name);
       console.log(data);
     } catch (e) {
       console.log(e);
@@ -135,7 +160,7 @@ const SearchStudent = ({ cookies }) => {
     <>
       {deleteModalIsOpen ? (
         <div>
-          <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100 w-screen h-screen">
+          {/* <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100 w-screen h-screen">
             <div className=" mt-16 ">
               <div className="p-4 m-auto max-w-sm bg-blue-200 rounded-xl  relative  ">
                 <button
@@ -155,23 +180,59 @@ const SearchStudent = ({ cookies }) => {
                 </button>
               </div>
             </div>
+          </div> */}
+       
+       <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100   w-screen h-screen ">
+            <div className=" mt-16 ">
+              <div className="p-4 m-auto max-w-sm rounded  relative  ">
+                <div className="flex flex-col justify-center items-center gap-10 w-full mt-10 ">
+                  <form className="text-xl border-2 border-none shadow-2xl rounded-2xl px-7 py-4 gap-10 w-[150%] relative bg-white">
+                    <button
+                      onClick={deleteCancel}
+                      className=" text-gray-700 duration-200 transition-all hover:bg-gray-400 px-2 rounded absolute top-4 right-4 py-1"
+                    >
+                      <i class="fa-solid fa-xmark fa-lg"></i>
+                    </button>
+                    <div className="mb-8 text-2xl ">Delete Staff:</div>
+                   
+                   <div className="flex w-full h-full items-center justify-center text-red-800">
+                   Are you sure you want to delete this user
+                   </div>
+                    <button
+                      onClick={deleteHandler}
+                      class="w-full text-center bg-gray-300 text-red-500 hover:text-white duration-200 transition-all hover:bg-red-600 px-4 py-3 rounded-lg my-5"
+                    >
+                      Confirm
+                    </button>
+
+                    {invalidData && (
+                      <span className="text-red-500 flex justify-center">
+                        Invalid input{" "}
+                      </span>
+                    )}
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       ) : null}
       {editModalIsOpen ? (
         <div>
-          <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100 w-screen h-screen">
+        
+          <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100   w-screen h-screen ">
             <div className=" mt-16 ">
-              <div className="p-4 m-auto max-w-sm rounded-xl  relative  ">
+              <div className="p-4 m-auto max-w-sm rounded  relative  ">
                 <div className="flex flex-col justify-center items-center gap-10 w-full mt-10 ">
-                  <form className="text-1xl border-2  border-none shadow-2xl rounded-2xl px-7 py-4  gap-10 relative bg-sky-300">
+                  <form className="text-xl border-2 border-none shadow-2xl rounded-2xl px-7 py-4 gap-10 w-[150%] relative bg-white">
                     <button
                       onClick={editCancel}
-                      className="bg-red-500 text-white duration-200 transition-all hover:bg-red-600 px-2 rounded absolute top-4 right-4"
+                      className=" text-gray-700 duration-200 transition-all hover:bg-gray-400 px-2 rounded absolute top-4 right-4 py-1"
                     >
-                      <i class="fa-solid fa-xmark"></i>
+                      <i class="fa-solid fa-xmark fa-lg"></i>
                     </button>
-                    <label for="email" className="font-bold mr-10">
+                    <div className="mb-8 text-2xl">Edit Staff Info:</div>
+                    <label for="email" className="  ">
                       Edu Email
                     </label>
                     <div class="my-5">
@@ -179,29 +240,42 @@ const SearchStudent = ({ cookies }) => {
                         type="email"
                         id="email"
                         name="email"
-                        className="button"
+                        className="editField"
                         placeholder=""
                         defaultValue={tobeEdited.email}
                         ref={email}
                       />
                     </div>
-                    <label for="role" className="font-bold ">
+                    <label for="role" className=" ">
                       Name
                     </label>
-                    <div class="flex-for-reg mt-5">
+                    <div class="flex-for-reg my-5">
                       <input
                         type="text"
                         id="name"
                         name="name"
-                        className="button"
+                        className="editField"
                         defaultValue={tobeEdited.name}
                         placeholder="name"
                         ref={name}
                       />
                     </div>
+
+                    <div class="flex-for-reg my-5 w-full">
+                      <DropdownRoles
+                        handleDivClick={handleDivClick}
+                        toggleDropdown={toggleDropdown}
+                        dropdownOpen={dropdownOpen}
+                        selectedRoles={selectedRoles}
+                        setSelectedRoles={setSelectedRoles}
+                        handleRoleChange={handleRoleChange}
+                        edit={true}
+                      />
+                   
+                    </div>
                     <button
                       onClick={editHandler}
-                      class="w-full  text-center home-btn1 my-5"
+                      class="w-full text-center bg-blue-500 text-white duration-200 transition-all hover:bg-blue-600 px-4 py-3 rounded-lg my-5"
                     >
                       Confirm
                     </button>
@@ -221,15 +295,13 @@ const SearchStudent = ({ cookies }) => {
 
       <div
         className={`flex flex-row w-screen h-screen ${
-          deleteModalIsOpen ? `bg-gray-500 opacity-60 overflow-hidden ` : null
-        } ${
-          editModalIsOpen ? `bg-gray-500 opacity-60 overflow-hidden ` : null
-        } `}
+          deleteModalIsOpen ? `bg-white opacity-60 overflow-hidden ` : null
+        } ${editModalIsOpen ? `bg-white opacity-60 overflow-hidden ` : null} `}
       >
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
-          >
+        >
           <div className="overflow-auto contentAddUser2 flex flex-col gap-10">
             <div className=" ">Search Staff</div>
             <div className="flex gap-20 ">
@@ -268,25 +340,31 @@ const SearchStudent = ({ cookies }) => {
               </div>
             </div>
             <div className="flex justify-center w-full ">
-              <div className="w-2/5 h-[5rem]">
+              <div className="w-3/5 h-[5rem] flex flex-col">
                 {staff.map((s) => {
                   return (
                     <>
-                      <UserCard name={s.name} code={s.role} email={s.email} />
-                      <div className="flex w-full justify-center">
+                                        <div className="flex w-full space-x-5 justify-between ">
+                      <StaffCard
+                        name={s.name}
+                        code={s.role}
+                        roles={s.roles}
+                        email={s.email}
+                      />
+                <div className="flex justify-center items-center space-x-3">
                         <button
                           onClick={() => editConfirm(s)}
-                          class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                          class="  text-white bg-blue-500 duration-200 transition-all hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                         >
-                          Edit
+                          <i class="fa-solid fa-pen-to-square"></i>{" "}
                         </button>
                         <button
                           onClick={() => deleteConfirm(s)}
-                          class="w-[6rem]  text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                          class="  text-white bg-[#FF0000] duration-200 transition-all hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
                         >
-                          Delete
+                          <i class="fa-solid fa-delete-left"></i>{" "}
                         </button>
-                      </div>
+                      </div></div>
                     </>
                   );
                 })}

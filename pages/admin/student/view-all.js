@@ -42,13 +42,15 @@ const Students = ({ cookies }) => {
     }
   };
   const handleClick = () => {
-    const header = ["name", "code", "email", "faculty", "academicYear"];
+    const header = ["name", "code", "email", "faculty", "academicYear","department"];
+    console.log(students)
     const rows = students.map((item) => [
       item.name,
       item.code,
       item.email,
       item.faculty,
       item.academicYear,
+      item.department
     ]);
 
     const worksheet = XLSX.utils.aoa_to_sheet([header, ...rows]);

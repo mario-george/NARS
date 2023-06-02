@@ -4,7 +4,8 @@ import { useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import UserList from "@/components/user/UserList";
 import UserCard from "@/components/user/UserCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateField } from "@/components/store/userSlice";
 const SearchStudent = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
@@ -17,7 +18,14 @@ const SearchStudent = ({ cookies }) => {
   const [tobeEdited, setTobeEdited] = useState();
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [invalidData, setInvalidData] = useState(false);
-
+  const d = useDispatch();
+  useEffect(() => {
+    if (editModalIsOpen) {
+      d(updateField({ field: "modalOpen", value: true }));
+    } else {
+      d(updateField({ field: "modalOpen", value: false }));
+    }
+  }, [editModalIsOpen]);
   const code = useRef();
   const name = useRef();
   const email = useRef();
@@ -142,7 +150,7 @@ const SearchStudent = ({ cookies }) => {
         <div>
           <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100 w-screen h-screen">
             <div className=" mt-16 ">
-              <div className="p-4 m-auto max-w-sm bg-blue-200 rounded-xl  relative  ">
+              <div className="p-4 m-auto max-w-sm bg-blue-200 rounded  relative  ">
                 <button
                   onClick={deleteCancel}
                   className="bg-red-500 text-white duration-200 transition-all hover:bg-red-600 px-2 rounded absolute top-4 right-4"
@@ -165,18 +173,19 @@ const SearchStudent = ({ cookies }) => {
       ) : null}
       {editModalIsOpen ? (
         <div>
-          <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100 w-screen h-screen">
+          <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100   w-screen h-screen ">
             <div className=" mt-16 ">
-              <div className="p-4 m-auto max-w-sm rounded-xl  relative  ">
+              <div className="p-4 m-auto max-w-sm rounded  relative  ">
                 <div className="flex flex-col justify-center items-center gap-10 w-full mt-10 ">
-                  <form className="text-1xl border-2  border-none shadow-2xl rounded-2xl px-7 py-4  gap-10 relative bg-sky-300">
+                  <form className="text-xl border-2 border-none shadow-2xl rounded-2xl px-7 py-4 gap-10 w-[150%] relative bg-white">
                     <button
                       onClick={editCancel}
-                      className="bg-red-500 text-white duration-200 transition-all hover:bg-red-600 px-2 rounded absolute top-4 right-4"
+                      className=" text-gray-700 duration-200 transition-all hover:bg-gray-400 px-2 rounded absolute top-4 right-4 py-1"
                     >
-                      <i class="fa-solid fa-xmark"></i>
+                      <i class="fa-solid fa-xmark fa-lg"></i>
                     </button>
-                    <label for="email" className="font-bold mr-10">
+                    <div className="mb-8 text-2xl">Edit Student Info:</div>
+                    <label for="email" className="  ">
                       Edu Email
                     </label>
                     <div class="my-5">
@@ -184,27 +193,27 @@ const SearchStudent = ({ cookies }) => {
                         type="email"
                         id="email"
                         name="email"
-                        className="button"
+                        className="editField"
                         placeholder=""
                         defaultValue={tobeEdited.email}
                         ref={email}
                       />
                     </div>
-                    <label for="role" className="font-bold ">
+                    <label for="role" className=" ">
                       Name
                     </label>
-                    <div class="flex-for-reg mt-5">
+                    <div class="flex-for-reg my-5">
                       <input
                         type="text"
                         id="name"
                         name="name"
-                        className="button"
+                        className="editField"
                         defaultValue={tobeEdited.name}
                         placeholder="name"
                         ref={name}
                       />
                     </div>
-                    <label for="code" className="font-bold mr-10">
+                    <label for="code" className=" mr-10">
                       Code
                     </label>
                     <div class="my-5">
@@ -212,7 +221,7 @@ const SearchStudent = ({ cookies }) => {
                         type="text"
                         id="code"
                         name="code"
-                        className="button"
+                        className="editField"
                         placeholder=""
                         defaultValue={tobeEdited.code}
                         ref={code}
@@ -220,7 +229,7 @@ const SearchStudent = ({ cookies }) => {
                     </div>
                     <button
                       onClick={editHandler}
-                      class="w-full  text-center home-btn1 my-5"
+                      class="w-full text-center bg-blue-500 text-white duration-200 transition-all hover:bg-blue-600 px-4 py-3 rounded-lg my-5"
                     >
                       Confirm
                     </button>
@@ -240,15 +249,13 @@ const SearchStudent = ({ cookies }) => {
 
       <div
         className={`flex flex-row w-screen h-screen ${
-          deleteModalIsOpen ? `bg-black opacity-60 overflow-hidden ` : null
-        } ${
-          editModalIsOpen ? `bg-gray-500 opacity-60 overflow-hidden ` : null
-        }`}
+          deleteModalIsOpen ? `bg-white opacity-60 overflow-hidden ` : null
+        } ${editModalIsOpen ? `bg-white opacity-60 overflow-hidden ` : null}`}
       >
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
-          >
+        >
           <div className="overflow-auto contentAddUser2 flex flex-col gap-10">
             <div className=" ">Search Student</div>
             <div className="flex gap-20 ">
@@ -265,28 +272,28 @@ const SearchStudent = ({ cookies }) => {
               </div>
             </div>
             <div className="flex justify-center w-full">
-              <div className="w-2/5 h-[5rem]">
+              <div className="w-3/5 h-[5rem] flex flex-col ">
                 {student.map((s) => {
                   return (
-                    <>
+                    <div className="flex w-full space-x-5 justify-between ">
                       <UserCard name={s.name} code={s.code} email={s.email} />
                       <div className="flex justify-center items-center space-x-3">
                         <button
                           onClick={() => editConfirm(s)}
                           type="submit"
-                          class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                          class="  text-white bg-blue-500 transition-all duration-200  hover:bg-blue-600 focus:ring-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                         >
-                          Edit
+                          <i class="fa-solid fa-pen-to-square"></i>{" "}
                         </button>
                         <button
                           onClick={() => deleteConfirm(s)}
                           type="submit"
-                          class="w-[6rem]  text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                          class="  text-white bg-[#FF0000] duration-200 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
                         >
-                          Delete
+                          <i class="fa-solid fa-delete-left"></i>{" "}
                         </button>
                       </div>
-                    </>
+                    </div>
                   );
                 })}
               </div>

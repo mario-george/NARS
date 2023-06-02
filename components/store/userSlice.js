@@ -20,9 +20,10 @@ let initialState = {
   cp2: {},
   program: "",
   courseSpecs: {},
-  faculty:"",
-  department:""
+  faculty: "",
+  department: "",
   CreatedCoursesForInstructor: "null",
+  modalOpen: false,
 };
 const userSlice = createSlice({
   initialState,
@@ -55,11 +56,11 @@ const userSlice = createSlice({
       s.jwt = "null";
       s.token = "null";
       s.name = "null";
-      s.instance_id="null";
-      s.original_id="null";
-      s.program="null";
-      s.department="null";
-      s.faculty="null"
+      s.instance_id = "null";
+      s.original_id = "null";
+      s.program = "null";
+      s.department = "null";
+      s.faculty = "null";
     },
     toggleNav: (s) => {
       s.navStatus = !s.navStatus;
