@@ -30,7 +30,7 @@ function createHeader(headerName, array, optionalCreatedAt) {
             className="bg-white shadow-xl p-2"
             style={{ height: isOpen2 ? "auto" : 0 }}
           >
-            <div className="flex flex-col gap-3 px-4 ">
+            <div className="flex flex-col px-4 ">
               {array.map((e) => {
                 return <div className="">{e}</div>;
               })}

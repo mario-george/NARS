@@ -16,16 +16,16 @@ const LearningOutcomes = ({
 }) => {
   return (
     <div className="flex flex-col  w-full ">
-      <div className="text-2xl my-2 bg-yellow-200">4-Learning Outcomes</div>
+      <div className="text-2xl my-2 bg-yellow-200">5-Learning Outcomes</div>
       <i> At the end of the course, the student will be able to:</i>
 
       <div class="flex  items-center justify-between text-lg text-gray-700 capitalize  dark:bg-gray-700 dark:text-gray-400 ">
-        <div className="table-container w-full ">
+        <div className={`table-container w-full  `}>
           <table className="table mx-auto">
             <thead>
               <tr>
                 <th
-                  className="border-b p-2 bg-sky-100 text-left border border-gray-300"
+                  className="border-b p-2 bg-sky-100 text-left border border-gray-300 w-full"
                   colSpan={2}
                 >
                   Cognitive Domain
@@ -106,7 +106,7 @@ const LearningOutcomes = ({
             <thead>
               <tr>
                 <th
-                  className="border-b p-2 bg-sky-100 text-left border border-gray-300"
+                  className="border-b p-2 bg-sky-100 text-left border border-gray-300  w-full"
                   colSpan={2}
                 >
                   Psychomotor Domain
@@ -186,7 +186,7 @@ const LearningOutcomes = ({
             <thead>
               <tr>
                 <th
-                  className="border-b p-2 bg-sky-100 text-left border border-gray-300"
+                  className="border-b p-2 bg-sky-100 text-left border border-gray-300  w-full"
                   colSpan={2}
                 >
                   Affective Domain

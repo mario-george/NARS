@@ -14,6 +14,48 @@ import useFacility from "@/components/helper/useFacility";
 import useListOfReferences from "@/components/helper/useListOfReferences";
 
 const part4 = ({ cookies }) => {
+  const [errors, setErrors] = useState([]);
+  const [invalidTopicsRefs, setInvalidTopicsRefs] = useState(false);
+  const [CompetencesInvalid, setCompetencesInvalid] = useState(false);
+
+  const [invalidEmptyTopic, setInvalidEmptyTopic] = useState(false);
+  const [invalidPlannedHours, setInvalidPlannedHours] = useState(false);
+  const [errorPlannedHours, setErrorPlannedHours] = useState("");
+  const [errorTopcsRefs, setErrorTopicsRefs] = useState("");
+  const [errorEmptyTopics, setErrorEmptyTopic] = useState("");
+  const passInvalidEmptyTopic = ({ boolean, error }) => {
+    if (error) {
+      setErrorEmptyTopic(error);
+    }
+    if (boolean == false) {
+      setInvalidEmptyTopic(false);
+    }
+    if (boolean == true) {
+      setInvalidEmptyTopic(true);
+    }
+  };
+  const passInvalidTopicsRefs = ({ boolean, error }) => {
+    if (error) {
+      setErrorTopicsRefs(error);
+    }
+    if (boolean == false) {
+      setInvalidTopicsRefs(false);
+    }
+    if (boolean == true) {
+      setInvalidTopicsRefs(true);
+    }
+  };
+  const passInvalidPlannedHours = ({ boolean, error }) => {
+    if (error) {
+      setErrorPlannedHours(error);
+    }
+    if (boolean == false) {
+      setInvalidPlannedHours(false);
+    }
+    if (boolean == true) {
+      setInvalidPlannedHours(true);
+    }
+  };
   useEffect(() => {
     localStorage.removeItem("pdf4");
     localStorage.removeItem("pdf5");
@@ -157,7 +199,7 @@ const part4 = ({ cookies }) => {
       );
       const data = await r.json();
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
-      setSpecs(data.data.courseSpecs);
+      setSpecs(data.data);
       const length1 =
         data.data.courseSpecs.courseLearningOutcomes[0].learningOutcomes.length;
       const length2 =
@@ -234,9 +276,9 @@ const part4 = ({ cookies }) => {
           setTableDataLecturePlan([...checkboxRefsLecturePlan.current]);
           setT(false);
         }
-        if (data.data.courseSpecs.lecturePlan.expectedStudyingHoursPerWeek ) {
+        if (data.data.courseSpecs.lecturePlan.expectedStudyingHoursPerWeek) {
           expectedStudyingHoursPerWeek.current.value =
-          data.data.courseSpecs.lecturePlan.expectedStudyingHoursPerWeek;
+            data.data.courseSpecs.lecturePlan.expectedStudyingHoursPerWeek;
         }
         for (
           let i = 0;
@@ -261,7 +303,9 @@ const part4 = ({ cookies }) => {
             if (
               data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[
                 j
-              ] != null
+              ] != null &&
+              data.data.courseSpecs.lecturePlan.topics[i]?.learningOutcomes[j]
+                .selected
             ) {
               checkboxRefsLecturePlan.current[i][j] = true;
             }
@@ -552,8 +596,8 @@ const part4 = ({ cookies }) => {
       role="alert"
     >
       <i className="fa-solid fa-circle-check"></i>
-      <div className="ml-3 text-sm font-medium">
-        Competences has been achieved successfully!
+      <div className="ml-3  font-medium">
+        Course data has been submitted successfully!
         <a href="#" className="font-semibold underline hover:no-underline"></a>
       </div>
       <button
@@ -585,6 +629,7 @@ const part4 = ({ cookies }) => {
     courseID,
     cookies,
     courseSpecs: specs,
+    hasClass,
   });
   const ListOfReferencesHandler = useListOfReferences({
     courseID,
@@ -595,6 +640,8 @@ const part4 = ({ cookies }) => {
   const assessmentScheduleHandler = useAssessmentSchedule({
     courseID,
     cookies,
+    specs,
+    hasClass,
   });
   const assessmentScheduleContent = assessmentScheduleHandler.content;
   const facilityHandler = useFacility({
@@ -608,6 +655,7 @@ const part4 = ({ cookies }) => {
     courseID: courseID,
     cookies: cookies,
     courseSpecs: specs,
+    hasClass,
   });
   const teachingMethodsContent = teachingMethodsHandler.content;
   const assessmentContent = assessmentHandler.content;
@@ -734,9 +782,6 @@ const part4 = ({ cookies }) => {
     setTableData2([...checkboxRefs2.current]);
     setTableData3([...checkboxRefs3.current]);
 
-    console.log(checkboxRefs);
-    console.log(checkboxRefs2);
-    console.log(checkboxRefs3);
     const r2 = await fetch(
       `${process.env.url}api/v1/courses/created-courses/${courseID}`,
       {
@@ -816,36 +861,8 @@ const part4 = ({ cookies }) => {
           return array.filter((item, index) => array.indexOf(item) === index);
         }
         combined = removeDuplicates(combined);
-
-        console.log(combined);
-        const cm = competences.map((e) => {
-          return { code: e };
-        });
-        console.log(cm);
-        const resp2 = await fetch(
-          `${process.env.url}api/v1/courses/checkComp/${courseID}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "Bearer " + token,
-            },
-            body: JSON.stringify({ competences: cm }),
-          }
-        );
-        const data2 = await resp2.json();
-        console.log(combined);
-
-        console.log(data2);
-        if (data.status === "success") {
-          setMsg(success);
-          // router.push(`/instructor/courses/${courseID}/courseSpecs/part7`);
-        } else {
-          setMsg(fail);
-        }
       } catch (error) {
-        console.error(`Error parsing cookie: ${error}`);
+        console.error(`Error parsing cookie: ${error} 123`);
       }
     } else {
       console.error("Cookie not found");
@@ -853,7 +870,7 @@ const part4 = ({ cookies }) => {
     try {
       setTableDataLecturePlan([...checkboxRefsLecturePlan.current]);
       setHoursData([...HoursRefs.current]);
-      setTopicsData([...topicsRefs.current.filter(e=>e&&e.topics&&e.topics>0&&e.topics[0]!="")]);
+      setTopicsData([...topicsRefs.current]);
 
       let lecturePlan = {
         expectedStudyingHoursPerWeek:
@@ -866,9 +883,9 @@ const part4 = ({ cookies }) => {
       for (let i = 0; i < numRowsLecturePlan; i++) {
         let elem = [...outcomes].map((e, k) => {
           if (checkboxRefsLecturePlan.current[i][k]) {
-            return { code: outcomes[k] };
+            return { code: outcomes[k], selected: true };
           } else {
-            return;
+            return { code: outcomes[k], selected: false };
           }
         });
         let topic = {
@@ -883,12 +900,12 @@ const part4 = ({ cookies }) => {
       }
       lecturePlan.expectedStudyingHoursPerWeek =
         expectedStudyingHoursPerWeek.current.value;
-        console.log(lecturePlan)
-        console.log(lecturePlan)
-        console.log(lecturePlan)
-        console.log(lecturePlan)
-        console.log(lecturePlan)
-        console.log(lecturePlan)
+      console.log(lecturePlan);
+      console.log(lecturePlan);
+      console.log(lecturePlan);
+      console.log(lecturePlan);
+      console.log(lecturePlan);
+      console.log(lecturePlan);
       const r = await fetch(
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
@@ -945,22 +962,251 @@ const part4 = ({ cookies }) => {
       console.log(e);
     }
   };
+  const [
+    isexpectedStudyingHoursPerWeekInvalid,
+    setIsexpectedStudyingHoursPerWeekInvalid,
+  ] = useState(false);
 
   const submitHandler = async (e) => {
-    setHasClass(false);
-    ListOfReferencesHandler.submitHandler();
-    await buttonRef.current.click();
-    await buttonRef2.current.click();
-    await buttonRef3.current.click();
-    await buttonRef4.current.click();
-    await buttonRef5.current.click();
-    await buttonRef6.current.click();
-    await buttonRef7.current.click();
+
+
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(topicsRefs.current);
+    console.log(topicsRefs.current);
+    console.log(topicsRefs.current);
+    console.log(topicsRefs.current);
+
+    const { selectedItems, handler } = facilityHandler.validate();
+    const { notes, books, Rbooks, websites } =
+      ListOfReferencesHandler.validate();
+    
+    console.log(assessmentScheduleHandler.getInvalidData());
+    console.log(assessmentScheduleHandler.getInvalidData());
+    console.log(assessmentScheduleHandler.getInvalidData());
+    console.log(assessmentScheduleHandler.getInvalidData());
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(HoursRefs.current);
+    console.log(assessmentScheduleHandler.getInvalidData().validation);
+
+    function testArray(array) {
+      for (let i = 0; i < array.length; i++) {
+        if (array[i] === "" || array[i] === null || array[i] === undefined) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function checkAllNumbers(array) {
+      const digitRegex = /^\d+$/;
+      for (let i = 0; i < array.length; i++) {
+        if (!digitRegex.test(array[i]) || array[i] <= 0) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    console.log(topicsRefs.current);
     e.preventDefault();
-    handleSubmit();
-    setTimeout(() => {
-      facilityHandler.downloadMergedPDF();
-    }, 2000);
+    const findInvalidElement = (array) => {
+      const index = array.findIndex((element) =>
+        element.every((value) => value === false)
+      );
+      if (index !== -1) {
+        return { index };
+      }
+      return null;
+    };
+    const cognitiveAssessmentCheckedForErrors = findInvalidElement(
+      assessmentHandler.checkboxRefs.current
+    );
+    const topicsRefsCheckedForErrors = findInvalidElement(
+      checkboxRefsLecturePlan.current
+    );
+    const psychomotorAssessmentCheckedForErrors = findInvalidElement(
+      assessmentHandler.checkboxRefs2.current
+    );
+    const affectiveAssessmentCheckedForErrors = findInvalidElement(
+      assessmentHandler.checkboxRefs3.current
+    );
+
+    const cognitiveTeachingMethodsCheckedForErrors = findInvalidElement(
+      teachingMethodsHandler.checkboxRefs.current
+    );
+    const psychomotorTeachingMethodsCheckedForErrors = findInvalidElement(
+      teachingMethodsHandler.checkboxRefs2.current
+    );
+    const affectiveTeachingMethodsCheckedForErrors = findInvalidElement(
+      teachingMethodsHandler.checkboxRefs3.current
+    );
+
+    const newErrors = [];
+    if (!testArray(topicsRefs.current)) {
+      newErrors.push("Topics can't be empty.");
+      const error = "Topics can't be empty.";
+      passInvalidEmptyTopic({ boolean: true, error });
+    } else {
+      passInvalidEmptyTopic({ boolean: false });
+    }
+    if (!checkAllNumbers(HoursRefs.current)) {
+      newErrors.push(
+        "Planned Hours should be positive non zero number and should not be empty."
+      );
+      const error =
+        "Planned Hours should be positive non zero number and should not be empty.";
+      passInvalidPlannedHours({ boolean: true, error });
+    } else {
+      passInvalidPlannedHours({ boolean: false });
+    }
+    const dynamicArray = competences.filter((competence, index) => {
+      const ref1 = checkboxRefs.current.map((row) => row[index]);
+      const ref2 = checkboxRefs2.current.map((row) => row[index]);
+      const ref3 = checkboxRefs3.current.map((row) => row[index]);
+
+      if (
+        ref1.some((value) => value) ||
+        ref2.some((value) => value) ||
+        ref3.some((value) => value)
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+    console.log(dynamicArray);
+    const areAllCompetencesAchieved = competences.every((competence) =>
+      dynamicArray.includes(competence)
+    );
+
+    if (areAllCompetencesAchieved) {
+      // setMsg(success);
+    } else {
+      setCompetencesInvalid(true);
+
+      setMsg(fail);
+      newErrors.push("Competences is not met. please review the entered data");
+    }
+    if (topicsRefsCheckedForErrors) {
+      newErrors.push("Each Topic must achieve at least one Learning Outcome.");
+      const error = "Each Topic must achieve at least one Learning Outcome.";
+      passInvalidTopicsRefs({ boolean: true, error });
+    } else {
+      passInvalidTopicsRefs({ boolean: false });
+    }
+    if (!assessmentScheduleHandler.getInvalidData().validation) {
+      newErrors.push(
+        `Total Weight must achieve the Full Mark of the course : ${
+          assessmentScheduleHandler.getInvalidData().fullMark
+        } `
+      );
+      assessmentScheduleHandler.passInvalidTotal(true);
+    } else {
+      assessmentScheduleHandler.passInvalidTotal(false);
+    }
+    if (!handler && selectedItems.length == 0) {
+      newErrors.push("At least one facility are needed for this course.");
+      facilityHandler.getInvalidData(true);
+    } else {
+      facilityHandler.getInvalidData(false);
+    }
+    if (books === "") {
+      newErrors.push("Books should not be empty.");
+      ListOfReferencesHandler.passInvalid({ boolean: true, error: "books" });
+    } else {
+      ListOfReferencesHandler.passInvalid({ boolean: false, error: "books" });
+    }
+    if (websites.length === 0) {
+      newErrors.push("Websites should not be empty.");
+      ListOfReferencesHandler.passInvalid({ boolean: true, error: "websites" });
+    } else {
+      ListOfReferencesHandler.passInvalid({
+        boolean: false,
+        error: "websites",
+      });
+    }
+    if (notes === "") {
+      newErrors.push("Notes should not be empty.");
+      ListOfReferencesHandler.passInvalid({ boolean: true, error: "notes" });
+    } else {
+      ListOfReferencesHandler.passInvalid({ boolean: false, error: "notes" });
+    }
+    if (Rbooks.length === 0) {
+      newErrors.push("Reference Books should not be empty.");
+      ListOfReferencesHandler.passInvalid({
+        boolean: true,
+        error: "referencebooks",
+      });
+    } else {
+      ListOfReferencesHandler.passInvalid({
+        boolean: false,
+        error: "referencebooks",
+      });
+    }
+    if (
+      cognitiveAssessmentCheckedForErrors ||
+      psychomotorAssessmentCheckedForErrors ||
+      affectiveAssessmentCheckedForErrors
+    ) {
+      newErrors.push("Learning outcomes must achieve at least one assessment");
+      assessmentHandler.getInvalidData(true);
+    } else {
+      assessmentHandler.getInvalidData(false);
+    }
+    if (
+      cognitiveTeachingMethodsCheckedForErrors ||
+      psychomotorTeachingMethodsCheckedForErrors ||
+      affectiveTeachingMethodsCheckedForErrors
+    ) {
+      newErrors.push(
+        "Learning outcomes must achieve at least one teaching method"
+      );
+      teachingMethodsHandler.getInvalidData(true);
+    } else {
+      teachingMethodsHandler.getInvalidData(false);
+    }
+    if (expectedStudyingHoursPerWeek.current?.value.trim() === "") {
+      newErrors.push(
+        "Private Expected Studying Hours Per week should not be empty."
+      );
+      setIsexpectedStudyingHoursPerWeekInvalid(true);
+    } else {
+      setIsexpectedStudyingHoursPerWeekInvalid(false);
+      const errorToRemove =
+        "Private Expected Studying Hours Per week should not be empty.";
+
+      setErrors((prevErrors) =>
+        prevErrors.filter((error) => error !== errorToRemove)
+      );
+    }
+    if (newErrors.length === 0) {
+      setErrors([]);
+
+      setHasClass(false);
+      ListOfReferencesHandler.submitHandler();
+      await buttonRef.current.click();
+      await buttonRef2.current.click();
+      await buttonRef3.current.click();
+      await buttonRef4.current.click();
+      await buttonRef5.current.click();
+      await buttonRef6.current.click();
+      await buttonRef7.current.click();
+      handleSubmit();
+
+      setTimeout(() => {
+        facilityHandler.downloadMergedPDF();
+        setMsg(success);
+      }, 2000);
+    } else {
+      setErrors(newErrors);
+    }
   };
 
   return (
@@ -994,6 +1240,8 @@ const part4 = ({ cookies }) => {
           <div className="contentAddUserFlexible2 flex flex-col gap-10">
             <div className=" flex flex-col" ref={refToImgBlob}>
               <MappingLOs
+                CompetencesInvalid={CompetencesInvalid}
+                setCompetencesInvalid={setCompetencesInvalid}
                 competences={competences}
                 numRows={numRows}
                 numRows2={numRows2}
@@ -1006,10 +1254,26 @@ const part4 = ({ cookies }) => {
                 handleCheckboxChange={handleCheckboxChange}
                 handleCheckboxChange2={handleCheckboxChange2}
                 handleCheckboxChange3={handleCheckboxChange3}
+                hasClass={hasClass}
               />
             </div>
             <div className="flex flex-col" ref={refToImgBlob2}>
               <LecturePlan
+                setInvalidEmptyTopic={setInvalidEmptyTopic}
+                setInvalidPlannedHours={setInvalidPlannedHours}
+                setInvalidTopicsRefs={setInvalidTopicsRefs}
+                errorEmptyTopics={errorEmptyTopics}
+                errorPlannedHours={errorPlannedHours}
+                errorTopicsRefs={errorTopcsRefs}
+                invalidEmptyTopic={invalidEmptyTopic}
+                invalidPlannedHours={invalidPlannedHours}
+                invalidTopicsRefs={invalidTopicsRefs}
+                isexpectedStudyingHoursPerWeekInvalid={
+                  isexpectedStudyingHoursPerWeekInvalid
+                }
+                setIsexpectedStudyingHoursPerWeekInvalid={
+                  setIsexpectedStudyingHoursPerWeekInvalid
+                }
                 expectedStudyingHoursPerWeek={expectedStudyingHoursPerWeek}
                 topicsRefs={topicsRefs}
                 HoursRefs={HoursRefs}
@@ -1047,6 +1311,14 @@ const part4 = ({ cookies }) => {
               <div>{msg}</div>
               <div className="flex justify-end">
                 <button
+                  onClick={() => {
+                    router.back();
+                  }}
+                  class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >
+                  Previous
+                </button>
+                <button
                   type="submit"
                   class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 >
@@ -1054,6 +1326,16 @@ const part4 = ({ cookies }) => {
                 </button>
               </div>
             </div>
+            {errors.length > 0 && (
+              <div className="mt-4 bg-red-200 text-red-700 p-4 rounded">
+                <p className="font-bold">Invalid Input:</p>
+                <ul>
+                  {errors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </form>
       </div>

@@ -5,10 +5,23 @@ import { createRef, useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
+import { getErrorField } from "@/components/helper/errorField";
+const useAssessmentSchedule = ({ cookies, courseID, specs, hasClass }) => {
+  const [invalidTotal, setInvalidTotal] = useState(false);
+  const passInvalidTotal = (boolean) => {
+    console.log(hasClass);
+    console.log(invalidTotal);
 
-const useAssessmentSchedule = ({ cookies, courseID }) => {
+    setInvalidTotal(boolean);
+    console.log(invalidTotal);
+  };
   const d = useDispatch();
-
+  console.log(specs);
+  console.log(specs.course);
+  const getInvalidData = () => {
+    const testingValidation = specs.course.fullMark == weight5;
+    return { validation: testingValidation, fullMark: specs.course.fullMark };
+  };
   const userState = useSelector((s) => s.user);
 
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
@@ -150,20 +163,12 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
         return <div className="error">404 could not found</div>;
     }*/
 
-  const updateTotal = () => {
-    setWeight5(
-      Number(weight0) +
-        Number(weight1) +
-        Number(weight2) +
-        Number(weight3) +
-        Number(weight4)
-    );
-  };
-
   const [assessment0, setAssessment0] = useState("Midterm Examination");
   const [assessment1, setAssessment1] = useState("Final Examination");
   const [assessment2, setAssessment2] = useState("Quizzes");
-  const [assessment3, setAssessment3] = useState("Home assignments, and Reports");
+  const [assessment3, setAssessment3] = useState(
+    "Home assignments, and Reports"
+  );
   const [assessment4, setAssessment4] = useState("Mini Project");
   const [assessment5, setAssessment5] = useState("Total");
 
@@ -180,7 +185,15 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
   const [weight3, setWeight3] = useState("");
   const [weight4, setWeight4] = useState("");
   const [weight5, setWeight5] = useState("");
-
+  useEffect(() => {
+    setWeight5(
+      Number(weight0) +
+        Number(weight1) +
+        Number(weight2) +
+        Number(weight3) +
+        Number(weight4)
+    );
+  }, [weight0, weight1, weight2, weight3, weight4]);
   const arr = [];
 
   const submitHandler = async (e) => {
@@ -242,7 +255,9 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
   };
   let content = (
     <>
-      <div className="text-xl my-4 bg-[#f0e1c2] ml-4">b- Assessment Schedule and Weight</div>
+      <div className="text-xl my-4 bg-[#f0e1c2] ml-4">
+        b- Assessment Schedule and Weight
+      </div>
 
       <table className="table-auto">
         <thead>
@@ -288,7 +303,6 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
                   value={weight0}
                   onChange={(e) => {
                     setWeight0(e.target.value);
-                    updateTotal();
                   }}
                 />
               </label>
@@ -328,7 +342,6 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
                   value={weight1}
                   onChange={(e) => {
                     setWeight1(e.target.value);
-                    updateTotal();
                   }}
                 />
               </label>
@@ -367,7 +380,6 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
                   value={weight2}
                   onChange={(e) => {
                     setWeight2(e.target.value);
-                    updateTotal();
                   }}
                 />
               </label>
@@ -406,7 +418,6 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
                   value={weight3}
                   onChange={(e) => {
                     setWeight3(e.target.value);
-                    updateTotal();
                   }}
                 />
               </label>
@@ -445,7 +456,6 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
                   value={weight4}
                   onChange={(e) => {
                     setWeight4(e.target.value);
-                    updateTotal();
                   }}
                 />
               </label>
@@ -479,22 +489,21 @@ const useAssessmentSchedule = ({ cookies, courseID }) => {
 
             <td className="border-2 border-r-black border-b-black px-2 py-2 w-0.5">
               <label className="inline-flex items-center">
-                <input
-                  type="number"
-                  name="weight"
-                  value={weight5}
-                  onChange={(e) => {
-                    setWeight5(e.target.value);
-                    updateTotal();
-                  }}
-                />
+                <input type="number" name="weight" value={weight5} disabled />
               </label>
             </td>
           </tr>
         </tbody>
       </table>
+      {invalidTotal &&
+        hasClass &&
+        getErrorField(
+          `Total Weight must achieve the Full Mark of the course : ${
+            getInvalidData().fullMark
+          } `,()=>{setInvalidTotal(false)}
+        )}
     </>
   );
-  return { content, submitHandler };
+  return { content, submitHandler, getInvalidData, passInvalidTotal };
 };
 export default useAssessmentSchedule;

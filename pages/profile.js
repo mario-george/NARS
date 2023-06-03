@@ -6,9 +6,7 @@ import Cookies from "js-cookie";
 import Modal from "@/components/Modal";
 
 const profile = ({ cookies }) => {
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+
   const globalState = useSelector((s) => s.user);
   if (globalState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;

@@ -1,4 +1,30 @@
-const HeaderSpecs = () => {
+import { useEffect, useState } from "react";
+
+const HeaderSpecs =  ({ data, token }) => {
+  console.log(token)
+  console.log(data)
+    const [facultyName, setFacultyName] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${process.env.url}api/v1/faculty/${data.course.faculty}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        });
+        const responseData = await response.json();
+        console.log(responseData.data.name)
+        setFacultyName(responseData.data.name);
+      } catch (error) {
+        console.error('Error fetching faculty name:', error);
+      }
+    };
+
+    fetchData();
+  }, [data.course.faculty, token]);
   return (
     <div className="flex flex-col space-y-2 mt-10  items-start justify-start">
       <div className="text-left flex justify-between items-center w-full">
@@ -10,7 +36,7 @@ const HeaderSpecs = () => {
       <div className="text-left flex justify-between items-center w-full">
         <div className="text-[#FF0000] text-xl  font-bold">Faculty:</div>
         <div className="text-black text-xl text-left w-1/2   font-bold">
-          Faculty of Engineering at Shoubra{" "}
+          {facultyName}{" "}
         </div>
       </div>
       <div className="text-left flex justify-between items-center w-full">
