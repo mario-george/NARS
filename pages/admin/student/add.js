@@ -12,9 +12,18 @@ const addStudent = ({ cookies }) => {
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+ const [aY,setAy]=useState([])
+const handleAcademicYearChange=()=>{
+  const selectedElements = getSelectedElements(["prep","first","second","third","fourth","fifth","sixth"], academicYear.current.value);
+setAy(selectedElements)
+}
+function getSelectedElements(array, selectedValue) {
+  const selectedIndex = array.indexOf(selectedValue);
+  if (selectedIndex === -1) {
+    return [];
+  }
+  return array.slice(selectedIndex);
+}
 
   const handleFacultyChange = async () => {
     const selectedFacultyId = faculty.current.value;
@@ -171,6 +180,9 @@ const addStudent = ({ cookies }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log(faculty.current.value);
+    console.log(aY);
+    console.log(aY);
+    console.log(aY);
     console.log(department.current.value);
     console.log(department.current.value);
     console.log(department.current.value);
@@ -190,7 +202,7 @@ const addStudent = ({ cookies }) => {
         email: email.current.value,
         faculty: faculty.current.value,
         department: department.current.value,
-        academicYear: academicYear.current.value,
+        academicYear: aY,
       }),
     });
     const data = await resp.json();
@@ -311,13 +323,24 @@ const addStudent = ({ cookies }) => {
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5">
                 <div>Academic year</div>
-                <input
-                  type="text"
-                  className="inputAddUser2 w-full"
+                <select
                   ref={academicYear}
-                  placeholder={`Academic year`}
+                  id="small"
+                  class="choose-form w-full px-10"
+                  onChange={handleAcademicYearChange}
 
-                />
+                >
+                  <option className="text-left" value="" disabled selected>
+                    Choose a year
+                  </option>
+                  <option value="prep">Prep</option>
+                  <option value="first">First</option>
+                  <option value="second">Second</option>
+                  <option value="third">Third</option>
+                  <option value="fourth">Fourth</option>
+                  <option value="fifth">Fifth</option>
+                  <option value="sixth">Sixth</option>
+                </select>
               </div>
               <div className="flex flex-col gap-5  w-1/2">
                 <div> Email </div>
