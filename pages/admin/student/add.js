@@ -326,7 +326,7 @@ function getSelectedElements(array, selectedValue) {
                 <select
                   ref={academicYear}
                   id="small"
-                  class="choose-form w-full px-10"
+                  class="choose-form w-full px-14"
                   onChange={handleAcademicYearChange}
 
                 >
