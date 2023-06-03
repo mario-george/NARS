@@ -6,15 +6,16 @@ import CompBar from "@/components/chart/CompBar";
 import FillPie from "@/components/chart/FillPie";
 // import programAvg from "@/common/programAvg";
 
-const programAvg = require("@/common/programAvg");
+const programAvg1 = require("@/common/programAvg1");
 
-const CoursesCompetences = ({ cookies }) => {
+const CoursesCompetences = ({ cookies, setAlerts }) => {
   const [comp, setComp] = useState({});
   const [coursesAvg, setCoursesAvg] = useState({});
-  const [alerts, setAlerts] = useState([]);
   const [target, setTarget] = useState([0, 0]);
   const [numSpecs, setNumSpecs] = useState([0, 0]); // [fill, not]
   const [numReport, setNumReport] = useState([0, 0]);
+
+  const maxEach = 6;
 
   useEffect(() => {
     const get_comp = async (e) => {
@@ -22,7 +23,7 @@ const CoursesCompetences = ({ cookies }) => {
         e.preventDefault();
       }
 
-      const avgs = await programAvg(
+      const avgs = await programAvg1(
         cookies.program,
         setComp,
         setCoursesAvg,
@@ -97,20 +98,20 @@ const CoursesCompetences = ({ cookies }) => {
         </div>
         <label className="mt-12">Courses and Competences Achievement</label>
         <div className={`grid grid-cols-1 
-          md:${((Object.keys(coursesAvg).length > 1) || (Object.keys(comp).length > 3))? 
-            "grid-cols-1 items-center":"grid-cols-2"}
+          md:${((Object.keys(coursesAvg).length > maxEach) || (Object.keys(comp).length > maxEach))? 
+            "grid-cols-[repeat(auto-fit,_16.666666%)] justify-center":"grid-cols-2"}
           gap-1 md:gap-2 gap-y-1 w-[90%] mb-10`}>
           <div>
             <CoursesBar
               courses={coursesAvg}
-              w={(Object.keys(coursesAvg).length > 3)? 150:60}
+              w={(Object.keys(coursesAvg).length > maxEach)? 150:60}
               h={60}
             />
           </div>
           <div>
             <CompBar
-              comp={(Object.keys(comp).length > 3)? 150:60}
-              w={60}
+              comp={comp}
+              w={(Object.keys(comp).length > maxEach)? 150:60}
               h={60}
             />
           </div>

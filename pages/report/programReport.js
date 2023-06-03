@@ -1,9 +1,16 @@
-import React from "react";
+import {useState} from "react";
 import CoursesCompetences from "../../components/PRComponents/CoursesCompetences";
 import LosDescriptionTable from "../../components/PRComponents/LosDescriptionTable";
 import Graph1 from '../../components/PRComponents/Graph1';
 
 const programReport = ({ cookies }) => {
+
+  // if (cookies.role != "program coordinator" || cookies.loggedInStatus != "true") {
+  //   return <div className="error">404 could not found</div>;
+  // }
+
+  const [alerts, setAlerts] = useState([]);
+
   return (
     <div>
       <div className="flex flex-row w-screen h-screen mt-2">
@@ -12,10 +19,11 @@ const programReport = ({ cookies }) => {
             <label class="label-form md:text-2xl text-center">
               Program Report
             </label>
-            <CoursesCompetences cookies={cookies} />
-            <LosDescriptionTable />
-            <Graph1 cookies={cookies}/>
+            <CoursesCompetences cookies={cookies} setAlerts={setAlerts}/>
+            <LosDescriptionTable cookies={cookies} setAlerts={setAlerts}/>
+            <Graph1 cookies={cookies} setAlerts={setAlerts}/>
           </div>
+          {<div className="w-1/2 mt-10">{alerts.map(s => s)}</div>}
         </form>
       </div>
     </div>

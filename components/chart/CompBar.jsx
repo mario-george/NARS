@@ -25,6 +25,8 @@ const CompBar = (props) => {
 
   const labels = Object.keys(props.comp);
 
+  console.log('props.comp', props.comp)
+
   const dataValues = [
     new Array(labels.length).fill(0),
     new Array(labels.length).fill(0),
@@ -39,9 +41,9 @@ const CompBar = (props) => {
   ];
 
   labels.forEach((elm, i) => {
-    dataValues[0][i] = props.comp[elm]['direct'] / props.comp[elm]['numCourses'];
-    dataValues[1][i] = props.comp[elm]['indirect'] / props.comp[elm]['numCourses'];
-    dataValues[2][i] = (dataValues[0][i] + dataValues[1][i]) / 2;
+    dataValues[0][i] = props.comp[elm]['direct'];
+    dataValues[1][i] = props.comp[elm]['indirect'];
+    dataValues[2][i] = props.comp[elm]['avg'];
   });
   
   return <Bar

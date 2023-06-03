@@ -100,7 +100,7 @@ const programAvg = async(
           // if(c.active){
             return c
           // }[0];
-        })[0]
+        })[ceCourses.results - 1]
   
         if (ceCourses.status !== "success") {
           setAlerts([...alerts, <MassageAlert 
@@ -177,7 +177,7 @@ const programAvg = async(
   }
 
   // Object.keys(compAvg).forEach(c => {
-  //   console.log("git int u", c, compAvg[c]['direct'], compAvg[c]);
+  //   // console.log("git int u", c, compAvg[c]['direct'], compAvg[c]);
   //   if(compAvg[c]['numCourses']){
   //     console.log("c", c);
   //     compAvg[c]['direct'] /= compAvg[c]['numCourses'];
