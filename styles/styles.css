@@ -31,7 +31,7 @@
   @apply px-8 h-[5rem] duration-200 hover:text-black;
 }
 .layout {
-  @apply text-black shadow-lg text-lg font-Roboto rounded-2xl;
+  @apply fixed left-0 top-0 right-0 z-30 bg-white w-full text-black shadow-lg text-lg font-Roboto rounded-2xl;
 }
 .text {
   @apply text-base md:text-xl;

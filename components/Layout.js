@@ -12,7 +12,7 @@ export default function Layout({ children, cookies }) {
       <MainHeader />
       <div className="mt-2">
         <SideDashboard className="" />
-        <div className=" ">{children}</div>
+        <div className=" mt-12 ">{children}</div>
       </div>
     </>
   );
