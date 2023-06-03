@@ -210,8 +210,8 @@ const addStudent = ({ cookies }) => {
     document.body.classList.toggle("overflow-hidden");
 
     data.forEach((row) => {
-      const { name, email, code, faculty, academicYear } = row;
-      const obj = { name, email, code, academicYear, faculty };
+      const { name, email, code, faculty, academicYear,department } = row;
+      const obj = { name, email, code, academicYear, faculty ,department};
 
       const resp = fetch(`${process.env.url}api/v1/users/students`, {
         method: "POST",

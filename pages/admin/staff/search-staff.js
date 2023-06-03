@@ -12,11 +12,48 @@ const SearchStudent = ({ cookies }) => {
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
+  const [facultyValue, setFacultyValue] = useState("null");
+
+  useEffect(() => {
+    async function getFacultyNames() {
+      const d = await fetch(`${process.env.url}api/v1/faculty/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + cookies.token,
+        },
+      });
+
+      const data = await d.json();
+      let a = data.data.map((e) => {
+        return { name: e.name, id: e._id };
+      });
+
+
+      setFacultyTitles(a);
+    }
+    getFacultyNames();
+  }, []);
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+  const [faculyTitles, setFacultyTitles] = useState([]);
+  const handleFacultyChange = async () => {
+    const selectedFaculty = faculty.current.value;
+    setFacultyValue(selectedFaculty);
+
+
+  };
+  const [choosenRole,setChoosenRole]=useState("null")
+  const handleRoleField = async () => {
+    const selectedRole = role.current.value;
+    setChoosenRole(selectedRole);
+
+
+  };
+  
   const handleDivClick = (event) => {
     const checkbox = event.currentTarget.querySelector(
       'input[type="checkbox"]'
@@ -132,15 +169,27 @@ const SearchStudent = ({ cookies }) => {
 
     submitHandler();
   };
+  console.log(facultyValue==="null")
+  console.log(facultyValue)
+  console.log(facultyValue)
+  console.log(facultyValue)
+  console.log(facultyValue)
+  console.log(facultyValue)
+  console.log(facultyValue)
+
   const submitHandler = async (e) => {
+
     if (e) {
       e.preventDefault();
+    }
+    if(facultyValue=="null"&&choosenRole=="null"){
+      return
     }
     try {
   
 
       const resp = await fetch(
-        `${process.env.url}api/v1/users/staff?roles=${role.current.value}`,
+        `${process.env.url}api/v1/users/staff?roles=${role.current.value}&faculty=${faculty.current.value}`,
         {
           method: "GET",
           headers: {
@@ -160,27 +209,7 @@ const SearchStudent = ({ cookies }) => {
     <>
       {deleteModalIsOpen ? (
         <div>
-          {/* <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100 w-screen h-screen">
-            <div className=" mt-16 ">
-              <div className="p-4 m-auto max-w-sm bg-blue-200 rounded-xl  relative  ">
-                <button
-                  onClick={deleteCancel}
-                  className="bg-red-500 text-white duration-200 transition-all hover:bg-red-600 px-2 rounded absolute top-4 right-4"
-                >
-                  <i class="fa-solid fa-xmark"></i>
-                </button>
-                <p className="text-center font-Rubik font-bold text-gray-700 p-2 my-20">
-                  Are you sure you want to delete this user
-                </p>
-                <button
-                  onClick={deleteHandler}
-                  className="bg-red-500 text-white duration-200 transition-all hover:bg-red-600 p-2 rounded absolute bottom-4 right-4"
-                >
-                  Confirm
-                </button>
-              </div>
-            </div>
-          </div> */}
+         
        
        <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100   w-screen h-screen ">
             <div className=" mt-16 ">
@@ -304,18 +333,43 @@ const SearchStudent = ({ cookies }) => {
         >
           <div className="overflow-auto contentAddUser2 flex flex-col gap-10">
             <div className=" ">Search Staff</div>
-            <div className="flex gap-20 ">
-              <div className="flex gap-20 w-full items-center">
+            <div className="flex gap-20 items-center">
+              <div className="flex gap-20 w-full items-center ">
+              <div className="flex flex-col gap-5 w-1/2  ">
+                <div> Faculty</div>
+                <select
+                  ref={faculty}
+                  id="small"
+                  class="choose-form w-full px-10"
+                  onChange={handleFacultyChange}
+                >
+                  <option className="text-left" value="null"  disabled selected>
+                    Choose a Faculty
+                  </option>
+                  {faculyTitles.map((e) => {
+                    return <option value={e.id}>{e.name}</option>;
+                  })}{" "}
+                </select>
+              </div>
+              <div className="flex flex-col gap-5 w-1/2  ">
+
                 <div className=" font-normal">Select role</div>
-                {/* <input type="text" className="inputAddUser2" ref={role} /> */}
                 <select
                   ref={role}
                   id="small"
-                  class="block text-xl md:text-lg p-3     text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
-                >
-                  <option selected>Choose a role</option>
+                  className="choose-form  px-10"
+                  disabled={facultyValue==="null"&&choosenRole==="null"}
+                  onChange={handleRoleField}
 
-                  <option value="instructor">Instructor</option>
+                > 
+                  <option value="null" disabled selected>
+                    {facultyValue=="null"
+                      ? "Select a Faculty first":"Choose a Role"
+                       }
+                  </option>
+                  {facultyValue!=="null"
+                      ? <>
+                       <option value="instructor">Instructor</option>
                   <option value="quality coordinator">
                     Quality Coordinator
                   </option>
@@ -329,18 +383,25 @@ const SearchStudent = ({ cookies }) => {
                   <option value="faculty admin">Faculty Admin </option>
                   <option value="program admin">Program Admin</option>
                   <option value="department admin">Department Admin</option>
-                  <option value="system admin">System Admin</option>
-                </select>
+                  <option value="system admin">System Admin</option></>
+                      : null}
+                 
+                </select></div>
+                <div className="flex pt-8 justify-end items-end h-full">
+
                 <button
                   type="submit"
-                  class="px-10 py-3 duration-200 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                >
+                  class=" px-10 py-3 duration-200 text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+               disabled={facultyValue==="null"||choosenRole==="null"}
+               >
                   Search
                 </button>
+                </div>
               </div>
             </div>
             <div className="flex justify-center w-full ">
               <div className="w-3/5 h-[5rem] flex flex-col">
+                {(choosenRole!="null"&&facultyValue!="null"&&staff?.length===0)?<div className="w-full flex justify-center h-full items-center">No users found with that role</div>:<></>}
                 {staff.map((s) => {
                   return (
                     <>

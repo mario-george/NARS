@@ -15,7 +15,7 @@ const viewAll = ({ cookies }) => {
     document.querySelector("body").classList.add("scrollbar-none");
   });
   const handleClick = () => {
-    const header = ["name", "roles", "email","faculty","department"];
+    const header = ["name", "roles", "email","faculty","department","program"];
     const rows = staff.map((item) => [item.name, item.roles.join(", "), item.email,item.faculty,item.department,item.program]);
 
     const worksheet = XLSX.utils.aoa_to_sheet([header, ...rows]);

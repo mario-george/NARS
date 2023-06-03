@@ -20,7 +20,9 @@ const addStaff = ({ cookies }) => {
     setDropdownOpen(!dropdownOpen);
   };
   const handleDivClick = (event) => {
-    const checkbox = event.currentTarget.querySelector('input[type="checkbox"]');
+    const checkbox = event.currentTarget.querySelector(
+      'input[type="checkbox"]'
+    );
     if (checkbox) {
       checkbox.click();
     }
@@ -28,7 +30,7 @@ const addStaff = ({ cookies }) => {
   const handleRoleChange = (event) => {
     const value = event.target.value;
     const isChecked = event.target.checked;
- 
+
     setSelectedRoles((prevSelectedRoles) => {
       if (isChecked) {
         return [...prevSelectedRoles, value];
@@ -91,9 +93,12 @@ const addStaff = ({ cookies }) => {
   };
   const handleDepartmentChange = async () => {
     const selectedDepartment = department.current.value;
-
+    const selectedOption =
+      department.current.options[department.current.selectedIndex];
+    const selectedOptionName = selectedOption.text;
+    console.log(selectedOptionName);
     const resp = await fetch(
-      `${process.env.url}api/v1/programs/?department=${selectedDepartment}`,
+      `${process.env.url}api/v1/programs/?department=${selectedOptionName}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -103,12 +108,12 @@ const addStaff = ({ cookies }) => {
     );
     let tempArray = [];
     const data = await resp.json();
-console.log(data)
-console.log(data)
-console.log(data)
-console.log(data)
-console.log(data)
-    tempArray=data.data.map((e) => {
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    tempArray = data.data.map((e) => {
       return { id: e._id, name: e.name };
     });
     console.log(tempArray);
@@ -137,13 +142,6 @@ console.log(data)
         return { name: e.name, id: e._id };
       });
 
-      console.log(data);
-      console.log(a);
-      // const newArr = data.data.filter((e) => {e
-      //   return coursesParsed.map((id) => {
-      //     id === e._id;
-      //   });
-      // });
       setFacultyTitles(a);
     }
     getFacultyNames();
@@ -166,14 +164,24 @@ console.log(data)
     };
     reader.readAsArrayBuffer(f);
   }
-  function exportHandler() {
+  const exportHandler = async () => {
     document.body.classList.toggle("overflow-hidden");
 
-    data.forEach((row) => {
-      const { name, email, role } = row;
-      const obj = { name, email, role };
+    const promises = data.map(async (row) => {
+      const { name, email, roles, faculty, department, program } = row;
+      const rolesArr = roles.split(",").map((i) => i.trim());
+console.log(roles)
+console.log(rolesArr)
+      const obj = {
+        name,
+        email,
+        roles: rolesArr,
+        faculty,
+        department,
+        program,
+      };
 
-      const resp = fetch(`${process.env.url}api/v1/users/staff`, {
+      const resp = await fetch(`${process.env.url}api/v1/users/staff`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -183,12 +191,15 @@ console.log(data)
         body: JSON.stringify(obj),
       });
 
-      console.log(resp);
+      return resp.json();
     });
+
+    const responseData = await Promise.all(promises);
+    console.log(responseData);
 
     setExportModalIsOpen(false);
     setMsg(success);
-  }
+  };
 
   const token = userState.token;
   const router = useRouter();
@@ -201,6 +212,7 @@ console.log(data)
   };
   const submitHandler = async (e) => {
     e.preventDefault();
+    console.log(department.current.value);
     try {
       const resp = await fetch(`${process.env.url}api/v1/users/staff`, {
         method: "POST",
@@ -374,7 +386,6 @@ console.log(data)
                   type="text"
                   className="inputAddUser2  w-full"
                   placeholder={`Staff name`}
-
                 />
               </div>
               <div className="flex flex-col gap-5  w-1/2 ">
@@ -384,7 +395,6 @@ console.log(data)
                   type="text"
                   className="inputAddUser2   w-full "
                   placeholder={`Staff E-mail`}
-
                 />
               </div>
             </div>
@@ -421,7 +431,7 @@ console.log(data)
                       : "Select a Faculty first"}
                   </option>
                   {departments.map((department) => (
-                    <option value={department.name} key={department.name}>
+                    <option value={department.id} key={department.id}>
                       {department.name}
                     </option>
                   ))}
@@ -430,7 +440,7 @@ console.log(data)
             </div>
             <div className="flex gap-10 ">
               <DropdownRoles
-              handleDivClick={handleDivClick}
+                handleDivClick={handleDivClick}
                 toggleDropdown={toggleDropdown}
                 dropdownOpen={dropdownOpen}
                 selectedRoles={selectedRoles}

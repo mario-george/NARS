@@ -12,7 +12,51 @@ const SearchStudent = ({ cookies }) => {
     return <div className="error">404 could not found</div>;
   }
 
-  const [view, setView] = useState(false);
+  const [faculyTitles, setFacultyTitles] = useState([]);
+  const handleFacultyChange = async () => {
+    console.log(code);
+    console.log(code);
+    console.log(code);
+    const selectedFaculty = faculty.current.value;
+    setFacultyValue(selectedFaculty);
+  };
+  const [facultyValue, setFacultyValue] = useState("null");
+
+  useEffect(() => {
+    async function getFacultyNames() {
+      const d = await fetch(`${process.env.url}api/v1/faculty/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + cookies.token,
+        },
+      });
+
+      const data = await d.json();
+      let a = data.data.map((e) => {
+        return { name: e.name, id: e._id };
+      });
+
+      setFacultyTitles(a);
+    }
+    getFacultyNames();
+  }, []);
+  const [choosenCode, setChoosenCode] = useState("null");
+  const handleCodeField = (event) => {
+    const selectedCode = code.current.value;
+    console.log(selectedCode);
+    console.log(event.target.value);
+    console.log(selectedCode);
+    console.log(selectedCode);
+    console.log(selectedCode);
+
+    if (selectedCode == "") {
+      setChoosenCode("null");
+      return;
+    }
+    console.log(selectedCode);
+    setChoosenCode(selectedCode);
+  };
   const router = useRouter();
   const [student, setStudent] = useState([]);
   const [tobeEdited, setTobeEdited] = useState();
@@ -44,7 +88,7 @@ const SearchStudent = ({ cookies }) => {
     }
     try {
       const resp = await fetch(
-        `${process.env.url}api/v1/users/students/?code=${code.current.value}`,
+        `${process.env.url}api/v1/users/students/?code=${code.current.value}&faculty=${facultyValue}`,
         {
           method: "GET",
           headers: {
@@ -62,6 +106,7 @@ const SearchStudent = ({ cookies }) => {
       setStudent(data.data);
       if (data.data.length === 0) {
         setEmptyArray(true);
+        return;
       }
       console.log(data.data[0].name);
       console.log(data);
@@ -81,7 +126,10 @@ const SearchStudent = ({ cookies }) => {
     setDeleteModalIsOpen(false);
   };
 
-  const deleteHandler = async () => {
+  const deleteHandler = async (e) => {
+    if (e) {
+      e.preventDefault();
+    }
     console.log(tobeDeleted);
     try {
       const resp = await fetch(
@@ -148,24 +196,36 @@ const SearchStudent = ({ cookies }) => {
     <>
       {deleteModalIsOpen ? (
         <div>
-          <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100 w-screen h-screen">
+          <div className="fixed overflow-hidden z-10 top-0 left-0 right-0 bottom-0  opacity-100   w-screen h-screen ">
             <div className=" mt-16 ">
-              <div className="p-4 m-auto max-w-sm bg-blue-200 rounded  relative  ">
-                <button
-                  onClick={deleteCancel}
-                  className="bg-red-500 text-white duration-200 transition-all hover:bg-red-600 px-2 rounded absolute top-4 right-4"
-                >
-                  <i class="fa-solid fa-xmark"></i>
-                </button>
-                <p className="text-center font-Rubik font-bold text-gray-700 p-2 my-20">
-                  Are you sure you want to delete this student
-                </p>
-                <button
-                  onClick={deleteHandler}
-                  className="bg-red-500 text-white duration-200 transition-all hover:bg-red-600 p-2 rounded absolute bottom-4 right-4"
-                >
-                  Confirm
-                </button>
+              <div className="p-4 m-auto max-w-sm rounded  relative  ">
+                <div className="flex flex-col justify-center items-center gap-10 w-full mt-10 ">
+                  <form className="text-xl border-2 border-none shadow-2xl rounded-2xl px-7 py-4 gap-10 w-[150%] relative bg-white">
+                    <button
+                      onClick={deleteCancel}
+                      className=" text-gray-700 duration-200 transition-all hover:bg-gray-400 px-2 rounded absolute top-4 right-4 py-1"
+                    >
+                      <i class="fa-solid fa-xmark fa-lg"></i>
+                    </button>
+                    <div className="mb-8 text-2xl ">Delete Student:</div>
+
+                    <div className="flex w-full h-full items-center justify-center text-red-800">
+                      Are you sure you want to delete this user
+                    </div>
+                    <button
+                      onClick={deleteHandler}
+                      class="w-full text-center bg-gray-300 text-red-500 hover:text-white duration-200 transition-all hover:bg-red-600 px-4 py-3 rounded-lg my-5"
+                    >
+                      Confirm
+                    </button>
+
+                    {invalidData && (
+                      <span className="text-red-500 flex justify-center">
+                        Invalid input{" "}
+                      </span>
+                    )}
+                  </form>
+                </div>
               </div>
             </div>
           </div>
@@ -260,12 +320,42 @@ const SearchStudent = ({ cookies }) => {
             <div className=" ">Search Student</div>
             <div className="flex gap-20 ">
               <div className="flex gap-20 w-full items-center">
-                <div className="">Student Code</div>
-                <input type="text" className="inputAddUser2" ref={code} />
+                <div className="flex flex-col  gap-5 w-1/2">
+                  <div className="">Student Code</div>
+                  <input
+                    type="text"
+                    className="inputAddUser2"
+                    ref={code}
+                    onChange={handleCodeField}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-5 w-1/2  ">
+                  <div> Faculty</div>
+                  <select
+                    ref={faculty}
+                    id="small"
+                    class="choose-form w-full px-10"
+                    onChange={handleFacultyChange}
+                  >
+                    <option
+                      className="text-left"
+                      value="null"
+                      disabled
+                      selected
+                    >
+                      Choose a Faculty
+                    </option>
+                    {faculyTitles.map((e) => {
+                      return <option value={e.id}>{e.name}</option>;
+                    })}{" "}
+                  </select>
+                </div>
 
                 <button
                   type="submit"
                   class="px-10 py-3 duration-200 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  disabled={facultyValue == "null" || choosenCode == "null"}
                 >
                   Search
                 </button>
@@ -281,7 +371,7 @@ const SearchStudent = ({ cookies }) => {
                         <button
                           onClick={() => editConfirm(s)}
                           type="submit"
-                          class="  text-white bg-blue-500 transition-all duration-200  hover:bg-blue-600 focus:ring-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                          class="  text-white bg-blue-500 transition-all duration-200  hover:bg-blue-600  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                         >
                           <i class="fa-solid fa-pen-to-square"></i>{" "}
                         </button>
