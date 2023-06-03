@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 export default function password() {
+  const [msg, setMsg] = useState(false);
   const completed = useSelector((s) => s.user.registerCompletionPart2);
   const info = useSelector((s) => s.user.info);
   const verifyCode = info.verifyCode;
@@ -21,10 +22,9 @@ export default function password() {
     const resp = await r.json();
     console.log(resp);
     if (resp.status != "success") {
-      alert("fail");
+      setMsg(true);
     } else {
       Cookies.set("token", resp.token);
-      alert("success");
     }
   };
 
@@ -122,6 +122,11 @@ export default function password() {
             ></input>
             {error.confirmPassword && (
               <span className="text-red-500">{error.confirmPassword}</span>
+            )}
+            {msg && (
+            <span className="text-red-500">
+              Successfully created an email
+            </span>
             )}
           </div>
           <button

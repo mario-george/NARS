@@ -1,14 +1,35 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useRouter } from 'next/router'
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-export default function register() {
+export default function forgetPassword() {
+    const [notAdded, setNotAdded] = useState(false);
+    const email=useRef();
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm();
     const router = useRouter();
-    const onSubmit = () => router.push('/otp')
+    const onSubmit = async (data) => {
+        console.log(email.current.value);
+        const r = await fetch(
+            `${process.env.url}api/v1/users/forgotPassword`,
+            {
+                method: "POST",
+                body: JSON.stringify({ email: email.current.value }),
+                headers: { "Content-Type": "application/json" },
+            }
+        );
+
+        const resp = await r.json();
+        console.log(resp);
+        if (resp.status == "fail") {
+            setNotAdded(true);
+        } else {
+            router.push("/otp2");
+        }
+    };
     return (
         <div class="flex flex-col gap-5 justify-center items-center w-full">
             <div className="text-2xl font-normal mt-20 mb-5 "> Follow the upcoming steps to reset your password </div>
@@ -28,9 +49,14 @@ export default function register() {
                         className="button"
                         placeholder=""
                         required
-                        {...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@(feng.bu.edu.eg)$/i })}
+                        ref={email}
                     />
                     {errors.email && <span className='text-red-500'>Invalid email</span>}
+                    {notAdded && (
+                        <span className="text-red-500">
+                            There is no user with this email address
+                        </span>
+                    )}
                 </div>
                 <button type='submit' class="home-btn1 px-10 w-full ">
                     Verify your mail

@@ -18,7 +18,6 @@ const addcourse = ({ cookies }) => {
   const closeMsg = () => {
     setMsg("");
   };
-  const token = Cookies.get("token");
   const name = useRef();
   const code = useRef();
   const faculty = useRef();
@@ -32,7 +31,7 @@ const addcourse = ({ cookies }) => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + cookies.token,
           },
         }
       );
@@ -51,7 +50,7 @@ const addcourse = ({ cookies }) => {
         const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + cookies.token,
           },
         });
         const data = await resp.json();
@@ -82,11 +81,12 @@ const addcourse = ({ cookies }) => {
             academicYear: year.current.value,
             fullMark: mark.current.value,
             faculty: faculty.current.value,
+            program:cookies.program,
           }),
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + cookies.token,
           },
         }
       );

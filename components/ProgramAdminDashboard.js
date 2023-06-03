@@ -31,42 +31,7 @@ export default function ProgramAdminDashboard() {
         </span>
         <span className="ml-2">Profile</span>
       </Link>
-      {header(
-        <span>
-          <MdOutlineAdminPanelSettings
-            style={{
-              fontSize: 30,
-              display: "inline",
-              marginBottom: 0,
-              marginRight: 9,
-            }}
-          />
-          Programs
-        </span>,
-        [
-          <Link
-            className={
-              router.pathname === "/programadmin/assignprogramcoordinator"
-                ? "activeLinkDashboard2"
-                : "normalLinkDashboard2"
-            }
-            href="/programadmin/assignprogramcoordinator"
-          >
-            Assign program coordinator
-          </Link>,
-          <Link
-            className={
-              router.pathname ===
-              "/programadmin/assignprogramqualitycoordinator"
-                ? "activeLinkDashboard2"
-                : "normalLinkDashboard2"
-            }
-            href="/programadmin/assignprogramqualitycoordinator"
-          >
-            Assign program quality coordinator
-          </Link>,
-        ]
-      )}
+      
       {header(
         <span>
           <BsBook
@@ -110,16 +75,7 @@ export default function ProgramAdminDashboard() {
           >
             Assign instructor
           </Link>,
-          <Link
-            className={
-              router.pathname === "/programadmin/assignta"
-                ? "activeLinkDashboard2"
-                : "normalLinkDashboard2"
-            }
-            href="/programadmin/assignta"
-          >
-            Assign TA
-          </Link>,
+          
         ]
       )}
       <button
