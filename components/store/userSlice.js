@@ -23,6 +23,7 @@ let initialState = {
   faculty: "",
   department: "",
   CreatedCoursesForInstructor: "null",
+  modalOpen: false,
 };
 const userSlice = createSlice({
   initialState,

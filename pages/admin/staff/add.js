@@ -8,16 +8,118 @@ import XLSX from "xlsx";
 import { read, utils } from "xlsx";
 import CircularJSON from "circular-json";
 import { useSelector } from "react-redux";
+import DropdownRoles from "@/components/user/DropDownRoles";
 const addStaff = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const [faculyTitles, setFacultyTitles] = useState([]);
+  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+  const handleDivClick = (event) => {
+    const checkbox = event.currentTarget.querySelector('input[type="checkbox"]');
+    if (checkbox) {
+      checkbox.click();
+    }
+  };
+  const handleRoleChange = (event) => {
+    const value = event.target.value;
+    const isChecked = event.target.checked;
+ 
+    setSelectedRoles((prevSelectedRoles) => {
+      if (isChecked) {
+        return [...prevSelectedRoles, value];
+      } else {
+        return prevSelectedRoles.filter((role) => role !== value);
+      }
+    });
+  };
 
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+  const [faculyTitles, setFacultyTitles] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [programs, setPrograms] = useState([]);
+
+  const handleFacultyChange = async () => {
+    const selectedFacultyId = faculty.current.value;
+    console.log(selectedFacultyId);
+
+    const resp = await fetch(
+      `${process.env.url}api/v1/faculty/${selectedFacultyId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + userState.token,
+        },
+      }
+    );
+    let tempArray = [];
+    const data = await resp.json();
+
+    data.data.departments.map(async (d) => {
+      const resp = await fetch(
+        `${process.env.url}api/v1/department/?name=${d}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + userState.token,
+          },
+        }
+      );
+      const data = await resp.json();
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      tempArray.push({ name: data.data[0].name, id: data.data[0]._id });
+      console.log(tempArray);
+    });
+    console.log(tempArray);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    setTimeout(() => {
+      setDepartments(tempArray);
+    }, 500);
+  };
+  const handleDepartmentChange = async () => {
+    const selectedDepartment = department.current.value;
+
+    const resp = await fetch(
+      `${process.env.url}api/v1/programs/?department=${selectedDepartment}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + userState.token,
+        },
+      }
+    );
+    let tempArray = [];
+    const data = await resp.json();
+console.log(data)
+console.log(data)
+console.log(data)
+console.log(data)
+console.log(data)
+    tempArray=data.data.map((e) => {
+      return { id: e._id, name: e.name };
+    });
+    console.log(tempArray);
+
+    setTimeout(() => {
+      setPrograms(tempArray);
+    }, 500);
+  };
+  const department = useRef();
+  const program = useRef();
+  const faculty = useRef();
   const [exportModalIsOpen, setExportModalIsOpen] = useState(false);
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -107,12 +209,12 @@ const addStaff = ({ cookies }) => {
           Authorization: "Bearer " + token,
         },
         body: JSON.stringify({
-          role: role.current.value,
+          roles: selectedRoles,
           name: name.current.value,
           email: email.current.value,
-          // faculty:faculty.current.value,
-          // department:department.current.value,
-          // academicYear:academicYear.current.value,
+          faculty: faculty.current.value,
+          department: department.current.value,
+          program: program.current.value,
         }),
       });
       const data = await resp.json();
@@ -271,6 +373,8 @@ const addStaff = ({ cookies }) => {
                   ref={name}
                   type="text"
                   className="inputAddUser2  w-full"
+                  placeholder={`Staff name`}
+
                 />
               </div>
               <div className="flex flex-col gap-5  w-1/2 ">
@@ -279,70 +383,103 @@ const addStaff = ({ cookies }) => {
                   ref={email}
                   type="text"
                   className="inputAddUser2   w-full "
+                  placeholder={`Staff E-mail`}
+
                 />
               </div>
             </div>
-            <div className="flex gap-10 flex-1 ">
-              <div className="flex flex-col gap-5 w-1/4 ">
-                <div>Role</div>
 
-                <select ref={role} id="small" class="choose-form">
-                  <option selected>Choose a role</option>
-
-                  <option value="instructor">Instructor</option>
-                  <option value="quality coordinator">
-                    Quality Coordinator
-                  </option>
-                  <option value="program  coordinator">
-                    Program Coordinator
-                  </option>
-                  <option value="dean">Dean</option>
-                  <option value="teaching assistant">
-                    Teaching Assistant{" "}
-                  </option>
-                  <option value="faculty admin">Faculty Admin </option>
-                  <option value="program admin">Program Admin</option>
-                  <option value="department admin">Department Admin</option>
-                </select>
-              </div>
-              <div className="flex flex-col space-y-5  w-1/2 ">
-                <div> Faculty </div>
-                <select className=" choose-form w-[100%]">
-                  <option selected>
+            <div className="flex gap-10 ">
+              <div className="flex flex-col gap-5 w-1/4  ">
+                <div> Faculty</div>
+                <select
+                  ref={faculty}
+                  id="small"
+                  class="choose-form w-full px-10"
+                  onChange={handleFacultyChange}
+                >
+                  <option className="text-left" disabled selected>
                     Choose a Faculty
                   </option>
                   {faculyTitles.map((e) => {
                     return <option value={e.id}>{e.name}</option>;
-                  })}
+                  })}{" "}
                 </select>
-                {/* <input type="text" className="inputAddUser2  w-full " /> */}
+              </div>
+              <div className="flex flex-col gap-5  w-1/2">
+                <div>Department</div>
+                <select
+                  id="department"
+                  className="choose-form w-full"
+                  disabled={!departments.length}
+                  ref={department}
+                  onChange={handleDepartmentChange}
+                >
+                  <option value="" disabled selected>
+                    {departments.length
+                      ? "Choose a Department"
+                      : "Select a Faculty first"}
+                  </option>
+                  {departments.map((department) => (
+                    <option value={department.name} key={department.name}>
+                      {department.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
-            <div className="flex gap-10 flex-1 -mt-24 ">
-              <div className="flex flex-col gap-5 w-1/4 ">
-                <div>Department </div>
-                <input type="text" className="inputAddUser2 w-full" />
+            <div className="flex gap-10 ">
+              <DropdownRoles
+              handleDivClick={handleDivClick}
+                toggleDropdown={toggleDropdown}
+                dropdownOpen={dropdownOpen}
+                selectedRoles={selectedRoles}
+                handleRoleChange={handleRoleChange}
+              />
+              <div className="flex flex-col gap-5  w-1/2">
+                <div>Program</div>
+                <select
+                  className="choose-form w-full"
+                  disabled={!programs.length}
+                  ref={program}
+                >
+                  <option value="" disabled selected>
+                    {programs.length
+                      ? "Choose a Program"
+                      : "Select a Department first"}
+                  </option>
+                  {programs.map((program) => (
+                    <option value={program.id} key={program.id}>
+                      {program.name}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <div className="flex justify-end w-3/4 space-x-8 items-center -mt-24 ">
-                {<div className="w-1/2 ">{msg}</div>}
-                <input
-                  type="file"
-                  id="selectFile"
-                  class="hidden"
-                  onChange={handleFile}
-                />
-                <label
-                  for="selectFile"
-                  class=" my-6  px-10 py-3 duration-200 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm md:text-lg  mx-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
-                >
-                  Import
-                </label>
-                <button
-                  type="submit"
-                  class=" my-6  px-10 py-3 duration-200 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg  mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                >
-                  Submit
-                </button>
+            </div>
+
+            <div className="flex gap-10 w-full">
+              <div className="flex justify-between items-center w-full">
+                <div className="w-1/2">{msg}</div>
+                <div className="flex space-x-2">
+                  <input
+                    type="file"
+                    id="selectFile"
+                    className="hidden"
+                    onChange={handleFile}
+                  />
+                  <label
+                    htmlFor="selectFile"
+                    className="my-6 px-10 py-3 duration-200 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm md:text-lg mx-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+                  >
+                    Import
+                  </label>
+                  <button
+                    type="submit"
+                    className="my-6 px-10 py-3 duration-200 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
             </div>
             {/* <div className="flex ">
