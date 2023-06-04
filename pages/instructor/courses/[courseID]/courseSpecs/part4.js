@@ -995,6 +995,10 @@ const part4 = ({ cookies }) => {
     const { selectedItems, handler } = facilityHandler.validate();
     const { notes, books, Rbooks, websites } =
       ListOfReferencesHandler.validate();
+      console.log(books);
+      console.log(Rbooks);
+      console.log(websites);
+      console.log(notes);
 
     console.log(assessmentScheduleHandler.getInvalidData());
     console.log(assessmentScheduleHandler.getInvalidData());
@@ -1129,7 +1133,7 @@ const part4 = ({ cookies }) => {
     } else {
       facilityHandler.getInvalidData(false);
     }
-    if (books === "") {
+    if (books === ""||!books) {
       newErrors.push("Books should not be empty.");
       ListOfReferencesHandler.passInvalid({ boolean: true, error: "books" });
     } else {
@@ -1144,7 +1148,7 @@ const part4 = ({ cookies }) => {
         error: "websites",
       });
     }
-    if (notes === "") {
+    if (notes === ""||!notes) {
       newErrors.push("Notes should not be empty.");
       ListOfReferencesHandler.passInvalid({ boolean: true, error: "notes" });
     } else {

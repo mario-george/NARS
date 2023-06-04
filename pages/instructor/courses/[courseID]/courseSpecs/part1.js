@@ -676,6 +676,8 @@ const part1 = ({ cookies }) => {
       setIsCourseContentInvalid(false);
     }
     if (newErrors.length === 0) {
+      setErrors([]);
+
       console.log("Form submitted successfully!");
 
       setIsSubmitting(true);
