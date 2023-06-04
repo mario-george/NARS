@@ -23,7 +23,7 @@ export default function ProgramCoordinatorDashboard({ cookies }) {
   const logoutHandler = () => {
     r.push("/logout");
   };
-
+  var file;
   useEffect(() => {
     console.log("Render");
   });
@@ -90,9 +90,8 @@ export default function ProgramCoordinatorDashboard({ cookies }) {
   }
   return (
     <nav
-      className={`nav2 transition-all duration-300 transform ${
-        navStatus ? ` -translate-x-full` : `translate-x-0 `
-      }`}
+      className={`nav2 transition-all duration-300 transform ${navStatus ? ` -translate-x-full` : `translate-x-0 `
+        }`}
     >
       <Link className="link2  focus:text-green-400 " href="/profile">
         <span>
@@ -155,8 +154,9 @@ export default function ProgramCoordinatorDashboard({ cookies }) {
             ref={myFileInput}
             onChange={async (e) => {
               setSelectedFile(e.target.files[0]);
+              file=e.target.files[0];
               const data = new FormData();
-              data.append("programSpcs", selectedFile);
+              data.append("programSpcs", file);
               data.append("program", userState.program);
 
               try {
