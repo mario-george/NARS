@@ -38,7 +38,6 @@ const Surveys = ({ cookies }) => {
   }, [allSurveys]);
 
   async function getCreatedCoursesForInstructor() {
-    console.log("IDDDDD", cookies._id);
     const url = `${
       role === "isStudent"
         ? `${process.env.url}api/v1/users/students/getCourses/${cookies._id}`
@@ -57,7 +56,6 @@ const Surveys = ({ cookies }) => {
       const resp = await data.json();
 
       if (role === "isStudent") {
-        console.log("COURSES", JSON.stringify(resp));
         const courses = resp.courses.map((item) => item.course);
         setCourses(courses);
       } else {
@@ -69,19 +67,21 @@ const Surveys = ({ cookies }) => {
   }
 
   async function getSurveys() {
-    const requests = courses.map((course) => {
-      return fetch(
-        `${process.env.url}api/v1/surveys/?courseInstance=${course._id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: "Bearer " + cookies.token,
-          },
-        }
-      ).then((result) => result.json());
-    });
+    const requests = courses
+      .filter((course) => course && course._id)
+      .map((course) => {
+        return fetch(
+          `${process.env.url}api/v1/surveys/?courseInstance=${course._id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: "Bearer " + cookies.token,
+            },
+          }
+        ).then((result) => result.json());
+      });
     Promise.all(requests)
       .then((value) => {
         const surveys = [];

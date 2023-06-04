@@ -15,8 +15,8 @@ const viewAll = ({ cookies }) => {
     document.querySelector("body").classList.add("scrollbar-none");
   });
   const handleClick = () => {
-    const header = ["name", "role", "email"];
-    const rows = staff.map((item) => [item.name, item.role, item.email]);
+    const header = ["name", "roles", "email","faculty","department","program"];
+    const rows = staff.map((item) => [item.name, item.roles.join(", "), item.email,item.faculty,item.department,item.program]);
 
     const worksheet = XLSX.utils.aoa_to_sheet([header, ...rows]);
 
@@ -54,7 +54,7 @@ const viewAll = ({ cookies }) => {
       let arr = data.data;
 
       arr = arr.map((e) => {
-        return { email: e.email, name: e.name, role: e.role };
+        return { email: e.email, name: e.name, roles: e.roles ,faculty:e.faculty,department:e.department,program:e.program};
       });
       setStaff(arr);
     } catch (e) {

@@ -8,7 +8,7 @@ import Checkbox from "@/components/checkbox/checkbox";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import jsPDF from "jspdf";
 // import mergePDFs from "@/pages/pdf2/merge2.js";
-import mergeTest from "../getPdf/courseReportPdf";
+import mergeTest from "../getPdf/MERGEONLYONE.js/test";
 // import mergeAllPdf from "./mergePagesToOnePDF";
 import { saveAs } from "file-saver";
 import { PDFDocument } from "pdf-lib";
@@ -277,15 +277,15 @@ const part10 = ({ cookies }) => {
     const blobs = [mergedPdf1, mergedPdf2, mergedPdf3, mergedPdf4, mergedPdf5];
     const ImgBlobs = [
       blob,
-      blob2,
-      blob3,
       blob4,
+      // blob2,
+      // blob3,
       blob5,
       blob6,
       blob7,
       blob8,
-      blob9,
-      blob10,
+      // blob9,
+      // blob10,
     ];
     const mergedBlob = await mergeTest(ImgBlobs);
     // const compressedBlob = await compressBlob(mergedBlob);
@@ -447,6 +447,8 @@ const part10 = ({ cookies }) => {
     buttonRef.current.click();
     let sentArr = [];
     if (handler) {
+      console.log(other)
+      console.log(other.current)
       sentArr = selectedItems.concat([other.current.value]);
     } else {
       sentArr = selectedItems;

@@ -43,8 +43,8 @@ export default function StudentDashboard({ cookies }) {
     console.log("COURSES ARE ", resp);
     let courses = [];
     resp.courses.forEach((item) => {
-      if (item.course) {
-        courses.push(item.course);
+      if (item) {
+        courses.push(item);
       }
     });
     setCoursesState(courses);
@@ -84,11 +84,11 @@ export default function StudentDashboard({ cookies }) {
                 <div key={courseInstance._id} className=" mb-5 -mx-4  px-0 ">
                   <HeaderElementStudent
                     className={``}
-                    key={courseInstance.course._id}
-                    id={courseInstance._id}
-                    originalId={courseInstance.course._id}
-                    name={courseInstance.course.name}
-                    createdAt={courseInstance.createdAt.split("T")[0]}
+                    key={courseInstance.course.course._id}
+                    id={courseInstance.course._id}
+                    originalId={courseInstance.course.course._id}
+                    name={courseInstance.course.course.name}
+                    createdAt={courseInstance.course.createdAt.split("T")[0]}
                     cookies={cookies}
                     passed={courseInstance.passed}
                   />

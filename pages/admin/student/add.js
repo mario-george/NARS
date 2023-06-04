@@ -7,12 +7,72 @@ import { useSelector } from "react-redux";
 
 const addStudent = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
+  const [departments, setDepartments] = useState([]);
+
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+ const [aY,setAy]=useState([])
+const handleAcademicYearChange=()=>{
+  const selectedElements = getSelectedElements(["prep","first","second","third","fourth","fifth","sixth"], academicYear.current.value);
+setAy(selectedElements)
+}
+function getSelectedElements(array, selectedValue) {
+  const selectedIndex = array.indexOf(selectedValue);
+  if (selectedIndex === -1) {
+    return [];
+  }
+  return array.slice(selectedIndex);
+}
+
+  const handleFacultyChange = async () => {
+    const selectedFacultyId = faculty.current.value;
+    console.log(selectedFacultyId);
+
+    const resp = await fetch(
+      `${process.env.url}api/v1/faculty/${selectedFacultyId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + userState.token,
+        },
+      }
+    );
+    let tempArray = [];
+    const data = await resp.json();
+
+    data.data.departments.map(async (d) => {
+      const resp = await fetch(
+        `${process.env.url}api/v1/department/?name=${d}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + userState.token,
+          },
+        }
+      );
+      const data = await resp.json();
+      console.log(data)
+      console.log(data)
+      console.log(data)
+      console.log(data)
+      console.log(data)
+      tempArray.push({ name: data.data[0].name, id: data.data[0]._id });
+    console.log(tempArray);
+
+    });
+    console.log(tempArray);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    setTimeout(() => {
+      setDepartments(tempArray);
+    }, 500);
+  };
   useEffect(() => {
     async function doThis() {
       const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
@@ -120,6 +180,16 @@ const addStudent = ({ cookies }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log(faculty.current.value);
+    console.log(aY);
+    console.log(aY);
+    console.log(aY);
+    console.log(department.current.value);
+    console.log(department.current.value);
+    console.log(department.current.value);
+    console.log(department.current.value);
+    console.log(department.current.value);
+    console.log(department.current.value);
+    console.log(department.current.value);
     const resp = await fetch(`${process.env.url}api/v1/users/students`, {
       method: "POST",
       headers: {
@@ -131,8 +201,8 @@ const addStudent = ({ cookies }) => {
         name: name.current.value,
         email: email.current.value,
         faculty: faculty.current.value,
-        // department: department.current.value,
-        academicYear: academicYear.current.value,
+        department: department.current.value,
+        academicYear: aY,
       }),
     });
     const data = await resp.json();
@@ -152,8 +222,8 @@ const addStudent = ({ cookies }) => {
     document.body.classList.toggle("overflow-hidden");
 
     data.forEach((row) => {
-      const { name, email, code, faculty, academicYear } = row;
-      const obj = { name, email, code, academicYear, faculty };
+      const { name, email, code, faculty, academicYear,department } = row;
+      const obj = { name, email, code, academicYear, faculty ,department};
 
       const resp = fetch(`${process.env.url}api/v1/users/students`, {
         method: "POST",
@@ -225,7 +295,7 @@ const addStudent = ({ cookies }) => {
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
-          >
+        >
           <div className="contentAddUser2 flex flex-col gap-10 py-20">
             <div className=" ">Add Student</div>
 
@@ -236,6 +306,7 @@ const addStudent = ({ cookies }) => {
                   type="text"
                   className="inputAddUser2 w-full"
                   ref={code}
+                  placeholder={`Student code`}
                 />
               </div>
               <div className="flex flex-col gap-5  w-1/2">
@@ -244,17 +315,32 @@ const addStudent = ({ cookies }) => {
                   type="text"
                   className="inputAddUser2  w-full"
                   ref={name}
+                  placeholder={`Student name`}
+
                 />
               </div>
             </div>
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5">
                 <div>Academic year</div>
-                <input
-                  type="text"
-                  className="inputAddUser2 w-full"
+                <select
                   ref={academicYear}
-                />
+                  id="small"
+                  class="choose-form w-full px-14"
+                  onChange={handleAcademicYearChange}
+
+                >
+                  <option className="text-left" value="" disabled selected>
+                    Choose a year
+                  </option>
+                  <option value="prep">Prep</option>
+                  <option value="first">First</option>
+                  <option value="second">Second</option>
+                  <option value="third">Third</option>
+                  <option value="fourth">Fourth</option>
+                  <option value="fifth">Fifth</option>
+                  <option value="sixth">Sixth</option>
+                </select>
               </div>
               <div className="flex flex-col gap-5  w-1/2">
                 <div> Email </div>
@@ -262,6 +348,8 @@ const addStudent = ({ cookies }) => {
                   type="text"
                   className="inputAddUser2  w-full"
                   ref={email}
+                  placeholder={`Student Email`}
+
                 />
               </div>
             </div>
@@ -272,20 +360,36 @@ const addStudent = ({ cookies }) => {
                   ref={faculty}
                   id="small"
                   class="choose-form w-full px-10"
+                  onChange={handleFacultyChange}
+
                 >
-                  <option selected>Choose a Faculty</option>
+                  <option className="text-left" disabled selected>
+                    Choose a Faculty
+                  </option>
                   {facultyArr.map((e) => {
                     return <option value={e.id}>{e.name}</option>;
                   })}{" "}
                 </select>
               </div>
               <div className="flex flex-col gap-5  w-1/2">
-                <div> Department </div>
-                <input
-                  type="text"
-                  className="inputAddUser2  w-full"
+                <div>Department</div>
+                <select
+                  id="department"
+                  className="choose-form w-full"
+                  disabled={!departments.length}
                   ref={department}
-                />
+                >
+                  <option value="" disabled selected>
+                    {departments.length
+                      ? "Choose a Department"
+                      : "Select a Faculty first"}
+                  </option>
+                  {departments.map((department) => (
+                    <option value={department.id} key={department.id}>
+                      {department.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="flex justify-between items-center">

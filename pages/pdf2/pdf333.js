@@ -52,7 +52,7 @@ class CustomReactToPdf extends ReactToPdf {
               resolve(blob);
             },
             "image/jpeg",
-            0.9
+            1
           ); //   adjust jgp quality here
         });
 

@@ -4,6 +4,7 @@ const AssessmentMethodsTable = ({
   questions,
   competences,
   studentAssessments,
+  courseFullMark,
 }) => {
   const assessmentsData = [
     {
@@ -56,19 +57,34 @@ const AssessmentMethodsTable = ({
     });
     //add percentage for each of them
     studentAssessments.forEach((assessment) => {
-      if (assessment.assessment === "Final Examination") {
-        assessmentsData[0].percentage = assessment.weight;
+      console.log(
+        "ASSSSSSSSSSSSSSSSSSSSSSSSESSSSMENT",
+        JSON.stringify(assessment.weight),
+        JSON.stringify(assessment.assessment)
+      );
+      if (assessment.assessment.trim() === "Final Examination") {
+        console.log(
+          "FINAL EXAAAAAAAAAAAAAAAAAAAAM",
+          JSON.stringify(assessment.weight)
+        );
+        assessmentsData[0].percentage = parseInt(
+          (assessment.weight / courseFullMark) * 100
+        );
       }
       if (assessment.assessment === "Midterm Examination") {
-        assessmentsData[1].percentage = assessment.weight;
+        assessmentsData[1].percentage = parseInt(
+          (assessment.weight / courseFullMark) * 100
+        );
       }
-      assessmentsData[2].percentage =
+      let supportPercentage =
         100 - (assessmentsData[0].percentage + assessmentsData[1].percentage);
+      if (supportPercentage < 0) supportPercentage = 0;
+      assessmentsData[2].percentage = supportPercentage;
     });
   })();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mt-10">
       <h2 className="font-bold text-xl mb-2">
         Matrix of Assessment Methods & Learning Outcomes
       </h2>
@@ -77,27 +93,27 @@ const AssessmentMethodsTable = ({
       <table className="table table-auto mt-6">
         <thead>
           <tr>
-            <th className="border-2 px-4 py-2 " rowSpan="2">
+            <th className="border-2 px-4 py-2 bg-blue-50" rowSpan="2">
               Assessment Tools
             </th>
             <th
-              className="border-2 mx-4 my-2 py-2"
+              className="border-2 mx-4 my-2 py-2 bg-blue-50"
               rowSpan="1"
               colSpan={`${competences.length}`}
             >
               Competences
             </th>
             <th
-              className="border-2 px-4 py-2"
+              className="border-2 px-4 py-2 bg-blue-50"
               rowSpan="2"
-              colSpan={`${competences.length}`}
+              colSpan="2"
             >
               Percentage total
             </th>
           </tr>
-          <tr className="border-2 ">
+          <tr className="">
             {Array.from({ length: competences.length }).map((_, rowIndex) => (
-              <th className="border-2 px-4 py-2" key={rowIndex}>
+              <th className="border-2 bg-blue-50 px-4 py-2" key={rowIndex}>
                 {competences[rowIndex].code}
               </th>
             ))}
@@ -120,7 +136,7 @@ const AssessmentMethodsTable = ({
             ))}
             <td className="text-center">{`${assessmentsData[0].percentage} %`}</td>
           </tr>
-          <tr className="border-2 px-4 py-2">
+          <tr className="border-2 px-4 py-2 w-[100%]">
             <td className="text-center">Midterm Exam</td>
             {Array.from({ length: competences.length }).map((_, index) => (
               <th className="border-2 px-4 py-2" key={index}>
@@ -134,7 +150,7 @@ const AssessmentMethodsTable = ({
                 />
               </th>
             ))}
-            <td className="text-center">{`${assessmentsData[1].percentage} %`}</td>
+            <td className="text-center ">{`${assessmentsData[1].percentage} %`}</td>
           </tr>
           <tr className="border-2 px-4 py-2">
             <td className="text-center">Quizzes, Project and Course Work</td>
@@ -153,7 +169,10 @@ const AssessmentMethodsTable = ({
             <td className="text-center">{`${assessmentsData[2].percentage} %`}</td>
           </tr>
           <tr className="border-2 px-4 py-2">
-            <td colSpan={4} className="text-center border-2">
+            <td
+              colSpan={`${competences.length + 1}`}
+              className="text-center border-2"
+            >
               total
             </td>
             <td className="text-center">100 %</td>

@@ -46,7 +46,7 @@ const updatefaculty = ({ cookies }) => {
   const closeMsg = () => {
     setMsg("");
   };
-  const items = ["Prep", "First", "Second", "Third", "Fourth"];
+  const items = ["prep", "first", "second", "third", "fourth","fifth"];
 
   const submitHandler = async (e) => {
     e.preventDefault();

@@ -13,7 +13,7 @@ function createHeader(headerName, array, optionalCreatedAt) {
                 <div className="flex flex-col text-center ">
 
 
-                    <div className="link2 hover:text-green-400 px-9">{headerName}  <br></br> {optionalCreatedAt}</div>
+                    <div className="link2 hover:text-green-400 px-5 w-full">{headerName}  <br></br> {optionalCreatedAt}</div>
                     {/*optionalCreatedAt ? <div className="link2 hover:text-green-400">{optionalCreatedAt}</div> : null*/}
 
                 </div>

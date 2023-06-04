@@ -42,36 +42,37 @@ export default function Login({ cookies }) {
       dispatch(userActions.toggleLoggedIn(true));
       dispatch(updateField({ field: "courses", value: courses }));
       dispatch(updateField({ field: "loggedInStatus", value: "true" }));
-      console.log("FIX THIS");
       dispatch(updateField({ field: "_id", value: resp.data.user._id }));
       dispatch(updateField({ field: "email", value: resp.data.user.email }));
       dispatch(updateField({ field: "jwt", value: resp.token }));
       dispatch(updateField({ field: "token", value: resp.token }));
       dispatch(updateField({ field: "name", value: resp.data.user.name }));
+      dispatch(updateField({ field: "faculty", value: resp.data.user.faculty }));
+      dispatch(updateField({ field: "department", value: resp.data.user.department }));
       dispatch(
         updateField({ field: "program", value: resp.data.user.program })
       );
       if (resp.data.user.role === "student") {
         dispatch(updateField({ field: "role", value: resp.data.user.role }));
         router.push("/studentProfile");
-      }
-      else if (resp.data.user.roles.length <= 1) {
-        dispatch(updateField({ field: "role", value: resp.data.user.roles[0] }));
+      } else if (resp.data.user.roles.length <= 1) {
+        dispatch(
+          updateField({ field: "role", value: resp.data.user.roles[0] })
+        );
         router.push("/profile");
-      }
-      else {
+      } else {
         setRoles(resp.data.user.roles);
         setShowModal(true);
       }
     }
   };
-  const submitRole = async(e) => {
+  const submitRole = async (e) => {
     if (e) {
       e.preventDefault();
     }
     dispatch(updateField({ field: "role", value: role.current.value }));
     router.push("/profile");
-  }
+  };
   return (
     <>
       <div className=" flex flex-col">
@@ -152,7 +153,8 @@ export default function Login({ cookies }) {
               ref={role}
               id="small"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
-              rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"            >
+              rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+            >
               <option selected>Choose a role</option>
               {rolesArr.map((e) => {
                 return <option value={e}>{e}</option>;
