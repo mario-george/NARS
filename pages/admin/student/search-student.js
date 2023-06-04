@@ -13,13 +13,7 @@ const SearchStudent = ({ cookies }) => {
   }
 
   const [faculyTitles, setFacultyTitles] = useState([]);
-  const handleFacultyChange = async () => {
-    console.log(code);
-    console.log(code);
-    console.log(code);
-    const selectedFaculty = faculty.current.value;
-    setFacultyValue(selectedFaculty);
-  };
+
   const [facultyValue, setFacultyValue] = useState("null");
 
   useEffect(() => {
@@ -79,6 +73,92 @@ const SearchStudent = ({ cookies }) => {
   const faculty = useRef();
   const [tobeDeleted, setTobeDeleted] = useState();
   const [emptyArray, setEmptyArray] = useState(false);
+  const [departments, setDepartments] = useState([]);
+  const handleFacultyChange = async () => {
+    const selectedFacultyId = faculty.current.value;
+    const selectedFaculty = faculty.current.value;
+    setFacultyValue(selectedFaculty);
+    let url = `${process.env.url}api/v1/faculty/${selectedFacultyId}`;
+    if (selectedFaculty == "all") {
+      url = `${process.env.url}api/v1/faculty/`;
+    }
+    console.log(url);
+    console.log(selectedFaculty);
+    const resp = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + userState.token,
+      },
+    });
+    const data = await resp.json();
+
+    if (selectedFaculty === "all") {
+      let t1 = [];
+      console.log(data);
+      console.log('data');
+    
+      await Promise.all(data.data.map(async (e) => {
+        let url = `${process.env.url}api/v1/faculty/${e._id}`;
+    
+        const resp = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + userState.token,
+          },
+        });
+    
+        const d = await resp.json();
+        console.log(d);
+        d.data.departments.map(async (d) => {
+          const resp = await fetch(
+            `${process.env.url}api/v1/department/?name=${d}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + userState.token,
+              },
+            }
+          );
+          const data = await resp.json();
+          console.log(data);
+          console.log(data);
+          console.log(data);
+          console.log(data);
+          console.log(data);
+          t1.push({ name: data.data[0].name, id: data.data[0]._id });
+        });
+      }));
+    
+      console.log(t1);
+      setDepartments(t1);
+      return;
+    }
+    
+    let tempArray = [];
+    console.log(data);
+    data.data.departments.map(async (d) => {
+      const resp = await fetch(
+        `${process.env.url}api/v1/department/?name=${d}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + userState.token,
+          },
+        }
+      );
+      const data = await resp.json();
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      tempArray.push({ name: data.data[0].name, id: data.data[0]._id });
+    });
+
+    setTimeout(() => {
+      setDepartments(tempArray);
+    }, 500);
+  };
   useEffect(() => {
     document.querySelector("body").classList.add("scrollbar-none");
   });
@@ -87,29 +167,32 @@ const SearchStudent = ({ cookies }) => {
       e.preventDefault();
     }
     try {
-      const resp = await fetch(
-        `${process.env.url}api/v1/users/students/?code=${code.current.value}&faculty=${facultyValue}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + userState.token,
-            // 'Custom-Header':code.current.value,
-          },
-          // body: JSON.stringify({
-          //   code: code.current.value,
-
-          // }),
-        }
-      );
+      let url = `${process.env.url}api/v1/users/students/?code=${code.current.value}&faculty=${facultyValue}`;
+      if (facultyValue == "all" && anyStudent) {
+        url = `${process.env.url}api/v1/users/students/`;
+      }
+      if (facultyValue != "all" && anyStudent) {
+        url = `${process.env.url}api/v1/users/students/?faculty=${facultyValue}`;
+      }
+      if (facultyValue == "all" && !anyStudent) {
+        url = `${process.env.url}api/v1/users/students/?code=${code.current.value}`;
+      }
+      const resp = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + userState.token,
+        },
+      });
       const data = await resp.json();
+      console.log(data);
       setStudent(data.data);
+
+      console.log(data.data[0].name);
       if (data.data.length === 0) {
         setEmptyArray(true);
         return;
       }
-      console.log(data.data[0].name);
-      console.log(data);
     } catch (e) {
       console.log(e);
     }
@@ -125,7 +208,7 @@ const SearchStudent = ({ cookies }) => {
 
     setDeleteModalIsOpen(false);
   };
-
+  const [anyStudent, setAnyStudent] = useState(false);
   const deleteHandler = async (e) => {
     if (e) {
       e.preventDefault();
@@ -321,13 +404,26 @@ const SearchStudent = ({ cookies }) => {
             <div className="flex gap-20 ">
               <div className="flex gap-20 w-full items-center">
                 <div className="flex flex-col  gap-5 w-1/2">
-                  <div className="">Student Code</div>
-                  <input
-                    type="text"
-                    className="inputAddUser2"
-                    ref={code}
-                    onChange={handleCodeField}
-                  />
+                  <div className="flex flex-col space-y-3">
+                    <div className="">Student Code</div>
+                    <div>
+                      <input
+                        type="text"
+                        className="inputAddUser2"
+                        ref={code}
+                        onChange={handleCodeField}
+                      />
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                        onChange={() => setAnyStudent(!anyStudent)}
+                        checked={anyStudent}
+                      />{" "}
+                      <div>Search all students</div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex flex-col gap-5 w-1/2  ">
@@ -346,16 +442,38 @@ const SearchStudent = ({ cookies }) => {
                     >
                       Choose a Faculty
                     </option>
+                    <option className="text-left" value="all">
+                      All Faculities
+                    </option>
                     {faculyTitles.map((e) => {
                       return <option value={e.id}>{e.name}</option>;
                     })}{" "}
+                  </select>
+                </div>
+                <div className="flex flex-col gap-5  w-1/2">
+                  <div>Department</div>
+                  <select
+                    id="department"
+                    className="choose-form w-full"
+                    disabled={!departments.length}
+                    ref={department}
+                  >
+                    <option value="" disabled selected>
+                      {departments.length
+                        ? "Choose a Department"
+                        : "Select a Faculty first"}
+                    </option>
+                    {departments.map((department) => (
+                      <option value={department.id} key={department.id}>
+                        {department.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
                 <button
                   type="submit"
                   class="px-10 py-3 duration-200 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  disabled={facultyValue == "null" || choosenCode == "null"}
                 >
                   Search
                 </button>

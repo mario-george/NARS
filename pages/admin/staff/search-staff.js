@@ -176,7 +176,7 @@ const SearchStudent = ({ cookies }) => {
   console.log(facultyValue)
   console.log(facultyValue)
   console.log(facultyValue)
-
+const [noUsers,setNoUsers]=useState(false)
   const submitHandler = async (e) => {
 
     if (e) {
@@ -200,6 +200,11 @@ const SearchStudent = ({ cookies }) => {
       );
       const data = await resp.json();
       setStaff(data.data);
+      if(data.data.length==0){
+        setNoUsers(true)
+      }else{
+        setNoUsers(false)
+      }
       console.log(data);
     } catch (e) {
       console.log(e);
@@ -401,7 +406,7 @@ const SearchStudent = ({ cookies }) => {
             </div>
             <div className="flex justify-center w-full ">
               <div className="w-3/5 h-[5rem] flex flex-col">
-                {(choosenRole!="null"&&facultyValue!="null"&&staff?.length===0)?<div className="w-full flex justify-center h-full items-center">No users found with that role</div>:<></>}
+                {(noUsers&&choosenRole!="null"&&facultyValue!="null"&&staff?.length===0)?<div className="w-full flex justify-center h-full items-center">No users found with that role</div>:<></>}
                 {staff.map((s) => {
                   return (
                     <>
