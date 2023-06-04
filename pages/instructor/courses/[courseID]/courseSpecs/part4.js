@@ -120,6 +120,8 @@ const part4 = ({ cookies }) => {
       ...checkboxRefsLecturePlan.current,
       Array.from({ length: a.length }, () => false),
     ];
+    topicsRefs.current = [...topicsRefs.current, ""];
+    HoursRefs.current = [...HoursRefs.current, ""];
   };
   const removeRowHandler = (e) => {
     e.preventDefault();
@@ -129,6 +131,8 @@ const part4 = ({ cookies }) => {
       0,
       -1
     );
+    topicsRefs.current = topicsRefs.current.slice(0, -1);
+    HoursRefs.current = HoursRefs.current.slice(0, -1);
   };
   useEffect(() => {
     const getData = async () => {
@@ -310,6 +314,17 @@ const part4 = ({ cookies }) => {
               checkboxRefsLecturePlan.current[i][j] = true;
             }
           }
+        }
+        if (
+          data.data.courseSpecs.lecturePlan.topics &&
+          data.data.courseSpecs.lecturePlan.topics.length === 0
+        ) {
+          setAddWeek(1);
+          topicsRefs.current = [""];
+          HoursRefs.current = [""];
+          checkboxRefsLecturePlan.current = Array.from({ length: 1 }, () =>
+            Array.from({ length: a.length }, () => false)
+          );
         }
       } catch (e) {
         console.log(e);
@@ -968,8 +983,6 @@ const part4 = ({ cookies }) => {
   ] = useState(false);
 
   const submitHandler = async (e) => {
-
-
     console.log(HoursRefs.current);
     console.log(HoursRefs.current);
     console.log(HoursRefs.current);
@@ -982,7 +995,7 @@ const part4 = ({ cookies }) => {
     const { selectedItems, handler } = facilityHandler.validate();
     const { notes, books, Rbooks, websites } =
       ListOfReferencesHandler.validate();
-    
+
     console.log(assessmentScheduleHandler.getInvalidData());
     console.log(assessmentScheduleHandler.getInvalidData());
     console.log(assessmentScheduleHandler.getInvalidData());
@@ -1091,7 +1104,6 @@ const part4 = ({ cookies }) => {
     } else {
       setCompetencesInvalid(true);
 
-      setMsg(fail);
       newErrors.push("Competences is not met. please review the entered data");
     }
     if (topicsRefsCheckedForErrors) {

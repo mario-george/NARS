@@ -25,6 +25,7 @@ const part1 = ({ cookies }) => {
     localStorage.removeItem("pdf1");
     localStorage.removeItem("pdf2");
     localStorage.removeItem("pdf3");
+    localStorage.removeItem("pdf33");
   }, []);
   const courseAims = useRef("");
   const courseContent = useRef("");
@@ -547,8 +548,12 @@ const part1 = ({ cookies }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    console.log(inputs.length + inputs2.length + inputs3.length);
     const newErrors = [];
+    if (inputs.length + inputs2.length + inputs3.length < 3) {
+      const error = "At least 3 Learning Outcomes must be stated.";
+      newErrors.push(error);
+    }
     const cognitive = inputs.map((input) => {
       const description = input.ref.current.value;
       const newInput = {
