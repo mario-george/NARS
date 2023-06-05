@@ -24,7 +24,7 @@ function UserList({ users }) {
                 <td className="border px-4 py-2">{user.code}</td>
                 <td className="border px-4 py-2">{user.email}</td>
                 <td className="border px-4 py-2">{user.faculty}</td>
-                <td className="border px-4 py-2">{user.academicYear}</td>
+                <td className="border px-4 py-2">{user.academicYear.join(",")}</td>
                 <td className="border px-4 py-2">{user.department}</td>
               </tr>
             );

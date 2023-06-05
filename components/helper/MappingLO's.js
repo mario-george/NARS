@@ -27,7 +27,7 @@ const MappingLOs = ({
         <thead>
           <tr className=" bg-[#FF0000] text-2xl py-4">
             <th className="border-2 px-4 py-4 text-left text-xl text-yellow-200 uppercase">
-              LO'S/NARS
+              LO'S<br/>NARS
             </th>
             {competences.map((e, i) => (
               <th

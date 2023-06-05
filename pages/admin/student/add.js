@@ -223,7 +223,7 @@ function getSelectedElements(array, selectedValue) {
 
     data.forEach((row) => {
       const { name, email, code, faculty, academicYear,department } = row;
-      const obj = { name, email, code, academicYear, faculty ,department};
+      const obj = { name, email, code, academicYear:academicYear.split(",").map(e=>e.trim()), faculty ,department};
 
       const resp = fetch(`${process.env.url}api/v1/users/students`, {
         method: "POST",

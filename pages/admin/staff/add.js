@@ -96,9 +96,13 @@ const addStaff = ({ cookies }) => {
     const selectedOption =
       department.current.options[department.current.selectedIndex];
     const selectedOptionName = selectedOption.text;
-    console.log(selectedOptionName);
+    const depID=department.current.value
+    console.log(depID);
+    console.log(depID);
+    console.log(depID);
+    console.log(depID);
     const resp = await fetch(
-      `${process.env.url}api/v1/programs/?department=${selectedOptionName}`,
+      `${process.env.url}api/v1/programs/?department=${depID}`,
       {
         headers: {
           "Content-Type": "application/json",

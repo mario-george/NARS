@@ -94,9 +94,9 @@ const LecturePlan = ({
         <tbody>
           {Array.from({ length: numRowsLecturePlan }).map((_, rowIndex) => (
             <tr key={rowIndex}>
-              <td className="border-2 border-black px-4 py-2">
+              <td className="border-2 border-black px-1 py-2 text-center">
                 {" "}
-                {[rowIndex + 1]}
+                W{[rowIndex + 1]}
               </td>
               <td className="border-2 px-4 py-2 border-black ">
                 <Textarea

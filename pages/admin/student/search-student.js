@@ -13,13 +13,7 @@ const SearchStudent = ({ cookies }) => {
   }
 
   const [faculyTitles, setFacultyTitles] = useState([]);
-  const handleFacultyChange = async () => {
-    console.log(code);
-    console.log(code);
-    console.log(code);
-    const selectedFaculty = faculty.current.value;
-    setFacultyValue(selectedFaculty);
-  };
+
   const [facultyValue, setFacultyValue] = useState("null");
 
   useEffect(() => {
@@ -43,7 +37,7 @@ const SearchStudent = ({ cookies }) => {
   }, []);
   const [choosenCode, setChoosenCode] = useState("null");
   const handleCodeField = (event) => {
-    const selectedCode = code.current.value;
+    const selectedCode = code.current?.value;
     console.log(selectedCode);
     console.log(event.target.value);
     console.log(selectedCode);
@@ -79,37 +73,67 @@ const SearchStudent = ({ cookies }) => {
   const faculty = useRef();
   const [tobeDeleted, setTobeDeleted] = useState();
   const [emptyArray, setEmptyArray] = useState(false);
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+  const [departments, setDepartments] = useState([]);
+  const handleFacultyChange = async () => {
+    const selectedFaculty = faculty.current.value;
+    setFacultyValue(selectedFaculty);
+  };
+  const [noStudents, setNoStudents] = useState(false);
+  const [invalidInput, setInvalidInput] = useState(false);
   const submitHandler = async (e) => {
     if (e) {
       e.preventDefault();
     }
+    console.log(code.current);
+    console.log(code.current?.value);
+    if (
+      facultyValue == "null" ||
+      (!anyStudent && code.current?.value == null) ||
+      (!anyStudent && code.current?.value == "")
+    ) {
+      console.log("error");
+      setStudent([]);
+      setInvalidInput(true);
+      return;
+    } else {
+      setInvalidInput(false);
+    }
     try {
-      const resp = await fetch(
-        `${process.env.url}api/v1/users/students/?code=${code.current.value}&faculty=${facultyValue}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + userState.token,
-            // 'Custom-Header':code.current.value,
-          },
-          // body: JSON.stringify({
-          //   code: code.current.value,
-
-          // }),
-        }
-      );
+      let url = `${process.env.url}api/v1/users/students/?code=${code.current?.value}&faculty=${facultyValue}`;
+      if (facultyValue == "all" && anyStudent) {
+        url = `${process.env.url}api/v1/users/students/`;
+      }
+      if (facultyValue != "all" && anyStudent) {
+        url = `${process.env.url}api/v1/users/students/?faculty=${facultyValue}`;
+      }
+      if (facultyValue == "all" && !anyStudent) {
+        url = `${process.env.url}api/v1/users/students/?code=${code.current?.value}`;
+      }
+      console.log(url);
+      const resp = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + userState.token,
+        },
+      });
       const data = await resp.json();
+      console.log(data);
+      if (data.data.length == 0) {
+      setStudent([]);
+
+        setNoStudents(true);
+        return;
+      } else {
+        setNoStudents(false);
+      }
       setStudent(data.data);
+
+      console.log(data.data[0].name);
       if (data.data.length === 0) {
         setEmptyArray(true);
         return;
       }
-      console.log(data.data[0].name);
-      console.log(data);
     } catch (e) {
       console.log(e);
     }
@@ -125,7 +149,7 @@ const SearchStudent = ({ cookies }) => {
 
     setDeleteModalIsOpen(false);
   };
-
+  const [anyStudent, setAnyStudent] = useState(false);
   const deleteHandler = async (e) => {
     if (e) {
       e.preventDefault();
@@ -168,7 +192,7 @@ const SearchStudent = ({ cookies }) => {
           body: JSON.stringify({
             name: name.current.value,
             email: email.current.value,
-            code: code.current.value,
+            code: code.current?.value,
           }),
         }
       );
@@ -318,20 +342,37 @@ const SearchStudent = ({ cookies }) => {
         >
           <div className="overflow-auto contentAddUser2 flex flex-col gap-10">
             <div className=" ">Search Student</div>
-            <div className="flex gap-20 ">
+            <div className="flex gap-20 items-center  ">
               <div className="flex gap-20 w-full items-center">
                 <div className="flex flex-col  gap-5 w-1/2">
-                  <div className="">Student Code</div>
-                  <input
-                    type="text"
-                    className="inputAddUser2"
-                    ref={code}
-                    onChange={handleCodeField}
-                  />
+                  <div className="flex flex-col space-y-3">
+                    <div></div>
+                    <div className="">Student Code</div>
+                    <div>
+                      <input
+                        type="text"
+                        className="inputAddUser2"
+                        ref={code}
+                        onChange={handleCodeField}
+                        disabled={anyStudent}
+                        placeholder={anyStudent ? 'Input disabled (Search all students selected)' : 'Enter code'}
+
+                      />
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                        onChange={() => setAnyStudent(!anyStudent)}
+                        checked={anyStudent}
+                      />{" "}
+                      <div>Search all students</div>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex flex-col gap-5 w-1/2  ">
-                  <div> Faculty</div>
+                <div className="flex flex-col gap-5 w-1/2  pb-10 ">
+                  <div className=""> Faculty</div>
                   <select
                     ref={faculty}
                     id="small"
@@ -346,6 +387,9 @@ const SearchStudent = ({ cookies }) => {
                     >
                       Choose a Faculty
                     </option>
+                    <option className="text-left" value="all">
+                      All Faculities
+                    </option>
                     {faculyTitles.map((e) => {
                       return <option value={e.id}>{e.name}</option>;
                     })}{" "}
@@ -355,7 +399,6 @@ const SearchStudent = ({ cookies }) => {
                 <button
                   type="submit"
                   class="px-10 py-3 duration-200 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  disabled={facultyValue == "null" || choosenCode == "null"}
                 >
                   Search
                 </button>
@@ -363,6 +406,13 @@ const SearchStudent = ({ cookies }) => {
             </div>
             <div className="flex justify-center w-full">
               <div className="w-3/5 h-[5rem] flex flex-col ">
+                {invalidInput && (
+                  <div>
+                    You must choose a faculty and either enter student code or
+                    check the all students checkbox
+                  </div>
+                )}
+                {noStudents && <div>No students found</div>}
                 {student.map((s) => {
                   return (
                     <div className="flex w-full space-x-5 justify-between ">

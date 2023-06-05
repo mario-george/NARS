@@ -84,7 +84,7 @@ const part4 = ({ cookies }) => {
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const [addWeek, setAddWeek] = useState(1);
+  const [addWeek, setAddWeek] = useState(0);
   const topicsRefs = useRef(
     Array.from({ length: outcomes.length }, () => false)
   );
@@ -120,6 +120,8 @@ const part4 = ({ cookies }) => {
       ...checkboxRefsLecturePlan.current,
       Array.from({ length: a.length }, () => false),
     ];
+    topicsRefs.current = [...topicsRefs.current, ""];
+    HoursRefs.current = [...HoursRefs.current, ""];
   };
   const removeRowHandler = (e) => {
     e.preventDefault();
@@ -129,6 +131,8 @@ const part4 = ({ cookies }) => {
       0,
       -1
     );
+    topicsRefs.current = topicsRefs.current.slice(0, -1);
+    HoursRefs.current = HoursRefs.current.slice(0, -1);
   };
   useEffect(() => {
     const getData = async () => {
@@ -311,6 +315,7 @@ const part4 = ({ cookies }) => {
             }
           }
         }
+     
       } catch (e) {
         console.log(e);
       }
@@ -809,6 +814,9 @@ const part4 = ({ cookies }) => {
           data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
 
         cp2 = JSON.parse(JSON.stringify(courseLearningOutcomes));
+        console.log(cp2)
+        console.log(cp2)
+        console.log(cp2)
 
         if (
           data.data.courseSpecs.courseLearningOutcomes[0].title == "cognitive"
@@ -846,21 +854,24 @@ const part4 = ({ cookies }) => {
           });
         }
 
-        combined = [];
-        cp2[2].learningOutcomes[0].mappedCompetence.map((e) => {
-          combined.push(e);
-        });
-        cp2[0].learningOutcomes[0].mappedCompetence.map((e) => {
-          combined.push(e);
-        });
-        cp2[1].learningOutcomes[0].mappedCompetence.map((e) => {
-          combined.push(e);
-        });
-
+//         combined = [];
+//         cp2[2].learningOutcomes[0].mappedCompetence.map((e) => {
+//           combined.push(e);
+//         });
+//         cp2[0].learningOutcomes[0].mappedCompetence.map((e) => {
+//           combined.push(e);
+//         });
+//         cp2[1].learningOutcomes[0].mappedCompetence.map((e) => {
+//           combined.push(e);
+//         });
+// console.log(cp2)
+// console.log(cp2)
+// console.log(cp2)
+// console.log(cp2)
         function removeDuplicates(array) {
           return array.filter((item, index) => array.indexOf(item) === index);
         }
-        combined = removeDuplicates(combined);
+        // combined = removeDuplicates(combined);
       } catch (error) {
         console.error(`Error parsing cookie: ${error} 123`);
       }
@@ -924,7 +935,11 @@ const part4 = ({ cookies }) => {
       );
       const resp = await r.json();
       console.log(resp);
-      facilityHandler.submitHandler();
+      setTimeout(()=>{
+
+
+        facilityHandler.submitHandler();
+      },500)
       console.log(cp2);
       console.log(cp2);
       console.log(cp2);
@@ -968,8 +983,6 @@ const part4 = ({ cookies }) => {
   ] = useState(false);
 
   const submitHandler = async (e) => {
-
-
     console.log(HoursRefs.current);
     console.log(HoursRefs.current);
     console.log(HoursRefs.current);
@@ -982,7 +995,11 @@ const part4 = ({ cookies }) => {
     const { selectedItems, handler } = facilityHandler.validate();
     const { notes, books, Rbooks, websites } =
       ListOfReferencesHandler.validate();
-    
+      console.log(books);
+      console.log(Rbooks);
+      console.log(websites);
+      console.log(notes);
+
     console.log(assessmentScheduleHandler.getInvalidData());
     console.log(assessmentScheduleHandler.getInvalidData());
     console.log(assessmentScheduleHandler.getInvalidData());
@@ -1091,7 +1108,6 @@ const part4 = ({ cookies }) => {
     } else {
       setCompetencesInvalid(true);
 
-      setMsg(fail);
       newErrors.push("Competences is not met. please review the entered data");
     }
     if (topicsRefsCheckedForErrors) {
@@ -1117,7 +1133,7 @@ const part4 = ({ cookies }) => {
     } else {
       facilityHandler.getInvalidData(false);
     }
-    if (books === "") {
+    if (books === ""||!books) {
       newErrors.push("Books should not be empty.");
       ListOfReferencesHandler.passInvalid({ boolean: true, error: "books" });
     } else {
@@ -1132,7 +1148,7 @@ const part4 = ({ cookies }) => {
         error: "websites",
       });
     }
-    if (notes === "") {
+    if (notes === ""||!notes) {
       newErrors.push("Notes should not be empty.");
       ListOfReferencesHandler.passInvalid({ boolean: true, error: "notes" });
     } else {
