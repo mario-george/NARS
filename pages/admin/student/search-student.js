@@ -37,7 +37,7 @@ const SearchStudent = ({ cookies }) => {
   }, []);
   const [choosenCode, setChoosenCode] = useState("null");
   const handleCodeField = (event) => {
-    const selectedCode = code.current.value;
+    const selectedCode = code.current?.value;
     console.log(selectedCode);
     console.log(event.target.value);
     console.log(selectedCode);
@@ -75,99 +75,31 @@ const SearchStudent = ({ cookies }) => {
   const [emptyArray, setEmptyArray] = useState(false);
   const [departments, setDepartments] = useState([]);
   const handleFacultyChange = async () => {
-    const selectedFacultyId = faculty.current.value;
     const selectedFaculty = faculty.current.value;
     setFacultyValue(selectedFaculty);
-    let url = `${process.env.url}api/v1/faculty/${selectedFacultyId}`;
-    if (selectedFaculty == "all") {
-      url = `${process.env.url}api/v1/faculty/`;
-    }
-    console.log(url);
-    console.log(selectedFaculty);
-    const resp = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + userState.token,
-      },
-    });
-    const data = await resp.json();
-
-    if (selectedFaculty === "all") {
-      let t1 = [];
-      console.log(data);
-      console.log('data');
-    
-      await Promise.all(data.data.map(async (e) => {
-        let url = `${process.env.url}api/v1/faculty/${e._id}`;
-    
-        const resp = await fetch(url, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + userState.token,
-          },
-        });
-    
-        const d = await resp.json();
-        console.log(d);
-        d.data.departments.map(async (d) => {
-          const resp = await fetch(
-            `${process.env.url}api/v1/department/?name=${d}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + userState.token,
-              },
-            }
-          );
-          const data = await resp.json();
-          console.log(data);
-          console.log(data);
-          console.log(data);
-          console.log(data);
-          console.log(data);
-          t1.push({ name: data.data[0].name, id: data.data[0]._id });
-        });
-      }));
-    
-      console.log(t1);
-      setDepartments(t1);
-      return;
-    }
-    
-    let tempArray = [];
-    console.log(data);
-    data.data.departments.map(async (d) => {
-      const resp = await fetch(
-        `${process.env.url}api/v1/department/?name=${d}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + userState.token,
-          },
-        }
-      );
-      const data = await resp.json();
-      console.log(data);
-      console.log(data);
-      console.log(data);
-      console.log(data);
-      console.log(data);
-      tempArray.push({ name: data.data[0].name, id: data.data[0]._id });
-    });
-
-    setTimeout(() => {
-      setDepartments(tempArray);
-    }, 500);
   };
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+  const [noStudents, setNoStudents] = useState(false);
+  const [invalidInput, setInvalidInput] = useState(false);
   const submitHandler = async (e) => {
     if (e) {
       e.preventDefault();
     }
+    console.log(code.current);
+    console.log(code.current?.value);
+    if (
+      facultyValue == "null" ||
+      (!anyStudent && code.current?.value == null) ||
+      (!anyStudent && code.current?.value == "")
+    ) {
+      console.log("error");
+      setStudent([]);
+      setInvalidInput(true);
+      return;
+    } else {
+      setInvalidInput(false);
+    }
     try {
-      let url = `${process.env.url}api/v1/users/students/?code=${code.current.value}&faculty=${facultyValue}`;
+      let url = `${process.env.url}api/v1/users/students/?code=${code.current?.value}&faculty=${facultyValue}`;
       if (facultyValue == "all" && anyStudent) {
         url = `${process.env.url}api/v1/users/students/`;
       }
@@ -175,8 +107,9 @@ const SearchStudent = ({ cookies }) => {
         url = `${process.env.url}api/v1/users/students/?faculty=${facultyValue}`;
       }
       if (facultyValue == "all" && !anyStudent) {
-        url = `${process.env.url}api/v1/users/students/?code=${code.current.value}`;
+        url = `${process.env.url}api/v1/users/students/?code=${code.current?.value}`;
       }
+      console.log(url);
       const resp = await fetch(url, {
         method: "GET",
         headers: {
@@ -186,6 +119,14 @@ const SearchStudent = ({ cookies }) => {
       });
       const data = await resp.json();
       console.log(data);
+      if (data.data.length == 0) {
+      setStudent([]);
+
+        setNoStudents(true);
+        return;
+      } else {
+        setNoStudents(false);
+      }
       setStudent(data.data);
 
       console.log(data.data[0].name);
@@ -251,7 +192,7 @@ const SearchStudent = ({ cookies }) => {
           body: JSON.stringify({
             name: name.current.value,
             email: email.current.value,
-            code: code.current.value,
+            code: code.current?.value,
           }),
         }
       );
@@ -401,10 +342,11 @@ const SearchStudent = ({ cookies }) => {
         >
           <div className="overflow-auto contentAddUser2 flex flex-col gap-10">
             <div className=" ">Search Student</div>
-            <div className="flex gap-20 ">
+            <div className="flex gap-20 items-center  ">
               <div className="flex gap-20 w-full items-center">
                 <div className="flex flex-col  gap-5 w-1/2">
                   <div className="flex flex-col space-y-3">
+                    <div></div>
                     <div className="">Student Code</div>
                     <div>
                       <input
@@ -412,6 +354,9 @@ const SearchStudent = ({ cookies }) => {
                         className="inputAddUser2"
                         ref={code}
                         onChange={handleCodeField}
+                        disabled={anyStudent}
+                        placeholder={anyStudent ? 'Input disabled (Search all students selected)' : 'Enter code'}
+
                       />
                     </div>
                     <div className="flex items-center space-x-3">
@@ -426,8 +371,8 @@ const SearchStudent = ({ cookies }) => {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-5 w-1/2  ">
-                  <div> Faculty</div>
+                <div className="flex flex-col gap-5 w-1/2  pb-10 ">
+                  <div className=""> Faculty</div>
                   <select
                     ref={faculty}
                     id="small"
@@ -450,26 +395,6 @@ const SearchStudent = ({ cookies }) => {
                     })}{" "}
                   </select>
                 </div>
-                <div className="flex flex-col gap-5  w-1/2">
-                  <div>Department</div>
-                  <select
-                    id="department"
-                    className="choose-form w-full"
-                    disabled={!departments.length}
-                    ref={department}
-                  >
-                    <option value="" disabled selected>
-                      {departments.length
-                        ? "Choose a Department"
-                        : "Select a Faculty first"}
-                    </option>
-                    {departments.map((department) => (
-                      <option value={department.id} key={department.id}>
-                        {department.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
 
                 <button
                   type="submit"
@@ -481,6 +406,13 @@ const SearchStudent = ({ cookies }) => {
             </div>
             <div className="flex justify-center w-full">
               <div className="w-3/5 h-[5rem] flex flex-col ">
+                {invalidInput && (
+                  <div>
+                    You must choose a faculty and either enter student code or
+                    check the all students checkbox
+                  </div>
+                )}
+                {noStudents && <div>No students found</div>}
                 {student.map((s) => {
                   return (
                     <div className="flex w-full space-x-5 justify-between ">
