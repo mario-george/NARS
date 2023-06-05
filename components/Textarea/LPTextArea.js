@@ -39,8 +39,10 @@ const Textarea = (props) => {
         } 
         
         ${props.references&&!props.invalid &&props.hasClass? `bg-sky-100`:``}
-        block w-full text-sky-800 text-lg  ${
+        block w-full  text-lg  ${
           small ? `h-[3rem]` : `h-[6rem]`
+        } ${
+          props.extraSmall ? `h-auto p-0 m-0 text-black` : `text-sky-800`
         } p-2 leading-5 resize-none border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 overflow-hidden`}
         value={value}
         rows={rows}

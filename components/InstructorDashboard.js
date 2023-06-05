@@ -16,7 +16,7 @@ export default function InstructorDashboard({ cookies }) {
   const coursesRef = useRef([]);
   const r = useRouter();
   const userState = useSelector((s) => s.user);
-  const CreatedCoursesForInstructor=userState.CreatedCoursesForInstructor
+  const CreatedCoursesForInstructor = userState.CreatedCoursesForInstructor;
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -36,7 +36,7 @@ export default function InstructorDashboard({ cookies }) {
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  }, [CreatedCoursesForInstructor]);
 
   async function getCreatedCoursesForInstructor() {
     try {
@@ -55,7 +55,6 @@ export default function InstructorDashboard({ cookies }) {
       );
 
       const resp = await data.json();
-      dispatch(updateField({ field: "CreatedCoursesForInstructor", value: resp.data }));
       sC(resp.data);
     } catch (e) {
       console.log(e);

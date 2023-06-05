@@ -84,7 +84,7 @@ const part4 = ({ cookies }) => {
   if (userState.role != "instructor" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const [addWeek, setAddWeek] = useState(1);
+  const [addWeek, setAddWeek] = useState(0);
   const topicsRefs = useRef(
     Array.from({ length: outcomes.length }, () => false)
   );
@@ -315,17 +315,7 @@ const part4 = ({ cookies }) => {
             }
           }
         }
-        if (
-          data.data.courseSpecs.lecturePlan.topics &&
-          data.data.courseSpecs.lecturePlan.topics.length === 0
-        ) {
-          setAddWeek(1);
-          topicsRefs.current = [""];
-          HoursRefs.current = [""];
-          checkboxRefsLecturePlan.current = Array.from({ length: 1 }, () =>
-            Array.from({ length: a.length }, () => false)
-          );
-        }
+     
       } catch (e) {
         console.log(e);
       }
@@ -824,6 +814,9 @@ const part4 = ({ cookies }) => {
           data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
 
         cp2 = JSON.parse(JSON.stringify(courseLearningOutcomes));
+        console.log(cp2)
+        console.log(cp2)
+        console.log(cp2)
 
         if (
           data.data.courseSpecs.courseLearningOutcomes[0].title == "cognitive"
@@ -861,21 +854,24 @@ const part4 = ({ cookies }) => {
           });
         }
 
-        combined = [];
-        cp2[2].learningOutcomes[0].mappedCompetence.map((e) => {
-          combined.push(e);
-        });
-        cp2[0].learningOutcomes[0].mappedCompetence.map((e) => {
-          combined.push(e);
-        });
-        cp2[1].learningOutcomes[0].mappedCompetence.map((e) => {
-          combined.push(e);
-        });
-
+//         combined = [];
+//         cp2[2].learningOutcomes[0].mappedCompetence.map((e) => {
+//           combined.push(e);
+//         });
+//         cp2[0].learningOutcomes[0].mappedCompetence.map((e) => {
+//           combined.push(e);
+//         });
+//         cp2[1].learningOutcomes[0].mappedCompetence.map((e) => {
+//           combined.push(e);
+//         });
+// console.log(cp2)
+// console.log(cp2)
+// console.log(cp2)
+// console.log(cp2)
         function removeDuplicates(array) {
           return array.filter((item, index) => array.indexOf(item) === index);
         }
-        combined = removeDuplicates(combined);
+        // combined = removeDuplicates(combined);
       } catch (error) {
         console.error(`Error parsing cookie: ${error} 123`);
       }
@@ -939,7 +935,11 @@ const part4 = ({ cookies }) => {
       );
       const resp = await r.json();
       console.log(resp);
-      facilityHandler.submitHandler();
+      setTimeout(()=>{
+
+
+        facilityHandler.submitHandler();
+      },500)
       console.log(cp2);
       console.log(cp2);
       console.log(cp2);
