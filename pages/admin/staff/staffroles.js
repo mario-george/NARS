@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRef } from "react";
 import React from "react";
+import Textarea from "@/components/Textarea/TextareaRoles";
 const staffRoles = ({ cookies }) => {
     const userState = useSelector((s) => s.user);
     if (userState.role != "system admin" || userState.loggedInStatus != "true") {
@@ -71,6 +72,7 @@ const staffRoles = ({ cookies }) => {
         "program admin",
         "department admin",
     ];
+    const [update, setUpdate] = useState(false);
 
     useEffect(() => {
         async function getAllStaff() {
@@ -86,9 +88,28 @@ const staffRoles = ({ cookies }) => {
                 return { name: e.name, id: e._id, roles: e.roles };
             });
             setStaff(newData);
+        
+            if(staff.current?.value){
+                try{
+                  
+                      newData.map((e) => {
+                        {
+
+                            if (e.id === staff.current?.value) {
+                                setRoles(items.filter(val => !e.roles.includes(val)));
+                              
+                            }
+                        }
+        
+                    })
+                }catch(e){
+                    console.log(e)
+                }
+             
+              }
         }
         getAllStaff();
-    }, []);
+    }, [update]);
     //console.log("araaaaay",staffArr);
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -109,6 +130,7 @@ const staffRoles = ({ cookies }) => {
                     },
                 }
             );
+      setUpdate(!update);
 
             const resp = await r.json();
             console.log(resp);
@@ -233,20 +255,20 @@ const staffRoles = ({ cookies }) => {
                                     class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
                                     onChange={() => handleChangeRole(role)}
                                 >
-                                    <option selected>Choose a role</option>
+                                    <option disabled selected>Choose a role</option>
                                     {rolesArr.map((e) => {
                                         return <option value={e}>{e}</option>;
                                     })}{" "}
                                 </select>
                             </div>
                         </div>
-                        <div className="flex gap-20 ">
-                            <div className="flex flex-col gap-5  w-1/3">
+                        <div className="flex gap-20 w-auto ">
+                            <div className="flex flex-col gap-5  w-full">
                                 <div> Choosen roles: </div>
-                                <input
+                                <Textarea
                                     type="text"
                                     name="choosen"
-                                    className="w-full input-form"
+                                    className="w-full "
                                     disabled
                                     ref={choosen}
                                 />
