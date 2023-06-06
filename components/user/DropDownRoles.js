@@ -20,7 +20,7 @@ function DropdownRoles({
         <div>Select Role</div>
         <div>
           <i
-            className={`fa-solid duration-200 transition-all fa-angle-up transform   ${
+            className={`fa-solid duration-200 transition-all fa-angle-down transform   ${
               dropdownOpen ? `-rotate-180` : ``
             } fa-2x`}
           ></i>

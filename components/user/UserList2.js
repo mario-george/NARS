@@ -8,7 +8,7 @@ function UserList({ users }) {
   return (
     <div className="container mx-auto my-4">
       <table className="w-full text-left border rounded">
-        <thead className="bg-gray-100">
+        <thead className="bg-sky-100">
           <tr>
             <th className="px-4 py-2 font-bold border">Name</th>
             <th className="px-4 py-2 font-bold border">Roles</th>
