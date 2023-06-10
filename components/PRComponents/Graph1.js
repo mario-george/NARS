@@ -131,8 +131,8 @@ const CoursesCompetences = ({ cookies, setAlerts }) => {
             <CoursesAttainment
               target={target}
               courses={coursesAvg}
-              w={20}
-              h={20}
+              w={(coursesNum > maxEach)? 150:60}
+              h={(coursesNum > maxEach)? 150:60}
               title={"Survey"}
               />
           </div>
