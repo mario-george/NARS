@@ -27,6 +27,9 @@ const staffRoles = ({ cookies }) => {
   let memberID = "";
 
   const handleChangeRole = (role) => {
+    if(role.current.value=="null"){
+      return
+  }
     console.log(selectedItems);
     selectedItems.push(role.current.value);
     choosen.current.value = selectedItems.map((e) => {
@@ -234,7 +237,7 @@ const staffRoles = ({ cookies }) => {
                   class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
                   onChange={() => handleChangeRole(role)}
                 >
-                  <option disabled selected>Choose a role</option>
+                  <option value="null" selected>Choose a role</option>
                   {rolesArr.map((e) => {
                     return <option value={e}>{e}</option>;
                   })}{" "}
