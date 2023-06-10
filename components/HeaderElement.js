@@ -14,11 +14,12 @@ function HeaderElement({ id, originalId, name, createdAt }) {
         dispatch(updateField({ field: "original_id", value: originalId }));
       }}
     >
-      {name}
-      <br></br>
-      {createdAt}
-    </Link>,
-    []
+      <div className="w-[300%] text-left">
+        {name}
+        <br></br>
+        <div >{createdAt}</div>
+      </div>
+    </Link>
   );
 }
 export default HeaderElement;

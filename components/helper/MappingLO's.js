@@ -1,3 +1,4 @@
+import { getErrorField } from "./errorField";
 const MappingLOs = ({
   competences,
   numRows,
@@ -11,17 +12,22 @@ const MappingLOs = ({
   handleCheckboxChange,
   handleCheckboxChange2,
   handleCheckboxChange3,
+  CompetencesInvalid,
+  hasClass,
+  setCompetencesInvalid,
 }) => {
+  console.log(hasClass);
+  console.log(CompetencesInvalid);
   return (
     <>
       <div className="text-2xl my-4 bg-yellow-200">
-        5-Mapping Learning Outcomes (LO's) with competences
+        6-Mapping Learning Outcomes (LO's) with competences
       </div>
       <table className="table-auto mb-8">
         <thead>
           <tr className=" bg-[#FF0000] text-2xl py-4">
             <th className="border-2 px-4 py-4 text-left text-xl text-yellow-200 uppercase">
-              LO'S/NARS
+              LO'S<br/>NARS
             </th>
             {competences.map((e, i) => (
               <th
@@ -71,7 +77,6 @@ const MappingLOs = ({
             >
               Psychomotor domain
             </th>
-
           </tr>
           {Array.from({ length: numRows2 }).map((_, rowIndex) => (
             <tr key={rowIndex}>
@@ -102,7 +107,6 @@ const MappingLOs = ({
             >
               Affective domain
             </th>
-
           </tr>
           {Array.from({ length: numRows3 }).map((_, rowIndex) => (
             <tr key={rowIndex}>
@@ -128,6 +132,15 @@ const MappingLOs = ({
           ))}
         </tbody>
       </table>
+
+      {CompetencesInvalid &&
+        hasClass &&
+        getErrorField(
+          "Competences is not met. please review the entered data",
+          () => {
+            setCompetencesInvalid(false);
+          }
+        )}
     </>
   );
 };

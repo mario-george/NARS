@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateField } from "@/components/store/userSlice";
 import { useEffect, useRef, useState } from "react";
 const create = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
@@ -10,6 +11,7 @@ const create = ({ cookies }) => {
   const router = useRouter();
   const [coursesTitles, setCoursesTitles] = useState([]);
   const courseId = useRef();
+  const dispatch = useDispatch();
   useEffect(() => {
     let courses = userState.courses;
     let coursesParsed;
@@ -74,8 +76,15 @@ const create = ({ cookies }) => {
         }
       );
       let data = await resp.json();
+      dispatch(
+        updateField({
+          field: "CreatedCoursesForInstructor",
+          value: [...userState.CreatedCoursesForInstructor, obj.course],
+        })
+      );
+
       console.log(data);
-      window.location.reload();
+
       // courses.map(async (c) => {
       // });
     }

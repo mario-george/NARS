@@ -31,7 +31,7 @@
   @apply px-8 h-[5rem] duration-200 hover:text-black;
 }
 .layout {
-  @apply text-black shadow-lg text-lg font-Roboto rounded-2xl;
+  @apply fixed left-0 top-0 right-0 z-30 bg-white w-full text-black shadow-lg text-lg font-Roboto rounded-2xl;
 }
 .text {
   @apply text-base md:text-xl;
@@ -39,10 +39,12 @@
 .text2 {
   font-weight: 900;
 }
-
+.editField {
+  @apply shadow appearance-none border focus:border-blue-100 outline-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-100 duration-200 transition-all;
+}
 .nav2 {
   @apply bg-white border-2 shadow-lg rounded-2xl flex flex-col 
-  justify-start w-full fixed md:absolute  md:w-[20%] gap-10 h-screen overflow-hidden py-6 px-2;
+  justify-start w-full fixed top-[5.25rem] left-0  md:w-[20%] gap-10 h-screen overflow-hidden py-6 px-2;
 }
 
 .nav44 {
@@ -189,15 +191,17 @@
     @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300 focus:border-gray-500;
     transition-property: background-color;
   }
+  .input-form-invalid {
+    @apply appearance-none  w-full py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300   bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-xl rounded focus:ring-red-500 focus:border-red-500 p-2.5 dark:bg-red-100 dark:border-red-400;
+    transition-property: background-color;
+  }
   .input-formV2 {
     @apply appearance-none block w-full duration-300  text-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white  focus:border-gray-500;
     transition-property: background-color;
   }
   .sameLineForm {
-   
-      @apply appearance-none inline   duration-300  text-gray-700 rounded py-3 px-1 w-[5rem] mb-3 leading-tight focus:outline-none focus:bg-white  focus:border-gray-500;
-      transition-property: background-color;
-    
+    @apply appearance-none inline   duration-300  text-gray-700 rounded py-3 px-1 w-[5rem] mb-3 leading-tight focus:outline-none focus:bg-white  focus:border-gray-500;
+    transition-property: background-color;
   }
   .BloomTax {
     @apply appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white duration-300 focus:border-gray-500;

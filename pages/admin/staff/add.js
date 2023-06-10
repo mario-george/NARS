@@ -4,20 +4,190 @@ import { useRef, useEffect } from "react";
 import { successFailMsg } from "@/components/successFail/success-fail";
 import Cookies from "js-cookie";
 import { useState } from "react";
-import XLSX from "xlsx";
 import { read, utils } from "xlsx";
 import CircularJSON from "circular-json";
 import { useSelector } from "react-redux";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import DropdownRoles from "@/components/user/DropDownRoles";
 const addStaff = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-  const [faculyTitles, setFacultyTitles] = useState([]);
+  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+  const handleDivClick = (event) => {
+    const checkbox = event.currentTarget.querySelector(
+      'input[type="checkbox"]'
+    );
+    if (checkbox) {
+      checkbox.click();
+    }
+  };
+  const handleRoleChange = (event) => {
+    const value = event.target.value;
+    const isChecked = event.target.checked;
 
-  useEffect(() => {
-    document.querySelector("body").classList.add("scrollbar-none");
-  });
+    setSelectedRoles((prevSelectedRoles) => {
+      if (isChecked) {
+        return [...prevSelectedRoles, value];
+      } else {
+        return prevSelectedRoles.filter((role) => role !== value);
+      }
+    });
+  };
+
+  const [faculyTitles, setFacultyTitles] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [programs, setPrograms] = useState([]);
+
+  const handleFacultyChange = async () => {
+    const selectedFacultyId = faculty.current.value;
+    console.log(selectedFacultyId);
+
+    const resp = await fetch(
+      `${process.env.url}api/v1/faculty/${selectedFacultyId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + userState.token,
+        },
+      }
+    );
+    let tempArray = [];
+    const data = await resp.json();
+
+    data.data.departments.map(async (d) => {
+      const resp = await fetch(
+        `${process.env.url}api/v1/department/?name=${d}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + userState.token,
+          },
+        }
+      );
+      const data = await resp.json();
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      tempArray.push({ name: data.data[0].name, id: data.data[0]._id });
+      console.log(tempArray);
+    });
+    console.log(tempArray);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    setTimeout(() => {
+      setDepartments(tempArray);
+    }, 500);
+  };
+  const downloadTemplateHandler = () => {
+    const header = [
+      "name",
+      "roles",
+      "email",
+      "faculty",
+      "department",
+      "program",
+    ];
+    let staff = [
+      {
+        name: "staff1",
+        roles: ["quality coordinator"],
+        email: "staff1@admin.com",
+        faculty: "63f64262db6789457bdcbb38",
+        department: "6479d40d335f57897c1d23a0",
+        program: "646666ddef0e16e7f9ad4933",
+      },
+      {
+        name: "staff2",
+        roles: ['instructor', 'quality coordinator', 'faculty admin'],
+        email: "staff2@admin.com",
+        faculty: "63f64262db6789457bdcbb38",
+        department: "6479d40d335f57897c1d23a0",
+        program: "646666ddef0e16e7f9ad4933",
+      },
+      {
+        name: "staff3",
+        roles: ['system admin', 'instructor', 'dean', 'program admin', 'teaching assistant', 'program coordinator', 'department admin', 'quality coordinator'],
+        email: "staff3@admin.com",
+        faculty: "63f64262db6789457bdcbb38",
+        department: "6479d40d335f57897c1d23a0",
+        program: "646666ddef0e16e7f9ad4933",
+      },
+    ];
+    const rows = staff.map((item) => [
+      item.name,
+      item.roles.join(", "),
+      item.email,
+      item.faculty,
+      item.department,
+      item.program,
+    ]);
+
+    const worksheet = XLSX.utils.aoa_to_sheet([header, ...rows]);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const fileBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const file = new Blob([fileBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(file, "staffTemplate.xlsx");
+  };
+  const handleDepartmentChange = async () => {
+    const selectedDepartment = department.current.value;
+    const selectedOption =
+      department.current.options[department.current.selectedIndex];
+    const selectedOptionName = selectedOption.text;
+    const depID = department.current.value;
+    console.log(depID);
+    console.log(depID);
+    console.log(depID);
+    console.log(depID);
+    const resp = await fetch(
+      `${process.env.url}api/v1/programs/?department=${depID}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + userState.token,
+        },
+      }
+    );
+    let tempArray = [];
+    const data = await resp.json();
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
+    tempArray = data.data.map((e) => {
+      return { id: e._id, name: e.name };
+    });
+    console.log(tempArray);
+
+    setTimeout(() => {
+      setPrograms(tempArray);
+    }, 500);
+  };
+  const department = useRef();
+  const program = useRef();
+  const faculty = useRef();
   const [exportModalIsOpen, setExportModalIsOpen] = useState(false);
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -35,43 +205,54 @@ const addStaff = ({ cookies }) => {
         return { name: e.name, id: e._id };
       });
 
-      console.log(data);
-      console.log(a);
-      // const newArr = data.data.filter((e) => {e
-      //   return coursesParsed.map((id) => {
-      //     id === e._id;
-      //   });
-      // });
       setFacultyTitles(a);
     }
     getFacultyNames();
   }, []);
   function handleFile(event) {
-    const files = event.target.files;
-    const f = files[0];
+    try{
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const data = new Uint8Array(event.target.result);
-      const workbook = read(data, { type: "array" });
-      const firstSheet = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[firstSheet];
-      const sheetData = utils.sheet_to_json(worksheet);
-      console.log(sheetData);
-      setData(sheetData);
-      setExportModalIsOpen(true);
-      document.body.classList.toggle("overflow-hidden");
-    };
-    reader.readAsArrayBuffer(f);
+      const files = event.target.files;
+      const f = files[0];
+  
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const data = new Uint8Array(event.target.result);
+        const workbook = read(data, { type: "array" });
+        const firstSheet = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheet];
+        const sheetData = utils.sheet_to_json(worksheet);
+        console.log(sheetData);
+        setData(sheetData);
+        setExportModalIsOpen(true);
+        document.body.classList.toggle("overflow-hidden");
+      };
+      reader.readAsArrayBuffer(f);
+
+    }catch(e){
+      console.error(e)
+    }
+    
   }
-  function exportHandler() {
+  const exportHandler = async () => {
+    try{
     document.body.classList.toggle("overflow-hidden");
 
-    data.forEach((row) => {
-      const { name, email, role } = row;
-      const obj = { name, email, role };
-
-      const resp = fetch(`${process.env.url}api/v1/users/staff`, {
+    const promises = data.map(async (row) => {
+      const { name, email, roles, faculty, department, program } = row;
+      const rolesArr = roles.split(",").map((i) => i.trim());
+      console.log(roles);
+      console.log(rolesArr);
+      const obj = {
+        name,
+        email,
+        roles: rolesArr,
+        faculty,
+        department,
+        program,
+      };
+  
+      const resp = await fetch(`${process.env.url}api/v1/users/staff`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,13 +261,36 @@ const addStaff = ({ cookies }) => {
         },
         body: JSON.stringify(obj),
       });
-
-      console.log(resp);
+  
+      return resp.json();
     });
+  
+    const responseData = await Promise.all(promises);
+    console.log(responseData);
+    function checkAllFieldsSuccess(responseData) {
+      for (const field of responseData) {
+        if (field.status !== "success") {
+          return false;
+        }
+      }
+      return true;
+    }
+    const allFieldsSuccess = checkAllFieldsSuccess(responseData);
+if(allFieldsSuccess){
 
-    setExportModalIsOpen(false);
-    setMsg(success);
-  }
+  setExportModalIsOpen(false);
+  setMsg(success);
+}else{
+  setExportModalIsOpen(false);
+  setMsg(partiallyfailImport);
+}
+    
+}catch(e){
+console.error(e);
+setExportModalIsOpen(false);
+setMsg(failImport);
+}
+  };
 
   const token = userState.token;
   const router = useRouter();
@@ -99,6 +303,7 @@ const addStaff = ({ cookies }) => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
+    console.log(department.current.value);
     try {
       const resp = await fetch(`${process.env.url}api/v1/users/staff`, {
         method: "POST",
@@ -107,12 +312,12 @@ const addStaff = ({ cookies }) => {
           Authorization: "Bearer " + token,
         },
         body: JSON.stringify({
-          role: role.current.value,
+          roles: selectedRoles,
           name: name.current.value,
           email: email.current.value,
-          // faculty:faculty.current.value,
-          // department:department.current.value,
-          // academicYear:academicYear.current.value,
+          faculty: faculty.current.value,
+          department: department.current.value,
+          program: program.current.value,
         }),
       });
       const data = await resp.json();
@@ -162,7 +367,76 @@ const addStaff = ({ cookies }) => {
       </button>
     </div>
   );
-
+  let failImport = (
+    <div
+      id="alert-border-2"
+      class="flex p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+      role="alert"
+    >
+      <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+      <div class="ml-3 text-sm font-medium">
+        Imported data is not in the right format please download the template and follow the format.
+        <a href="#" class="font-semibold underline hover:no-underline"></a>.
+      </div>
+      <button
+        type="button"
+        onClick={closeMsg}
+        class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+        data-dismiss-target="#alert-border-2"
+        aria-label="Close"
+      >
+        <span class="sr-only">Dismiss</span>
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  );
+  let partiallyfailImport = (
+    <div
+      id="alert-border-2"
+      class="flex p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+      role="alert"
+    >
+      <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+      <div class="ml-3 text-sm font-medium">
+        Parts of the imported data is not in the right format please download the template and follow the format.
+        <a href="#" class="font-semibold underline hover:no-underline"></a>.
+      </div>
+      <button
+        type="button"
+        onClick={closeMsg}
+        class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+        data-dismiss-target="#alert-border-2"
+        aria-label="Close"
+      >
+        <span class="sr-only">Dismiss</span>
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  );
   let success = (
     <div
       id="alert-border-3"
@@ -208,7 +482,7 @@ const addStaff = ({ cookies }) => {
     <>
       {exportModalIsOpen ? (
         <div className="fixed inset-0 flex justify-center items-center z-20 h-screen">
-          <div className=" container relative  rounded-lg p-6 w-[40rem]  bg-gray-700 text-white ">
+          <div className=" container relative  rounded-lg p-6 w-[40rem] bg-white text-black border-2 shadow-xl border-black  ">
             <button
               onClick={exportCancel}
               className=" bg-red-500 text-white duration-200 transition-all hover:bg-red-600 px-2 rounded absolute top-4 right-4"
@@ -254,9 +528,7 @@ const addStaff = ({ cookies }) => {
         </div>
       ) : null}
       <div
-        className={`flex flex-row w-screen h-screen ${
-          exportModalIsOpen ? `bg-black opacity-60 overflow-hidden ` : null
-        }`}
+        className={`flex flex-row w-screen h-screen `}
       >
         <form
           onSubmit={submitHandler}
@@ -271,6 +543,7 @@ const addStaff = ({ cookies }) => {
                   ref={name}
                   type="text"
                   className="inputAddUser2  w-full"
+                  placeholder={`Staff name`}
                 />
               </div>
               <div className="flex flex-col gap-5  w-1/2 ">
@@ -279,70 +552,109 @@ const addStaff = ({ cookies }) => {
                   ref={email}
                   type="text"
                   className="inputAddUser2   w-full "
+                  placeholder={`Staff E-mail`}
                 />
               </div>
             </div>
-            <div className="flex gap-10 flex-1 ">
-              <div className="flex flex-col gap-5 w-1/4 ">
-                <div>Role</div>
 
-                <select ref={role} id="small" class="choose-form">
-                  <option selected>Choose a role</option>
-
-                  <option value="instructor">Instructor</option>
-                  <option value="quality coordinator">
-                    Quality Coordinator
-                  </option>
-                  <option value="program  coordinator">
-                    Program Coordinator
-                  </option>
-                  <option value="dean">Dean</option>
-                  <option value="teaching assistant">
-                    Teaching Assistant{" "}
-                  </option>
-                  <option value="faculty admin">Faculty Admin </option>
-                  <option value="program admin">Program Admin</option>
-                  <option value="department admin">Department Admin</option>
-                </select>
-              </div>
-              <div className="flex flex-col space-y-5  w-1/2 ">
-                <div> Faculty </div>
-                <select className=" choose-form w-[100%]">
-                  <option selected>
+            <div className="flex gap-10 ">
+              <div className="flex flex-col gap-5 w-1/4  ">
+                <div> Faculty</div>
+                <select
+                  ref={faculty}
+                  id="small"
+                  class="choose-form w-full px-10"
+                  onChange={handleFacultyChange}
+                >
+                  <option className="text-left" disabled selected>
                     Choose a Faculty
                   </option>
                   {faculyTitles.map((e) => {
                     return <option value={e.id}>{e.name}</option>;
-                  })}
+                  })}{" "}
                 </select>
-                {/* <input type="text" className="inputAddUser2  w-full " /> */}
+              </div>
+              <div className="flex flex-col gap-5  w-1/2">
+                <div>Department</div>
+                <select
+                  id="department"
+                  className="choose-form w-full"
+                  disabled={!departments.length}
+                  ref={department}
+                  onChange={handleDepartmentChange}
+                >
+                  <option value="" disabled selected>
+                    {departments.length
+                      ? "Choose a Department"
+                      : "Select a Faculty first"}
+                  </option>
+                  {departments.map((department) => (
+                    <option value={department.id} key={department.id}>
+                      {department.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
-            <div className="flex gap-10 flex-1 -mt-24 ">
-              <div className="flex flex-col gap-5 w-1/4 ">
-                <div>Department </div>
-                <input type="text" className="inputAddUser2 w-full" />
+            <div className="flex gap-10 ">
+              <DropdownRoles
+                handleDivClick={handleDivClick}
+                toggleDropdown={toggleDropdown}
+                dropdownOpen={dropdownOpen}
+                selectedRoles={selectedRoles}
+                handleRoleChange={handleRoleChange}
+              />
+              <div className="flex flex-col gap-5  w-1/2">
+                <div>Program</div>
+                <select
+                  className="choose-form w-full"
+                  disabled={!programs.length}
+                  ref={program}
+                >
+                  <option value="" disabled selected>
+                    {programs.length
+                      ? "Choose a Program"
+                      : "Select a Department first"}
+                  </option>
+                  {programs.map((program) => (
+                    <option value={program.id} key={program.id}>
+                      {program.name}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <div className="flex justify-end w-3/4 space-x-8 items-center -mt-24 ">
-                {<div className="w-1/2 ">{msg}</div>}
-                <input
-                  type="file"
-                  id="selectFile"
-                  class="hidden"
-                  onChange={handleFile}
-                />
-                <label
-                  for="selectFile"
-                  class=" my-6  px-10 py-3 duration-200 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm md:text-lg  mx-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
-                >
-                  Import
-                </label>
-                <button
-                  type="submit"
-                  class=" my-6  px-10 py-3 duration-200 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg  mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                >
-                  Submit
-                </button>
+            </div>
+
+            <div className="flex gap-10 w-full">
+              <div className="flex justify-between items-center w-full">
+                <div className="w-1/2">{msg}</div>
+                <div className="flex space-x-2">
+                  <button
+                    type="button"
+                    class="my-6 px-10 py-3  duration-200 text-white bg-green-700 hover:bg-green-600 focus:ring-green-300 font-medium rounded-lg md:text-lg text-sm  mx-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+                    onClick={downloadTemplateHandler}
+                  >
+                    Download Template
+                  </button>
+                  <input
+                    type="file"
+                    id="selectFile"
+                    className="hidden"
+                    onChange={handleFile}
+                  />
+                  <label
+                    htmlFor="selectFile"
+                    className="my-6 px-10 py-3 duration-200 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm md:text-lg mx-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+                  >
+                    Import
+                  </label>
+                  <button
+                    type="submit"
+                    className="my-6 px-10 py-3 duration-200 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
             </div>
             {/* <div className="flex ">

@@ -1,5 +1,6 @@
+import { useState } from "react";
 import Textarea from "../Textarea/LPTextArea";
-
+import { getErrorField, getErrorFieldArray } from "./errorField";
 const LecturePlan = ({
   outcomes,
   addRowWeek,
@@ -14,13 +15,21 @@ const LecturePlan = ({
   HoursRefs,
   hasClass,
   expectedStudyingHoursPerWeek,
+  isexpectedStudyingHoursPerWeekInvalid,
+  setIsexpectedStudyingHoursPerWeekInvalid,
+  invalidEmptyTopic,
+  invalidPlannedHours,
+  invalidTopicsRefs,
+  errorEmptyTopics,
+  errorPlannedHours,
+  errorTopicsRefs,
+  setInvalidEmptyTopic,
+  setInvalidPlannedHours,
+  setInvalidTopicsRefs,
 }) => {
-  // defaultValue={}
-  console.log(topicsRefs.current);
-  console.log(topicsRefs.current[0]);
   return (
     <div>
-      <div className="text-2xl my-4 bg-yellow-200">6- Lecture Plan</div>
+      <div className="text-2xl my-4 bg-yellow-200">7- Lecture Plan</div>
       <div className="flex justify-between items-center">
         <div>a) Topics to be Covered weekly & Matrix of LO’s</div>
 
@@ -85,9 +94,9 @@ const LecturePlan = ({
         <tbody>
           {Array.from({ length: numRowsLecturePlan }).map((_, rowIndex) => (
             <tr key={rowIndex}>
-              <td className="border-2 border-black px-4 py-2">
+              <td className="border-2 border-black px-1 py-2 text-center">
                 {" "}
-                {[rowIndex + 1]}
+                W{[rowIndex + 1]}
               </td>
               <td className="border-2 px-4 py-2 border-black ">
                 <Textarea
@@ -100,11 +109,12 @@ const LecturePlan = ({
                   style={{ resize: "none" }}
                 />
               </td>
-              <td className="border-2 border-black px-4 py-2 ">
+              <td className="border-2 border-black px-2 py-2 ">
                 <input
                   name="hours"
-                  type="number"
+                  type="text"
                   className="w-full text-2xl text-sky-800"
+                  maxLength={3}
                   onChange={(e) => handleHoursChange(rowIndex, e)}
                   defaultValue={HoursRefs.current[rowIndex]}
                 />
@@ -139,11 +149,44 @@ const LecturePlan = ({
           type="text"
           className={`sameLineForm text-red-500 ${
             hasClass ? `bg-sky-50  ` : ``
-          } `}
+          }  ${
+            hasClass && isexpectedStudyingHoursPerWeekInvalid
+              ? `border border-red-500 bg-red-100`
+              : ``
+          }`}
+          onChange={() => {
+            setIsexpectedStudyingHoursPerWeekInvalid(false);
+          }}
           placeholder={`${hasClass ? `Hours` : ``}`}
         />{" "}
         hours
       </div>
+      {/* {invalidEmptyTopic && hasClass && (
+        <div className="input-form-invalid"> {errorEmptyTopics}</div>
+      )}
+      {invalidPlannedHours && hasClass && (
+        <div className="input-form-invalid"> {errorPlannedHours}</div>
+      )}
+      {invalidTopicsRefs && hasClass && (
+        <div className="input-form-invalid"> {errorTopicsRefs}</div>
+      )} */}
+      {(invalidEmptyTopic || invalidPlannedHours || invalidTopicsRefs) &&
+        hasClass &&
+        getErrorFieldArray(
+          {
+            invalidEmptyTopic: invalidEmptyTopic,
+            invalidPlannedHours: invalidPlannedHours,
+            invalidTopicsRefs: invalidTopicsRefs,
+            errorEmptyTopics: errorEmptyTopics,
+            errorPlannedHours: errorPlannedHours,
+            errorTopicsRefs: errorTopicsRefs,
+          },
+          () => {
+            setInvalidEmptyTopic(false);
+            setInvalidPlannedHours(false);
+            setInvalidTopicsRefs(false);
+          }
+        )}
     </div>
   );
 };

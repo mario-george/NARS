@@ -10,6 +10,20 @@ const CourseData = ({
   practice,
   courseAims,
   courseContent,
+  isLectureInvalid,
+  isContactHoursInvalid,
+  isSpecializationInvalid,
+  isSemesterYearInvalid,
+  isPracticalPracticeInvalid,
+  setIsPracticalPracticeInvalid,
+  setIsSemesterYearInvalid,
+  setIsContactHoursInvalid,
+  setIsLectureInvalid,
+  setIsSpecializationInvalid,
+  setIsCourseAimsInvalid,
+  isCourseAimsInvalid,
+  setIsCourseContentInvalid,
+  isCourseContentInvalid,
 }) => {
   return (
     <>
@@ -22,48 +36,82 @@ const CourseData = ({
           <input
             type="text"
             name="code"
-            className={`${hasClass ? "input-form" : ""} w-[60%]`}
+            className={`${hasClass ? "input-form" : ""} w-[60%] `}
             ref={code}
+            disabled
           />
         </div>
         <div className="flex items-center gap-5  w-1/2">
-          <div className="text-[#FF0000]  text-xl font-bold"> Semester/Year:</div>
+          <div className="text-[#FF0000]  text-xl font-bold">
+            {" "}
+            Semester/Year:
+          </div>
           <input
             type="text"
             name="year"
-            className={`${hasClass ? "input-form" : ""} w-[60%]`}
+            className={`${hasClass ? "input-form" : ""} ${
+              hasClass && isSemesterYearInvalid
+                ? "border-red-500  bg-red-50"
+                : ""
+            } w-[60%]`}
             ref={semester}
+            onChange={() => {
+              setIsSemesterYearInvalid(false);
+            }}
           />
         </div>
       </div>
       <div className="flex  ">
         <div className="flex items-center  gap-5 w-1/2">
-          <div className="text-[#FF0000] text-xl  font-bold">Specialization:</div>
+          <div className={`text-[#FF0000] text-xl  font-bold `}>
+            Specialization:
+          </div>
           <input
             type="text"
             name="special"
-            className={`${hasClass ? "input-form" : ""} w-[60%]`}
+            className={`${hasClass ? "input-form" : ""} ${
+              hasClass && isSpecializationInvalid
+                ? "border-red-500 bg-red-50"
+                : ""
+            } w-[60%]`}
             ref={special}
+            onChange={() => {
+              setIsSpecializationInvalid(false);
+            }}
           />
         </div>
       </div>
       <div className="flex  ">
         <div className="flex items-center  gap-5 w-1/2">
-          <div className="text-[#FF0000] text-xl  font-bold">Contact Hours:</div>
+          <div className="text-[#FF0000] text-xl  font-bold">
+            Contact Hours:
+          </div>
           <input
-            type="number"
+            type="text"
             name="hours"
-            className={`${hasClass ? "input-form" : ""} w-[60%]`}
+            className={`${hasClass ? "input-form" : ""} ${
+              hasClass && isContactHoursInvalid
+                ? "border-red-500 bg-red-50"
+                : ""
+            } w-[60%]`}
             ref={hours}
+            onChange={() => {
+              setIsContactHoursInvalid(false);
+            }}
           />
         </div>
         <div className="flex items-center gap-5  w-1/4">
           <div className="text-[#FF0000]  text-xl font-bold"> Lecture:</div>
           <input
-            type="number"
+            type="text"
             name="lecture"
-            className={`${hasClass ? "input-form" : ""} w-[60%]`}
+            className={`${hasClass ? "input-form" : ""} ${
+              hasClass && isLectureInvalid ? "border-red-500 bg-red-50" : ""
+            } w-[60%]`}
             ref={lecture}
+            onChange={() => {
+              setIsLectureInvalid(false);
+            }}
           />
         </div>
         <div className="flex items-center gap-5  w-1/4">
@@ -72,9 +120,16 @@ const CourseData = ({
             Practical/Practice:
           </div>
           <input
-            type="number"
+            type="text"
             name="practice"
-            className={`${hasClass ? "input-form" : ""} w-[60%]`}
+            className={`${hasClass ? "input-form" : ""} ${
+              hasClass && isPracticalPracticeInvalid
+                ? "border-red-500 bg-red-50"
+                : ""
+            } w-[60%]`}
+            onChange={() => {
+              setIsPracticalPracticeInvalid(false);
+            }}
             ref={practice}
           />
         </div>
@@ -89,6 +144,10 @@ const CourseData = ({
           ref={courseAims}
           v={courseAims.current?.value}
           hasClass={hasClass}
+          invalid={isCourseAimsInvalid}
+          resetInvalid={() => {
+            setIsCourseAimsInvalid(false);
+          }}
         />
       </div>
       <div className="flex flex-col  w-full">
@@ -102,6 +161,10 @@ const CourseData = ({
           ref={courseContent}
           v={courseContent.current?.value}
           hasClass={hasClass}
+          invalid={isCourseContentInvalid}
+          resetInvalid={() => {
+            setIsCourseContentInvalid(false);
+          }}
         />
       </div>
     </>

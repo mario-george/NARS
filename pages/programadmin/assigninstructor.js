@@ -24,7 +24,7 @@ const assigninstrctor = ({ cookies }) => {
   useEffect(() => {
     async function getCourse() {
       const resp = await fetch(
-        `${process.env.url}api/v1/courses/original-courses/`,
+        `${process.env.url}api/v1/courses/original-courses?program=${cookies.program}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const assigninstrctor = ({ cookies }) => {
       });
       const data = await resp.json();
       const filtered = data.data.filter((e) => {
-        return e.role === "instructor";
+        return e.roles.includes("instructor");
       });
       //console.log(filtered);
       const newData = filtered.map((e) => {
@@ -66,7 +66,7 @@ const assigninstrctor = ({ cookies }) => {
     e.preventDefault();
     try {
       const r = await fetch(
-        "http://localhost:80/api/v1/courses/assign-course-instructor",
+        `${process.env.url}/api/v1/courses/assign-course-instructor`,
         {
           method: "PATCH",
 

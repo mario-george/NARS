@@ -14,10 +14,6 @@ const studentProfile = ({ cookies }) => {
         return <div className="error">404 could not found</div>;
     }
 
-    useEffect(() => {
-        console.log("MOHAMED ROLE IS ", globalState.role);
-    }, []);
-
     const passowrdHandler = async (e) => {
         if (e) {
             e.preventDefault();
@@ -54,39 +50,6 @@ const studentProfile = ({ cookies }) => {
         }
     };
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        const data = new FormData();
-        data.append("photo", selectedFile);
-        data.append("name", name.current.value);
-
-        try {
-            const r = await fetch(
-                `${process.env.url}api/v1/users/students/updateMe/${globalState._id}`,
-                {
-                    method: "PATCH",
-                    body: data,
-                    headers: {
-                        Accept: "application/form-data",
-                        Authorization: "Bearer " + globalState.token,
-                    },
-                }
-            );
-
-            const resp = await r.json();
-            console.log(resp);
-
-            if (resp.status == "success") {
-                setMsg(success);
-                Cookies.set("name", name.current.value);
-                cookies.set("photo", selectedFile);
-            } else {
-                setMsg(fail);
-            }
-        } catch (e) {
-            console.log(e);
-        }
-    };
     const [errorMsg, setErrormsg] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
     const name = useRef();
@@ -172,83 +135,111 @@ const studentProfile = ({ cookies }) => {
     );
     const [showModal, setShowModal] = useState(false);
     const [invalidData, setInvalidData] = useState(false);
+    const myFileInput = useRef(null)
+    const handelFile = () => {
+        myFileInput.current.click();
+    }
+    const [img, setImg] = useState();
 
+    useEffect(() => {
+        const fetchImage = async () => {
+            try {
+                const res = await fetch(
+                    `${process.env.url}api/v1/users/students/getPhoto/${globalState._id}`,
+                    {
+                        method: "GET",
+
+                        headers: {
+                            Accept: "application/form-data",
+                            Authorization: "Bearer " + globalState.token,
+                        },
+                    }
+                );
+
+                console.log(res);
+                const imageBlob = await res.blob();
+                const imageObjectURL = URL.createObjectURL(imageBlob);
+                console.log("photoooooooo22222222222", imageObjectURL);
+                setImg(imageObjectURL);
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        fetchImage();
+    }, []);
+    var photo;
     return (
         <>
-
             <form
-                onSubmit={submitHandler}
                 className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
             >
                 <div className="contentAddUser2 flex flex-col gap-10">
-                    <p className="underline mb-1">Profile details:</p>
-                    <div className="flex gap-20 ">
-                        <div className="flex flex-col gap-5 w-1/3">
-                            <div>Role</div>
-                            <input
-                                type="text"
-                                className="inputAddUser2 w-full"
-                                value={cookies.role}
-                                disabled
-                            />
-                        </div>
-                        <div className="flex flex-col gap-5  w-2/5">
-                            <div> Name</div>
-                            <input
-                                type="text"
-                                className="inputAddUser2  w-full"
-                                defaultValue={cookies.name}
-                                ref={name}
-                            />
-                        </div>
-                    </div>
-                    <div className="flex gap-20 ">
-                        <div className="flex flex-col gap-5  w-1/3">
-                            <div> Email </div>
-                            <input
-                                type="text"
-                                className="inputAddUser2  w-full"
-                                value={cookies.email}
-                                disabled
-                            />
-                        </div>
-                        <div className="flex flex-col gap-5  w-2/5">
-                            <div> select photo:</div>
-                            <input
-                                type="file"
-                                class="text-sm text-grey-500
-                            file:mr-5 file:py-3 file:px-10
-                            file:rounded-full file:border-0
-                            file:text-sm file:font-medium
-                            file:bg-gray-200 file:text-gray-700
-                            hover:file:cursor-pointer hover:file:bg-amber-50
-                            hover:file:text-amber-700
-                            "
-                                onChange={(e) => setSelectedFile(e.target.files[0])}
-                            />
-                        </div>
-                    </div>
+                    <div class="p-16">
+                        <div class="p-8 bg-white shadow mt-16">
+                            <div class="grid grid-cols-1 md:grid-cols-3">
+                                <div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
 
-                    <div className="flex gap-20 ">
-                        {<div className="w-1/2 mt-10">{msg}</div>}
-                    </div>
+                                </div>
+                                <div class="relative">
+                                    <input type="file" className="" id="myFileInput" ref={myFileInput}
+                                        onChange={async (e) => {
+                                            setSelectedFile(e.target.files[0])
+                                            photo = e.target.files[0];
+                                            const data = new FormData();
+                                            data.append("photo", photo);
+                                            try {
+                                                const r = await fetch(
+                                                    `${process.env.url}api/v1/users/students/updateMe/${globalState._id}`,
+                                                    {
+                                                        method: "PATCH",
+                                                        body: data,
+                                                        headers: {
+                                                            Accept: "application/form-data",
+                                                            Authorization: "Bearer " + globalState.token,
+                                                        },
+                                                    }
+                                                );
 
-                    <div className="flex justify-end">
-                        <button
-                            type="submit"
-                            class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                        >
-                            Update
-                        </button>
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setShowModal(true);
-                            }}
-                            class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                        >
-                            password
-                        </button>
+                                                const resp = await r.json();
+                                                console.log(resp);
+
+                                                if (resp.status == "success") {
+                                                    setMsg(success);
+                                                    Cookies.set("name", name.current.value);
+                                                    cookies.set("photo", selectedFile);
+                                                } else {
+                                                    setMsg(fail);
+                                                }
+                                            } catch (e) {
+                                                console.log(e);
+                                            }
+                                        }} />
+                                    <div class="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
+                                        <img src={img} className="w-48 h-48 rounded-full mx-auto shadow-2xl cursor-pointer" onClick={handelFile}></img>
+                                    </div>
+                                </div>
+
+                                <div class="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
+
+                                </div>
+                            </div>
+
+                            <div class="mt-32 text-center border-b pb-12">
+                                <h1 class="text-4xl font-medium text-gray-700">{cookies.name} </h1>
+                                <p class="mt-8 text-gray-500">{cookies.role} - {cookies.email}</p>
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setShowModal(true);
+                                    }}
+                                    class="text-white mt-8 py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                                >
+                                    Password
+                                </button>
+                            </div>
+
+
+                        </div>
                     </div>
                 </div>
             </form>
@@ -271,7 +262,7 @@ const studentProfile = ({ cookies }) => {
                                 name="oldPassowrd"
                                 id="oldPassowrd"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
-                                rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
                                 required
                                 ref={oldPassowrd}
                             />
@@ -305,7 +296,7 @@ const studentProfile = ({ cookies }) => {
                                 name="cnfrmPassowrd"
                                 id="cnfrmPassowrd"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
-                                 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
                                 required
                                 ref={cnfrmPassowrd}
                             />
@@ -313,8 +304,8 @@ const studentProfile = ({ cookies }) => {
                         <button
                             type="submit"
                             className="w-full text-white bg-blue-700 hover:bg-blue-800
-                            focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium
-                            rounded-lg text-sm px-5 py-2.5 text-center"
+              focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium
+              rounded-lg text-sm px-5 py-2.5 text-center"
                         >
                             Update your password
                         </button>

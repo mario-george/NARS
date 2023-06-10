@@ -2,19 +2,30 @@ import React from "react";
 
 const UserCard = ({ name, email, code, image }) => {
   return (
-    <div className="bg-gray-700 text-white shadow rounded-lg p-6 flex flex-col items-center">
-      {image ? (
-        <img
-          src={image || "https://via.placeholder.com/150"}
-          alt={name}
-          className="h-32 w-32 rounded-full o-bject-cover mb-6"
-        />
-      ) : (
-        <i class="fa-solid fa-user fa-4x"></i>
-      )}
-      <h2 className="text-lg font-medium mt-2 mb-2">{name}</h2>
-      <p className="text-white mb-2">{email}</p>
-      <p className="text-wh-700">{code}</p>
+    <div className="shadow-md my-2 appearance-none bg-white text-gray-900 shadow rounded-lg p-6 flex items-center space-x-4 border border-gray-200 w-full">
+      <div className="flex-shrink-0">
+        {image ? (
+          <img
+            src={image}
+            alt={name}
+            className="w-8 h-8 rounded-full"
+          />
+        ) : (
+
+            <i className="fa-solid text-blue-500  fa-user fa-2x"></i>
+        )}
+      </div>
+      <div className="flex-1 space-y-1 min-w-0">
+        <p className=" font-medium truncate">
+          {name}
+        </p>
+        <p className=" text-gray-500 truncate">
+          {email}
+        </p>
+      </div>
+      <div className="inline-flex items-center text-base font-semibold">
+        {code}
+      </div>
     </div>
   );
 };

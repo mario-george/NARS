@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 export default function reset_password() {
-  const completed = useSelector((s) => s.registerCompletionPart2);
-  const info = useSelector((s) => s.info);
-  const verifycode = info.verifyCode;
+  const [msg, setMsg] = useState(false);
+  const completed = useSelector((s) => s.user.registerCompletionPart2);
+  const info = useSelector((s) => s.user.info);
+  const verifyCode = info.verifyCode;
   const submitHandler = async (e) => {
     e.preventDefault();
 
     const r = await fetch(
-      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/resetPassword",
+      `${process.env.url}/api/v1/users/resetPassword`,
       {
         method: "PATCH",
         body: JSON.stringify({
-          verifycode,
+          verifyCode,
           password: input.password,
           passwordConfirm: input.confirmPassword,
         }),
@@ -23,9 +24,8 @@ export default function reset_password() {
     const resp = await r.json();
     console.log(resp);
     if (resp.status != "success") {
-      alert("fail");
+      setMsg(true);
     } else {
-      alert("success");
     }
   };
 
@@ -123,6 +123,11 @@ export default function reset_password() {
             ></input>
             {error.confirmPassword && (
               <span className="text-red-500">{error.confirmPassword}</span>
+            )}
+            {msg && (
+              <span className="text-red-500">
+                Successfully reset the password
+              </span>
             )}
           </div>
           <button

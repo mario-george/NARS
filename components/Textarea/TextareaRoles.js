@@ -24,16 +24,13 @@ const Textarea = forwardRef((props, ref) => {
   return (
     <div className="w-full ">
       <textarea
-        className={`${props.hasClass ? "input-form" : ""} block w-full ${
-          small ? `h-[3rem]` : `h-[6rem]`
-        } p-2 leading-6 resize-none border-gray-300  rounded shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 overflow-hidden ${
-          props.hasClass && props.invalid ? `border-red-500  bg-red-50` : ``
-        }`}
+        className={` bg-[#f0e1c2] text-black px-4 rounded-full  block w-full  p-2 leading-6 resize-none border-gray-300   shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 overflow-hidden `}
         value={value}
-        rows={rows}
+        rows={1}
         placeholder={placeholder}
         ref={ref}
         onChange={handleChange}
+        disabled
       />
     </div>
   );

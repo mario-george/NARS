@@ -16,6 +16,7 @@ import { Worker } from "pdfjs-dist/legacy/build/pdf.worker.entry";
 import * as pdfjs from "pdfjs-dist";
 import LZString from "lz-string";
 import { updateField } from "@/components/store/userSlice";
+import { getErrorField } from "./errorField";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -23,7 +24,10 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
   const [other, setOther] = useState("");
   const d = useDispatch();
   const [t, setT] = useState(true);
-
+  const [invalid, setInvalid] = useState(false);
+  const getInvalidData = (boolean) => {
+    setInvalid(boolean);
+  };
   const refArray = [
     "Classroom",
     "Smart Board",
@@ -161,6 +165,7 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
     const pdfBase64 = localStorage.getItem("pdf1");
     const pdfBase64_2 = localStorage.getItem("pdf2");
     const pdfBase64_22 = localStorage.getItem("pdf3");
+    const pdfBase64_223 = localStorage.getItem("pdf33");
     const pdfBase64_222 = localStorage.getItem("pdf4");
     const pdfBase64_33 = localStorage.getItem("pdf5");
     const pdfBase64_233 = localStorage.getItem("pdf6");
@@ -171,6 +176,7 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
     const binaryData = atob(pdfBase64);
     const binaryData2 = atob(pdfBase64_2);
     const binaryData3 = atob(pdfBase64_22);
+    const binaryData33 = atob(pdfBase64_223);
     const binaryData4 = atob(pdfBase64_222);
     const binaryData5 = atob(pdfBase64_33);
     const binaryData6 = atob(pdfBase64_233);
@@ -190,6 +196,10 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
     const array3 = new Uint8Array(binaryData3.length);
     for (let i = 0; i < binaryData3.length; i++) {
       array3[i] = binaryData3.charCodeAt(i);
+    }
+    const array33 = new Uint8Array(binaryData33.length);
+    for (let i = 0; i < binaryData33.length; i++) {
+      array33[i] = binaryData33.charCodeAt(i);
     }
     const array4 = new Uint8Array(binaryData4.length);
     for (let i = 0; i < binaryData4.length; i++) {
@@ -226,6 +236,7 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
     const blob = new Blob([array], { type: "image/jpeg" });
     const blob2 = new Blob([array2], { type: "image/jpeg" });
     const blob3 = new Blob([array3], { type: "image/jpeg" });
+    const blob33 = new Blob([array33], { type: "image/jpeg" });
     const blob4 = new Blob([array4], { type: "image/jpeg" });
     const blob5 = new Blob([array5], { type: "image/jpeg" });
     const blob6 = new Blob([array6], { type: "image/jpeg" });
@@ -245,6 +256,7 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
       blob,
       blob2,
       blob3,
+      blob33,
       blob4,
       blob5,
       blob6,
@@ -254,12 +266,9 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
       blob10,
     ];
     const mergedBlob = await mergeTest(ImgBlobs);
-    // const compressedBlob = await compressBlob(mergedBlob);
-    // console.log(compressedBlob)
+
     sendPdfBlob(mergedBlob);
     saveAs(mergedBlob, "CourseSpecs.pdf");
-    console.log("asdsadsad");
-    console.log(mergedBlob);
   };
   const refToImgBlob = useRef();
   const buttonRef = useRef(null);
@@ -409,9 +418,31 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
     "MIS system",
     "Internet Access",
   ];
+  const validate = () => {
+    return { handler, selectedItems };
+  };
 
   const submitHandler = async (e) => {
     console.log(other);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
+    console.log(selectedItems);
     console.log(selectedItems);
     let sentArr = [];
     if (handler) {
@@ -454,7 +485,7 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
   let content = (
     <>
       {" "}
-      <div className="text-2xl my-4 bg-yellow-200">9-Facilities</div>{" "}
+      <div className="text-2xl my-4 bg-yellow-200">10-Facilities</div>{" "}
       <p className=" mb-0 font-normal">
         *The following facilities are needed for this course:
       </p>
@@ -488,9 +519,24 @@ const useFacility = ({ cookies, courseID, hasClass }) => {
           </div>
         </div>
       </div>
+      {invalid &&
+        hasClass &&
+        getErrorField(
+          "At least one facility are needed for this course.",
+          () => {
+            setInvalid(false);
+          }
+        )}
     </>
   );
-  return { msg, content, submitHandler,downloadMergedPDF };
+  return {
+    msg,
+    content,
+    submitHandler,
+    downloadMergedPDF,
+    validate,
+    getInvalidData,
+  };
   return (
     <>
       <div className="flex flex-row w-screen h-screen mt-2">

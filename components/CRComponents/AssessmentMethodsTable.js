@@ -111,9 +111,9 @@ const AssessmentMethodsTable = ({
               Percentage total
             </th>
           </tr>
-          <tr className="border-2 bg-blue-50">
+          <tr className="">
             {Array.from({ length: competences.length }).map((_, rowIndex) => (
-              <th className="border-2 px-4 py-2" key={rowIndex}>
+              <th className="border-2 bg-blue-50 px-4 py-2" key={rowIndex}>
                 {competences[rowIndex].code}
               </th>
             ))}

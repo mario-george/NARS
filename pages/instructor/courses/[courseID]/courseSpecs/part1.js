@@ -12,8 +12,12 @@ import LearningOutcomes from "@/components/helper/LearningOutcomes";
 import HeaderSpecs from "@/components/helper/HeaderSpecs";
 import CourseData from "@/components/helper/CourseData";
 import DefaultPage from "@/components/helper/DefaultPage";
+import ProgramCompetencesServed from "@/components/helper/ProgramCompetencesServed";
 
 const part1 = ({ cookies }) => {
+  const [courseSpecs, setCourseSpecs] = useState(null);
+  const [errors, setErrors] = useState([]);
+
   const router = useRouter();
   const { courseID } = router.query;
   const [hasClass, setHasClass] = useState(true);
@@ -21,6 +25,7 @@ const part1 = ({ cookies }) => {
     localStorage.removeItem("pdf1");
     localStorage.removeItem("pdf2");
     localStorage.removeItem("pdf3");
+    localStorage.removeItem("pdf33");
   }, []);
   const courseAims = useRef("");
   const courseContent = useRef("");
@@ -69,6 +74,7 @@ const part1 = ({ cookies }) => {
       })
     );
   };
+
   const handleSubmit = async (e) => {
     const cognitive = inputs.map((input) => {
       return {
@@ -183,10 +189,6 @@ const part1 = ({ cookies }) => {
     );
     const resp = await r.json();
     console.log(resp);
-
-    const stringifiedCognitive = JSON.stringify(cognitive);
-    const stringifiedPsychomotor = JSON.stringify(psychomotor);
-    const stringifiedAffective = JSON.stringify(affective);
   };
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
@@ -257,6 +259,8 @@ const part1 = ({ cookies }) => {
       const data = await r.json();
       console.log(data);
       console.log(data.data.courseSpecs);
+      const fetchedCourseSpecs = data.data.courseSpecs;
+      setCourseSpecs(data.data);
       d(updateField({ field: "courseSpecs", value: data.data.courseSpecs }));
 
       if (
@@ -417,11 +421,11 @@ const part1 = ({ cookies }) => {
   const refToImgBlob = useRef();
   const refToImgBlob2 = useRef();
   const refToImgBlob3 = useRef();
-  const refToImgBlob4 = useRef();
+  const refToImgBlob33 = useRef();
   const buttonRef = useRef(null);
   const buttonRef2 = useRef(null);
   const buttonRef3 = useRef(null);
-  const buttonRef4 = useRef(null);
+  const buttonRef33 = useRef(null);
 
   const code = useRef("");
   const semester = useRef("");
@@ -429,6 +433,7 @@ const part1 = ({ cookies }) => {
   const hours = useRef("");
   const lecture = useRef("");
   const practice = useRef("");
+
   function ChildComponent({ toPdf }) {
     const handleClick = async () => {
       try {
@@ -521,7 +526,7 @@ const part1 = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("pdf4", pdfBase64);
+          localStorage.setItem("pdf33", pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -532,7 +537,7 @@ const part1 = ({ cookies }) => {
     return (
       <>
         {" "}
-        <button ref={buttonRef4} onClick={handleClick} hidden>
+        <button ref={buttonRef33} onClick={handleClick} hidden>
           Capture as PDF
         </button>
       </>
@@ -542,46 +547,189 @@ const part1 = ({ cookies }) => {
   d(updateField({ field: "instance_id", value: courseID }));
 
   const submitHandler = async (e) => {
-    setIsSubmitting(true);
-    setHasClass(false);
-    handleSubmit();
-    await buttonRef.current.click();
-    await buttonRef2.current.click();
-    await buttonRef3.current.click();
-
     e.preventDefault();
+    console.log(inputs.length + inputs2.length + inputs3.length);
+    const newErrors = [];
+    if (inputs.length + inputs2.length + inputs3.length < 3) {
+      const error = "At least 3 Learning Outcomes must be stated.";
+      newErrors.push(error);
+    }
+    const cognitive = inputs.map((input) => {
+      const description = input.ref.current.value;
+      const newInput = {
+        description,
+        value: description,
+        counter: input.counter,
+        code: input.name,
+        name: input.name,
+      };
 
-    const r = await fetch(
-      `${process.env.url}api/v1/courses/created-courses/${courseID}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify({
-          courseSpecs: {
-            courseAims: courseAims.current.value,
-            courseContent: courseContent.current.value,
-
-            courseData: {
-              courseCode: code.current.value,
-              semester: semester.current.value,
-              practice: practice.current.value,
-              lectures: lecture.current.value,
-              contactHours: hours.current.value,
-              specialization: special.current.value,
-            },
-          },
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
+      if (description?.trim() === "") {
+        const error = "Description of Learning Outcomes should not be empty.";
+        if (!newErrors.includes(error)) {
+          newErrors.push(error);
+        }
       }
-    );
 
-    const resp = await r.json();
-    console.log(resp);
-    router.push(`/instructor/courses/${courseID}/courseSpecs/part4`);
+      return newInput;
+    });
+    const psychomotor = inputs.map((input) => {
+      const description = input.ref.current.value;
+      const newInput = {
+        description,
+        value: description,
+        counter: input.counter,
+        code: input.name,
+        name: input.name,
+      };
+
+      if (description?.trim() === "") {
+        const error = "Description of Learning Outcomes should not be empty.";
+        if (!newErrors.includes(error)) {
+          newErrors.push(error);
+        }
+      }
+
+      return newInput;
+    });
+    const affective = inputs3.map((input) => {
+      const description = input.ref.current.value;
+      const newInput = {
+        description,
+        value: description,
+        counter: input.counter,
+        code: input.name,
+        name: input.name,
+      };
+
+      if (description?.trim() === "") {
+        const error = "Description of Learning Outcomes should not be empty.";
+        if (!newErrors.includes(error)) {
+          newErrors.push(error);
+        }
+      }
+
+      return newInput;
+    });
+    if (semester.current?.value.trim() === "") {
+      newErrors.push("Semester/Year should not be empty.");
+      setIsSemesterYearInvalid(true);
+    } else {
+      setIsSemesterYearInvalid(false);
+    }
+    if (
+      isNaN(Number(lecture.current?.value)) ||
+      lecture.current?.value.trim() === "" ||
+      Number(lecture.current?.value) <= 0
+    ) {
+      newErrors.push("Lecture should be a positive non-zero value.");
+      setIsLectureInvalid(true);
+    } else {
+      setIsLectureInvalid(false);
+    }
+    if (
+      isNaN(Number(practice.current?.value)) ||
+      practice.current?.value.trim() === "" ||
+      Number(practice.current?.value) <= 0
+    ) {
+      newErrors.push("Practical/Practice should be a positive non-zero value.");
+      setIsPracticalPracticeInvalid(true);
+    } else {
+      setIsPracticalPracticeInvalid(false);
+    }
+    if (special.current?.value.trim() === "") {
+      newErrors.push("Specialization should not be empty.");
+      setIsSpecializationInvalid(true);
+    } else {
+      setIsSpecializationInvalid(false);
+    }
+    if (
+      isNaN(Number(hours.current?.value)) ||
+      hours.current?.value.trim() === "" ||
+      Number(hours.current?.value) <= 0
+    ) {
+      newErrors.push("Contact Hours should be a positive non-zero value.");
+      setIsContactHoursInvalid(true);
+    } else {
+      setIsContactHoursInvalid(false);
+    }
+    if (
+      courseAims.current?.value.trim() === "" ||
+      courseAims.current?.value.length < 10
+    ) {
+      newErrors.push(
+        "Course Aims should not be empty and should have at least 10 characters."
+      );
+      setIsCourseAimsInvalid(true);
+    } else {
+      setIsCourseAimsInvalid(false);
+    }
+    if (
+      courseContent.current?.value.trim() === "" ||
+      courseContent.current?.value.length < 10
+    ) {
+      newErrors.push(
+        "Course Content should not be empty and should have at least 10 characters."
+      );
+      setIsCourseContentInvalid(true);
+    } else {
+      setIsCourseContentInvalid(false);
+    }
+    if (newErrors.length === 0) {
+      setErrors([]);
+
+      console.log("Form submitted successfully!");
+
+      setIsSubmitting(true);
+      setHasClass(false);
+      handleSubmit();
+      await buttonRef.current.click();
+      await buttonRef2.current.click();
+      await buttonRef3.current.click();
+      await buttonRef33.current.click();
+
+      const r = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/${courseID}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            courseSpecs: {
+              courseAims: courseAims.current.value,
+              courseContent: courseContent.current.value,
+
+              courseData: {
+                courseCode: code.current.value,
+                semester: semester.current.value,
+                practice: practice.current.value,
+                lectures: lecture.current.value,
+                contactHours: hours.current.value,
+                specialization: special.current.value,
+              },
+            },
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      const resp = await r.json();
+      console.log(resp);
+      router.push(`/instructor/courses/${courseID}/courseSpecs/part4`);
+    } else {
+      setErrors(newErrors);
+    }
   };
+  const [isSemesterYearInvalid, setIsSemesterYearInvalid] = useState(false);
+  const [isSpecializationInvalid, setIsSpecializationInvalid] = useState(false);
+  const [isContactHoursInvalid, setIsContactHoursInvalid] = useState(false);
+  const [isLectureInvalid, setIsLectureInvalid] = useState(false);
+  const [isPracticalPracticeInvalid, setIsPracticalPracticeInvalid] =
+    useState(false);
+  const [isCourseAimsInvalid, setIsCourseAimsInvalid] = useState(false);
+  const [isCourseContentInvalid, setIsCourseContentInvalid] = useState(false);
 
   if (blobIsFound) {
     return (
@@ -606,6 +754,9 @@ const part1 = ({ cookies }) => {
         <CustomReactToPdf targetRef={refToImgBlob3} filename="part3.pdf">
           {({ toPdf }) => <ChildComponent3 toPdf={toPdf} />}
         </CustomReactToPdf>
+        <CustomReactToPdf targetRef={refToImgBlob33} filename="part33.pdf">
+          {({ toPdf }) => <ChildComponent4 toPdf={toPdf} />}
+        </CustomReactToPdf>
         <form
           onSubmit={submitHandler}
           className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 "
@@ -615,12 +766,26 @@ const part1 = ({ cookies }) => {
               <Navbar cookies={cookies} id={courseID} />
             </div>
             <div ref={refToImgBlob}>
-              <HeaderSpecs />
+              {courseSpecs && <HeaderSpecs data={courseSpecs} token={token} />}
 
               <div></div>
             </div>
             <div ref={refToImgBlob2}>
               <CourseData
+                setIsContactHoursInvalid={setIsContactHoursInvalid}
+                setIsLectureInvalid={setIsLectureInvalid}
+                setIsPracticalPracticeInvalid={setIsPracticalPracticeInvalid}
+                setIsSemesterYearInvalid={setIsSemesterYearInvalid}
+                setIsSpecializationInvalid={setIsSpecializationInvalid}
+                setIsCourseAimsInvalid={setIsCourseAimsInvalid}
+                setIsCourseContentInvalid={setIsCourseContentInvalid}
+                isLectureInvalid={isLectureInvalid}
+                isContactHoursInvalid={isContactHoursInvalid}
+                isSpecializationInvalid={isSpecializationInvalid}
+                isSemesterYearInvalid={isSemesterYearInvalid}
+                isPracticalPracticeInvalid={isPracticalPracticeInvalid}
+                isCourseAimsInvalid={isCourseAimsInvalid}
+                isCourseContentInvalid={isCourseContentInvalid}
                 hasClass={hasClass}
                 semester={semester}
                 code={code}
@@ -632,7 +797,12 @@ const part1 = ({ cookies }) => {
                 courseContent={courseContent}
               />
             </div>
-            <div ref={refToImgBlob3}>
+            {courseSpecs && (
+              <div ref={refToImgBlob3}>
+                <ProgramCompetencesServed data={courseSpecs} />
+              </div>
+            )}
+            <div ref={refToImgBlob33}>
               <div className="flex ">
                 <LearningOutcomes
                   hasClass={hasClass}
@@ -656,6 +826,16 @@ const part1 = ({ cookies }) => {
                 Next
               </button>
             </div>
+            {errors.length > 0 && (
+              <div className="mt-4 bg-red-200 text-red-700 p-4 rounded">
+                <p className="font-bold">Invalid Input:</p>
+                <ul>
+                  {errors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </form>
       </div>

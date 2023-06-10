@@ -6,8 +6,13 @@ import Cookies from "js-cookie";
 import cn from "classnames";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
+import { getErrorField } from "./errorField";
 
-const useTeachingMethods = ({ courseID }) => {
+const useTeachingMethods = ({ courseID,hasClass }) => {
+  const [invalid, setInvalid] = useState(false);
+  const getInvalidData = (boolean) => {
+    setInvalid(boolean);
+  };
   const userState = useSelector((s) => s.user);
   const cookies = {
     courseSpecs: {
@@ -441,7 +446,7 @@ console.log(cp2)
   let content = (
     <>
       <div className="text-2xl my-4 bg-yellow-200">
-        7- Teaching and Learning Methods
+        8- Teaching and Learning Methods
       </div>
       <table className="table-fixed border-collapse mb-[5rem]">
         <thead>
@@ -591,8 +596,17 @@ console.log(cp2)
           ))}
         </tbody>
       </table>
+    
+      {invalid &&
+        hasClass &&
+        getErrorField(
+          "Learning outcomes must achieve at least one teaching method",
+          () => {
+            setInvalid(false);
+          }
+        )}
     </>
   );
-  return { content, handleSubmit };
+  return { content, handleSubmit ,getInvalidData,checkboxRefs,checkboxRefs2,checkboxRefs3};
 };
 export default useTeachingMethods;

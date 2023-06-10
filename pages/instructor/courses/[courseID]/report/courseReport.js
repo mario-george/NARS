@@ -14,23 +14,54 @@ import { CompetencesLosSurvey } from "@/components/CRComponents/CompetencesLosSu
 import { CompetencesLosAchievementOVerall } from "@/components/CRComponents/CompetencesLosAchievementOverall";
 import { CompetencesLosOverall } from "@/components/CRComponents/CompetencesLosOverall";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
-import mergeTest from "../getPdf/courseReportPdf";
+import mergeTest from "../getPdf/MERGEONLYONE.js/test";
 import { saveAs } from "file-saver";
 import ReportNotComplete from "./ReportNotComplete";
 import { isIndexSignatureDeclaration } from "typescript";
 
 const courseReport = ({ cookies }) => {
+  useEffect(() => {
+    document.body.classList.add("resize-none");
+
+    return () => {
+      document.body.classList.remove("resize-none");
+    };
+  }, []);
   const router = useRouter();
+  const buttonRef = useRef(null);
   const buttonRef2 = useRef(null);
-  const buttonRef22 = useRef(null);
   const buttonRef3 = useRef(null);
   const buttonRef4 = useRef(null);
   const buttonRef5 = useRef(null);
   const buttonRef6 = useRef(null);
   const buttonRef7 = useRef(null);
   const buttonRef8 = useRef(null);
-
-  const buttonRef = useRef(null);
+  const buttonRef9 = useRef(null);
+  const buttonRef10 = useRef(null);
+  const buttonRef11 = useRef(null);
+  const buttonRef12 = useRef(null);
+  const buttonRef13 = useRef(null);
+  const buttonRef14 = useRef(null);
+  const buttonRef15 = useRef(null);
+  const buttonRef16 = useRef(null);
+  useEffect(() => {
+    localStorage.removeItem("courseReport1");
+    localStorage.removeItem("courseReport2");
+    localStorage.removeItem("courseReport3");
+    localStorage.removeItem("courseReport4");
+    localStorage.removeItem("courseReport5");
+    localStorage.removeItem("courseReport6");
+    localStorage.removeItem("courseReport7");
+    localStorage.removeItem("courseReport8");
+    localStorage.removeItem("courseReport9");
+    localStorage.removeItem("courseReport10");
+    localStorage.removeItem("courseReport11");
+    localStorage.removeItem("courseReport12");
+    localStorage.removeItem("courseReport13");
+    localStorage.removeItem("courseReport14");
+    localStorage.removeItem("courseReport15");
+    localStorage.removeItem("courseReport16");
+  }, []);
   const downloadMergedPDF = async () => {
     const pdfBase64 = localStorage.getItem("courseReport1");
     const pdfBase64_2 = localStorage.getItem("courseReport2");
@@ -39,7 +70,15 @@ const courseReport = ({ cookies }) => {
     const pdfBase64_33 = localStorage.getItem("courseReport5");
     const pdfBase64_233 = localStorage.getItem("courseReport6");
     const pdfBase64_244 = localStorage.getItem("courseReport7");
-    const pdfBase64_2444 = localStorage.getItem("courseReport8");
+    const pdfBase64_part8 = localStorage.getItem("courseReport8");
+    const pdfBase64_part9 = localStorage.getItem("courseReport9");
+    const pdfBase64_part10 = localStorage.getItem("courseReport10");
+    const pdfBase64_part11 = localStorage.getItem("courseReport11");
+    const pdfBase64_part12 = localStorage.getItem("courseReport12");
+    const pdfBase64_part13 = localStorage.getItem("courseReport13");
+    const pdfBase64_part14 = localStorage.getItem("courseReport14");
+    const pdfBase64_part15 = localStorage.getItem("courseReport15");
+    const pdfBase64_part16 = localStorage.getItem("courseReport16");
 
     const binaryData = atob(pdfBase64);
     const binaryData2 = atob(pdfBase64_2);
@@ -48,7 +87,15 @@ const courseReport = ({ cookies }) => {
     const binaryData5 = atob(pdfBase64_33);
     const binaryData6 = atob(pdfBase64_233);
     const binaryData7 = atob(pdfBase64_244);
-    const binaryData8 = atob(pdfBase64_2444);
+    const binaryData8 = atob(pdfBase64_part8);
+    const binaryData9 = atob(pdfBase64_part9);
+    const binaryData10 = atob(pdfBase64_part10);
+    const binaryData11 = atob(pdfBase64_part11);
+    const binaryData12 = atob(pdfBase64_part12);
+    const binaryData13 = atob(pdfBase64_part13);
+    const binaryData14 = atob(pdfBase64_part14);
+    const binaryData15 = atob(pdfBase64_part15);
+    const binaryData16 = atob(pdfBase64_part16);
 
     const array = new Uint8Array(binaryData.length);
     for (let i = 0; i < binaryData.length; i++) {
@@ -86,6 +133,38 @@ const courseReport = ({ cookies }) => {
     for (let i = 0; i < binaryData8.length; i++) {
       array8[i] = binaryData8.charCodeAt(i);
     }
+    const array9 = new Uint8Array(binaryData9.length);
+    for (let i = 0; i < binaryData9.length; i++) {
+      array9[i] = binaryData9.charCodeAt(i);
+    }
+    const array10 = new Uint8Array(binaryData10.length);
+    for (let i = 0; i < binaryData10.length; i++) {
+      array10[i] = binaryData10.charCodeAt(i);
+    }
+    const array11 = new Uint8Array(binaryData11.length);
+    for (let i = 0; i < binaryData11.length; i++) {
+      array11[i] = binaryData11.charCodeAt(i);
+    }
+    const array12 = new Uint8Array(binaryData12.length);
+    for (let i = 0; i < binaryData12.length; i++) {
+      array12[i] = binaryData12.charCodeAt(i);
+    }
+    const array13 = new Uint8Array(binaryData13.length);
+    for (let i = 0; i < binaryData13.length; i++) {
+      array13[i] = binaryData13.charCodeAt(i);
+    }
+    const array14 = new Uint8Array(binaryData14.length);
+    for (let i = 0; i < binaryData14.length; i++) {
+      array14[i] = binaryData14.charCodeAt(i);
+    }
+    const array15 = new Uint8Array(binaryData15.length);
+    for (let i = 0; i < binaryData15.length; i++) {
+      array15[i] = binaryData15.charCodeAt(i);
+    }
+    const array16 = new Uint8Array(binaryData16.length);
+    for (let i = 0; i < binaryData16.length; i++) {
+      array16[i] = binaryData16.charCodeAt(i);
+    }
 
     const blob = new Blob([array], { type: "image/jpeg" });
     const blob2 = new Blob([array2], { type: "image/jpeg" });
@@ -95,14 +174,33 @@ const courseReport = ({ cookies }) => {
     const blob6 = new Blob([array6], { type: "image/jpeg" });
     const blob7 = new Blob([array7], { type: "image/jpeg" });
     const blob8 = new Blob([array8], { type: "image/jpeg" });
+    const blob9 = new Blob([array9], { type: "image/jpeg" });
+    const blob10 = new Blob([array10], { type: "image/jpeg" });
+    const blob11 = new Blob([array11], { type: "image/jpeg" });
+    const blob12 = new Blob([array12], { type: "image/jpeg" });
+    const blob13 = new Blob([array13], { type: "image/jpeg" });
+    const blob14 = new Blob([array14], { type: "image/jpeg" });
+    const blob15 = new Blob([array15], { type: "image/jpeg" });
+    const blob16 = new Blob([array16], { type: "image/jpeg" });
 
-    const mergedPdf1 = await mergeTest([blob, blob2]);
-    const mergedPdf2 = await mergeTest([blob3, blob4]);
-    const mergedPdf3 = await mergeTest([blob5, blob6]);
-    const mergedPdf4 = await mergeTest([blob7, blob8]);
-
-    const blobs = [mergedPdf1, mergedPdf2, mergedPdf3, mergedPdf4];
-    const ImgBlobs = [blob, blob2, blob3, blob4, blob5, blob6, blob7, blob8];
+    const ImgBlobs = [
+      blob,
+      blob2,
+      blob3,
+      blob4,
+      blob5,
+      blob6,
+      blob7,
+      blob8,
+      blob9,
+      blob10,
+      blob11,
+      blob12,
+      blob13,
+      blob14,
+      blob15,
+      blob16,
+    ];
     const mergedBlob = await mergeTest(ImgBlobs);
 
     saveAs(mergedBlob, "CourseReport.pdf");
@@ -115,6 +213,14 @@ const courseReport = ({ cookies }) => {
   const refToImgBlob6 = useRef();
   const refToImgBlob7 = useRef();
   const refToImgBlob8 = useRef();
+  const refToImgBlob9 = useRef();
+  const refToImgBlob10 = useRef();
+  const refToImgBlob11 = useRef();
+  const refToImgBlob12 = useRef();
+  const refToImgBlob13 = useRef();
+  const refToImgBlob14 = useRef();
+  const refToImgBlob15 = useRef();
+  const refToImgBlob16 = useRef();
 
   const [competenciesMap, setCompetenciesMap] = useState({});
   const [courseCompetences, setCourseCompetences] = useState([]);
@@ -145,7 +251,7 @@ const courseReport = ({ cookies }) => {
   const doesCourseHaveCompetences = useRef(false);
   const doesCourseHaveTarget = useRef(false);
 
-  function ChildComponent({ toPdf }) {
+  function CustomChildComponent({ toPdf, buttonRef, nameOfpdfItem }) {
     const handleClick = async () => {
       try {
         console.log(toPdf);
@@ -155,7 +261,7 @@ const courseReport = ({ cookies }) => {
 
         reader.onload = () => {
           const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("courseReport1", pdfBase64);
+          localStorage.setItem(nameOfpdfItem, pdfBase64);
         };
         // do something with pdfBlob
       } catch (error) {
@@ -173,218 +279,55 @@ const courseReport = ({ cookies }) => {
       </>
     );
   }
-  function ChildComponent2({ toPdf }) {
-    const handleClick = async () => {
-      try {
-        console.log(toPdf);
-        const pdfBlob = await toPdf();
-        const reader = new FileReader();
-        reader.readAsDataURL(pdfBlob);
-
-        reader.onload = () => {
-          const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("courseReport2", pdfBase64);
-        };
-        // do something with pdfBlob
-      } catch (error) {
-        console.error("Failed to capture PDF:", error);
-      }
-      setTimeout(() => {}, 300);
-    };
-
-    return (
-      <>
-        {" "}
-        <button ref={buttonRef22} onClick={handleClick} hidden>
-          Capture as PDF
-        </button>
-      </>
-    );
-  }
-  function ChildComponent3({ toPdf }) {
-    const handleClick = async () => {
-      try {
-        console.log(toPdf);
-        const pdfBlob = await toPdf();
-        const reader = new FileReader();
-        reader.readAsDataURL(pdfBlob);
-
-        reader.onload = () => {
-          const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("courseReport3", pdfBase64);
-        };
-        // do something with pdfBlob
-      } catch (error) {
-        console.error("Failed to capture PDF:", error);
-      }
-      setTimeout(() => {}, 300);
-    };
-
-    return (
-      <>
-        {" "}
-        <button ref={buttonRef3} onClick={handleClick} hidden>
-          Capture as PDF
-        </button>
-      </>
-    );
-  }
-  function ChildComponent4({ toPdf }) {
-    const handleClick = async () => {
-      try {
-        console.log(toPdf);
-        const pdfBlob = await toPdf();
-        const reader = new FileReader();
-        reader.readAsDataURL(pdfBlob);
-
-        reader.onload = () => {
-          const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("courseReport4", pdfBase64);
-        };
-        // do something with pdfBlob
-      } catch (error) {
-        console.error("Failed to capture PDF:", error);
-      }
-      setTimeout(() => {}, 300);
-    };
-
-    return (
-      <>
-        {" "}
-        <button ref={buttonRef4} onClick={handleClick} hidden>
-          Capture as PDF
-        </button>
-      </>
-    );
-  }
-  function ChildComponent5({ toPdf }) {
-    const handleClick = async () => {
-      try {
-        console.log(toPdf);
-        const pdfBlob = await toPdf();
-        const reader = new FileReader();
-        reader.readAsDataURL(pdfBlob);
-
-        reader.onload = () => {
-          const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("courseReport5", pdfBase64);
-        };
-        // do something with pdfBlob
-      } catch (error) {
-        console.error("Failed to capture PDF:", error);
-      }
-      setTimeout(() => {}, 300);
-    };
-
-    return (
-      <>
-        {" "}
-        <button ref={buttonRef5} onClick={handleClick} hidden>
-          Capture as PDF
-        </button>
-      </>
-    );
-  }
-  function ChildComponent6({ toPdf }) {
-    const handleClick = async () => {
-      try {
-        console.log(toPdf);
-        const pdfBlob = await toPdf();
-        const reader = new FileReader();
-        reader.readAsDataURL(pdfBlob);
-
-        reader.onload = () => {
-          const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("courseReport6", pdfBase64);
-        };
-        // do something with pdfBlob
-      } catch (error) {
-        console.error("Failed to capture PDF:", error);
-      }
-      setTimeout(() => {}, 300);
-    };
-
-    return (
-      <>
-        {" "}
-        <button ref={buttonRef6} onClick={handleClick} hidden>
-          Capture as PDF
-        </button>
-      </>
-    );
-  }
-  function ChildComponent7({ toPdf }) {
-    const handleClick = async () => {
-      try {
-        console.log(toPdf);
-        const pdfBlob = await toPdf();
-        const reader = new FileReader();
-        reader.readAsDataURL(pdfBlob);
-
-        reader.onload = () => {
-          const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("courseReport7", pdfBase64);
-        };
-        // do something with pdfBlob
-      } catch (error) {
-        console.error("Failed to capture PDF:", error);
-      }
-      setTimeout(() => {}, 300);
-    };
-
-    return (
-      <>
-        {" "}
-        <button ref={buttonRef7} onClick={handleClick} hidden>
-          Capture as PDF
-        </button>
-      </>
-    );
-  }
-  function ChildComponent8({ toPdf }) {
-    const handleClick = async () => {
-      try {
-        console.log(toPdf);
-        const pdfBlob = await toPdf();
-        const reader = new FileReader();
-        reader.readAsDataURL(pdfBlob);
-
-        reader.onload = () => {
-          const pdfBase64 = reader.result.split(",")[1];
-          localStorage.setItem("courseReport8", pdfBase64);
-        };
-        // do something with pdfBlob
-      } catch (error) {
-        console.error("Failed to capture PDF:", error);
-      }
-      setTimeout(() => {}, 300);
-    };
-
-    return (
-      <>
-        {" "}
-        <button ref={buttonRef8} onClick={handleClick} hidden>
-          Capture as PDF
-        </button>
-      </>
-    );
-  }
 
   const submitHandler = async (e) => {
     await buttonRef.current.click();
-    await buttonRef22.current.click();
+    await buttonRef2.current.click();
     await buttonRef3.current.click();
     await buttonRef4.current.click();
     await buttonRef5.current.click();
     await buttonRef6.current.click();
     await buttonRef7.current.click();
     await buttonRef8.current.click();
+    await buttonRef9.current.click();
+    await buttonRef10.current.click();
+    await buttonRef11.current.click();
+    await buttonRef12.current.click();
+    await buttonRef13.current.click();
+    await buttonRef14.current.click();
+    await buttonRef15.current.click();
+    await buttonRef16.current.click();
 
     e.preventDefault();
 
-    setTimeout(() => {
-      // window.location.href = `/instructor/courses/${courseID}/courseSpecs/Pdf`;
+    // send courseRep to save to the backend
+    // setTimeout(() => {
 
+    //   downloadMergedPDF();
+    // }, 2000);
+  };
+  const downloadOnly = async (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    await buttonRef.current.click();
+    await buttonRef2.current.click();
+    await buttonRef3.current.click();
+    await buttonRef4.current.click();
+    await buttonRef5.current.click();
+    await buttonRef6.current.click();
+    await buttonRef7.current.click();
+    await buttonRef8.current.click();
+    await buttonRef9.current.click();
+    await buttonRef10.current.click();
+    await buttonRef11.current.click();
+    await buttonRef12.current.click();
+    await buttonRef13.current.click();
+    await buttonRef14.current.click();
+    await buttonRef15.current.click();
+    await buttonRef16.current.click();
+
+    setTimeout(() => {
       downloadMergedPDF();
     }, 2000);
   };
@@ -550,46 +493,193 @@ const courseReport = ({ cookies }) => {
           {dataLoaded && (
             <>
               <CustomReactToPdf targetRef={refToImgBlob} filename="part1.pdf">
-                {({ toPdf }) => <ChildComponent toPdf={toPdf} />}
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef}
+                    nameOfpdfItem={`courseReport1`}
+                  />
+                )}
               </CustomReactToPdf>
               <CustomReactToPdf targetRef={refToImgBlob2} filename="part2.pdf">
-                {({ toPdf }) => <ChildComponent2 toPdf={toPdf} />}
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef2}
+                    nameOfpdfItem={`courseReport2`}
+                  />
+                )}
               </CustomReactToPdf>
               <CustomReactToPdf targetRef={refToImgBlob3} filename="part3.pdf">
-                {({ toPdf }) => <ChildComponent3 toPdf={toPdf} />}
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef3}
+                    nameOfpdfItem={`courseReport3`}
+                  />
+                )}
               </CustomReactToPdf>
               <CustomReactToPdf targetRef={refToImgBlob4} filename="part4.pdf">
-                {({ toPdf }) => <ChildComponent4 toPdf={toPdf} />}
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef4}
+                    nameOfpdfItem={`courseReport4`}
+                  />
+                )}
               </CustomReactToPdf>
               <CustomReactToPdf targetRef={refToImgBlob5} filename="part5.pdf">
-                {({ toPdf }) => <ChildComponent5 toPdf={toPdf} />}
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef5}
+                    nameOfpdfItem={`courseReport5`}
+                  />
+                )}
               </CustomReactToPdf>
               <CustomReactToPdf targetRef={refToImgBlob6} filename="part6.pdf">
-                {({ toPdf }) => <ChildComponent6 toPdf={toPdf} />}
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef6}
+                    nameOfpdfItem={`courseReport6`}
+                  />
+                )}
               </CustomReactToPdf>{" "}
               <CustomReactToPdf targetRef={refToImgBlob7} filename="part7.pdf">
-                {({ toPdf }) => <ChildComponent7 toPdf={toPdf} />}
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef7}
+                    nameOfpdfItem={`courseReport7`}
+                  />
+                )}
               </CustomReactToPdf>{" "}
               <CustomReactToPdf targetRef={refToImgBlob8} filename="part8.pdf">
-                {({ toPdf }) => <ChildComponent8 toPdf={toPdf} />}
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef8}
+                    nameOfpdfItem={`courseReport8`}
+                  />
+                )}
+              </CustomReactToPdf>{" "}
+              <CustomReactToPdf targetRef={refToImgBlob9} filename="part9.pdf">
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef9}
+                    nameOfpdfItem={`courseReport9`}
+                  />
+                )}
+              </CustomReactToPdf>{" "}
+              <CustomReactToPdf
+                targetRef={refToImgBlob10}
+                filename="part10.pdf"
+              >
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef10}
+                    nameOfpdfItem={`courseReport10`}
+                  />
+                )}
+              </CustomReactToPdf>{" "}
+              <CustomReactToPdf
+                targetRef={refToImgBlob11}
+                filename="part11.pdf"
+              >
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef11}
+                    nameOfpdfItem={`courseReport11`}
+                  />
+                )}
+              </CustomReactToPdf>{" "}
+              <CustomReactToPdf
+                targetRef={refToImgBlob12}
+                filename="part12.pdf"
+              >
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef12}
+                    nameOfpdfItem={`courseReport12`}
+                  />
+                )}
+              </CustomReactToPdf>{" "}
+              <CustomReactToPdf
+                targetRef={refToImgBlob13}
+                filename="part13.pdf"
+              >
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef13}
+                    nameOfpdfItem={`courseReport13`}
+                  />
+                )}
+              </CustomReactToPdf>{" "}
+              <CustomReactToPdf
+                targetRef={refToImgBlob14}
+                filename="part14.pdf"
+              >
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef14}
+                    nameOfpdfItem={`courseReport14`}
+                  />
+                )}
+              </CustomReactToPdf>{" "}
+              <CustomReactToPdf
+                targetRef={refToImgBlob15}
+                filename="part15.pdf"
+              >
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef15}
+                    nameOfpdfItem={`courseReport15`}
+                  />
+                )}
+              </CustomReactToPdf>{" "}
+              <CustomReactToPdf
+                targetRef={refToImgBlob16}
+                filename="part16.pdf"
+              >
+                {({ toPdf }) => (
+                  <CustomChildComponent
+                    toPdf={toPdf}
+                    buttonRef={buttonRef16}
+                    nameOfpdfItem={`courseReport16`}
+                  />
+                )}
               </CustomReactToPdf>{" "}
               <div className="flex flex-row w-auto h-auto ">
                 {reportCompleted ? (
-                  <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none ">
+                  <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none resize-none  ">
                     <div className="contentAddUserFlexible2 flex flex-col gap-10  ">
                       <div ref={refToImgBlob}>
                         <CourseData createdCourse={courseData} />
+                      </div>
+                      <div ref={refToImgBlob2}>
                         <AssessmentMethodsTable
                           questions={questions}
                           competences={courseCompetences}
                           studentAssessments={studentAssessments}
                           courseFullMark={courseFullMark}
                         />
+                      </div>
 
+                      <div ref={refToImgBlob3}>
                         <CompetencesTable
                           courseCompetences={courseCompetences}
                           learningOutcomes={courseLearningOutcomes}
                         />
+                      </div>
+                      <div ref={refToImgBlob4}>
                         <TopicsTable
                           lectureTopics={lectureTopics}
                           learningOutcomes={courseLearningOutcomes}
@@ -599,76 +689,93 @@ const courseReport = ({ cookies }) => {
                       </div>
 
                       <div className="flex flex-col justify-center items-center">
-                      <div className="w-full" ref={refToImgBlob2}>
-                        <ExamGrades
-                          mid={mid}
-                          final={final}
-                          numberOfStudents={numberOfStudents}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob4}>
-                        <CompetencesLosGrades
-                          numberOfStudents={numberOfStudents}
-                          avgValues={avgValues}
-                          competenciesMap={competenciesMap}
-                          learningOutcomes={learningOutcomes}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob3}>
-                        <CompetencesLosAchievement
-                          target={target}
-                          competenciesMap={competenciesMap}
-                          avgValues={avgValues}
-                          numberOfStudents={numberOfStudents}
-                          learningOutcomes={learningOutcomes}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob6}>
-                        <CompetencesLosSurvey
-                          numberOfStudents={numberOfStudents}
-                          avgLOS={avgValuesLOs}
-                          avgValues={avgValuesSurvey}
-                          learningOutcomes={learningOutcomes}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob5}>
-                        <CompetencesLosAchievementSurvey
-                          target={target}
-                          competenciesMap={competenciesMap}
-                          avgValues={avgValuesSurvey}
-                          avgLOS={avgValuesLOs}
-                          numberOfStudents={numberOfStudents}
-                          learningOutcomes={learningOutcomes}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob8}>
-                        <CompetencesLosOverall
-                          numberOfStudents={numberOfStudents}
-                          avgLOS={avgValuesLOs}
-                          learningOutcomes={learningOutcomes}
-                          avgAvg={avgAvg}
-                        />
-                      </div>
-                      <div className="w-full" ref={refToImgBlob7}>
-                        <CompetencesLosAchievementOVerall
-                          target={target}
-                          competenciesMap={competenciesMap}
-                          avgLOS={avgValuesLOs}
-                          avgValues={avgValues}
-                          avgValuesSurvey={avgValuesSurvey}
-                          numberOfStudents={numberOfStudents}
-                          learningOutcomes={learningOutcomes}
-                          avgAvg={avgAvg}
-                        />
-                      </div>
-
+                        <div className="w-full">
+                          <ExamGrades
+                            mid={mid}
+                            final={final}
+                            numberOfStudents={numberOfStudents}
+                            refToImgBlob6={refToImgBlob6}
+                            refToImgBlob5={refToImgBlob5}
+                          />
+                        </div>
+                        <div className="w-full">
+                          <CompetencesLosGrades
+                            numberOfStudents={numberOfStudents}
+                            avgValues={avgValues}
+                            competenciesMap={competenciesMap}
+                            learningOutcomes={learningOutcomes}
+                            refToImgBlob7={refToImgBlob7}
+                            refToImgBlob8={refToImgBlob8}
+                          />
+                        </div>
+                        <div className="w-full">
+                          <CompetencesLosAchievement
+                            refToImgBlob9={refToImgBlob9}
+                            refToImgBlob10={refToImgBlob10}
+                            target={target}
+                            competenciesMap={competenciesMap}
+                            avgValues={avgValues}
+                            numberOfStudents={numberOfStudents}
+                            learningOutcomes={learningOutcomes}
+                          />
+                        </div>
+                        <div className="w-full" ref={refToImgBlob11}>
+                          <CompetencesLosSurvey
+                            numberOfStudents={numberOfStudents}
+                            avgLOS={avgValuesLOs}
+                            avgValues={avgValuesSurvey}
+                            learningOutcomes={learningOutcomes}
+                          />
+                        </div>
+                        <div className="w-full">
+                          <CompetencesLosAchievementSurvey
+                            target={target}
+                            competenciesMap={competenciesMap}
+                            avgValues={avgValuesSurvey}
+                            avgLOS={avgValuesLOs}
+                            numberOfStudents={numberOfStudents}
+                            learningOutcomes={learningOutcomes}
+                            refToImgBlob13={refToImgBlob13}
+                            refToImgBlob12={refToImgBlob12}
+                          />
+                        </div>
+                        <div className="w-full" ref={refToImgBlob14}>
+                          <CompetencesLosOverall
+                            numberOfStudents={numberOfStudents}
+                            avgLOS={avgValuesLOs}
+                            avgValues={avgValues}
+                            avgValuesSurvey={avgValuesSurvey}
+                            learningOutcomes={learningOutcomes}
+                          />
+                        </div>
+                        <div className="w-full">
+                          <CompetencesLosAchievementOVerall
+                            target={target}
+                            competenciesMap={competenciesMap}
+                            avgLOS={avgValuesLOs}
+                            avgValues={avgValues}
+                            avgValuesSurvey={avgValuesSurvey}
+                            numberOfStudents={numberOfStudents}
+                            learningOutcomes={learningOutcomes}
+                            refToImgBlob15={refToImgBlob15}
+                            refToImgBlob16={refToImgBlob16}
+                          />
+                        </div>
+                        <div className="flex justify-end w-full">
                         <button
-                          ref={buttonRef2}
-                          onClick={submitHandler}
-                          class="w-[6rem]  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                        >
-                          Export
-                        </button>
+                            onClick={downloadOnly}
+                            class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                          >
+                            Download Pdf
+                          </button>
+                          <button
+                            onClick={submitHandler}
+                            class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                          >
+                            Submit
+                          </button>
+                       
+                        </div>
                       </div>
                     </div>
                   </div>

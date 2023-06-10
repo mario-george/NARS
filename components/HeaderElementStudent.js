@@ -9,10 +9,9 @@ import { green } from "@mui/material/colors";
 
 function HeaderElementStudent({ id, originalId, name, createdAt, passed }) {
     const dispatch = useDispatch();
-    const [completed, setCompleted] = useState(false);
-
+    console.log("is passedddddddddddddd?",passed);
     return header2(
-        
+
         <Link
             href={`/student/${id}/coursedetails`}
             onClick={() => {
@@ -21,16 +20,16 @@ function HeaderElementStudent({ id, originalId, name, createdAt, passed }) {
             }}
             className="relative"
         >
-        
-            <span>{name}</span>   
-            {passed?
-                <span><MdDone 
-                style={{ fontSize: 30, display: "inline", marginBottom: 5 ,position:"absolute",left:130,top:9,color:"green"}}/>
-                </span>:
+
+            <span>{name}</span>
+            {passed ?
+                <span><MdDone
+                    style={{ fontSize: 30, display: "inline", marginBottom: 5, position: "absolute", left: 130, top: 9, color: "green" }} />
+                </span> :
                 ""}
             <br></br>
             {createdAt}
-        </Link> ,
+        </Link>,
         []
     );
 }

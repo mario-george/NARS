@@ -10,10 +10,10 @@ export default function otp2() {
     e.preventDefault();
     d(userActions.updateVerifyCode(otp2.current.value));
     const r = await fetch(
-      "http://ec2-52-3-250-20.compute-1.amazonaws.com/api/v1/users/verifyCode",
+      `${process.env.url}/api/v1/users/verifyCode`,
       {
         method: "POST",
-        body: JSON.stringify({ resetCode: otp2.current.value }),
+        body: JSON.stringify({ verifyCode: otp2.current.value }),
         headers: { "Content-Type": "application/json" },
       }
     );
@@ -24,7 +24,6 @@ export default function otp2() {
       alert("fail");
     } else {
       d(userActions.registerCompletionPart2());
-
       router.push("/reset_password");
     }
   };

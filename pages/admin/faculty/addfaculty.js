@@ -82,7 +82,7 @@ const addfaculty = ({ cookies }) => {
       console.log(resp);
       if (resp.status == "fail" || resp.status == "error") {
         setErr(resp.error.errors.dean.message);
-        console.log(resp,err);
+        console.log(resp, err);
       }
       else {
         setID(resp.data[0]._id);
@@ -153,7 +153,7 @@ const addfaculty = ({ cookies }) => {
       console.log(itemsArr);
       if (resp.status == "fail" || resp.status == "error") {
         setErr(resp.error.errors.dean.message);
-        console.log(resp,err);
+        console.log(resp, err);
         setMsg(fail);
       }
       else {
@@ -269,16 +269,7 @@ const addfaculty = ({ cookies }) => {
             </div>
 
             <div className="flex gap-20 ">
-              <div className="flex flex-col gap-5 w-1/3">
-                <div>About:</div>
-                <input
-                  type="text"
-                  name="about"
-                  className="w-full input-form"
-                  ref={about}
-                />
-              </div>
-              <div className="flex flex-col gap-5 w-2/5 ">
+              <div className="flex flex-col gap-5 w-1/3 ">
                 <div>Academic Levels:</div>
 
                 <select
@@ -317,7 +308,17 @@ const addfaculty = ({ cookies }) => {
                 </div>
               </div>
             </div>
-
+            <div className="flex gap-20 ">
+              <div className="flex flex-col gap-5 w-full">
+                <div>About:</div>
+                <textarea
+                  className="w-full input-form"
+                  rows="4"
+                  placeholder="Type here  about the faculty"
+                  ref={about}
+                />
+              </div>
+            </div>
             <div className="flex gap-20 ">
               <div className="flex flex-col space-y-1 w-full">
                 <p className=" mb-0 ">Competences:</p>
@@ -388,7 +389,7 @@ const addfaculty = ({ cookies }) => {
               </div>
             </div>
             <div className="flex gap-20 ">
-            {<div className="w-1/2 mt-10">{msg}</div>}
+              {<div className="w-1/2 mt-10">{msg}</div>}
             </div>
 
             <div className="flex justify-end">
