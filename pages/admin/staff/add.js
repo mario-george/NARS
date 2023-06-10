@@ -482,7 +482,7 @@ setMsg(failImport);
     <>
       {exportModalIsOpen ? (
         <div className="fixed inset-0 flex justify-center items-center z-20 h-screen">
-          <div className=" container relative  rounded-lg p-6 w-[40rem]  bg-gray-700 text-white ">
+          <div className=" container relative  rounded-lg p-6 w-[40rem] bg-white text-black border-2 shadow-xl border-black  ">
             <button
               onClick={exportCancel}
               className=" bg-red-500 text-white duration-200 transition-all hover:bg-red-600 px-2 rounded absolute top-4 right-4"
@@ -528,9 +528,7 @@ setMsg(failImport);
         </div>
       ) : null}
       <div
-        className={`flex flex-row w-screen h-screen ${
-          exportModalIsOpen ? `bg-black opacity-60 overflow-hidden ` : null
-        }`}
+        className={`flex flex-row w-screen h-screen `}
       >
         <form
           onSubmit={submitHandler}
