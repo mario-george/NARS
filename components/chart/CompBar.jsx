@@ -25,7 +25,7 @@ const CompBar = (props) => {
 
   const labels = Object.keys(props.comp);
 
-  console.log('props.comp', props.comp)
+  // console.log('props.comp', props.comp)
 
   const dataValues = [
     new Array(labels.length).fill(0),

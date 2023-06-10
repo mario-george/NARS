@@ -23,6 +23,7 @@ const LosDescriptionTable = ({ cookies, setAlerts }) => {
         let LOs = await r.json();
         
         if (LOs.status !== "success") {
+          // console.log("kskdfesdsdlslolo;")
           setAlerts([...alerts, <MassageAlert 
             fail={`error with get LOs data`}
             status="fail"
@@ -31,6 +32,7 @@ const LosDescriptionTable = ({ cookies, setAlerts }) => {
         }else{
     
           // LOs
+          // console.log("LOs.data.programLOs", LOs.data.programLOs, LOs.data)
           setLearningOutcomes(LOs.data.programLOs);
         }
       }catch(e){

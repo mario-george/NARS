@@ -4,6 +4,7 @@ import CoursesAttainment from "@/components/chart/CoursesAttainment";
 import CoursesBar from "@/components/chart/CoursesBar";
 import CompBar from "@/components/chart/CompBar";
 import FillPie from "@/components/chart/FillPie";
+import setProgramTarget from "@/common/setProgramTarget";
 // import programAvg from "@/common/programAvg";
 
 const programAvg1 = require("@/common/programAvg1");
@@ -16,6 +17,8 @@ const CoursesCompetences = ({ cookies, setAlerts }) => {
   const [numReport, setNumReport] = useState([0, 0]);
 
   const maxEach = 6;
+  const compLength = Object.keys(comp).length;
+  const coursesNum = Object.keys(coursesAvg).length;
 
   useEffect(() => {
     const get_comp = async (e) => {
@@ -30,9 +33,15 @@ const CoursesCompetences = ({ cookies, setAlerts }) => {
         setAlerts
       )
 
-      console.log("11")
-      console.log("coAng, cmAvg", avgs.compAvg["B2"]['direct'] /= avgs.compAvg["B2"]['numCourses'], avgs);
-      console.log("12")
+      setProgramTarget(
+        cookies.program,
+        setTarget,
+        setAlerts
+      )
+
+      // console.log("11")
+      // console.log("coAng, cmAvg", avgs.compAvg["B2"]['direct'] /= avgs.compAvg["B2"]['numCourses'], avgs);
+      // console.log("12")
 
       try {
         const resp4 = await fetch(
@@ -57,7 +66,7 @@ const CoursesCompetences = ({ cookies, setAlerts }) => {
     
     // setNumReport([3, 2])
     // setNumSpecs([2, 3])
-    setTarget([50, 70])
+    // setTarget([50, 70])
   }, []);
 
   return (
@@ -98,21 +107,21 @@ const CoursesCompetences = ({ cookies, setAlerts }) => {
         </div>
         <label className="mt-12">Courses and Competences Achievement</label>
         <div className={`grid grid-cols-1 
-          md:${((Object.keys(coursesAvg).length > maxEach) || (Object.keys(comp).length > maxEach))? 
+          md:${((coursesNum > maxEach) || (compLength > maxEach))? 
             "grid-cols-[repeat(auto-fit,_16.666666%)] justify-center":"grid-cols-2"}
           gap-1 md:gap-2 gap-y-1 w-[90%] mb-10`}>
           <div>
             <CoursesBar
               courses={coursesAvg}
-              w={(Object.keys(coursesAvg).length > maxEach)? 150:60}
-              h={60}
+              w={(coursesNum > maxEach)? 150:60}
+              h={(coursesNum > maxEach)? 150:60}
             />
           </div>
           <div>
             <CompBar
               comp={comp}
-              w={(Object.keys(comp).length > maxEach)? 150:60}
-              h={60}
+              w={(compLength > maxEach)? 150:60}
+              h={(compLength > maxEach)? 150:60}
             />
           </div>
         </div>

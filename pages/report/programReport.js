@@ -2,12 +2,13 @@ import {useState} from "react";
 import CoursesCompetences from "../../components/PRComponents/CoursesCompetences";
 import LosDescriptionTable from "../../components/PRComponents/LosDescriptionTable";
 import Graph1 from '../../components/PRComponents/Graph1';
+import ProgramData from "@/components/PRComponents/ProgramData";
 
 const programReport = ({ cookies }) => {
 
-  // if (cookies.role != "program coordinator" || cookies.loggedInStatus != "true") {
-  //   return <div className="error">404 could not found</div>;
-  // }
+  if ((cookies.role != "program coordinator" && cookies.role != "quality coordinator") || cookies.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
 
   const [alerts, setAlerts] = useState([]);
 
@@ -19,6 +20,7 @@ const programReport = ({ cookies }) => {
             <label class="label-form md:text-2xl text-center">
               Program Report
             </label>
+            <ProgramData cookies={cookies} setAlerts={setAlerts}/>
             <CoursesCompetences cookies={cookies} setAlerts={setAlerts}/>
             <LosDescriptionTable cookies={cookies} setAlerts={setAlerts}/>
             <Graph1 cookies={cookies} setAlerts={setAlerts}/>

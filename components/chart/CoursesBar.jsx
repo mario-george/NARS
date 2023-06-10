@@ -25,7 +25,7 @@ const CoursesBar = (props) => {
 
   const labels = Object.keys(props.courses);
 
-  console.log("props.courses", props.courses)
+  // console.log("props.courses", props.courses)
 
   const dataValues = [
     new Array(labels.length).fill(0),

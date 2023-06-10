@@ -93,10 +93,10 @@ const programAvg1 = async(
       // competences
       direct.data.report.programCompAvgs.forEach(comp => {
         if(comp.avg){
-          console.log(`ssko ${comp.code} ${typeof comp.code}`, comp.avg)
+          // console.log(`ssko ${comp.code} ${typeof comp.code}`, comp.avg)
           compAvg[comp.code]["direct"] = comp.avg;
           compAvg[comp.code]['avg'] = (comp.avg + compAvg[comp.code]["indirect"]) / 2
-          console.log(`ssko;p ${comp.code} ${typeof comp.code}`, comp.avg, compAvg[comp.code])
+          // console.log(`ssko;p ${comp.code} ${typeof comp.code}`, comp.avg, compAvg[comp.code])
         }else{
           compAvg[comp.code]["direct"] = 0;
           compAvg[comp.code]['avg'] = compAvg[comp.code]["indirect"] / 2
@@ -137,8 +137,8 @@ const programAvg1 = async(
   //   courseAvg[course.name]['avg'] = (course.avg + compAvg[c]["indirect"]) / 2
   // });
 
-  console.log("compAvg", compAvg);
-  console.log("courseAvg", Object.keys(courseAvg), courseAvg);
+  // console.log("compAvg", compAvg);
+  // console.log("courseAvg", Object.keys(courseAvg), courseAvg);
 
   setCompAvg(compAvg);
   setCourseAvg(courseAvg);
