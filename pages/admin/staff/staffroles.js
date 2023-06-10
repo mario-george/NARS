@@ -23,7 +23,7 @@ const staffRoles = ({ cookies }) => {
     const choosen = useRef()
     const [staffArr, setStaff] = useState([]);
     const [rolesArr, setRoles] = useState([]);
-    let selectedItems = [];
+    let [selectedItems, setSelectedItems] = useState([]);
     let memberID = "";
 
     const handleChangeRole = (role) => {
@@ -39,7 +39,10 @@ const staffRoles = ({ cookies }) => {
         console.log(selectedItems);
     };
     const handleReset = (e) => {
-        e.preventDefault();
+        if(e){
+
+            e.preventDefault();
+        }
         selectedItems.length = 0;
         choosen.current.value = selectedItems.map((e) => {
             return e;
@@ -142,6 +145,9 @@ const staffRoles = ({ cookies }) => {
             } else {
                 setMsg(success);
             }
+            role.current.value = "null";
+            setSelectedItems([]);
+            handleReset()
         } catch (e) {
             console.log(e);
         }
