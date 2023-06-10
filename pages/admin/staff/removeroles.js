@@ -23,13 +23,13 @@ const staffRoles = ({ cookies }) => {
   const choosen = useRef();
   const [staffArr, setStaff] = useState([]);
   const [rolesArr, setRoles] = useState([]);
-  let selectedItems = [];
+  let [selectedItems, setSelectedItems] = useState([]);
   let memberID = "";
 
   const handleChangeRole = (role) => {
-    if(role.current.value=="null"){
-      return
-  }
+    if (role.current.value == "null") {
+      return;
+    }
     console.log(selectedItems);
     selectedItems.push(role.current.value);
     choosen.current.value = selectedItems.map((e) => {
@@ -38,7 +38,9 @@ const staffRoles = ({ cookies }) => {
     console.log(selectedItems);
   };
   const handleReset = (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     selectedItems.length = 0;
     choosen.current.value = selectedItems.map((e) => {
       return e;
@@ -74,20 +76,19 @@ const staffRoles = ({ cookies }) => {
         return { name: e.name, id: e._id, roles: e.roles };
       });
       setStaff(newData);
-      if(staff.current?.value){
-        try{
-            newData.map((e) => {
-                {
-                  if (e.id === staff.current.value) {
-                    setRoles(e.roles);
-                    console.log(e.roles)
-                  }
-                }
-              });
-        }catch(e){
-            console.log(e)
+      if (staff.current?.value) {
+        try {
+          newData.map((e) => {
+            {
+              if (e.id === staff.current.value) {
+                setRoles(e.roles);
+                console.log(e.roles);
+              }
+            }
+          });
+        } catch (e) {
+          console.log(e);
         }
-     
       }
     }
     getAllStaff();
@@ -96,6 +97,7 @@ const staffRoles = ({ cookies }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log(staff.current.value);
+
     try {
       const r = await fetch(
         `${process.env.url}api/v1/users/staff/role/${staff.current.value}`,
@@ -114,7 +116,6 @@ const staffRoles = ({ cookies }) => {
       );
       setUpdate(!update);
 
-  
       const resp = await r.json();
       console.log(resp);
       if (resp.status == "fail") {
@@ -122,6 +123,9 @@ const staffRoles = ({ cookies }) => {
       } else {
         setMsg(success);
       }
+      role.current.value = "null";
+      setSelectedItems([]);
+      handleReset()
     } catch (e) {
       console.log(e);
     }
@@ -237,7 +241,9 @@ const staffRoles = ({ cookies }) => {
                   class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
                   onChange={() => handleChangeRole(role)}
                 >
-                  <option value="null" selected>Choose a role</option>
+                  <option value="null" selected>
+                    Choose a role
+                  </option>
                   {rolesArr.map((e) => {
                     return <option value={e}>{e}</option>;
                   })}{" "}
