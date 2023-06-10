@@ -21,6 +21,7 @@ import mergeTest from "../getPdf/MERGEONLYONE.js/test";
 import { saveAs } from "file-saver";
 import ReportNotComplete from "./ReportNotComplete";
 import { isIndexSignatureDeclaration } from "typescript";
+import DefaultPage from "@/components/helper/DefaultPageCourseReport";
 
 const courseReport = ({ cookies }) => {
   useEffect(() => {
@@ -30,6 +31,71 @@ const courseReport = ({ cookies }) => {
       document.body.classList.remove("resize-none");
     };
   }, []);
+  async function downloadPdf(e) {
+    e.preventDefault();
+    const blob = pdfBlob;
+    const url = window.URL.createObjectURL(new Blob([blob]));
+
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    let replacedIns = instanceName;
+    replacedIns = replacedIns.replace(/\n$/, "");
+    downloadLink.download = replacedIns + ".pdf";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    window.URL.revokeObjectURL(url);
+  }
+  const sendPdfBlob = async (blob) => {
+    const formData = new FormData();
+
+    formData.append("courseInstance", courseID);
+    formData.append("courseReport", blob, "mypdf.pdf");
+    try {
+      const r = await fetch(`${process.env.url}api/v1/courses/reportPdf/`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/form-data",
+          Authorization: "Bearer " + cookies.token,
+        },
+      });
+
+      const resp = await r.json();
+      console.log(resp);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    const getData = async function () {
+      const r2 = await fetch(
+        `${process.env.url}api/v1/courses/reportPdf/${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + cookies.token,
+          },
+        }
+      );
+      if (r2.status === 200) {
+        // PDF is found
+        const blobpdfFile = await r2.blob();
+
+        setpdfBlob(blobpdfFile);
+        setBlobIsFound(true);
+      }
+    };
+    getData();
+  }, []);
+  const [instanceName, setInstanceName] = useState("Course Report");
+  const [courseCode, setCourseCode] = useState("");
+
+  const [pdfBlob, setpdfBlob] = useState();
+  const [blobIsFound, setBlobIsFound] = useState(false);
   const router = useRouter();
   const buttonRef = useRef(null);
   const buttonRef2 = useRef(null);
@@ -65,7 +131,7 @@ const courseReport = ({ cookies }) => {
     localStorage.removeItem("courseReport15");
     localStorage.removeItem("courseReport16");
   }, []);
-  const downloadMergedPDF = async () => {
+  const downloadMergedPDF = async (boolean) => {
     const pdfBase64 = localStorage.getItem("courseReport1");
     const pdfBase64_2 = localStorage.getItem("courseReport2");
     const pdfBase64_22 = localStorage.getItem("courseReport3");
@@ -205,8 +271,11 @@ const courseReport = ({ cookies }) => {
       blob16,
     ];
     const mergedBlob = await mergeTest(ImgBlobs);
+    sendPdfBlob(mergedBlob);
+    if(boolean){
 
-    saveAs(mergedBlob, "CourseReport.pdf");
+      saveAs(mergedBlob, "CourseReport.pdf");
+    }
   };
   const refToImgBlob = useRef();
   const refToImgBlob2 = useRef();
@@ -303,10 +372,10 @@ const courseReport = ({ cookies }) => {
     e.preventDefault();
 
     // send courseRep to save to the backend
-    // setTimeout(() => {
+    setTimeout(() => {
 
-    //   downloadMergedPDF();
-    // }, 2000);
+      downloadMergedPDF(false);
+    }, 2000);
   };
   const downloadOnly = async (e) => {
     if (e) {
@@ -330,7 +399,7 @@ const courseReport = ({ cookies }) => {
     await buttonRef16.current.click();
 
     setTimeout(() => {
-      downloadMergedPDF();
+      downloadMergedPDF(true);
     }, 2000);
   };
   const getAvg = (avgs) => {
@@ -366,7 +435,44 @@ const courseReport = ({ cookies }) => {
   useEffect(() => {
     getCourse();
   }, []);
+  async function downloadPdf(e) {
+    if (e) {
+      e.preventDefault();
+    }
+    const blob = pdfBlob;
+    const url = window.URL.createObjectURL(new Blob([blob]));
 
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    let replacedIns = instanceName;
+    replacedIns = replacedIns.replace(/\n$/, "");
+    downloadLink.download = replacedIns + ".pdf";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    window.URL.revokeObjectURL(url);
+  }
+  useEffect(() => {
+    const getNameCode = async function () {
+      const getNameCodeReq = await fetch(
+        `${process.env.url}api/v1/courses/created-courses/?_id=${courseID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + cookies.token,
+          },
+        }
+      );
+      const dataGetNameCodeReq = await getNameCodeReq.json();
+
+      setInstanceName(dataGetNameCodeReq.data[0].course.name);
+      setCourseCode(dataGetNameCodeReq.data[0].course.code);
+    };
+    getNameCode();
+  }, []);
   const getCourse = async () => {
     try {
       const resp = await fetch(
@@ -470,7 +576,18 @@ const courseReport = ({ cookies }) => {
       console.log("ERROR", e);
     }
   };
-
+  if (blobIsFound) {
+    return (
+      <DefaultPage
+        downloadPdf={downloadPdf}
+        cookies={cookies}
+        courseID={courseID}
+        instanceName={instanceName}
+        courseCode={courseCode}
+        setBlobIsFound={setBlobIsFound}
+      />
+    );
+  }
   return (
     <>
       {wantedData[0] ? (
@@ -651,7 +768,7 @@ const courseReport = ({ cookies }) => {
               <div className="flex flex-row w-auto h-auto ">
                 {reportCompleted ? (
                   <div className="bg-sky-50 h-auto w-[80%] translate-x-[25%] flex flex-col justify-center items-center text-black ml-1 scrollbar-x-none resize-none  ">
-                    <div className="contentAddUserFlexible2 flex flex-col gap-10  ">
+                    <div className="container contentAddUserFlexible2 flex flex-col gap-10  ">
                       <div ref={refToImgBlob}>
                         <CourseData createdCourse={courseData} />
                       </div>
@@ -753,7 +870,7 @@ const courseReport = ({ cookies }) => {
                           />
                         </div>
                         <div className="flex justify-end w-full">
-                        <button
+                          <button
                             onClick={downloadOnly}
                             class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                           >
@@ -765,7 +882,6 @@ const courseReport = ({ cookies }) => {
                           >
                             Submit
                           </button>
-                       
                         </div>
                       </div>
                     </div>

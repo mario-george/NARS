@@ -6,7 +6,7 @@ import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import InsertDriveFileRounded from '@mui/icons-material/InsertDriveFileRounded'
 
-const PdfFileCard = ({ name, id ,cookies,setBlobIsFound,downloadPdf}) => {
+const PdfFileCard = ({ name, id ,cookies,setBlobIsFound,downloadPdf,code}) => {
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const pdfFile = `${process.env.url}api/v1/courses/exams/63ffebc34bef8c7adbf0b482`
     const file = '../../media/ECE312C Control Systems (1) Course Specs 221CBL.pdf'
@@ -29,20 +29,26 @@ const PdfFileCard = ({ name, id ,cookies,setBlobIsFound,downloadPdf}) => {
 
             </div>
 
-            <div className=" ">
-                <p>{name}</p>
-            </div>
-            <button class="flex justify-center align-center bg-zinc-600 hover:bg-red-900 
-            text-white font-bold py-2 px-4 rounded-full  w-32 h-10"
-                onClick={handleUpdate}>
-                Update
-            </button>
+            <div className=" flex flex-col space-y-3">
+        <div className="text-2xl font-bold text-center">Course Specifications</div>
+        <div className="text-2xl font-bold text-center">{name}</div>
+        <div className="text-xl text-center">{code}</div>
+      </div>
             <button
-              class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              onClick={downloadPdf}
-            >
-              Download PDF
-            </button>
+        className="group flex items-center space-x-3 justify-center align-center bg-green-600 hover:bg-green-700 text-white font-medium px-5 py-2.5 rounded-xl w-48 h-auto transition-all duration-150"
+        onClick={handleUpdate}
+      >
+        <div>Update</div>
+        <i class="  fa-solid fa-eye"></i>
+      </button>
+      <button
+        class=" group flex items-center space-x-3 font-medium  rounded-xl  text-white bg-blue-700 transition-all duration-150 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        onClick={downloadPdf}
+      >
+        <div className=" ">Download PDF</div>
+
+        <i class="fa-solid fa-download fa-lg  "></i>
+      </button>
         </div>
 
     )
