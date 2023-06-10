@@ -746,6 +746,7 @@ const courseReport = ({ cookies }) => {
                             avgValues={avgValues}
                             avgValuesSurvey={avgValuesSurvey}
                             learningOutcomes={learningOutcomes}
+                            avgAvg={avgAvg}
                           />
                         </div>
                         <div className="w-full">
@@ -759,6 +760,7 @@ const courseReport = ({ cookies }) => {
                             learningOutcomes={learningOutcomes}
                             refToImgBlob15={refToImgBlob15}
                             refToImgBlob16={refToImgBlob16}
+                            avgAvg={avgAvg}
                           />
                         </div>
                         <div className="flex justify-end w-full">
