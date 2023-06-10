@@ -4,10 +4,11 @@ import { useRef, useEffect } from "react";
 import { successFailMsg } from "@/components/successFail/success-fail";
 import Cookies from "js-cookie";
 import { useState } from "react";
-import XLSX from "xlsx";
 import { read, utils } from "xlsx";
 import CircularJSON from "circular-json";
 import { useSelector } from "react-redux";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import DropdownRoles from "@/components/user/DropDownRoles";
 const addStaff = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
@@ -91,12 +92,70 @@ const addStaff = ({ cookies }) => {
       setDepartments(tempArray);
     }, 500);
   };
+  const downloadTemplateHandler = () => {
+    const header = [
+      "name",
+      "roles",
+      "email",
+      "faculty",
+      "department",
+      "program",
+    ];
+    let staff = [
+      {
+        name: "staff1",
+        roles: ["quality coordinator"],
+        email: "staff1@admin.com",
+        faculty: "63f64262db6789457bdcbb38",
+        department: "6479d40d335f57897c1d23a0",
+        program: "646666ddef0e16e7f9ad4933",
+      },
+      {
+        name: "staff2",
+        roles: ['instructor', 'quality coordinator', 'faculty admin'],
+        email: "staff2@admin.com",
+        faculty: "63f64262db6789457bdcbb38",
+        department: "6479d40d335f57897c1d23a0",
+        program: "646666ddef0e16e7f9ad4933",
+      },
+      {
+        name: "staff3",
+        roles: ['system admin', 'instructor', 'dean', 'program admin', 'teaching assistant', 'program coordinator', 'department admin', 'quality coordinator'],
+        email: "staff3@admin.com",
+        faculty: "63f64262db6789457bdcbb38",
+        department: "6479d40d335f57897c1d23a0",
+        program: "646666ddef0e16e7f9ad4933",
+      },
+    ];
+    const rows = staff.map((item) => [
+      item.name,
+      item.roles.join(", "),
+      item.email,
+      item.faculty,
+      item.department,
+      item.program,
+    ]);
+
+    const worksheet = XLSX.utils.aoa_to_sheet([header, ...rows]);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const fileBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const file = new Blob([fileBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(file, "staffTemplate.xlsx");
+  };
   const handleDepartmentChange = async () => {
     const selectedDepartment = department.current.value;
     const selectedOption =
       department.current.options[department.current.selectedIndex];
     const selectedOptionName = selectedOption.text;
-    const depID=department.current.value
+    const depID = department.current.value;
     console.log(depID);
     console.log(depID);
     console.log(depID);
@@ -151,31 +210,39 @@ const addStaff = ({ cookies }) => {
     getFacultyNames();
   }, []);
   function handleFile(event) {
-    const files = event.target.files;
-    const f = files[0];
+    try{
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const data = new Uint8Array(event.target.result);
-      const workbook = read(data, { type: "array" });
-      const firstSheet = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[firstSheet];
-      const sheetData = utils.sheet_to_json(worksheet);
-      console.log(sheetData);
-      setData(sheetData);
-      setExportModalIsOpen(true);
-      document.body.classList.toggle("overflow-hidden");
-    };
-    reader.readAsArrayBuffer(f);
+      const files = event.target.files;
+      const f = files[0];
+  
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const data = new Uint8Array(event.target.result);
+        const workbook = read(data, { type: "array" });
+        const firstSheet = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheet];
+        const sheetData = utils.sheet_to_json(worksheet);
+        console.log(sheetData);
+        setData(sheetData);
+        setExportModalIsOpen(true);
+        document.body.classList.toggle("overflow-hidden");
+      };
+      reader.readAsArrayBuffer(f);
+
+    }catch(e){
+      console.error(e)
+    }
+    
   }
   const exportHandler = async () => {
+    try{
     document.body.classList.toggle("overflow-hidden");
 
     const promises = data.map(async (row) => {
       const { name, email, roles, faculty, department, program } = row;
       const rolesArr = roles.split(",").map((i) => i.trim());
-console.log(roles)
-console.log(rolesArr)
+      console.log(roles);
+      console.log(rolesArr);
       const obj = {
         name,
         email,
@@ -184,7 +251,7 @@ console.log(rolesArr)
         department,
         program,
       };
-
+  
       const resp = await fetch(`${process.env.url}api/v1/users/staff`, {
         method: "POST",
         headers: {
@@ -194,15 +261,35 @@ console.log(rolesArr)
         },
         body: JSON.stringify(obj),
       });
-
+  
       return resp.json();
     });
-
+  
     const responseData = await Promise.all(promises);
     console.log(responseData);
+    function checkAllFieldsSuccess(responseData) {
+      for (const field of responseData) {
+        if (field.status !== "success") {
+          return false;
+        }
+      }
+      return true;
+    }
+    const allFieldsSuccess = checkAllFieldsSuccess(responseData);
+if(allFieldsSuccess){
 
-    setExportModalIsOpen(false);
-    setMsg(success);
+  setExportModalIsOpen(false);
+  setMsg(success);
+}else{
+  setExportModalIsOpen(false);
+  setMsg(partiallyfailImport);
+}
+    
+}catch(e){
+console.error(e);
+setExportModalIsOpen(false);
+setMsg(failImport);
+}
   };
 
   const token = userState.token;
@@ -280,7 +367,76 @@ console.log(rolesArr)
       </button>
     </div>
   );
-
+  let failImport = (
+    <div
+      id="alert-border-2"
+      class="flex p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+      role="alert"
+    >
+      <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+      <div class="ml-3 text-sm font-medium">
+        Imported data is not in the right format please download the template and follow the format.
+        <a href="#" class="font-semibold underline hover:no-underline"></a>.
+      </div>
+      <button
+        type="button"
+        onClick={closeMsg}
+        class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+        data-dismiss-target="#alert-border-2"
+        aria-label="Close"
+      >
+        <span class="sr-only">Dismiss</span>
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  );
+  let partiallyfailImport = (
+    <div
+      id="alert-border-2"
+      class="flex p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+      role="alert"
+    >
+      <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+      <div class="ml-3 text-sm font-medium">
+        Parts of the imported data is not in the right format please download the template and follow the format.
+        <a href="#" class="font-semibold underline hover:no-underline"></a>.
+      </div>
+      <button
+        type="button"
+        onClick={closeMsg}
+        class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+        data-dismiss-target="#alert-border-2"
+        aria-label="Close"
+      >
+        <span class="sr-only">Dismiss</span>
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  );
   let success = (
     <div
       id="alert-border-3"
@@ -326,7 +482,7 @@ console.log(rolesArr)
     <>
       {exportModalIsOpen ? (
         <div className="fixed inset-0 flex justify-center items-center z-20 h-screen">
-          <div className=" container relative  rounded-lg p-6 w-[40rem]  bg-gray-700 text-white ">
+          <div className=" container relative  rounded-lg p-6 w-[40rem] bg-white text-black border-2 shadow-xl border-black  ">
             <button
               onClick={exportCancel}
               className=" bg-red-500 text-white duration-200 transition-all hover:bg-red-600 px-2 rounded absolute top-4 right-4"
@@ -372,9 +528,7 @@ console.log(rolesArr)
         </div>
       ) : null}
       <div
-        className={`flex flex-row w-screen h-screen ${
-          exportModalIsOpen ? `bg-black opacity-60 overflow-hidden ` : null
-        }`}
+        className={`flex flex-row w-screen h-screen `}
       >
         <form
           onSubmit={submitHandler}
@@ -475,6 +629,13 @@ console.log(rolesArr)
               <div className="flex justify-between items-center w-full">
                 <div className="w-1/2">{msg}</div>
                 <div className="flex space-x-2">
+                  <button
+                    type="button"
+                    class="my-6 px-10 py-3  duration-200 text-white bg-green-700 hover:bg-green-600 focus:ring-green-300 font-medium rounded-lg md:text-lg text-sm  mx-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+                    onClick={downloadTemplateHandler}
+                  >
+                    Download Template
+                  </button>
                   <input
                     type="file"
                     id="selectFile"

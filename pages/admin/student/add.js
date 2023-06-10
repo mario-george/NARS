@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import { handleFile } from "../../../common/uploadFile";
 import { useSelector } from "react-redux";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const addStudent = ({ cookies }) => {
   const userState = useSelector((s) => s.user);
@@ -12,18 +14,87 @@ const addStudent = ({ cookies }) => {
   if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
- const [aY,setAy]=useState([])
-const handleAcademicYearChange=()=>{
-  const selectedElements = getSelectedElements(["prep","first","second","third","fourth","fifth","sixth"], academicYear.current.value);
-setAy(selectedElements)
-}
-function getSelectedElements(array, selectedValue) {
-  const selectedIndex = array.indexOf(selectedValue);
-  if (selectedIndex === -1) {
-    return [];
+  let students = [
+    {
+      name: "mario",
+      code: "17774",
+      email: "mario@mailsac.com",
+      faculty: "63fca5927dfeba8757a87dbe",
+      academicYear: [
+        "prep",
+        "first",
+        "second",
+        "third",
+        "fourth",
+        "fifth",
+        "sixth",
+      ],
+      department: "63f778c73143ccb59dc49304",
+    },
+    {
+      name: "ahmed",
+      code: "17772",
+      email: "ahmed@mailsac.com",
+      faculty: "63fca5927dfeba8757a87dbe",
+      academicYear: ["fourth", "fifth", "sixth"],
+      department: "63f778c73143ccb59dc49304",
+    },
+    {
+      name: "mohamed",
+      code: "17773",
+      email: "mohamed@mailsac.com",
+      faculty: "63fca5927dfeba8757a87dbe",
+      academicYear: ["second", "third", "fourth", "fifth", "sixth"],
+      department: "63f778c73143ccb59dc49304",
+    },
+  ];
+  const downloadTemplateHandler = () => {
+    const header = [
+      "name",
+      "code",
+      "email",
+      "faculty",
+      "academicYear",
+      "department",
+    ];
+    const rows = students.map((item) => [
+      item.name,
+      item.code,
+      item.email,
+      item.faculty,
+      item.academicYear.join(","),
+      item.department,
+    ]);
+
+    const worksheet = XLSX.utils.aoa_to_sheet([header, ...rows]);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const fileBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const file = new Blob([fileBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(file, "studentsTemplate.xlsx");
+  };
+  const [aY, setAy] = useState([]);
+  const handleAcademicYearChange = () => {
+    const selectedElements = getSelectedElements(
+      ["prep", "first", "second", "third", "fourth", "fifth", "sixth"],
+      academicYear.current.value
+    );
+    setAy(selectedElements);
+  };
+  function getSelectedElements(array, selectedValue) {
+    const selectedIndex = array.indexOf(selectedValue);
+    if (selectedIndex === -1) {
+      return [];
+    }
+    return array.slice(selectedIndex);
   }
-  return array.slice(selectedIndex);
-}
 
   const handleFacultyChange = async () => {
     const selectedFacultyId = faculty.current.value;
@@ -52,14 +123,13 @@ function getSelectedElements(array, selectedValue) {
         }
       );
       const data = await resp.json();
-      console.log(data)
-      console.log(data)
-      console.log(data)
-      console.log(data)
-      console.log(data)
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
       tempArray.push({ name: data.data[0].name, id: data.data[0]._id });
-    console.log(tempArray);
-
+      console.log(tempArray);
     });
     console.log(tempArray);
     console.log(data);
@@ -140,7 +210,76 @@ function getSelectedElements(array, selectedValue) {
       </button>
     </div>
   );
-
+  let failImport = (
+    <div
+      id="alert-border-2"
+      class="flex p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+      role="alert"
+    >
+      <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+      <div class="ml-3 text-sm font-medium">
+        Imported data is not in the right format please download the template and follow the format.
+        <a href="#" class="font-semibold underline hover:no-underline"></a>.
+      </div>
+      <button
+        type="button"
+        onClick={closeMsg}
+        class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+        data-dismiss-target="#alert-border-2"
+        aria-label="Close"
+      >
+        <span class="sr-only">Dismiss</span>
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  );
+  let partiallyfailImport = (
+    <div
+      id="alert-border-2"
+      class="flex p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+      role="alert"
+    >
+      <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+      <div class="ml-3 text-sm font-medium">
+        Parts of the imported data is not in the right format please download the template and follow the format.
+        <a href="#" class="font-semibold underline hover:no-underline"></a>.
+      </div>
+      <button
+        type="button"
+        onClick={closeMsg}
+        class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+        data-dismiss-target="#alert-border-2"
+        aria-label="Close"
+      >
+        <span class="sr-only">Dismiss</span>
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  );
   let success = (
     <div
       id="alert-border-3"
@@ -218,28 +357,63 @@ function getSelectedElements(array, selectedValue) {
 
     setExportModalIsOpen(false);
   };
-  function exportHandler() {
-    document.body.classList.toggle("overflow-hidden");
+ async function exportHandler() {
+try{
 
-    data.forEach((row) => {
-      const { name, email, code, faculty, academicYear,department } = row;
-      const obj = { name, email, code, academicYear:academicYear.split(",").map(e=>e.trim()), faculty ,department};
+  document.body.classList.toggle("overflow-hidden");
 
-      const resp = fetch(`${process.env.url}api/v1/users/students`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + userState.token,
-        },
-        body: JSON.stringify(obj),
-      });
+  
+  const promises = data.map(async (row) => {
+    const { name, email, code, faculty, academicYear, department } = row;
+    const obj = {
+      name,
+      email,
+      code,
+      academicYear: academicYear.split(",").map((e) => e.trim()),
+      faculty,
+      department,
+    };
 
-      console.log(resp);
+    const resp =  await fetch(`${process.env.url}api/v1/users/students`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + userState.token,
+      },
+      body: JSON.stringify(obj),
     });
+
+    return resp.json();
+  });
+
+  const responseData = await Promise.all(promises);
+  console.log(responseData);
+  function checkAllFieldsSuccess(responseData) {
+    for (const field of responseData) {
+      if (field.status !== "success") {
+        return false;
+      }
+    }
+    return true;
+  }
+  const allFieldsSuccess = checkAllFieldsSuccess(responseData);
+  if(allFieldsSuccess){
 
     setExportModalIsOpen(false);
     setMsg(success);
+  }else{
+    setExportModalIsOpen(false);
+    setMsg(partiallyfailImport);
+  }
+
+
+}catch(e){
+  console.error(e)
+  setExportModalIsOpen(false);
+setMsg(failImport);
+}
+  
   }
 
   return (
@@ -316,7 +490,6 @@ function getSelectedElements(array, selectedValue) {
                   className="inputAddUser2  w-full"
                   ref={name}
                   placeholder={`Student name`}
-
                 />
               </div>
             </div>
@@ -328,7 +501,6 @@ function getSelectedElements(array, selectedValue) {
                   id="small"
                   class="choose-form w-full px-14"
                   onChange={handleAcademicYearChange}
-
                 >
                   <option className="text-left" value="" disabled selected>
                     Choose a year
@@ -349,7 +521,6 @@ function getSelectedElements(array, selectedValue) {
                   className="inputAddUser2  w-full"
                   ref={email}
                   placeholder={`Student Email`}
-
                 />
               </div>
             </div>
@@ -361,7 +532,6 @@ function getSelectedElements(array, selectedValue) {
                   id="small"
                   class="choose-form w-full px-10"
                   onChange={handleFacultyChange}
-
                 >
                   <option className="text-left" disabled selected>
                     Choose a Faculty
@@ -396,6 +566,13 @@ function getSelectedElements(array, selectedValue) {
               {<div>{msg}</div>}
 
               <div className="flex items-center space-x-8 justify-center">
+              <button
+                  type="button"
+                  class="px-4 py-3 duration-200 text-white bg-green-700 hover:bg-green-600 focus:ring-green-300 font-medium rounded-lg text-sm md:text-lg mx-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+                  onClick={downloadTemplateHandler}
+                >
+                  Download Template
+                </button>
                 <input
                   type="file"
                   id="selectFile"
@@ -420,6 +597,7 @@ function getSelectedElements(array, selectedValue) {
                 >
                   Submit
                 </button>
+             
               </div>
             </div>
           </div>
