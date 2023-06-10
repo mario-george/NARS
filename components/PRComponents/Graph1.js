@@ -19,6 +19,8 @@ const CoursesCompetences = ({ cookies, setAlerts }) => {
   const maxEach = 6;
   const compLength = Object.keys(comp).length;
   const coursesNum = Object.keys(coursesAvg).length;
+  const minD = 60;
+  const maxD = 120;
 
   useEffect(() => {
     const get_comp = async (e) => {
@@ -113,15 +115,15 @@ const CoursesCompetences = ({ cookies, setAlerts }) => {
           <div>
             <CoursesBar
               courses={coursesAvg}
-              w={(coursesNum > maxEach)? 150:60}
-              h={(coursesNum > maxEach)? 150:60}
+              w={(coursesNum > maxEach)? maxD:minD}
+              h={(coursesNum > maxEach)? maxD:minD}
             />
           </div>
           <div>
             <CompBar
               comp={comp}
-              w={(compLength > maxEach)? 150:60}
-              h={(compLength > maxEach)? 150:60}
+              w={(compLength > maxEach)? maxD:minD}
+              h={(compLength > maxEach)? maxD:minD}
             />
           </div>
         </div>
@@ -131,8 +133,8 @@ const CoursesCompetences = ({ cookies, setAlerts }) => {
             <CoursesAttainment
               target={target}
               courses={coursesAvg}
-              w={(coursesNum > maxEach)? 150:60}
-              h={(coursesNum > maxEach)? 150:60}
+              w={(coursesNum > maxEach)? maxD:minD}
+              h={(coursesNum > maxEach)? maxD:minD}
               title={"Survey"}
               />
           </div>
