@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar/Navbar";
-import PdfFileCard from "@/components/filesView/pdfFileCard";
+import PdfFileCard from "@/components/filesView/PdfViewCourseReport";
 
 const DefaultPage = ({
   downloadPdf,
@@ -7,7 +7,7 @@ const DefaultPage = ({
   courseID,
   instanceName,
   setBlobIsFound,
-  courseCode,
+  courseCode
 }) => {
   return (
     <div className="flex flex-row w-screen h-auto mt-2 scrollbar-none">
@@ -22,11 +22,11 @@ const DefaultPage = ({
           <div className="mt-[6rem]"></div>
           <PdfFileCard
             name={instanceName}
+            code={courseCode}
             id={courseID}
             cookies={cookies}
             setBlobIsFound={setBlobIsFound}
             downloadPdf={downloadPdf}
-            code={courseCode}
           />
           <div>
             <div></div>

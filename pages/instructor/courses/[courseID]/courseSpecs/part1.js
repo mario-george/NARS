@@ -50,6 +50,7 @@ const part1 = ({ cookies }) => {
   }
 
   const [instanceName, setInstanceName] = useState("Course Specs");
+  const [courseCode, setCourseCode] = useState("");
   const removeLO2 = (e, input) => {
     e.preventDefault();
     setInputs2(
@@ -337,13 +338,12 @@ const part1 = ({ cookies }) => {
         }
       );
       const dataGetNameCodeReq = await getNameCodeReq.json();
-      console.log(dataGetNameCodeReq.data[0].course.code);
       const s =
         dataGetNameCodeReq.data[0].course.name +
         " " +
         dataGetNameCodeReq.data[0].course.code;
       setInstanceName(dataGetNameCodeReq.data[0].course.name);
-
+      setCourseCode(dataGetNameCodeReq.data[0].course.code)
       try {
         code.current.value = s;
       } catch (e) {
@@ -367,15 +367,14 @@ const part1 = ({ cookies }) => {
           },
         }
       );
+      if (r2.status === 200) {
+        // PDF is found
+        const blobpdfFile = await r2.blob();
 
-      const blobpdfFile = await r2.blob();
-      console.log(blobpdfFile);
-      console.log(blobpdfFile.constructor === Blob);
-
-      if (blobpdfFile.size > 400) {
         setpdfBlob(blobpdfFile);
         setBlobIsFound(true);
       }
+
       const r = await fetch(
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
@@ -739,6 +738,7 @@ const part1 = ({ cookies }) => {
         courseID={courseID}
         instanceName={instanceName}
         setBlobIsFound={setBlobIsFound}
+        courseCode={courseCode}
       />
     );
   }
