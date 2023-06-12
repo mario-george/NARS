@@ -199,6 +199,10 @@
     @apply appearance-none block w-full duration-300  text-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white  focus:border-gray-500;
     transition-property: background-color;
   }
+  .input-formV3 {
+    @apply appearance-none block w-full duration-300  text-gray-700 rounded py-3 mb-3 leading-tight tracking-normal focus:outline-none focus:bg-white  focus:border-gray-500;
+    transition-property: background-color;
+  }
   .sameLineForm {
     @apply appearance-none inline   duration-300  text-gray-700 rounded py-3 px-1 w-[5rem] mb-3 leading-tight focus:outline-none focus:bg-white  focus:border-gray-500;
     transition-property: background-color;
