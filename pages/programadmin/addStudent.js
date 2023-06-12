@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import MassageAlert from "@/components/MassageAlert";
 import { useSelector } from "react-redux";
 import { read, utils } from "xlsx";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 
 const addStudent = () => {
@@ -51,6 +53,29 @@ const addStudent = () => {
       setCodes(codes);
     };
     reader.readAsArrayBuffer(f);
+  };
+
+  const downloadTemplateHandler = () => {
+    const header = [
+      "Name",
+    "Code",
+    "Email",
+    "Academic Year"
+    ];
+
+    const worksheet = XLSX.utils.aoa_to_sheet([header]);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const fileBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const file = new Blob([fileBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(file, "assesmentTemplate.xlsx");
   };
   
   const submitHandler = async() => {
@@ -101,7 +126,7 @@ const addStudent = () => {
           <td className="border-spacing-2 border-black border-2 px-6 py-4 first:text-sm first:text-gray-500">
             {s.email}</td>
           <td className="border-spacing-2 border-black border-2 px-6 py-4 first:text-sm first:text-gray-500">
-            {s.academicYear}</td>
+            {s["Academic Year"]}</td>
         </tr>)
       } catch (e) {
         return (<tr><td className="col-span-4">{e}</td></tr>)
@@ -154,6 +179,15 @@ const addStudent = () => {
                           font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 
                           dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Add Student
+              </button>
+            </div>
+
+            <div className="flex justify-end">
+              <button onClick={downloadTemplateHandler}
+                className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
+                          font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 
+                          dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Download Template
               </button>
             </div>
           {/* </form> */}
