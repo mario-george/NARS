@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { handleFile } from "../../../../../common/uploadFile";
 import Navbar from "@/components/Navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const uploadgrades = ({ cookies }) => {
     const userState = useSelector((s) => s.user);
@@ -124,6 +126,26 @@ const uploadgrades = ({ cookies }) => {
             </button>
         </div>
     );
+    const downloadTemplateHandler = () => {
+        const header = [
+            "studentCode",
+            "mark",
+        ];
+
+        const worksheet = XLSX.utils.aoa_to_sheet([header]);
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+        const fileBuffer = XLSX.write(workbook, {
+            bookType: "xlsx",
+            type: "array",
+        });
+        const file = new Blob([fileBuffer], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        saveAs(file, "marksTemplate.xlsx");
+    };
     return (
         <>
             <div className=" flex flex-row w-screen h-screen mt-2 scrollbar-none">
@@ -161,6 +183,15 @@ const uploadgrades = ({ cookies }) => {
 
                                 </div>
 
+                            </div>
+
+                            <div>
+                                <button
+                                    onClick={downloadTemplateHandler}
+                                    className=" text-blue-500 rounded border-2 border-blue-400 px-4 py-2 hover:bg-blue-500 hover:text-white mt-6"
+                                >
+                                    Download template
+                                </button>
                             </div>
                             <div>
                                 <button
