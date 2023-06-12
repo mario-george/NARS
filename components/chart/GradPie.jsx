@@ -16,6 +16,12 @@ const GradPie = (props) => {
     else{dataValue[1] += 1;}
   });
 
+  let sumValues = dataValue.reduce((a, b) => a + b, 0);
+
+  for (let i = 0; i < dataValue.length ; i++) {
+    dataValue[i] = (dataValue[i] / sumValues) * 100;
+  }
+
   const data = {
     labels,
     datasets: [

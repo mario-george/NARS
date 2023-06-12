@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { header } from "./header";
-import { userActions } from "./store/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import Cookies from "js-cookie";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
 import { BsBook } from "react-icons/bs";
@@ -14,8 +12,7 @@ export default function ProgramAdminDashboard() {
   const navStatus = useSelector((s) => s.navStatus);
   const dispatch = useDispatch();
   const logoutHandler = () => {
-   // window.location.href = "/logout";
-   router.push("/logout");
+    router.push("/logout");
   };
   return (
     <nav
@@ -53,7 +50,7 @@ export default function ProgramAdminDashboard() {
             }
             href="/programadmin/addcourse"
           >
-            Create course
+            Create Course
           </Link>,
           <Link
             className={
@@ -63,7 +60,7 @@ export default function ProgramAdminDashboard() {
             }
             href="/programadmin/getcourse"
           >
-            View courses
+            View Courses
           </Link>,
           <Link
             className={
@@ -73,7 +70,7 @@ export default function ProgramAdminDashboard() {
             }
             href="/programadmin/assigninstructor"
           >
-            Assign instructor
+            Assign Instructor
           </Link>,
           
         ]

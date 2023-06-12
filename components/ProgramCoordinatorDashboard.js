@@ -195,6 +195,16 @@ export default function ProgramCoordinatorDashboard({ cookies }) {
           >
             Download program specs
           </Link>,
+          <Link
+            className={
+              router.pathname === "/report/programReport"
+                ? "activeLinkDashboard2"
+                : "normalLinkDashboard2"
+            }
+            href={`/report/programReport`}
+          >
+            Program Report
+          </Link>
         ]
       )}
 

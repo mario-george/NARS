@@ -1,11 +1,47 @@
-import React from "react";
+import {useEffect, useState} from "react";
+import MassageAlert from "@/components/MassageAlert";
 
-const LosDescriptionTable = () => {
-  const learningOutcomes = [
+const LosDescriptionTable = ({ cookies, setAlerts }) => {
+  const [learningOutcomes, setLearningOutcomes] = useState([
     "This is the first learning outcome",
     "This is the second learning outcome",
     "This is the third learning outcome",
-  ];
+  ]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try{
+        let r = await fetch(`${process.env.url}api/v1/programs/${cookies.program}/LOS`,
+        {
+          headers: {
+            Authorization: "Bearer " + cookies.token,
+          },
+        }
+        );
+    
+        
+        let LOs = await r.json();
+        
+        if (LOs.status !== "success") {
+          // console.log("kskdfesdsdlslolo;")
+          setAlerts([...alerts, <MassageAlert 
+            fail={`error with get LOs data`}
+            status="fail"
+            key={Math.random()} 
+        />]);
+        }else{
+    
+          // LOs
+          // console.log("LOs.data.programLOs", LOs.data.programLOs, LOs.data)
+          setLearningOutcomes(LOs.data.programLOs);
+        }
+      }catch(e){
+        console.log("LOs/", e);
+      }
+    }
+
+    getData();
+  }, [])
 
   return (
     <>

@@ -57,24 +57,24 @@ const Attainment = (props) => {
     data = {
       labels,
       datasets: [
-      // {
-      //   label: 'Direct Attainment',
-      //   data: dataValues[0],
-      //   backgroundColor: bg,
-      //   borderWidth: 1,
-      //   maxBarThickness: 80
-      // },
-      // {
-      //   label: 'Indirect Attainment',
-      //   data: dataValues[1],
-      //   backgroundColor: bg,
-      //   borderWidth: 1,
-      //   maxBarThickness: 80
-      // },
+      {
+        label: 'Direct Attainment',
+        data: dataValues[0],
+        backgroundColor: bg[0],
+        borderWidth: 1,
+        maxBarThickness: 80
+      },
+      {
+        label: 'Indirect Attainment',
+        data: dataValues[1],
+        backgroundColor: bg[1],
+        borderWidth: 1,
+        maxBarThickness: 80
+      },
       {
         label: 'Overall Attainment',
         data: dataValue,
-        backgroundColor: bg,
+        backgroundColor: bg[2],
         borderWidth: 1,
         maxBarThickness: 80
       },

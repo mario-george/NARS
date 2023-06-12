@@ -1,21 +1,18 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import Navbar from "@/components/Navbar/Navbar";
-import GradPie from "@/components/chart/GradPie";
 import getData from "@/components/chart/getData";
-import CompetencesTable from "./competencesTable";
-import CourseData from "./courseData";
-import TopicsTable from "./TopicsTable";
-import AssessmentMethodsTable from "./AssessmentMethodsTable";
-import ExamGrades from "./ExamGrades";
-import { CompetencesLosAchievement } from "./CompetencesLosAchievement";
-import { CompetencesLosGrades } from "./CompetencesLosGrades";
-import { CompetencesLosAchievementSurvey } from "./CompetencesLosAchievementSurvey";
-import { CompetencesLosSurvey } from "./CompetencesLosSurvey";
-import { CompetencesLosAchievementOVerall } from "./CompetencesLosAchievementOverall";
-import { CompetencesLosOverall } from "./CompetencesLosOverall";
+import CompetencesTable from "@/components/CRComponents/competencesTable";
+import CourseData from "@/components/CRComponents/courseData";
+import TopicsTable from "@/components/CRComponents/TopicsTable";
+import AssessmentMethodsTable from "@/components/CRComponents/AssessmentMethodsTable";
+import ExamGrades from "@/components/CRComponents/ExamGrades";
+import { CompetencesLosAchievement } from "@/components/CRComponents/CompetencesLosAchievement";
+import { CompetencesLosGrades } from "@/components/CRComponents/CompetencesLosGrades";
+import { CompetencesLosAchievementSurvey } from "@/components/CRComponents/CompetencesLosAchievementSurvey";
+import { CompetencesLosSurvey } from "@/components/CRComponents/CompetencesLosSurvey";
+import { CompetencesLosAchievementOVerall } from "@/components/CRComponents/CompetencesLosAchievementOverall";
+import { CompetencesLosOverall } from "@/components/CRComponents/CompetencesLosOverall";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import mergeTest from "../getPdf/MERGEONLYONE.js/test";
 import { saveAs } from "file-saver";
@@ -298,6 +295,7 @@ const courseReport = ({ cookies }) => {
   const [courseCompetences, setCourseCompetences] = useState([]);
   const [avgValues, setAvgValues] = useState({});
   const [avgValuesSurvey, setAvgValuesSurvey] = useState({});
+  const [avgAvg, setAvgAvg] = useState({});
   const [avgValuesLOs, setAvgValuesLOs] = useState({});
   const [learningOutcomes, setLearningOutcomes] = useState({});
   const [courseLearningOutcomes, setCourseLearningOutcomes] = useState({});
@@ -542,7 +540,6 @@ const courseReport = ({ cookies }) => {
         setLectureTopics(jsonData.data.courseSpecs.lecturePlan.topics);
       }
       setCourseCompetences(jsonData.data.course.competences);
-
       if (jsonData.data.course.minTarget && jsonData.data.course.maxTarget) {
         setTarget([
           jsonData.data.course.minTarget,
@@ -557,6 +554,16 @@ const courseReport = ({ cookies }) => {
           getData(jsonData.data.report.questions);
 
         setNumberOfStudents(numOfStudents);
+        let compD = getAvg(jsonData.data.report.avgCompetences);
+        let compI = getAvg(jsonData.data.report.avgCompetencesInDirect)
+        console.log(compI)
+        setAvgValues(compD);
+        setAvgValuesSurvey(compI);
+        let avo = {};
+        Object.keys(compD).forEach(elm => {
+          avo[elm] = (compD[elm] + compI[elm]) / 2
+        });
+        setAvgAvg(avo);
         setAvgValues(getAvg(jsonData.data.report.avgCompetences));
         setAvgValuesSurvey(getAvg(jsonData.data.report.avgCompetencesInDirect));
         setAvgValuesLOs(getAvgLOs(jsonData.data.report.avgLOSInDirect));
@@ -574,8 +581,11 @@ const courseReport = ({ cookies }) => {
       console.log(jsonData.data);
     } catch (e) {
       console.log("ERROR", e);
-    }
+    }      
   };
+
+  
+
   if (blobIsFound) {
     return (
       <DefaultPage
@@ -854,6 +864,7 @@ const courseReport = ({ cookies }) => {
                             avgValues={avgValues}
                             avgValuesSurvey={avgValuesSurvey}
                             learningOutcomes={learningOutcomes}
+                            avgAvg={avgAvg}
                           />
                         </div>
                         <div className="w-full">
@@ -867,6 +878,7 @@ const courseReport = ({ cookies }) => {
                             learningOutcomes={learningOutcomes}
                             refToImgBlob15={refToImgBlob15}
                             refToImgBlob16={refToImgBlob16}
+                            avgAvg={avgAvg}
                           />
                         </div>
                         <div className="flex justify-end w-full">

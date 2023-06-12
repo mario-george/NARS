@@ -10,13 +10,10 @@ export const CompetencesLosAchievementOVerall = ({
   avgValuesSurvey,
   learningOutcomes,
   target,
+  avgAvg,
   refToImgBlob15,
   refToImgBlob16,
 }) => {
-  const avgAvg = {};
-  Object.keys(avgValues).forEach((elm) => {
-    avgAvg[elm] = (avgValues[elm] + avgValuesSurvey[elm]) / 2;
-  });
   return (
     <div className="flex flex-col w-full items-start">
       <div ref={refToImgBlob15} className="w-full">

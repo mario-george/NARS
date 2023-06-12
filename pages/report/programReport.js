@@ -1,22 +1,17 @@
-import React from "react";
-import CoursesCompetences from "./components/CoursesCompetences";
-import LosDescriptionTable from "./components/LosDescriptionTable";
-import Graph1 from './components/Graph1';
+import {useState} from "react";
+import CoursesCompetences from "../../components/PRComponents/CoursesCompetences";
+import LosDescriptionTable from "../../components/PRComponents/LosDescriptionTable";
+import Graph1 from '../../components/PRComponents/Graph1';
+import ProgramData from "@/components/PRComponents/ProgramData";
 
 const programReport = ({ cookies }) => {
-  const getAvg = (avgs) => {
-    const cAvg = {};
-    let tempAvg = avgs.map((elm) => {
-      let out = {};
-      out[elm.code.toUpperCase()] = elm.avg;
-      return out;
-    });
-    tempAvg.forEach((elm) => {
-      let temp = Object.keys(elm)[0];
-      cAvg[temp] = elm[temp];
-    });
-    return cAvg;
-  };
+
+  if ((cookies.role != "program coordinator" && cookies.role != "quality coordinator") || cookies.loggedInStatus != "true") {
+    return <div className="error">404 could not found</div>;
+  }
+
+  const [alerts, setAlerts] = useState([]);
+
   return (
     <div>
       <div className="flex flex-row w-screen h-screen mt-2">
@@ -25,10 +20,12 @@ const programReport = ({ cookies }) => {
             <label class="label-form md:text-2xl text-center">
               Program Report
             </label>
-            <CoursesCompetences cookies={cookies} />
-            <LosDescriptionTable />
-            <Graph1 cookies={cookies}/>
+            <ProgramData cookies={cookies} setAlerts={setAlerts}/>
+            <CoursesCompetences cookies={cookies} setAlerts={setAlerts}/>
+            <LosDescriptionTable cookies={cookies} setAlerts={setAlerts}/>
+            <Graph1 cookies={cookies} setAlerts={setAlerts}/>
           </div>
+          {<div className="w-1/2 mt-10">{alerts.map(s => s)}</div>}
         </form>
       </div>
     </div>

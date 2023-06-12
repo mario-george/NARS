@@ -1,7 +1,7 @@
-import React from "react";
 import { useEffect, useRef, useState } from "react";
+import MassageAlert from "@/components/MassageAlert";
 
-const CoursesCompetences = ({ cookies }) => {
+const CoursesCompetences = ({ cookies, setAlerts }) => {
   const [courses, setCourses] = useState([]);
   const [comp, setComp] = useState([]);
   const checkboxRefs = useRef([[]]);
@@ -25,16 +25,26 @@ const CoursesCompetences = ({ cookies }) => {
           }
         );
         const data = await resp.json();
-        let arr = data.data;
-        arr = arr.map((e) => {
-          return {
-            id: e._id,
-            name: e.name,
-            code: e.code,
-            competences: e.competences,
-          };
-        });
-        setCourses(arr);
+        
+
+        if (data.status !== "success") {
+          setAlerts([...alerts, <MassageAlert 
+            fail={`error with get courses name`}
+            status="fail"
+            key={Math.random()} 
+        />]);
+        }else{
+          let arr = data.data;
+          arr = arr.map((e) => {
+            return {
+              id: e._id,
+              name: e.name,
+              code: e.code,
+              competences: e.competences,
+            };
+          });
+          setCourses(arr);
+        }
       } catch (e) {
         console.log(e);
       }
@@ -54,10 +64,19 @@ const CoursesCompetences = ({ cookies }) => {
           }
         );
         const data2 = await resp2.json();
-        let arr2 = data2.facultyComp;
-        let arr3 = data2.departmentComp;
-        let arr4 = data2.programComp;
-        setComp([...arr2, ...arr3, ...arr4]);
+
+        if (data2.status !== "success") {
+          setAlerts([...alerts, <MassageAlert 
+            fail={`error with get competences name`}
+            status="fail"
+            key={Math.random()} 
+        />]);
+        }else{
+          let arr2 = data2.facultyComp;
+          let arr3 = data2.departmentComp;
+          let arr4 = data2.programComp;
+          setComp([...arr2, ...arr3, ...arr4]);
+        }
       } catch (e) {
         console.log(e);
       }

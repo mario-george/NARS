@@ -20,8 +20,8 @@ let initialState = {
   cp2: {},
   program: "",
   courseSpecs: {},
-  faculty: "",
-  department: "",
+  faculty:"",
+  department:"",
   CreatedCoursesForInstructor: "null",
   modalOpen: false,
 };
