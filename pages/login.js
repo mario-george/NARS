@@ -135,7 +135,7 @@ export default function Login({ cookies }) {
             -Forgot your password?
             <Link
               href="/forget_password"
-              className={`inline text-1xl underline  text-[#0277BD]`}
+              className={`inline text-1xl underline font-monster  text-[#0277BD]`}
             >
               Reset now!
             </Link>{" "}

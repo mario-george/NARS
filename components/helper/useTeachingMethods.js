@@ -478,9 +478,9 @@ console.log(cp2)
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={`border text-xl border-gray-500 transistion-all  py-8 px-2 ${
+                  className={`border text-xl border-gray-500 transistion-all  py-8 px-1 ${
                     cellIndex === 0
-                      ? `text-right text-[#FF0000] font-bold text-2xl`
+                      ? `text-right text-[#FF0000] font-bold text-3xl`
                       : ``
                   }`}
                   // className={cn({

@@ -109,11 +109,10 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
           renderMenu={renderMenu}
           inputProps={{
             id: "sentence",
-            className: `relative border-gray-300  rounded-md py-2 px-3 input-formV2 ${
+            className: `relative border-gray-300  rounded-md py-2 px-3 input-formV2  ${
               props.hasClass ? ` border-2 bg-sky-50` : `hidden`
             } px-[1rem] transform translate-y-4  `,
-            style: { width: "447%" },
-            defaultValue: "asd", // add this line
+            style: { width: "44rem" },
           }}
           wrapperProps={{ className: `absolute  ` }}
           menuStyle={{ position: `absolute  `, zIndex: "10" }}

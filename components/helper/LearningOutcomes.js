@@ -51,9 +51,9 @@ const LearningOutcomes = ({
                     </td>
 
                     <td className="px-4 pt-1 pb-2 w-full border-r border-gray-300 border-b">
-                      <div className={` ${hasClass ? `` : ``}`}>
+                      <div className={` ${hasClass ? `` : ``} w-full`}>
                         <BloomTaxonomyInput
-                          className={`BloomTax ${
+                          className={`BloomTax w-full ${
                             hasClass ? `input-form` : ``
                           } `}
                           hasClass={hasClass}
