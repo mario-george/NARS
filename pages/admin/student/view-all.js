@@ -42,15 +42,22 @@ const Students = ({ cookies }) => {
     }
   };
   const handleClick = () => {
-    const header = ["name", "code", "email", "faculty", "academicYear","department"];
-    console.log(students)
+    const header = [
+      "name",
+      "code",
+      "email",
+      "faculty",
+      "academicYear",
+      "department",
+    ];
+    console.log(students);
     const rows = students.map((item) => [
       item.name,
       item.code,
       item.email,
       item.faculty,
-      item.academicYear,
-      item.department
+      item.academicYear.join(","),
+      item.department,
     ]);
 
     const worksheet = XLSX.utils.aoa_to_sheet([header, ...rows]);
@@ -76,33 +83,33 @@ const Students = ({ cookies }) => {
 
   return (
     <>
-        <form
-          onSubmit={submitHandler}
-          className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
-          >
-          <div className=" contentAddUser2 overflow-auto flex flex-col gap-10 ">
-            <div className="flex w-full">
-              <div className="flex items-center justify-between w-full">
-                <div className="">List of all Students</div>
-                <button
-                  onClick={handleClick}
-                  className="transition-all duration-200 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Download Excel
-                </button>
-              </div>
+      <form
+        onSubmit={submitHandler}
+        className="bg-sky-50 h-screen w-[80%]  translate-x-[25%]  flex flex-col justify-center items-center text-black ml-1 rounded-2xl"
+      >
+        <div className=" contentAddUser2 overflow-auto flex flex-col gap-10 ">
+          <div className="flex w-full">
+            <div className="flex items-center justify-between w-full">
+              <div className="">List of all Students</div>
+              <button
+                onClick={handleClick}
+                className="transition-all duration-200 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Download Excel
+              </button>
             </div>
-
-            {filteredStudents ? (
-              <>
-                <h1 className="text-3xl font-bold my-4">Student List</h1>
-                <UserList users={filteredStudents} />
-              </>
-            ) : (
-              <div>No Students found</div>
-            )}
           </div>
-        </form>
+
+          {filteredStudents ? (
+            <>
+              <h1 className="text-3xl font-bold my-4">Student List</h1>
+              <UserList users={filteredStudents} />
+            </>
+          ) : (
+            <div>No Students found</div>
+          )}
+        </div>
+      </form>
     </>
   );
 };

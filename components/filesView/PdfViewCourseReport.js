@@ -5,6 +5,8 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import InsertDriveFileRounded from "@mui/icons-material/InsertDriveFileRounded";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownToLine } from "@fortawesome/free-regular-svg-icons";
 
 const PdfFileCard = ({
   name,
@@ -18,7 +20,6 @@ const PdfFileCard = ({
   const pdfFile = `${process.env.url}api/v1/courses/exams/63ffebc34bef8c7adbf0b482`;
   const file =
     "../../media/ECE312C Control Systems (1) Course Specs 221CBL.pdf";
-  //const [counter, setCounter] = React.useState(0);
   const handleView = () => {};
   const handleUpdate = async () => {
     try {
@@ -36,11 +37,8 @@ const PdfFileCard = ({
           style={{ fontSize: 200 }}
         />
       </div>
-
       <div className=" flex flex-col space-y-3">
-        <div className="text-2xl font-bold text-center">
-          Course Specifications
-        </div>
+        <div className="text-2xl font-bold text-center">Course Report</div>
         <div className="text-2xl font-bold text-center">{name}</div>
         <div className="text-xl text-center">{code}</div>
       </div>
@@ -48,7 +46,7 @@ const PdfFileCard = ({
         className="group flex items-center space-x-3 justify-center align-center bg-green-600 hover:bg-green-700 text-white font-medium px-5 py-2.5 rounded-xl w-48 h-auto transition-all duration-150"
         onClick={handleUpdate}
       >
-        <div>Update</div>
+        <div>View</div>
         <i class="  fa-solid fa-eye"></i>
       </button>
       <button

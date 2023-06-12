@@ -25,6 +25,7 @@ const part1 = ({ cookies }) => {
     localStorage.removeItem("pdf1");
     localStorage.removeItem("pdf2");
     localStorage.removeItem("pdf3");
+    localStorage.removeItem("pdf33");
   }, []);
   const courseAims = useRef("");
   const courseContent = useRef("");
@@ -49,6 +50,7 @@ const part1 = ({ cookies }) => {
   }
 
   const [instanceName, setInstanceName] = useState("Course Specs");
+  const [courseCode, setCourseCode] = useState("");
   const removeLO2 = (e, input) => {
     e.preventDefault();
     setInputs2(
@@ -336,13 +338,12 @@ const part1 = ({ cookies }) => {
         }
       );
       const dataGetNameCodeReq = await getNameCodeReq.json();
-      console.log(dataGetNameCodeReq.data[0].course.code);
       const s =
         dataGetNameCodeReq.data[0].course.name +
         " " +
         dataGetNameCodeReq.data[0].course.code;
       setInstanceName(dataGetNameCodeReq.data[0].course.name);
-
+      setCourseCode(dataGetNameCodeReq.data[0].course.code)
       try {
         code.current.value = s;
       } catch (e) {
@@ -366,15 +367,14 @@ const part1 = ({ cookies }) => {
           },
         }
       );
+      if (r2.status === 200) {
+        // PDF is found
+        const blobpdfFile = await r2.blob();
 
-      const blobpdfFile = await r2.blob();
-      console.log(blobpdfFile);
-      console.log(blobpdfFile.constructor === Blob);
-
-      if (blobpdfFile.size > 400) {
         setpdfBlob(blobpdfFile);
         setBlobIsFound(true);
       }
+
       const r = await fetch(
         `${process.env.url}api/v1/courses/created-courses/${courseID}`,
         {
@@ -547,8 +547,12 @@ const part1 = ({ cookies }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    console.log(inputs.length + inputs2.length + inputs3.length);
     const newErrors = [];
+    if (inputs.length + inputs2.length + inputs3.length < 3) {
+      const error = "At least 3 Learning Outcomes must be stated.";
+      newErrors.push(error);
+    }
     const cognitive = inputs.map((input) => {
       const description = input.ref.current.value;
       const newInput = {
@@ -671,6 +675,8 @@ const part1 = ({ cookies }) => {
       setIsCourseContentInvalid(false);
     }
     if (newErrors.length === 0) {
+      setErrors([]);
+
       console.log("Form submitted successfully!");
 
       setIsSubmitting(true);
@@ -732,6 +738,7 @@ const part1 = ({ cookies }) => {
         courseID={courseID}
         instanceName={instanceName}
         setBlobIsFound={setBlobIsFound}
+        courseCode={courseCode}
       />
     );
   }
