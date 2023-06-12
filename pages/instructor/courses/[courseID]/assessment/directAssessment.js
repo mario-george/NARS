@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { handleFile } from "../../../../../common/uploadFile";
 import Navbar from "@/components/Navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 function directAssessment({ cookies }) {
   const finalQuestions = useRef([]);
@@ -115,7 +117,42 @@ function directAssessment({ cookies }) {
       ]);
     }
   };
+  const downloadTemplateHandler = () => {
+    const header = [
+      "RegistrationNumber",
+      "Questions",
+      "QuestionsInfo"
+    ];
+    // let staff = [
+    //   {
+    //     RegistrationNumber: "156984",
+    //     Questions: "q1",
+    //     Questions: "q2",
+    //     Questions: "q3",
+    //     QuestionsInfo: "Question",
+    //     QuestionsInfo: "Full Mark"
+    //   }
+    // ]
+    // const rows = staff.map((item) => [
+    //   item.RegistrationNumber,
+    //   item.Questions,
+    //   item.QuestionsInfo,
+    // ]);
 
+    const worksheet = XLSX.utils.aoa_to_sheet([header]);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const fileBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const file = new Blob([fileBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(file, "assesmentTemplate.xlsx");
+  };
   return (
     <>
       {courseInstance && courseInstance.course && (
@@ -157,6 +194,14 @@ function directAssessment({ cookies }) {
                   onQuestionsReady={() => (isReady.current[2] = true)}
                   isRequired={isRequired[2]}
                 />
+                <div>
+                  <button
+                    onClick={downloadTemplateHandler}
+                    className=" text-blue-500 rounded border-2 border-blue-400 px-4 py-2 hover:bg-blue-500 hover:text-white mt-6"
+                  >
+                    Download template
+                  </button>
+                </div>
                 <div>
                   <button
                     onClick={submitQuestions}
