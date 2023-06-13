@@ -120,11 +120,11 @@ const addStudent = () => {
       try {
         return (<tr>
           <td className="border-spacing-2 border-black border-2 px-6 py-4 first:text-sm first:text-gray-500">
-            {s.name}</td>
+            {s.Name}</td>
           <td className="border-spacing-2 border-black border-2 px-6 py-4 first:text-sm first:text-gray-500">
-            {s.code}</td>
+            {s.Code}</td>
           <td className="border-spacing-2 border-black border-2 px-6 py-4 first:text-sm first:text-gray-500">
-            {s.email}</td>
+            {s.Email}</td>
           <td className="border-spacing-2 border-black border-2 px-6 py-4 first:text-sm first:text-gray-500">
             {s["Academic Year"]}</td>
         </tr>)
