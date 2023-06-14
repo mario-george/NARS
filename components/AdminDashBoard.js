@@ -200,6 +200,46 @@ export default function AdminDashBoard() {
           >
             View Faculties
           </Link>,
+          <Link
+          className={
+            router.pathname === "/admin/faculty/addDepartment"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
+          }
+          href="/admin/faculty/addDepartment"
+        >
+          Add Department
+        </Link>,
+        <Link
+          className={
+            router.pathname === "/admin/faculty/updateDepartment"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
+          }
+          href="/admin/faculty/updateDepartment"
+        >
+          Update Department
+        </Link>,
+        <Link
+          className={
+            router.pathname === "/admin/faculty/deleteDepartment"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
+          }
+          href="/admin/faculty/deleteDepartment"
+        >
+          Delete Department
+        </Link>,
+        <Link
+          className={
+            router.pathname === "/admin/faculty/viewDepartment"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
+          }
+          href="/admin/faculty/viewDepartment"
+        >
+          View Departments
+        </Link>,
         ]
       )}
 

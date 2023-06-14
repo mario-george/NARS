@@ -139,7 +139,7 @@ const addStudent = () => {
   return (
     <div className="z-30">
       <div className="flex flex-col ml-96 px-10">
-        <div className="items-center flex flex-col gap-5 gap-10 ml-10 mt-28">
+        <div className="items-center flex flex-col gap-10 ml-10 mt-28">
           {/* <form> */}
             <div>
               <input type='file'

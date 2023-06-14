@@ -5,14 +5,32 @@ import { useRef } from "react";
 import getStaffRolesAndEmail from "@/common/getStaffRolesAndEmail";
 
 const viewDepartment = () => {
+  const [facultyArr, setFaculty] = useState([]);
   const userState = useSelector((s) => s.user);
-  if (userState.role != "faculty admin" || userState.loggedInStatus != "true") {
+  if (userState.role != "system admin" || userState.loggedInStatus != "true") {
     return <div className="error">404 could not found</div>;
   }
-
+  
   useEffect(() => {
     document.querySelector("body").classList.add("scrollbar-none");
   });
+  useEffect(() => {
+    async function doThis() {
+      const resp = await fetch(`${process.env.url}api/v1/faculty/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + userState.token,
+        },
+      });
+      const data = await resp.json();
+      console.log(data);
+      const newData = data.data.map((e) => {
+        return { name: e.name, id: e._id };
+      });
+      setFaculty(newData);
+    }
+    doThis();
+  }, []);
 
   const [inputs, setInputs] = useState([]);
   const [inputs2, setInputs2] = useState([]);
@@ -26,6 +44,7 @@ const viewDepartment = () => {
   
   const department = useRef();
   const token = userState.token;
+  const faculty = useRef();
   const name = useRef();
   const emailH = useRef();
   const emailA = useRef();
@@ -33,9 +52,9 @@ const viewDepartment = () => {
   const objectives = useRef();
 
 
-  useEffect(() => {
-    async function doThis() {
-      const resp = await fetch(`${process.env.url}api/v1/department/?faculty=${userState.faculty}`, {
+  const afterChoseFaculty = async(e) => {
+    if(e.target.value != "Choose a Faculty"){
+      const resp = await fetch(`${process.env.url}api/v1/department/?faculty=${faculty.current.value}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -48,8 +67,7 @@ const viewDepartment = () => {
       });
       setDepartmentArr(newData);
     }
-    doThis();
-  }, []);
+  }
 
   const getDepartmentData = async () => {
     if(department.current.value !== 'Choose a Department'){
@@ -122,6 +140,22 @@ const viewDepartment = () => {
           >
           <div className="contentAddUser2 flex flex-col h-[100%] gap-10">
             <p className="font-normal">Faculty {">"} View Department</p>
+            <div className="flex gap-20 ">
+              <div className="flex flex-col gap-5 w-1/3">
+                <div>Faculty:</div>
+                <select
+                  ref={faculty}
+                  id="small"
+                  onChange={afterChoseFaculty}
+                  class="block w-full text-xl md:text-lg p-3   text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                >
+                  <option selected>Choose a Faculty</option>
+                  {facultyArr.map((e) => {
+                    return <option value={e.id}>{e.name}</option>;
+                  })}{" "}
+                </select>
+              </div>
+            </div>
             <div className="flex gap-20 ">
               <div className="flex flex-col gap-5 w-1/3">
                 <div>Department:</div>

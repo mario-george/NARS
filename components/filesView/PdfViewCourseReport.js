@@ -5,8 +5,8 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import InsertDriveFileRounded from "@mui/icons-material/InsertDriveFileRounded";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownToLine } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fontawesome/react-fontawesome";
+import { faArrowDownToLine } from "@fontawesome/free-regular-svg-icons";
 
 const PdfFileCard = ({
   name,
