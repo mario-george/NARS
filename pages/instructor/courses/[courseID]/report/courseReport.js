@@ -19,6 +19,7 @@ import { saveAs } from "file-saver";
 import ReportNotComplete from "./ReportNotComplete";
 import { isIndexSignatureDeclaration } from "typescript";
 import DefaultPage from "@/components/helper/DefaultPageCourseReport";
+import courseReportComplete from "@/common/courseReportComplete";
 
 const courseReport = ({ cookies }) => {
   useEffect(() => {
@@ -368,6 +369,8 @@ const courseReport = ({ cookies }) => {
     await buttonRef16.current.click();
 
     e.preventDefault();
+
+    courseReportComplete(courseID)
 
     // send courseRep to save to the backend
     setTimeout(() => {

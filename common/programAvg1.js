@@ -107,7 +107,7 @@ const programAvg1 = async(
       });
 
       // courses
-      direct.data.report.courseAvgIndirect.forEach(course => {
+      direct.data.report.courseAvgDirect.forEach(course => {
         if(course.avg){
           courseAvg[course.name]["direct"] = course.avg;
           courseAvg[course.name]['avg'] = (course.avg + courseAvg[course.name]["indirect"]) / 2
