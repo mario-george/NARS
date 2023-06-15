@@ -72,6 +72,16 @@ export default function ProgramAdminDashboard() {
           >
             Assign Instructor
           </Link>,
+          <Link
+          className={
+            router.pathname === "/programadmin/addStudent"
+              ? "activeLinkDashboard2"
+              : "normalLinkDashboard2"
+          }
+          href="/programadmin/addStudent"
+        >
+          Add Student
+        </Link>,
           
         ]
       )}
