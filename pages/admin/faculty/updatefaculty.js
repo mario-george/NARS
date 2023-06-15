@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRef } from "react";
 import Cookies from "js-cookie";
-import Checkbox from "@/components/checkbox/checkbox";
+import Checkbox2 from '../../../components/checkbox/checkbox2';
 
 const updatefaculty = ({ cookies }) => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -176,7 +176,7 @@ const updatefaculty = ({ cookies }) => {
             <p className=" mb-0 ">Academic Years:</p>
             <div className="grid grid-cols-3 gap-4">
               {items.map((item) => (
-                <Checkbox
+                <Checkbox2
                   key={item}
                   label={item}
                   value={item}
