@@ -22,7 +22,7 @@ const programReport = ({ cookies }) => {
             </label>
             <ProgramData cookies={cookies} setAlerts={setAlerts}/>
             <CoursesCompetences cookies={cookies} setAlerts={setAlerts}/>
-            <LosDescriptionTable cookies={cookies} setAlerts={setAlerts}/>
+            {/* <LosDescriptionTable cookies={cookies} setAlerts={setAlerts}/> */}
             <Graph1 cookies={cookies} setAlerts={setAlerts}/>
           </div>
           {<div className="w-1/2 mt-10">{alerts.map(s => s)}</div>}
