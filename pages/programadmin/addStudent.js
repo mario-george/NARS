@@ -36,13 +36,13 @@ const addStudent = () => {
       const worksheet = workbook.Sheets[firstSheet];
       const sheetData = utils.sheet_to_json(worksheet);
       let codes = sheetData.map(s => {
-        if(s.code){
-          return s.code
+        if(s.Code){
+          return s.Code
         }
       });
       console.log("DATA IS " + JSON.stringify(sheetData) + '\n' + JSON.stringify(codes));
       setStudentData(sheetData);
-      if (codes.length){
+      if (!codes.length){
         console.log('dd');
         setAlerts([...alerts, <MassageAlert 
           fail="Wrong Format"
