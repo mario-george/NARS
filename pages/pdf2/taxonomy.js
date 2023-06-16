@@ -1,19 +1,77 @@
-import Textarea from "@/components/Textarea/LPTextArea";
-import React, { useState, useRef, forwardRef, v2, useEffect } from "react";
-import Autocomplete from "react-autocomplete";
+import Textarea from "@/components/Textarea/BloomTextArea";
+import  LPTextArea from "@/components/Textarea/LPTextArea";
+import React, { useState, useRef, forwardRef, useEffect } from "react";
 
 const BloomTaxonomyInput = forwardRef((props, ref) => {
   const bloomVerbs = props.bloomVerbs;
   let v = props.v;
   !props.v ? (v = "") : null;
   const [selectedSentence, setSelectedSentence] = useState(v);
+  const [matchedVerbs, setMatchedVerbs] = useState([]);
+  const [initialRender, setInitialRender] = useState(true);
+  const menuRef = useRef(null);
+
   useEffect(() => {
     if (ref.current && selectedSentence) {
       ref.current.value = selectedSentence;
     }
   }, [ref, selectedSentence]);
-  const handleSentenceChange = (event) => {
-    const newValue = event.target.value;
+
+  useEffect(() => {
+    const lastWord = selectedSentence.split(" ").pop();
+    const updatedMatchedVerbs = checkLastWord(lastWord);
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(lastWord)
+    console.log(typeof lastWord)
+    if(lastWord=="" &&selectedSentence!=""){
+      return
+    }
+    if(selectedSentence==""){
+      return
+    }
+    setMatchedVerbs(updatedMatchedVerbs);
+  }, [selectedSentence]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (initialRender) {
+      setInitialRender(false);
+    }
+  }, [initialRender]);
+
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setMatchedVerbs([]);
+    }
+  };
+
+  const handleSentenceChange = (value) => {
+    const newValue = value;
     if (newValue !== selectedSentence) {
       setSelectedSentence(newValue);
       ref.current.value = newValue;
@@ -28,53 +86,49 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
     );
   };
 
-  const renderMenu = (items, value, style) => {
-    const manageSentence = (item) => {
-      const words = selectedSentence.split(" ");
-      const mergedWords = words.slice(0, -1).join(" ");
-      const last = words[words.length - 1];
-      setSelectedSentence(mergedWords + " " + item.key);
-      ref.current.value = mergedWords + " " + item.key;
-    };
+  const checkLastWord = (word) => {
+    const matchedVerbs = bloomVerbs.filter((verb) =>
+      matchWordToTerm(verb, word)
+    );
+    return matchedVerbs;
+  };
 
+  const handleVerbSelection = (item) => {
+    const words = selectedSentence.split(" ");
+    const mergedWords = words.slice(0, -1).join(" ");
+    setSelectedSentence(mergedWords + " " + item+" ");
+    ref.current.value = mergedWords + " " + item+ " ";
+    setMatchedVerbs([]);
+  };
+
+  const renderMenu = () => {
     return (
-      <div className="relative">
-        <div
-          style={{
-            ...style,
-            maxHeight: "200px",
-            overflowY: "auto",
-            zIndex: 999999,
-            position: "absolute",
-            top: "100%",
-            left: 0,
-          }}
-          className={`${
-            props.hasClass
-              ? ` bg-gray-100 duration-300 border border-gray-200 `
-              : ``
-          } input-formV2 relative `}
-        >
-          {items.map((item) => (
-            <div
-              key={item}
-              onClick={() => manageSentence(item)}
-              style={{ padding: "5px", zIndex: 999999 }}
-            >
-              {item}
-            </div>
-          ))}
-        </div>
+      <div
+        ref={menuRef}
+        style={{
+          maxHeight: "200px",
+          overflowY: "auto",
+          zIndex: 20,
+        }}
+        className={`${
+          props.hasClass
+            ? ` bg-gray-100 duration-300 border border-gray-200 `
+            : ``
+        }  input-formV2  `}
+      >
+        {matchedVerbs.map((verb) => (
+          <div
+            key={verb}
+            onClick={() => handleVerbSelection(verb)}
+            style={{ padding: "5px", zIndex: 30 }}
+          >
+            {verb}
+          </div>
+        ))}
       </div>
     );
   };
 
-  const sentenceWords = selectedSentence.split(" ");
-
-  const matchedVerbs = bloomVerbs.filter((verb) => {
-    return sentenceWords.some((word) => matchWordToTerm(verb, word));
-  });
-  console.log(matchedVerbs);
   return (
     <div
       v={v}
@@ -83,48 +137,40 @@ const BloomTaxonomyInput = forwardRef((props, ref) => {
       key={v}
       rows={0}
       className={`w-full ${
-        props.hasClass ? `pb-[4rem]` : ` pt-4   `
+        props.hasClass ? `-[4rem]` : ` pt-4   `
       } mr-[5rem] items-center  `}
       hasClass={props.hasClass}
     >
       {props.hasClass ? (
-        <Autocomplete
-          ref={ref}
-          getItemValue={(item) => item}
-          items={matchedVerbs}
-          renderItem={(item, isHighlighted) => (
+        <>
+          <Textarea
+            ref={ref}
+            id="sentence"
+            extraSmall={true}
+            value={selectedSentence}
+            onChange={handleSentenceChange}
+            hasClass={props.hasClass}
+            rows={0}
+          ></Textarea>
+          {matchedVerbs.length > 0 && !initialRender && (
             <div
-              key={item}
               style={{
-                backgroundColor: isHighlighted ? "#eee" : "transparent",
-                padding: "5px",
+                zIndex: 10,
               }}
-              className=" "
+              className="absolute  "
             >
-              {item}
+              {renderMenu()}
             </div>
           )}
-          value={selectedSentence}
-          onChange={handleSentenceChange}
-          renderMenu={renderMenu}
-          inputProps={{
-            id: "sentence",
-            className: `relative border-gray-300  rounded-md py-2 px-1 input-formV3 text-md  ${
-              props.hasClass ? ` border-2 bg-sky-50` : `hidden`
-            } px-[1rem] transform translate-y-4  `,
-            style: { width: "52rem" },
-          }}
-          wrapperProps={{ className: `absolute  ` }}
-          menuStyle={{ position: `absolute  `, zIndex: "10" }}
-        />
+        </>
       ) : (
-        <Textarea
+        <LPTextArea
           className={`${props.hasClass ? `` : ``} w-full text-black  `}
           value={selectedSentence}
           extraSmall={true}
           hasClass={props.hasClass}
           rows={0}
-        ></Textarea>
+        ></LPTextArea>
       )}
     </div>
   );
