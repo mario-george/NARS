@@ -75,7 +75,7 @@ const addStudent = () => {
     const file = new Blob([fileBuffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    saveAs(file, "assesmentTemplate.xlsx");
+    saveAs(file, "addStudent2ProgramTemplate.xlsx");
   };
   
   const submitHandler = async() => {
@@ -119,13 +119,13 @@ const addStudent = () => {
     return s.map(s => {
       try {
         return (<tr>
-          <td className="border-spacing-2 border-black border-2 px-6 py-4 first:text-sm first:text-gray-500">
+          <td className="border-spacing-2 border-black border-2 px-6 py-4 text-lg">
             {s.Name}</td>
-          <td className="border-spacing-2 border-black border-2 px-6 py-4 first:text-sm first:text-gray-500">
+          <td className="border-spacing-2 border-black border-2 px-6 py-4 text-lg">
             {s.Code}</td>
-          <td className="border-spacing-2 border-black border-2 px-6 py-4 first:text-sm first:text-gray-500">
+          <td className="border-spacing-2 border-black border-2 px-6 py-4 text-lg">
             {s.Email}</td>
-          <td className="border-spacing-2 border-black border-2 px-6 py-4 first:text-sm first:text-gray-500">
+          <td className="border-spacing-2 border-black border-2 px-6 py-4 text-lg">
             {s["Academic Year"]}</td>
         </tr>)
       } catch (e) {
@@ -138,8 +138,8 @@ const addStudent = () => {
 
   return (
     <div className="z-30">
-      <div className="flex flex-col ml-96 px-10">
-        <div className="items-center flex flex-col gap-10 ml-10 mt-28">
+      <div className="flex flex-col ml-96 text-xl">
+        <div className="items-center flex flex-col gap-10 ml-10 mt-28 pl-10 w-[80%]">
           {/* <form> */}
             <div>
               <input type='file'
@@ -153,17 +153,17 @@ const addStudent = () => {
               "
               name='file' onChange={handleFile} />
             </div>
-            <div>
-              <table className="mx-4 border-spacing-2 border-black border-2 rounded-lg text-center p-6 w-full h-full">
-                <thead className="bg-sky-100">
+            <div className="text-center w-[80%] h-full text-xl">
+              <table className=" border-spacing-2 border-black border-2 rounded-lg text-center text-xl w-[100%] h-full">
+                <thead className="bg-sky-100 text-xl">
                   <tr>
-                    <th className="px-6 py-2 text-xs text-gray-500">Name</th>
-                    <th className="px-6 py-2 text-xs text-gray-500">Code</th>
-                    <th className="px-6 py-2 text-xs text-gray-500">Email</th>
-                    <th className="px-6 py-2 text-xs text-gray-500">Academic Year</th>
+                    <th className="px-6 py-2 text-gray-500 text-xl">Name</th>
+                    <th className="px-6 py-2 text-gray-500 text-xl">Code</th>
+                    <th className="px-6 py-2 text-gray-500 text-xl">Email</th>
+                    <th className="px-6 py-2 text-gray-500 text-xl">Academic Year</th>
                   </tr>
                 </thead>
-                <tbody className="bg-sky-50">
+                <tbody className="bg-sky-50 text-xl">
                   {createTable(studentData).map(s => s)}
                 </tbody>
               </table>
@@ -180,9 +180,6 @@ const addStudent = () => {
                           dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Add Student
               </button>
-            </div>
-
-            <div className="flex justify-end">
               <button onClick={downloadTemplateHandler}
                 className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
                           font-medium rounded-lg text-sm md:text-lg px-5 py-2.5 mx-2 mb-2 dark:bg-blue-600 
