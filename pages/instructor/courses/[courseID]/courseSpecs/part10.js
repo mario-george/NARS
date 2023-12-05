@@ -8,18 +8,17 @@ import Checkbox from "@/components/checkbox/checkbox";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import jsPDF from "jspdf";
 // import mergePDFs from "@/pages/pdf2/merge2.js";
-import mergeTest from "../getPdf/MERGEONLYONE.js/test";
+import mergeTest from "../../../../../components/getPdf/MERGEONLYONE.js/test";
 // import mergeAllPdf from "./mergePagesToOnePDF";
 import { saveAs } from "file-saver";
 import { PDFDocument } from "pdf-lib";
 import { Worker } from "pdfjs-dist/legacy/build/pdf.worker.entry";
 import * as pdfjs from "pdfjs-dist";
 import LZString from "lz-string";
-import resizeBlobs from "../getPdf/resizeBlob";
+import resizeBlobs from "../../../../../components/getPdf/resizeBlob";
 import { updateField } from "@/components/store/userSlice";
 // Compress PDF Blob using lz-string
 const compressBlob = (pdfBlob) => {
-
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -42,7 +41,7 @@ const part10 = ({ cookies }) => {
   const courseSpecs = cookies.courseSpecs;
   const d = useDispatch();
   const [t, setT] = useState(true);
-  
+
   const refArray = [
     "Classroom",
     "Smart Board",
@@ -172,7 +171,7 @@ const part10 = ({ cookies }) => {
 
     formData.append("courseInstance", courseID);
     formData.append("courseSpcs", blob, "mypdf.pdf");
-    try{
+    try {
       const r = await fetch(`${process.env.url}api/v1/courses/specsPdf/`, {
         method: "POST",
         body: formData,
@@ -181,13 +180,12 @@ const part10 = ({ cookies }) => {
           Authorization: "Bearer " + token,
         },
       });
-  
+
       const resp = await r.json();
       console.log(resp);
-    }catch(e){
-      console.log(e)
+    } catch (e) {
+      console.log(e);
     }
-  
   };
   const token = userState.token;
   const [isRunning, setIsRunning] = useState(true);
@@ -447,8 +445,8 @@ const part10 = ({ cookies }) => {
     buttonRef.current.click();
     let sentArr = [];
     if (handler) {
-      console.log(other)
-      console.log(other.current)
+      console.log(other);
+      console.log(other.current);
       sentArr = selectedItems.concat([other.current.value]);
     } else {
       sentArr = selectedItems;

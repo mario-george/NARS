@@ -17,7 +17,7 @@ import { CompetencesLosSurvey } from "./CompetencesLosSurvey";
 import { CompetencesLosAchievementOVerall } from "./CompetencesLosAchievementOverall";
 import { CompetencesLosOverall } from "./CompetencesLosOverall";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
-import mergeTest from "../getPdf/MERGEONLYONE.js/test";
+import mergeTest from "../../../../../components/getPdf/MERGEONLYONE.js/test";
 import { saveAs } from "file-saver";
 import ReportNotComplete from "./ReportNotComplete";
 import { isIndexSignatureDeclaration } from "typescript";
@@ -272,8 +272,7 @@ const courseReport = ({ cookies }) => {
     ];
     const mergedBlob = await mergeTest(ImgBlobs);
     sendPdfBlob(mergedBlob);
-    if(boolean){
-
+    if (boolean) {
       saveAs(mergedBlob, "CourseReport.pdf");
     }
   };
@@ -373,7 +372,6 @@ const courseReport = ({ cookies }) => {
 
     // send courseRep to save to the backend
     setTimeout(() => {
-
       downloadMergedPDF(false);
     }, 2000);
   };

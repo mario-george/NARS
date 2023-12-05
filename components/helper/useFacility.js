@@ -8,7 +8,7 @@ import Checkbox from "@/components/checkbox/checkbox";
 import CustomReactToPdf from "@/pages/pdf2/pdf333";
 import jsPDF from "jspdf";
 // import mergePDFs from "@/pages/pdf2/merge2.js";
-import mergeTest from "@/pages/instructor/courses/[courseID]/getPdf/MERGEONLYONE.js/test";
+import mergeTest from "@/components/getPdf/MERGEONLYONE.js/test";
 // import mergeAllPdf from "./mergePagesToOnePDF";
 import { saveAs } from "file-saver";
 import { PDFDocument } from "pdf-lib";
