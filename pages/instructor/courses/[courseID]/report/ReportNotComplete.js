@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Lottie from "lottie-react";
-import notFound from "./notFound.json";
+
 import { RxCheck, RxCross1 } from "react-icons/rx";
 
 const ReportNotComplete = ({
@@ -10,6 +9,30 @@ const ReportNotComplete = ({
   doesCourseHaveCompetences,
   doesCourseHaveTarget,
 }) => {
+  const [Lottie, setLottie] = useState(null);
+const [notFound, setNotFound] = useState(null);
+useEffect(() => {
+  import("lottie-react").then((module) => {
+    setLottie(module.default);
+  });
+
+  import("./notFound.json").then((module) => {
+    setNotFound(module.default);
+  });
+
+  // Your logic for setting sections...
+}, [
+  isInDirectAssessmentComplete,
+  isDirectAssessmentComplete,
+  isCourseSpecsComplete,
+  doesCourseHaveCompetences,
+  doesCourseHaveTarget,
+]);
+
+if (!Lottie || !notFound) {
+  return <div>Not found</div>; // or a loading indicator while waiting for the dynamic imports
+
+}
   const [allNeededSections, setAllNeededSections] = useState([]);
 
   useEffect(() => {
@@ -45,10 +68,12 @@ const ReportNotComplete = ({
 
   return (
     <div className=" flex justify-center flex-col items-center">
-      <Lottie
-        animationData={notFound}
-        style={{ height: "400px", width: "400px" }}
-      />
+       {typeof window !== "undefined" && ( // Conditionally render Lottie on client-side
+        <Lottie
+          animationData={notFound}
+          style={{ height: "400px", width: "400px" }}
+        />
+      )}
       <div className="flex flex-col">
         {allNeededSections.map((section) => (
           <div>

@@ -4,11 +4,30 @@ import { useEffect, useRef, useState } from "react";
 import NavbarStudent from "@/components/NavbarStudent/Navbar";
 import ExamFileItem from "@/components/filesView/AssignFileItem";
 import ExamFileCard from "@/components/filesView/AssignFileCard";
-import Lottie from "lottie-react";
-import notFound from "./notFound.json";
+
 import { TbFileAlert } from "react-icons/tb";
 
 const viewassignments = ({ cookies }) => {
+    const [Lottie, setLottie] = useState(null);
+    const [notFound, setNotFound] = useState(null);
+    useEffect(() => {
+    import("lottie-react").then((module) => {
+      setLottie(module.default);
+    });
+  
+    import("./notFound.json").then((module) => {
+      setNotFound(module.default);
+    });
+  
+    // Your logic for setting sections...
+  }, [
+  
+  ]);
+  
+  if (!Lottie || !notFound) {
+    return <div>Not found</div>; // or a loading indicator while waiting for the dynamic imports
+  
+  }
     if (cookies.role != "student" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }

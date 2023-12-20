@@ -10,13 +10,13 @@ import CourseData from "./courseData";
 import TopicsTable from "./TopicsTable";
 import AssessmentMethodsTable from "./AssessmentMethodsTable";
 import ExamGrades from "./ExamGrades";
-import { CompetencesLosAchievement } from "./CompetencesLosAchievement";
-import { CompetencesLosGrades } from "./CompetencesLosGrades";
-import { CompetencesLosAchievementSurvey } from "./CompetencesLosAchievementSurvey";
-import { CompetencesLosSurvey } from "./CompetencesLosSurvey";
-import { CompetencesLosAchievementOVerall } from "./CompetencesLosAchievementOverall";
-import { CompetencesLosOverall } from "./CompetencesLosOverall";
-import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import { CompetencesLosAchievement } from "@/components/reportComponents/CompetencesLosAchievement";
+import { CompetencesLosGrades } from "@/components/reportComponents/CompetencesLosGrades";
+import { CompetencesLosAchievementSurvey } from "@/components/reportComponents/CompetencesLosAchievementSurvey";
+import { CompetencesLosSurvey } from "@/components/reportComponents/CompetencesLosSurvey";
+import { CompetencesLosAchievementOVerall } from "@/components/reportComponents/CompetencesLosAchievementOverall";
+import { CompetencesLosOverall } from "@/components/reportComponents/CompetencesLosOverall";
+import CustomReactToPdf from "@/components/pdf2/pdf333";
 import mergeTest from "../../../../../components/getPdf/MERGEONLYONE.js/test";
 import { saveAs } from "file-saver";
 import ReportNotComplete from "./ReportNotComplete";
@@ -25,10 +25,18 @@ import DefaultPage from "@/components/helper/DefaultPageCourseReport";
 
 const courseReport = ({ cookies }) => {
   useEffect(() => {
-    document.body.classList.add("resize-none");
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+          // document.body.classList.add("resize-none");
+      }
+  }, []);
 
     return () => {
-      document.body.classList.remove("resize-none");
+      useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // document.body.classList.remove("resize-none");
+        }
+    }, []);
     };
   }, []);
   async function downloadPdf(e) {
