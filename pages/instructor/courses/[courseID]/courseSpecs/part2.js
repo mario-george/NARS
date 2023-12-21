@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import CustomReactToPdf from "@/components/pdf2/pdf333";
 import Textarea from "@/components/Textarea/Textarea";
 import { updateField } from "@/components/store/userSlice";
 

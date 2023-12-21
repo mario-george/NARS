@@ -1,4 +1,4 @@
-import BloomTaxonomyInput from "@/pages/pdf2/taxonomy";
+import BloomTaxonomyInput from "@/components/pdf2/taxonomy";
 const { cognitiveDomainVerbs } = require("@/components/helpers/domainArrays");
 const { AffectiveDomainVerbs } = require("@/components/helpers/domainArrays");
 const { PsychomotorDomainVerbs } = require("@/components/helpers/domainArrays");

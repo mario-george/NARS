@@ -3,11 +3,34 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import SolutionFileItem from "@/components/filesView/SolutionFileItem";
-import Lottie from "lottie-react";
-import notFound from "./notFound.json";
+
 import { TbFileAlert } from "react-icons/tb";
 
 const viwesolution = ({ cookies }) => {
+    const [Lottie, setLottie] = useState(null);
+const [notFound, setNotFound] = useState(null);
+useEffect(() => {
+  import("lottie-react").then((module) => {
+    setLottie(module.default);
+  });
+
+  import("./notFound.json").then((module) => {
+    setNotFound(module.default);
+  });
+
+  // Your logic for setting sections...
+}, [
+  isInDirectAssessmentComplete,
+  isDirectAssessmentComplete,
+  isCourseSpecsComplete,
+  doesCourseHaveCompetences,
+  doesCourseHaveTarget,
+]);
+
+if (!Lottie || !notFound) {
+  return <div>Not found</div>; // or a loading indicator while waiting for the dynamic imports
+
+}
     if (cookies.role != "instructor" || cookies.loggedInStatus != "true") {
         return <div className="error">404 could not found</div>;
     }

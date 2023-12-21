@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useRef, useEffect } from "react";
 import Cookies from "js-cookie";
 import Checkbox from "@/components/checkbox/checkbox";
-import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import CustomReactToPdf from "@/components/pdf2/pdf333";
 import jsPDF from "jspdf";
 // import mergePDFs from "@/pages/pdf2/merge2.js";
 import mergeTest from "../getPdf/merge2TwoOne";
