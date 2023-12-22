@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../store/userSlice";
 import { MdOutlineLogin } from "react-icons/md";
+import { FaBookOpen } from "react-icons/fa";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import Image from "next/image";
 
@@ -68,6 +69,15 @@ function MainHeader() {
   let not = (
     <>
       <div className="flex items-center justify-center gap-10  ">
+      <div className="translate-x-24">
+        <FaBookOpen  style={{ fontSize: 30 }}/>
+        </div>
+        <Link
+          href="/demo"
+          className={router.pathname == "/demo" ? "activeLink" : "normalLink"}
+        >
+          <div className="text translate-y-7 translate-x-10"> Demo</div>
+        </Link>
         <div className="translate-x-24">
           <MdOutlineLogin style={{ fontSize: 30 }} />
         </div>
