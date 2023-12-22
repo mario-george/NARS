@@ -33,8 +33,32 @@ const Students = ({ cookies }) => {
         },
       });
       const data = await resp.json();
-      setStudents(data.data);
-      setFilteredStudents(data.data);
+      let arr= data.data.map(
+        async(e)=>{
+          console.log(e)
+          const resp = await fetch(`${process.env.url}api/v1/faculty/${e.faculty}`, {
+            headers: {
+              Authorization: "Bearer " + userState.token,
+            },
+          });
+          const data = await resp.json()
+          const resp2 = await fetch(`${process.env.url}api/v1/department/?_id=${e.department}`, {
+            headers: {
+              Authorization: "Bearer " + userState.token,
+            },
+          });
+          const data2 = await resp2.json()
+return {
+  ...e,faculty:data.data.name,department:data2.data[0].name,
+}
+        }
+
+      )
+      const responseData = await Promise.all(arr);
+
+      console.log(responseData)
+      setStudents(responseData);
+      setFilteredStudents(responseData);
 
       console.log(data.data);
     } catch (e) {

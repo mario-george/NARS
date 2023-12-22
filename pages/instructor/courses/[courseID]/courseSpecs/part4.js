@@ -20,9 +20,11 @@ const part4 = ({ cookies }) => {
 
   const [invalidEmptyTopic, setInvalidEmptyTopic] = useState(false);
   const [invalidPlannedHours, setInvalidPlannedHours] = useState(false);
+  const [invalidExpectedHours, setInvalidExpectedHours] = useState(false);
   const [errorPlannedHours, setErrorPlannedHours] = useState("");
   const [errorTopcsRefs, setErrorTopicsRefs] = useState("");
   const [errorEmptyTopics, setErrorEmptyTopic] = useState("");
+  const [errorExpectedHours, setErrorExpectedHours] = useState("");
   const passInvalidEmptyTopic = ({ boolean, error }) => {
     if (error) {
       setErrorEmptyTopic(error);
@@ -32,6 +34,17 @@ const part4 = ({ cookies }) => {
     }
     if (boolean == true) {
       setInvalidEmptyTopic(true);
+    }
+  };
+  const passInvalidExpectedHours = ({ boolean, error }) => {
+    if (error) {
+      setErrorExpectedHours(error);
+    }
+    if (boolean == false) {
+      setInvalidExpectedHours(false);
+    }
+    if (boolean == true) {
+      setInvalidExpectedHours(true);
     }
   };
   const passInvalidTopicsRefs = ({ boolean, error }) => {
@@ -315,7 +328,6 @@ const part4 = ({ cookies }) => {
             }
           }
         }
-     
       } catch (e) {
         console.log(e);
       }
@@ -814,9 +826,9 @@ const part4 = ({ cookies }) => {
           data.data.courseSpecs.courseLearningOutcomes[2].learningOutcomes;
 
         cp2 = JSON.parse(JSON.stringify(courseLearningOutcomes));
-        console.log(cp2)
-        console.log(cp2)
-        console.log(cp2)
+        console.log(cp2);
+        console.log(cp2);
+        console.log(cp2);
 
         if (
           data.data.courseSpecs.courseLearningOutcomes[0].title == "cognitive"
@@ -854,20 +866,20 @@ const part4 = ({ cookies }) => {
           });
         }
 
-//         combined = [];
-//         cp2[2].learningOutcomes[0].mappedCompetence.map((e) => {
-//           combined.push(e);
-//         });
-//         cp2[0].learningOutcomes[0].mappedCompetence.map((e) => {
-//           combined.push(e);
-//         });
-//         cp2[1].learningOutcomes[0].mappedCompetence.map((e) => {
-//           combined.push(e);
-//         });
-// console.log(cp2)
-// console.log(cp2)
-// console.log(cp2)
-// console.log(cp2)
+        //         combined = [];
+        //         cp2[2].learningOutcomes[0].mappedCompetence.map((e) => {
+        //           combined.push(e);
+        //         });
+        //         cp2[0].learningOutcomes[0].mappedCompetence.map((e) => {
+        //           combined.push(e);
+        //         });
+        //         cp2[1].learningOutcomes[0].mappedCompetence.map((e) => {
+        //           combined.push(e);
+        //         });
+        // console.log(cp2)
+        // console.log(cp2)
+        // console.log(cp2)
+        // console.log(cp2)
         function removeDuplicates(array) {
           return array.filter((item, index) => array.indexOf(item) === index);
         }
@@ -935,11 +947,9 @@ const part4 = ({ cookies }) => {
       );
       const resp = await r.json();
       console.log(resp);
-      setTimeout(()=>{
-
-
+      setTimeout(() => {
         facilityHandler.submitHandler();
-      },500)
+      }, 500);
       console.log(cp2);
       console.log(cp2);
       console.log(cp2);
@@ -995,10 +1005,10 @@ const part4 = ({ cookies }) => {
     const { selectedItems, handler } = facilityHandler.validate();
     const { notes, books, Rbooks, websites } =
       ListOfReferencesHandler.validate();
-      console.log(books);
-      console.log(Rbooks);
-      console.log(websites);
-      console.log(notes);
+    console.log(books);
+    console.log(Rbooks);
+    console.log(websites);
+    console.log(notes);
 
     console.log(assessmentScheduleHandler.getInvalidData());
     console.log(assessmentScheduleHandler.getInvalidData());
@@ -1133,7 +1143,7 @@ const part4 = ({ cookies }) => {
     } else {
       facilityHandler.getInvalidData(false);
     }
-    if (books === ""||!books) {
+    if (books === "" || !books) {
       newErrors.push("Books should not be empty.");
       ListOfReferencesHandler.passInvalid({ boolean: true, error: "books" });
     } else {
@@ -1148,7 +1158,7 @@ const part4 = ({ cookies }) => {
         error: "websites",
       });
     }
-    if (notes === ""||!notes) {
+    if (notes === "" || !notes) {
       newErrors.push("Notes should not be empty.");
       ListOfReferencesHandler.passInvalid({ boolean: true, error: "notes" });
     } else {
@@ -1188,13 +1198,20 @@ const part4 = ({ cookies }) => {
     } else {
       teachingMethodsHandler.getInvalidData(false);
     }
-    if (expectedStudyingHoursPerWeek.current?.value.trim() === "") {
-      newErrors.push(
-        "Private Expected Studying Hours Per week should not be empty."
-      );
+    if (
+      isNaN(Number(expectedStudyingHoursPerWeek.current?.value)) ||
+      expectedStudyingHoursPerWeek.current?.value.trim() === "" ||
+      Number(expectedStudyingHoursPerWeek.current?.value) <= 0
+    ) {
+      const error =
+        "Private Expected Studying Hours Per week should not be empty and Positive non-zero value.";
+      newErrors.push(error);
+      passInvalidExpectedHours({ boolean: true, error });
       setIsexpectedStudyingHoursPerWeekInvalid(true);
     } else {
       setIsexpectedStudyingHoursPerWeekInvalid(false);
+      passInvalidExpectedHours({ boolean: false });
+
       const errorToRemove =
         "Private Expected Studying Hours Per week should not be empty.";
 
@@ -1275,12 +1292,14 @@ const part4 = ({ cookies }) => {
             </div>
             <div className="flex flex-col" ref={refToImgBlob2}>
               <LecturePlan
+              setErrorExpectedHours={setErrorExpectedHours}
                 setInvalidEmptyTopic={setInvalidEmptyTopic}
                 setInvalidPlannedHours={setInvalidPlannedHours}
                 setInvalidTopicsRefs={setInvalidTopicsRefs}
                 errorEmptyTopics={errorEmptyTopics}
                 errorPlannedHours={errorPlannedHours}
                 errorTopicsRefs={errorTopcsRefs}
+                errorExpectedHours={errorExpectedHours}
                 invalidEmptyTopic={invalidEmptyTopic}
                 invalidPlannedHours={invalidPlannedHours}
                 invalidTopicsRefs={invalidTopicsRefs}
@@ -1327,6 +1346,7 @@ const part4 = ({ cookies }) => {
               <div>{msg}</div>
               <div className="flex justify-end">
                 <button
+                  type="button"
                   onClick={() => {
                     router.back();
                   }}

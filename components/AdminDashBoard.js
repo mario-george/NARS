@@ -25,7 +25,7 @@ export default function AdminDashBoard() {
   };
   return (
     <nav
-      className={`nav2 transition-all ${modalOpen ? `z-30  ` : ``} duration-300 transform ${navStatus ? ` -translate-x-full` : `translate-x-0 `
+      className={`nav2 transition-all ${modalOpen ? `z-30  ` : ``} duration-300 transform ${!navStatus ? ` -translate-x-full` : `translate-x-0 `
         }`}
     >
       <Link className="link2 focus:text-green-400 " href="/profile">

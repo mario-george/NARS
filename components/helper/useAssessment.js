@@ -454,9 +454,9 @@ const useAssessment = ({ courseID, hasClass }) => {
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={`border text-lg border-gray-500  transistion-all  py-8 px-4${
+                  className={`border text-lg border-gray-500  transistion-all  py-8 px-1 ${
                     cellIndex === 0
-                      ? `text-right text-[#FF0000] text-2xl font-bold py-24 `
+                      ? `text-right text-[#FF0000] text-3xl font-bold py-24 `
                       : ``
                   }`}
                 >

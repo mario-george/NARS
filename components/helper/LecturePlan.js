@@ -23,9 +23,11 @@ const LecturePlan = ({
   errorEmptyTopics,
   errorPlannedHours,
   errorTopicsRefs,
+  errorExpectedHours,
   setInvalidEmptyTopic,
   setInvalidPlannedHours,
   setInvalidTopicsRefs,
+  setInvalidExpectedHours,
 }) => {
   return (
     <div>
@@ -170,7 +172,7 @@ const LecturePlan = ({
       {invalidTopicsRefs && hasClass && (
         <div className="input-form-invalid"> {errorTopicsRefs}</div>
       )} */}
-      {(invalidEmptyTopic || invalidPlannedHours || invalidTopicsRefs) &&
+      {(invalidEmptyTopic || invalidPlannedHours || invalidTopicsRefs||isexpectedStudyingHoursPerWeekInvalid) &&
         hasClass &&
         getErrorFieldArray(
           {
@@ -180,11 +182,14 @@ const LecturePlan = ({
             errorEmptyTopics: errorEmptyTopics,
             errorPlannedHours: errorPlannedHours,
             errorTopicsRefs: errorTopicsRefs,
+            errorExpectedHours:errorExpectedHours,
+            isexpectedStudyingHoursPerWeekInvalid:isexpectedStudyingHoursPerWeekInvalid
           },
           () => {
             setInvalidEmptyTopic(false);
             setInvalidPlannedHours(false);
             setInvalidTopicsRefs(false);
+            setInvalidExpectedHours(false);
           }
         )}
     </div>

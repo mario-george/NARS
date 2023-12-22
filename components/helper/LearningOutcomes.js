@@ -30,7 +30,7 @@ const LearningOutcomes = ({
                 >
                   Cognitive Domain
                 </th>
-                <div className="ml-48">
+                <div className="ml-12">
                   {hasClass && (
                     <button
                       onClick={handleAddInput}
@@ -51,9 +51,9 @@ const LearningOutcomes = ({
                     </td>
 
                     <td className="px-4 pt-1 pb-2 w-full border-r border-gray-300 border-b">
-                      <div className={` ${hasClass ? `` : ``}`}>
+                      <div className={` ${hasClass ? `` : ``} w-full`}>
                         <BloomTaxonomyInput
-                          className={`BloomTax ${
+                          className={`BloomTax w-full ${
                             hasClass ? `input-form` : ``
                           } `}
                           hasClass={hasClass}
@@ -67,7 +67,7 @@ const LearningOutcomes = ({
                     </td>
                     {hasClass && (
                       <td className="">
-                        <div className="ml-24">
+                        <div className="ml-8">
                           <button
                             type="button"
                             onClick={(e) => removeLO1(e, input)}
@@ -111,7 +111,7 @@ const LearningOutcomes = ({
                 >
                   Psychomotor Domain
                 </th>
-                <div className="ml-48">
+                <div className="ml-12">
                   {hasClass && (
                     <button
                       onClick={handleAddInput2}
@@ -146,7 +146,7 @@ const LearningOutcomes = ({
                     </td>
                     {hasClass && (
                       <td className="">
-                        <div className="ml-24">
+                        <div className="ml-8">
                           <button
                             type="button"
                             onClick={(e) => removeLO2(e, input)}
@@ -191,7 +191,7 @@ const LearningOutcomes = ({
                 >
                   Affective Domain
                 </th>
-                <div className="ml-48">
+                <div className="ml-12">
                   {hasClass && (
                     <button
                       onClick={handleAddInput3}
@@ -226,7 +226,7 @@ const LearningOutcomes = ({
                     </td>
                     {hasClass && (
                       <td className="">
-                        <div className="ml-24">
+                        <div className="ml-8">
                           <button
                             type="button"
                             onClick={(e) => removeLO3(e, input)}

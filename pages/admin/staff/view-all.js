@@ -56,7 +56,35 @@ const viewAll = ({ cookies }) => {
       arr = arr.map((e) => {
         return { email: e.email, name: e.name, roles: e.roles ,faculty:e.faculty,department:e.department,program:e.program};
       });
-      setStaff(arr);
+      let arr22= data.data.map(
+        async(e)=>{
+          console.log(e)
+          const resp = await fetch(`${process.env.url}api/v1/faculty/${e.faculty}`, {
+            headers: {
+              Authorization: "Bearer " + userState.token,
+            },
+          });
+          const data = await resp.json()
+          const resp1 = await fetch(`${process.env.url}api/v1/programs/${e.program}`, {
+            headers: {
+              Authorization: "Bearer " + userState.token,
+            },
+          });
+          const data1 = await resp1.json()
+          const resp2 = await fetch(`${process.env.url}api/v1/department/?_id=${e.department}`, {
+            headers: {
+              Authorization: "Bearer " + userState.token,
+            },
+          });
+          const data2 = await resp2.json()
+return {
+  ...e,faculty:data.data.name,department:data2.data[0].name,program:data1.data.name
+}
+        }
+
+      )
+      const responseData = await Promise.all(arr22);
+      setStaff(responseData);
     } catch (e) {
       console.log(e);
     }

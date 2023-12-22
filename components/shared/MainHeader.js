@@ -2,12 +2,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../store/userSlice";
+import { userActions, updateField } from "../store/userSlice";
 import { MdOutlineLogin } from "react-icons/md";
 import { FaBookOpen } from "react-icons/fa";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import Image from "next/image";
-
+import { Button, IconButton } from "@material-tailwind/react";
 function MainHeader() {
   const router = useRouter();
   const userState = useSelector((s) => s.user);
@@ -32,7 +32,7 @@ function MainHeader() {
         console.log(res);
         const imageBlob = await res.blob();
         const imageObjectURL = URL.createObjectURL(imageBlob);
-        console.log("photoooooooo",imageObjectURL);
+        console.log("photoooooooo", imageObjectURL);
         setImg(imageObjectURL);
       } catch (e) {
         console.log(e);
@@ -101,15 +101,38 @@ function MainHeader() {
       </div>
     </>
   );
+  const dispatch = useDispatch();
 
+  const navHandler = () => {
+    dispatch(
+      updateField({
+        field: "navStatus",
+        value: !userState.navStatus,
+      })
+    );
+  };
   return (
     <div>
       <div className="layout ">
         <div className="flex justify-between items-center md:mx-[3rem] h-[5rem]">
           <div className="flex space-x-8 items-center justify-center ">
-            <div className="flex flex-col space-y-2">
-              <div className="text ">NARQA </div>
-              <div className="text  ">Quality Assurance</div>
+            <div className="flex space-x-5">
+              <Button
+                variant="filled"
+                color="lightBlue"
+                ripple="light"
+                className=" fixed top-0 left-0  rounded-full text-white md:hidden z-30"
+                onClick={navHandler}
+              >
+                <i class="fa-solid fa-arrow-left"></i>{" "}
+              </Button>{" "}
+              <div
+                className="      flex flex-col space-y-2 
+"
+              >
+                <div className="text ">NARQA </div>
+                <div className="text  ">Quality Assurance</div>
+              </div>
             </div>
           </div>
           {userState.loggedInStatus === "true" ? logged : not}

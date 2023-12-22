@@ -87,6 +87,9 @@ export const getErrorFieldArray = (errors, onClickFunction) => {
   if (errors.invalidTopicsRefs) {
     errorMessages.push(errors.errorTopicsRefs);
   }
+  if (errors.isexpectedStudyingHoursPerWeekInvalid) {
+    errorMessages.push(errors.errorExpectedHours);
+  }
   if (errors.invalidWebsites) {
     errorMessages.push(errors.errorWebsites);
   }
