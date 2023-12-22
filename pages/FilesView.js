@@ -4,19 +4,19 @@ import React, { useState, useEffect } from 'react'
 import FileItem from '../components/filesView/ExamFileItem'
 import FileCard from '../components/filesView/ExamFileCard'
 
-import { db } from '../../firebase'
+// import { db } from '../firebase'; // Import db from firebase
 
 const FilesView = () => {
     const [files, setFiles] = useState([])
 
-    useEffect(() => {
-        db.collection('myFiles').onSnapshot(snapshot => {
-            setFiles(snapshot.docs.map(doc => ({
-                id: doc.id,
-                item: doc.data()
-            })))
-        })
-    }, [])
+    // useEffect(() => {
+    //     db.collection('myFiles').onSnapshot(snapshot => {
+    //         setFiles(snapshot.docs.map(doc => ({
+    //             id: doc.id,
+    //             item: doc.data()
+    //         })))
+    //     })
+    // }, [])
 
     console.log(files)
 

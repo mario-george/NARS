@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { createRef, useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import CustomReactToPdf from "@/components/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
 
 const part69 = ({ cookies }) => {

@@ -9,7 +9,6 @@ export const CompetencesLosGrades = ({
   learningOutcomes,
   numberOfStudents,
   avgValues,
-
   refToImgBlob7,
   refToImgBlob8,
 }) => {

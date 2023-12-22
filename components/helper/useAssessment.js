@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createRef, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import cn from "classnames";
-import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import CustomReactToPdf from "@/components/pdf2/pdf333";
 import { updateField } from "@/components/store/userSlice";
 import { getErrorField } from "./errorField";
 const useAssessment = ({ courseID, hasClass }) => {

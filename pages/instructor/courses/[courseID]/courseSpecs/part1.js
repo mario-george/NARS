@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, createRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
-import CustomReactToPdf from "@/pages/pdf2/pdf333";
+import CustomReactToPdf from "@/components/pdf2/pdf333";
 import Navbar from "@/components/Navbar/Navbar";
 import { updateField } from "@/components/store/userSlice";
 import PdfFileCard from "@/components/filesView/pdfFileCard";

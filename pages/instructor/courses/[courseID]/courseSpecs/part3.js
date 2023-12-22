@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { createRef, useRef, useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import CustomReactToPdf from "@/pages/pdf2/pdf333";
-import BloomTaxonomyInput from "@/pages/pdf2/taxonomy";
+import CustomReactToPdf from "@/components/pdf2/pdf333";
+import BloomTaxonomyInput from "@/components/pdf2/taxonomy";
 import { updateField } from "@/components/store/userSlice";
 
 const part3 = ({ cookies }) => {
