@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 const Home = ({ cookies }) => {
   const r = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  console.log(cookies.role)
-  if (cookies.role!=="null" && cookies.role !=="notLogged") {
+  if (cookies.role!=="null") {
     useEffect(() => {
       setIsLoggedIn(true);
     }, [])
