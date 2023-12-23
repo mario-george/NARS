@@ -8,11 +8,16 @@ import QualityCoordinatorDashboard from "@/components/QualityCoordinatorDashboar
 import StudentDashboard from "../StudentDashoard";
 import ProgramCoordinatorDashboard from "../ProgramCoordinatorDashboard";
 import DepartmentAdminDashboard from "../DepartmentAdminDashboard";
+import { useDispatch } from "react-redux";
+
+import { updateField ,userActions} from "@/components/store/userSlice.js";
 
 import React from "react";
 
 function SideDashboard() {
+const dispatch =useDispatch()
   const globalState = useSelector((s) => s.user);
+  dispatch(updateField({ field: "navStatus", value: false }));
 
   const [instructor, setInstructor] = useState(false);
   const [student, setStudent] = useState(false);
@@ -22,7 +27,8 @@ function SideDashboard() {
   const [qualityCoo, setQualityCoo] = useState(false);
   const [programCoo, setProgramCoo] = useState(false);
   const [departAdmin, setDepartAdmin] = useState(false);
-
+  console.log(globalState);
+  console.log(globalState.role);
 
   useEffect(() => {
     if (globalState.role === "system admin") {
@@ -37,11 +43,9 @@ function SideDashboard() {
       setQualityCoo(true);
     } else if (globalState.role === "student") {
       setStudent(true);
-    }
-    else if (globalState.role === "program coordinator") {
+    } else if (globalState.role === "program coordinator") {
       setProgramCoo(true);
-    }
-    else if (globalState.role === "department admin") {
+    } else if (globalState.role === "department admin") {
       setDepartAdmin(true);
     }
   }, []);
