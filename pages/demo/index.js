@@ -21,7 +21,7 @@ const globalState = useSelector((s) => s.user);
   } = DemoData;
 useEffect(()=>{
 
-  dispatch(updateField({ field: "role", value: null }));
+  dispatch(updateField({ field: "role", value: 'notLogged' }));
 
 },[globalState.role])
   const router = useRouter();
