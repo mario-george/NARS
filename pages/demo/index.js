@@ -1,9 +1,14 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateField ,userActions} from "@/components/store/userSlice";
 import { useRouter } from "next/router";
 import DemoData from "@/components/DemoData/DemoData.json";
 const Demo = () => {
+
+const dispatch=useDispatch()
+
+const globalState = useSelector((s) => s.user);
+
   const {
     name,
     loggedInStatus,
@@ -14,11 +19,14 @@ const Demo = () => {
     _id,
     program,
   } = DemoData;
+useEffect(()=>{
 
+  dispatch(updateField({ field: "role", value: null }));
+
+},[globalState.role])
   const router = useRouter();
   let rolesArr = ["instructor", "system admin"];
   const role = useRef();
-  const dispatch = useDispatch();
   const submitRole = (e) => {
     if (e) {
       e.preventDefault();
