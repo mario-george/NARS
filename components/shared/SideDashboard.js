@@ -23,7 +23,6 @@ function SideDashboard() {
   const [programCoo, setProgramCoo] = useState(false);
   const [departAdmin, setDepartAdmin] = useState(false);
 
-
   useEffect(() => {
     if (globalState.role === "system admin") {
       setAdmin(true);
@@ -37,11 +36,9 @@ function SideDashboard() {
       setQualityCoo(true);
     } else if (globalState.role === "student") {
       setStudent(true);
-    }
-    else if (globalState.role === "program coordinator") {
+    } else if (globalState.role === "program coordinator") {
       setProgramCoo(true);
-    }
-    else if (globalState.role === "department admin") {
+    } else if (globalState.role === "department admin") {
       setDepartAdmin(true);
     }
   }, []);
