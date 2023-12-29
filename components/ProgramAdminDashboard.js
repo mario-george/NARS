@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { header } from "./header";
 import { userActions } from "./store/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import Cookies from "js-cookie";
 import { CgProfile } from "react-icons/cg";
 import { CgLogOut } from "react-icons/cg";
 import { BsBook } from "react-icons/bs";
