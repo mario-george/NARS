@@ -32,7 +32,7 @@ function MainHeader() {
         console.log(res);
         const imageBlob = await res.blob();
         const imageObjectURL = URL.createObjectURL(imageBlob);
-        console.log("photoooooooo",imageObjectURL);
+        console.log("photoooooooo", imageObjectURL);
         setImg(imageObjectURL);
       } catch (e) {
         console.log(e);
@@ -69,8 +69,8 @@ function MainHeader() {
   let not = (
     <>
       <div className="flex items-center justify-center gap-10  ">
-      <div className="translate-x-24">
-        <FaBookOpen  style={{ fontSize: 30 }}/>
+        <div className="translate-x-24">
+          <FaBookOpen style={{ fontSize: 30 }} />
         </div>
         <Link
           href="/demo"

@@ -10,12 +10,12 @@ import ProgramCoordinatorDashboard from "../ProgramCoordinatorDashboard";
 import DepartmentAdminDashboard from "../DepartmentAdminDashboard";
 import { useDispatch } from "react-redux";
 
-import { updateField ,userActions} from "@/components/store/userSlice.js";
+import { updateField, userActions } from "@/components/store/userSlice.js";
 
 import React from "react";
 
 function SideDashboard() {
-const dispatch =useDispatch()
+  const dispatch = useDispatch();
   const globalState = useSelector((s) => s.user);
   dispatch(updateField({ field: "navStatus", value: false }));
 
@@ -48,7 +48,7 @@ const dispatch =useDispatch()
     } else if (globalState.role === "department admin") {
       setDepartAdmin(true);
     }
-  }, []);
+  }, [globalState.role]);
 
   return (
     <div>

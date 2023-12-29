@@ -1,0 +1,10 @@
+{
+  "courses": "[\"63f63c30a77ad345add770f9\",\"63f778c73143ccb59dc49304\",\"63f778dd47f5903e12bb1de3\",\"63fca653ec9814f726886e8c\",\"63fcb475b5833ef49fd468bc\",\"63fca5927dfeba8757a87dbe\",\"63fcb529b5833ef49fd468cc\",\"63ffab51eeb0ebe7d114ea34\",\"64025da9a4bb058f7a47a980\",\"6402611fa4bb058f7a47aa60\",\"648c6d08a3ff3ab1a4208c6b\"]",
+  "department": "6479d40d335f57897c1d23a0",
+  "email": "user@demo.com",
+  "faculty": "63f64262db6789457bdcbb38",
+  "loggedInStatus": "true",
+  "name": "Demo User",
+  "program": "646666ddef0e16e7f9ad4933",
+  "_id": "63f63d221481fe2057ce18cd"
+}
