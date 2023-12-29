@@ -1,13 +1,12 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateField ,userActions} from "@/components/store/userSlice";
+import { updateField, userActions } from "@/components/store/userSlice";
 import { useRouter } from "next/router";
 import DemoData from "@/components/DemoData/DemoData.json";
 const Demo = () => {
+  const dispatch = useDispatch();
 
-const dispatch=useDispatch()
-
-const globalState = useSelector((s) => s.user);
+  const globalState = useSelector((s) => s.user);
 
   const {
     name,
@@ -19,17 +18,19 @@ const globalState = useSelector((s) => s.user);
     _id,
     program,
   } = DemoData;
-useEffect(()=>{
-
-  dispatch(updateField({ field: "role", value: 'notLogged' }));
-
-},[globalState.role])
+  useEffect(() => {
+    dispatch(updateField({ field: "role", value: "notLogged" }));
+  }, []);
   const router = useRouter();
   let rolesArr = ["instructor", "system admin"];
   const role = useRef();
   const submitRole = (e) => {
     if (e) {
       e.preventDefault();
+    }
+
+    if (role.current.value == 'null') {
+      return;
     }
     dispatch(updateField({ field: "role", value: role.current.value }));
     const coursesStringified = JSON.stringify(courses);
@@ -59,7 +60,9 @@ useEffect(()=>{
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
               rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
               >
-                <option selected>Choose a role</option>
+                <option selected disabled value="null">
+                  Choose a role
+                </option>
                 {rolesArr.map((e) => {
                   return <option value={e}>{e}</option>;
                 })}{" "}
